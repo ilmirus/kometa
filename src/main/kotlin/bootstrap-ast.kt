@@ -35,7 +35,7 @@ val bootstrapAst by lazy {
                                 "SP".callorvar,
                                 "EOF".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = "AST.GrammarFile(il?.asResult()!!, g?.asResult()!!)".i
+                            expression = "{ AST.GrammarFile(il?.asResult()!!, g?.asResult()!!) }".i
                         ),
                     )
                 ),
@@ -48,7 +48,7 @@ val bootstrapAst by lazy {
                                 body = AST.Plus("Import".callorvar),
                                 varName = "i".i
                             ),
-                            expression = "AST.ImportList(i!!.results.filterNotNull())".i
+                            expression = "{ AST.ImportList(i!!.results.filterNotNull()) }".i
                         )
                     )
                 ),
@@ -69,7 +69,7 @@ val bootstrapAst by lazy {
                                 "SP".callorvar,
                                 "SEMI".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = "AST.Import(name!!)".i
+                            expression = "{ AST.Import(name!!) }".i
                         )
                     )
                 ),
@@ -102,7 +102,7 @@ val bootstrapAst by lazy {
                                 AST.Bind(AST.Star("Rule".callorvar), "rules".i),
                                 "RIGHT_BRACE".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = "AST.Grammar(name!!, tinput!!, tresult!!, baseclass, rules!!.results.filterIsInstance<AST.Rule>())".i
+                            expression = "{ AST.Grammar(name!!, tinput!!, tresult!!, baseclass, rules!!.results.filterIsInstance<AST.Rule>()) }".i
                         )
                     )
                 ),
@@ -119,7 +119,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("Disjunction".callorvar, "body".i),
                                 "SEMI".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Rule(name!!, if (parms != null && parms.inputs.any()) AST.Args(parms.asResult(), body?.asResult()!!) else body?.asResult()!!, ovr?.inputs?.joinToString("") ?: "")""".i
+                            expression = """{ AST.Rule(name!!, if (parms != null && parms.inputs.any()) AST.Args(parms.asResult(), body?.asResult()!!) else body?.asResult()!!, ovr?.inputs?.joinToString("") ?: "") }""".i
                         )
                     )
                 ),
@@ -132,7 +132,7 @@ val bootstrapAst by lazy {
                                 "ActionExp".callorvar,
                                 AST.Star(AST.And("OR".callorvar, "ActionExp".callorvar))
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = "it.results.filterNotNull().reduce{ prev, cur -> AST.Or(prev, cur) }".i
+                            expression = "{ it.results.filterNotNull().reduce{ prev, cur -> AST.Or(prev, cur) } }".i
                         )
                     )
                 ),
@@ -148,7 +148,7 @@ val bootstrapAst by lazy {
                                     AST.Look("LEFT_BRACE".callorvar),
                                     AST.Bind("KotlinCode".callorvar, "action".i)
                                 ).reduce { prev, cur -> AST.And(prev, cur) },
-                                expression = "AST.Act(body?.asResult()!!, action!!)".i
+                                expression = "{ AST.Act(body?.asResult()!!, action!!) }".i
                             ),
                             "SequenceExp".callorvar
                         )
@@ -163,7 +163,7 @@ val bootstrapAst by lazy {
                                 "BANG".callorvar,
                                 AST.Ques(AST.Bind("KotlinCode".callorvar, "msg".i))
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Fail(msg?.asResult()!!)""".i
+                            expression = """{ AST.Fail(msg?.asResult()!!) }""".i
                         )
                     )
                 ),
@@ -173,7 +173,7 @@ val bootstrapAst by lazy {
                         params = null,
                         body = AST.Act(
                             body = AST.Plus("ConditionExp".callorvar),
-                            expression = """it.results.filterNotNull().reduce { prev, cur -> AST.And(prev, cur) }""".i
+                            expression = """{ it.results.filterNotNull().reduce { prev, cur -> AST.And(prev, cur) } }""".i
                         )
                     )
                 ),
@@ -195,7 +195,7 @@ val bootstrapAst by lazy {
                                 AST.Look("OPEN".callorvar),
                                 AST.Bind("KotlinCode".callorvar, "cond".i)
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Cond(body?.asResult()!!, cond!!)""".i
+                            expression = """{ AST.Cond(body?.asResult()!!, cond!!) }""".i
                         )
                     )
                 ),
@@ -216,7 +216,7 @@ val bootstrapAst by lazy {
                                 "COLON".callorvar,
                                 AST.Bind("Identifier".callorvar, "id".i)
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Bind(exp?.asResult()!!, id!!)""".i
+                            expression = """{ AST.Bind(exp?.asResult()!!, id!!) }""".i
                         )
                     )
                 ),
@@ -229,7 +229,7 @@ val bootstrapAst by lazy {
                                 "COLON".callorvar,
                                 AST.Bind("Identifier".callorvar, "id".i)
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Bind(AST.Any, id!!)""".i
+                            expression = """{ AST.Bind(AST.Any, id!!) }""".i
                         )
                     )
                 ),
@@ -260,7 +260,7 @@ val bootstrapAst by lazy {
                                 "AND_PRE".callorvar,
                                 AST.Bind("PostfixedTerm".callorvar, "exp".i)
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Look(exp?.asResult()!!)""".i
+                            expression = """{ AST.Look(exp?.asResult()!!) }""".i
                         )
                     )
                 ),
@@ -273,7 +273,7 @@ val bootstrapAst by lazy {
                                 "NOT_PRE".callorvar,
                                 AST.Bind("PostfixedTerm".callorvar, "exp".i)
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Not(exp?.asResult()!!)""".i
+                            expression = """{ AST.Not(exp?.asResult()!!) }""".i
                         )
                     )
                 ),
@@ -302,7 +302,7 @@ val bootstrapAst by lazy {
                                 AST.Ques(AST.And("COMMA".callorvar, AST.Bind("Number".callorvar, "x".i))),
                                 "RIGHT_BRACE".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """
+                            expression = """{
             val exp = exp?.asResult()!!
             val min = n!!.inputs.joinToString("").toInt()
             val max = if (x != null && x!!.inputs.toList().isNotEmpty()) x!!.inputs.joinToString("").toInt() else min
@@ -319,7 +319,7 @@ val bootstrapAst by lazy {
                 res = if (res != null) AST.And(res, AST.Ques(exp)) else AST.Ques(exp)
             }
             res!!
-""".i
+}""".i
                         )
                     )
                 ),
@@ -332,7 +332,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("Term".callorvar, "exp".i),
                                 "STAR".callorvar,
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Star(exp?.asResult()!!)""".i
+                            expression = """{ AST.Star(exp?.asResult()!!) }""".i
                         )
                     )
                 ),
@@ -345,7 +345,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("Term".callorvar, "exp".i),
                                 "PLUS".callorvar,
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Plus(exp?.asResult()!!)""".i
+                            expression = """{ AST.Plus(exp?.asResult()!!) }""".i
                         )
                     )
                 ),
@@ -360,7 +360,7 @@ val bootstrapAst by lazy {
                                 AST.Not("OPEN".callorvar),
                                 "SP".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Ques(exp?.asResult()!!)""".i
+                            expression = """{ AST.Ques(exp?.asResult()!!) }""".i
                         )
                     )
                 ),
@@ -388,7 +388,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("Disjunction".callorvar, "exp".i),
                                 "CLOSE".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """exp?.asResult()!!""".i
+                            expression = """{ exp?.asResult()!! }""".i
                         )
                     )
                 ),
@@ -398,7 +398,7 @@ val bootstrapAst by lazy {
                         params = null,
                         body = AST.Act(
                             body = "PERIOD".callorvar,
-                            expression = """AST.Any""".i
+                            expression = """{ AST.Any }""".i
                         )
                     )
                 ),
@@ -413,7 +413,7 @@ val bootstrapAst by lazy {
                                 AST.Bind(AST.Ques("ParameterList".callorvar), "p".i),
                                 "CLOSE".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Call(name!!, p?.results?.filterNotNull() ?: emptyList())""".i
+                            expression = """{ AST.Call(name!!, p?.results?.filterNotNull() ?: emptyList()) }""".i
                         )
                     )
                 ),
@@ -426,7 +426,7 @@ val bootstrapAst by lazy {
                                 "Parameter".callorvar,
                                 AST.Star(AST.And("COMMA".callorvar, "Parameter".callorvar))
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """it.results.filterNotNull()""".i
+                            expression = """{ it.results.filterNotNull() }""".i
                         )
                     )
                 ),
@@ -447,7 +447,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("QualifiedId".callorvar, "name".i),
                                 "SP".callorvar,
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.CallOrVar(name!!)""".i
+                            expression = """{ AST.CallOrVar(name!!) }""".i
                         )
                     )
                 ),
@@ -482,7 +482,7 @@ val bootstrapAst by lazy {
                                     ),
                                     "KotlinCode".callorvar
                                 ),
-                                expression = """AST.Code(it)""".i
+                                expression = """{ AST.Code(it) }""".i
                             ),
                         )
                     )
@@ -520,7 +520,7 @@ val bootstrapAst by lazy {
                                 "]".code,
                                 "SP".callorvar,
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.InputClass(c!!.results.filterNotNull())""".i
+                            expression = """{ AST.InputClass(c!!.results.filterNotNull()) }""".i
                         )
                     )
                 ),
@@ -539,7 +539,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("Literal".callorvar, "to".i),
                                 "SP".callorvar,
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """
+                            expression = """{
             val chFrom = AST.ClassRange.getChar(from?.asResult())!!
             val chTo = AST.ClassRange.getChar(to?.asResult())!!
 
@@ -553,7 +553,7 @@ val bootstrapAst by lazy {
                 }
             }
             AST.ClassRange(it, range)
-                            """.i
+                            }""".i
                         )
                     )
                 ),
@@ -566,7 +566,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("KotlinCodeItem".callorvar, "code".i),
                                 "SP".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """AST.Code(code!!)""".i
+                            expression = """{ AST.Code(code!!) }""".i
                         )
                     )
                 ),
@@ -663,7 +663,7 @@ val bootstrapAst by lazy {
                                 AST.Bind("Ident".callorvar, "id".i),
                                 "SP".callorvar
                             ).reduce { prev, cur -> AST.And(prev, cur) },
-                            expression = """id?.asResult()!!""".i
+                            expression = """{ id?.asResult()!! }""".i
                         )
                     )
                 ),
@@ -679,7 +679,7 @@ val bootstrapAst by lazy {
                                 ),
                                 "id".i
                             ),
-                            expression = """AST.Idfr(id!!)""".i
+                            expression = """{ AST.Idfr(id!!) }""".i
                         )
                     )
                 ),
@@ -714,7 +714,7 @@ val bootstrapAst by lazy {
                                 ),
                                 "id".i
                             ),
-                            expression = """AST.Idfr(id!!)""".i
+                            expression = """{ AST.Idfr(id!!) }""".i
                         )
                     )
                 ),
@@ -762,7 +762,7 @@ val bootstrapAst by lazy {
                                     "gp".i
                                 )
                             ),
-                            expression = """AST.Idfr(ids!!, gp)""".i
+                            expression = """{ AST.Idfr(ids!!, gp) }""".i
                         )
                     )
                 ),
@@ -771,7 +771,7 @@ val bootstrapAst by lazy {
                     body = AST.Args(
                         params = null,
                         body = AST.And(
-                            AST.Star(AST.InputClass(('0'..'9').toList().map { AST.Code("'$it'".i) })),
+                            AST.Star(AST.InputClass(('0'..'9').toList().map { AST.Code("$it".i) })),
                             "SP".callorvar
                         )
                     )
@@ -1027,7 +1027,7 @@ val bootstrapAst by lazy {
                                 ),
                                 "nl".i
                             ),
-                            expression = "_memo.positions += nl!!.nextIndex; nl?.asResult() ?: AST.Code(MatchItem(listOf('\\n')))".i
+                            expression = "{ _memo.positions += nl!!.nextIndex; nl?.asResult() ?: AST.Code(MatchItem(listOf('\\n'))) }".i
                         )
                     )
                 ),

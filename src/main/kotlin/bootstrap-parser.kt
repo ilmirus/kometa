@@ -1,5 +1,5 @@
 //
-// KOMeta Parser Parser; generated 2021-05-25T08:25:54.451993300Z[UTC] UTC
+// KOMeta Parser Parser
 //
 
 package kometa.bootstrap
@@ -2545,7 +2545,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                     val _r1 = _memo.results.peek()
                     if (_r1 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_Parser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({ 
+                        _memo.results.push(_Parser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({
             val exp = exp?.asResult()!!
             val min = n!!.inputs.joinToString("").toInt()
             val max = if (x != null && x!!.inputs.toList().isNotEmpty()) x!!.inputs.joinToString("").toInt() else min
@@ -2562,7 +2562,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                 res = if (res != null) AST.And(res, AST.Ques(exp)) else AST.Ques(exp)
             }
             res!!
- }, _r1), true))
+}, _r1), true))
                     }
 
                     break
@@ -4491,7 +4491,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                     val _r1 = _memo.results.peek()
                     if (_r1 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_Parser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({ 
+                        _memo.results.push(_Parser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({
             val chFrom = AST.ClassRange.getChar(from?.asResult())!!
             val chTo = AST.ClassRange.getChar(to?.asResult())!!
 
@@ -4505,7 +4505,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                 }
             }
             AST.ClassRange(it, range)
-                             }, _r1), true))
+                            }, _r1), true))
                     }
 
                     break

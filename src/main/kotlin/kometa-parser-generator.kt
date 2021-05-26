@@ -4,28 +4,36 @@ import kometa.bootstrap.bootstrapAst
 import kometa.generator.KotlinGen
 import java.io.File
 
-fun main() {
-    File("dump.txt").delete()
+fun generateBootstrapParser(overwrite: Boolean) {
+    val pathname =
+        if (overwrite) "src/main/kotlin/bootstrap-parser.kt"
+        else "out/bootstrap-parser.kt"
 
-    val bootstrap = false
-
-    val pathname = if (bootstrap) "src/main/kotlin/bootstrap-parser.kt" else "kometa-parser.generated.kt"
-
-    val ast = if (bootstrap) bootstrapAst else {
-        val input = File("matchers/parser.kometa").readText()
-
-        val parser = kometa.generated.Parser()
-        val match = parser.getMatch(input.toList(), Production("KOMetaFile", parser::KOMetaFile))
-
-        if (!match.success) {
-            error(match.error!!)
-        }
-        match.result() as AST.GrammarFile
-    }
-
-    val pack = if (bootstrap) "bootstrap" else "generated"
-
-    val codegen = KotlinGen(ast, "kometa.$pack")
+    val codegen = KotlinGen(bootstrapAst, "kometa.bootstrap", false)
     File(pathname).delete()
     File(pathname).appendText(codegen.generate("kometa-parser"))
+}
+
+fun generateParser(input: String, overwrite: Boolean) {
+    val slashIndex = input.lastIndexOf("/")
+    val name = input.substring(slashIndex + 1).removeSuffix(".kometa")
+    val output =
+        if (overwrite) "src/main/kotlin/$name.generated.kt"
+        else "out/$name.generated.kt"
+
+    val parser = kometa.kometa_parser.Parser()
+    val match = parser.getMatch(
+        File(input).readText().toList(),
+        Production("KOMetaFile", parser::KOMetaFile)
+    )
+
+    if (!match.success) {
+        error(match.error!!)
+    }
+
+    val ast = match.result() as AST.GrammarFile
+
+    val codegen = KotlinGen(ast, "kometa.${name.replace('-', '_')}", false)
+    File(output).delete()
+    File(output).appendText(codegen.generate(name))
 }

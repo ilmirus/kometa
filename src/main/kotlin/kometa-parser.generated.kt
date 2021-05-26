@@ -1,8 +1,8 @@
 //
-// KOMeta Parser Parser; generated 2021-05-25T08:32:13.711448400Z[UTC] UTC
+// KOMeta Parser Parser
 //
 
-package kometa.generated
+package kometa.kometa_parser
 
 import kometa.*
 import kometa.util.*
@@ -3568,8 +3568,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                     r = _memo.results.peek()
 
                     // COND 1
-                    val lambda1: (_Parser_Item) -> Boolean = { (AST.Regexp.isValid(r?.inputs?.joinToString("")!!))
-         }
+                    val lambda1: (_Parser_Item) -> Boolean = { (AST.Regexp.isValid(r?.inputs?.joinToString("")!!)) }
                     if (_memo.results.peek() == null || !lambda1(_memo.results.peek()!!)) {
                         _memo.results.pop()
                         _memo.results.push(null)

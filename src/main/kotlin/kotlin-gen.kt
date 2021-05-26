@@ -742,7 +742,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
     }
 
     private fun generateCondPost(buffer: StringBuffer, node: AST.Cond, n: Int, matchArgs: Boolean) {
-        val condition = node.getText()
+        val condition = node.getText().trim()
 
         with(buffer) {
             writeLine("// COND $n")
