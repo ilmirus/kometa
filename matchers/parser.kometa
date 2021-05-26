@@ -1,0 +1,157 @@
+import kometa.Matcher;
+import kometa.ast.AST;
+
+kometa Parser<Char, AST.AstNode> : Matcher<Char, AST.AstNode> {
+
+    KOMetaFile = SP ImportsList?:il Grammar:g SP EOF -> { AST.GrammarFile(il?.asResult()!!, g?.asResult()!!) };
+
+    ImportsList = Import+:i -> { AST.ImportList(i!!.results.filterNotNull()) };
+
+    Import = USING (Ident (DOT Ident)*):name SP SEMI -> { AST.Import(name!!) };
+
+    Grammar = KOMETA Identifier:name
+            LESS GenericId:tinput SP COMMA GenericId:tresult SP GREATER
+            (COLON GenericId:baseclass SP)?
+            LEFT_BRACE Rule*:rules RIGHT_BRACE
+        -> { AST.Grammar(name!!, tinput!!, tresult!!, baseclass, rules!!.results.filterIsInstance<AST.Rule>()) };
+
+    Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body SEMI
+        -> { AST.Rule(name!!, if (parms != null && parms.inputs.any()) AST.Args(parms.asResult(), body?.asResult()!!) else body?.asResult()!!, ovr?.inputs?.joinToString("") ?: "") };
+
+    Disjunction = ActionExp ( OR ActionExp )*
+        -> { it.results.filterNotNull().reduce{ prev, cur -> AST.Or(prev, cur) } };
+
+    ActionExp = SequenceExp:body ACTION &LEFT_BRACE KotlinCode:action -> { AST.Act(body?.asResult()!!, action!!) };
+    ActionExp = SequenceExp;
+
+    FailExp = BANG (KotlinCode:msg)? -> { AST.Fail(msg?.asResult()!!) };
+
+    SequenceExp = ConditionExp+
+        ->  { it.results.filterNotNull().reduce { prev, cur -> AST.And(prev, cur) } };
+
+    ConditionExp = FailExp;
+    ConditionExp = BoundTerm:body QUES &OPEN KotlinCode:cond -> { AST.Cond(body?.asResult()!!, cond!!) };
+    ConditionExp = BoundTerm;
+
+    BoundTerm = PrefixedTerm:exp COLON Identifier:id -> { AST.Bind(exp?.asResult()!!, id!!) };
+    BoundTerm = COLON Identifier:id -> { AST.Bind(AST.Any, id!!); };
+    BoundTerm = PrefixedTerm;
+
+    PrefixedTerm = LookTerm | NotTerm | PostfixedTerm;
+    LookTerm = AND_PRE PostfixedTerm:exp -> { AST.Look(exp?.asResult()!!) };
+    NotTerm = NOT_PRE PostfixedTerm:exp -> { AST.Not(exp?.asResult()!!) };
+
+    PostfixedTerm = MinMaxTerm | StarTerm | PlusTerm | QuesTerm | Term;
+
+    MinMaxTerm = Term:exp LEFT_BRACE Number:n (COMMA Number:x)? RIGHT_BRACE ->
+        {
+            val exp = exp?.asResult()!!
+            val min = n!!.inputs.joinToString("").toInt()
+            val max = if (x != null && x!!.inputs.toList().isNotEmpty()) x!!.inputs.joinToString("").toInt() else min
+
+            if (min < 0) throw MatcherException(n!!.startIndex, "min must be >= 0")
+            if (max < 1) throw MatcherException(x!!.startIndex, "max must be > 1")
+            if (max < min) throw MatcherException(n!!.startIndex, "max cannot be less that min for a MinMaxTerm")
+
+            var res: AST.AstNode? = null
+            for (i in 0 until min) {
+                res = if (res != null) AST.And(res, exp) else exp
+            }
+            for (i in 0 until (max-min)) {
+                res = if (res != null) AST.And(res, AST.Ques(exp)) else AST.Ques(exp)
+            }
+            res!!
+        };
+
+    StarTerm = Term:exp STAR -> { AST.Star(exp?.asResult()!!) };
+    PlusTerm = Term:exp PLUS -> { AST.Plus(exp?.asResult()!!) };
+    QuesTerm = Term:exp QUES ~OPEN SP -> { AST.Ques(exp?.asResult()!!) };
+
+    Term = InputClass | ParenTerm | RuleCall | CallOrVar | Literal | AnyTerm;
+
+    ParenTerm = OPEN Disjunction:exp CLOSE -> { exp?.asResult()!! };
+    AnyTerm = PERIOD -> { AST.Any };
+
+    RuleCall = QualifiedId:name OPEN ParameterList?:p CLOSE -> { AST.Call(name!!, p?.results?.filterNotNull() ?: emptyList()) };
+    ParameterList = Parameter (COMMA Parameter)* -> { it.results.filterNotNull() };
+    Parameter = Disjunction;
+
+    CallOrVar = ~KEYWORD QualifiedId:name SP -> { AST.CallOrVar(name!!) };
+    Literal = Regexp:r ?(AST.Regexp.isValid(r?.inputs?.joinToString("")!!))
+        | ((NEW (GenericId SP)? &'{') | &('\u0022' | '\u0027' | '{')) KotlinCode -> { AST.Code(it) };
+
+    Regexp = '/' ('\\' '/' | ~'/' .)+ '/' SP;
+
+    InputClass = '[' SP (ClassRange | &'\u0027' Literal)+:c ']' SP -> { AST.InputClass(c!!.results.filterNotNull()) };
+    ClassRange = &'\u0027' Literal:from SP '-' SP &'\u0027' Literal:to SP ->
+        {
+            val chFrom = AST.ClassRange.getChar(from?.asResult())!!
+            val chTo = AST.ClassRange.getChar(to?.asResult())!!
+
+            val range = arrayListOf<Char>()
+            if (chFrom > chTo) {
+                range += chFrom
+                range += chTo
+            } else {
+                for (ch in chFrom..chTo) {
+                    range += ch
+                }
+            }
+            AST.ClassRange(it, range)
+        };
+
+    KotlinCode = KotlinCodeItem:code SP -> { AST.Code(code!!) };
+
+    KotlinCodeItem = '{' (~'}' (EOL | Comment | KotlinCodeItem | .))* '}';
+    KotlinCodeItem = '(' (~')' (EOL | Comment | KotlinCodeItem | .))* ')';
+    KotlinCodeItem = '\u0027' (EOL | "\u005c\u0027" | "\u005c\u005c" | ~'\u0027' .)* '\u0027';   // '
+    KotlinCodeItem = '\u0022' (EOL | "\u005c\u0022" | "\u005c\u005c" | ~'\u0022' .)* '\u0022';   // "
+
+    Identifier = Ident:id SP -> { id?.asResult()!! };
+    Ident = (IdentBegin IdentBody*):id -> { AST.Idfr(id!!) };
+    IdentBegin = . ?(it.asInput().isJavaIdentifierStart());
+    IdentBody = . ?(it.asInput().isJavaIdentifierPart());
+
+    QualifiedId = (Ident (DOT Ident)*):id -> { AST.Idfr(id!!) };
+    GenericId = (Ident (DOT Ident)*):ids (LESS (GenericId SP (COMMA GenericId SP)*) GREATER)?:gp
+        -> { AST.Idfr(ids!!, gp) };
+
+    Number = ['0'-'9']+ SP;
+
+    KEYWORD = USING | KOMETA | OVERRIDE | NEW | LR;
+
+    USING = "import" SP;
+    KOMETA = "kometa" SP;
+    EQUALS = ('=' | "::=") SP;
+    OVERRIDE = "override" SP;
+    NEW = "new" SP;
+    LR = "lr" SP;
+    SEMI = (';' | ',') SP;
+    BANG = '!' SP;
+    OR = '|' SP;
+    ACTION = "->" SP;
+    COLON = ':' SP;
+    COMMA = ',' SP;
+    DOT = '.';
+    PERIOD = DOT SP;
+    LEFT_BRACE = '{' SP;
+    RIGHT_BRACE = '}' SP;
+    OPEN = '(' SP;
+    CLOSE = ')' SP;
+    LESS = '<' SP;
+    GREATER = '>' SP;
+    QUES = '?'; // note no spacing
+    AND_PRE = '&';
+    NOT_PRE = '~';
+    STAR = '*' SP;
+    PLUS = '+' SP;
+
+    SP = (EOL | WS | Comment)*;
+    WS = ' ' | '\t';
+
+    Comment = "//" (~EOL .)* EOL;
+    Comment = "/*" (~"*/" (EOL | .))* "*/";
+
+    EOL = ('\r' '\n'? | '\n'):nl -> { _memo.positions += nl!!.nextIndex; nl?.asResult() ?: AST.Code(MatchItem(listOf('\n'))) };
+    EOF = ~.;
+}
