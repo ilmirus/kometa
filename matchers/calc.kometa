@@ -1,0 +1,32 @@
+import kometa.Matcher;
+
+kometa Calc<Char, Int> : Matcher<Char, Int> {
+    Expression = Additive;
+
+    Additive = Add | Sub | Multiplicative;
+
+    Add = BinaryOp(Additive, '+', Multiplicative)
+       -> { it.results.filterNotNull().reduce { a, b -> a + b } };
+    Sub = BinaryOp(Additive, '-', Multiplicative)
+       -> { it.results.filterNotNull().reduce { a, b -> a - b } };
+
+    Multiplicative = Multiply | Divide;
+    Multiplicative = Number(DecimalDigit);
+
+    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit)
+            -> { it.results.filterNotNull().reduce { a, b -> a * b }!! };
+    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit)
+          -> { it.results.filterNotNull().reduce { a, b -> a / b } };
+
+    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b
+                                       -> { arrayListOf<Int>(a?.asResult()!!, b?.asResult()!!) };
+
+    Number :type = Digits(type):n WS* -> { n?.asResult()!! };
+
+    Digits :type = Digits(type):a type:b -> { a?.asResult()!!*10 + b?.asResult()!! };
+    Digits :type = type;
+
+    DecimalDigit = ['0'-'9']:c -> { c?.asResult()!!.toInt() };
+    KW :str = str WS*;
+    WS = ' ' | '\n' | '\r' | '\t';
+}

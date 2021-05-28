@@ -18,4 +18,12 @@ class KometaTest {
         val present = File("src/main/kotlin/kometa-parser.generated.kt").readText()
         assertEquals(generated, present)
     }
+
+    @Test
+    fun calcGenerated() {
+        generateParser("matchers/calc.kometa", false)
+        val generated = File("out/calc.generated.kt").readText()
+        val present = File("src/main/kotlin/calc.generated.kt").readText()
+        assertEquals(generated, present)
+    }
 }

@@ -1,7 +1,6 @@
 package kometa
 
 import kometa.util.*
-import java.io.File
 import kotlin.Exception
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.jvm.internal.Ref
@@ -370,7 +369,7 @@ abstract class Matcher<TInput, TResult>(
                 inputIndex.element = curItemIndex
 
                 val result = MatchItem<TInput, TResult>(oldItemIndex, itemIndex.element, inputList)
-                memo.argsResults.push(result)
+                memo.argResults.push(result)
                 return result
             } else {
                 val oldItemIndex = itemIndex.element
@@ -387,14 +386,14 @@ abstract class Matcher<TInput, TResult>(
                         }
                         val result =
                             MatchItem<TInput, TResult>(oldItemIndex, itemIndex.element, listOf(curInput.cast()))
-                        memo.argsResults.push(result)
+                        memo.argResults.push(result)
                         return result
                     }
                 }
             }
         }
 
-        memo.argsResults.push(null)
+        memo.argResults.push(null)
         return null
     }
 
@@ -488,12 +487,12 @@ abstract class Matcher<TInput, TResult>(
                 itemIndex.element = curItemIndex
                 inputIndex.element = curInputIndex
 
-                memo.argsResults.push(result)
+                memo.argResults.push(result)
                 return result
             }
         }
 
-        memo.argsResults.push(null)
+        memo.argResults.push(null)
         return null
     }
 
@@ -535,12 +534,12 @@ abstract class Matcher<TInput, TResult>(
                 val tmp = args.elementAtOrElse(itemIndex.element) { NOT_FOUND }
                 if (tmp !== NOT_FOUND) {
                     itemIndex.element++
-                    memo.argsResults.push(tmp.cast())
+                    memo.argResults.push(tmp.cast())
                     return tmp.cast()
                 }
             }
         }
-        memo.argsResults.push(null)
+        memo.argResults.push(null)
         memo.addError(inputIndex.element, "not enough arguments")
         return null
     }
@@ -553,13 +552,13 @@ abstract class Matcher<TInput, TResult>(
         if (args != null) {
             val item = args.elementAtOrElse(argIndex.element) { NOT_FOUND }
             if (item !== NOT_FOUND) {
-                memo.argsResults.push(item.cast())
+                memo.argResults.push(item.cast())
                 argIndex.element++
                 return item.cast()
             }
         }
 
-        memo.argsResults.push(null)
+        memo.argResults.push(null)
         memo.addError(argIndex.element, "not enough arguments")
         return null
     }

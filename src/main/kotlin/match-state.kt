@@ -32,7 +32,7 @@ class MatchState<TInput, TResult>(
     /**
      * The result stack used while matching arguments.
      */
-    val argsResults: MutableList<MatchItem<TInput, TResult>?> = arrayListOf()
+    val argResults: MutableList<MatchItem<TInput, TResult>?> = arrayListOf()
 
     /**
      * The call stack used while matching.

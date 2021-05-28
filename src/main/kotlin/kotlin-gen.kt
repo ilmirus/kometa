@@ -794,25 +794,25 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
         val isVar = name in vars
 
         with(buffer) {
-            writeLine("// CALL $n")
+            writeLine("// CALL $name")
             writeLine("val _start_i$n = ${index(matchArgs)}")
             writeLine("var _r$n: $tItem? = null")
 
             if (node.params.any()) {
-                val actualParams = mutableListOf<String>()
+                val actualParams = mutableSetOf<String>()
                 generateActualParams(buffer, vars, node, n, name, actualParams)
 
                 appendLine()
-                writeLine("val _actual_args$n: _${gName}_Args = mutableListOf(${actualParams.joinToString()})")
+                writeLine("var _actual_args$n: _${gName}_Args = mutableListOf(${actualParams.joinToString { "$it!!" } })")
                 writeLine("if (_args != null) {")
                 indented {
                     writeLine("_actual_args$n += _args.drop(_arg_index.element)")
                 }
                 writeLine("}")
 
-                writeLine("_r$n = _MemoCall(_memo, ${if (isVar) "$name.productionName" else "\"$name\""}, _index, ${if (isVar) "$name.productionName" else name}, _actual_args$n)")
+                writeLine("_r$n = _MemoCall(_memo, ${if (isVar) "$name?.productionName!!" else "\"$name\""}, _index.element, ${if (isVar) "$name?.production?.op!!" else "::$name"}, _actual_args$n)")
             } else {
-                writeLine("_r$n = _MemoCall(_memo, ${if (isVar) "$name.productionName" else "\"$name\""}, _index, ${if (isVar) "$name.productionName" else name}, if (_args != null) _args.drop(_arg_index.element) else null)")
+                writeLine("_r$n = _MemoCall(_memo, ${if (isVar) "$name?.productionName!!" else "\"$name\""}, _index, ${if (isVar) "$name?.production?.op!!" else name}, if (_args != null) _args.drop(_arg_index.element) else null)")
             }
             appendLine()
             writeLine("if (_r$n != null) {")
@@ -831,14 +831,14 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
         node: AST.Call,
         n: Int,
         name: String,
-        actualParams: MutableList<String>
+        actualParams: MutableSet<String>
     ) {
         var i = 0
         for (pnode in node.params) {
             var pstr = pnode.getText().trim()
 
             if (pnode is AST.CallOrVar || pnode is AST.Call) {
-                actualParams += if (vars.contains(pstr)) pstr else "$tItem($pstr)"
+                actualParams += if (vars.contains(pstr)) pstr else "$tItem(Production(\"$pstr\", ::$pstr))"
             } else {
                 pstr = pstr.trimBraces()
                 if (pstr.isBlank()) {
@@ -942,13 +942,13 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
             } else {
                 writeLine("var _r$n: $tItem? = null")
                 if (name in vars) {
-                    writeLine("if ($name.production != null) {")
+                    writeLine("if ($name?.production != null) {")
                     indented {
-                        writeLine("_r$n = _MemoCall(_memo, $name.production.methodName, _index.element, $name.production.op, if (_args != null) _args.drop(_arg_index.element) else null)")
+                        writeLine("_r$n = _MemoCall(_memo, $name.production!!.methodName, _index.element, $name.production!!.op, if (_args != null) _args.drop(_arg_index.element) else null)")
                     }
                     writeLine("} else {")
                     indented {
-                        writeLine("_r$n = _ParseLiteralObj(_memo, _index, $name.inputs)")
+                        writeLine("_r$n = _ParseLiteralObj(_memo, _index, $name?.inputs)")
                     }
                     writeLine("}")
                 } else {
@@ -978,11 +978,11 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
             writeLine("// ARGS ${n.element}")
             writeLine("_arg_index.element = 0")
             writeLine("_arg_input_index.element = 0")
-            val outerN = n.element
+            val outerN = n.element++
             indented {
-                generateBody(buffer, vars, indices, node, n, useArgs, matchArgs)
+                generateBody(buffer, vars, indices, node.params, n, useArgs, true)
             }
-            writeLine("if (_memo.argResutls.pop() == null) (")
+            writeLine("if (_memo.argResults.pop() == null) {")
             indented {
                 writeLine("_memo.results.push(null)")
                 writeLine("_label = $outerN")
