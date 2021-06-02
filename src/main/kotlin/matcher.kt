@@ -1,9 +1,12 @@
 package kometa
 
 import kometa.util.*
+import java.io.File
 import kotlin.Exception
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.jvm.internal.Ref
+
+var trace = false
 
 typealias MatcherRule<TInput, TResult> = (MatchState<TInput, TResult>, Iterable<TInput>, Production<TInput, TResult>) -> Unit
 
@@ -63,13 +66,7 @@ abstract class Matcher<TInput, TResult>(
 
         try {
             result = _MemoCall(state, production.methodName, index, production.op, null)
-        } catch (e: MatcherException) {
-            state.clearErrors()
-            state.addError(e.index, e.message!!)
-            throw e
         } catch (e: Exception) {
-            state.clearErrors()
-            state.addError(0, e.message!!)
             throw e
         }
 
@@ -119,13 +116,13 @@ abstract class Matcher<TInput, TResult>(
         production: (MatchState<TInput, TResult>, Int, Iterable<MatchItem<TInput, TResult>>?) -> Unit,
         args: Iterable<MatchItem<TInput, TResult>>?
     ): MatchItem<TInput, TResult>? {
-//        run {
-//            val input = memo.input.joinToString("")
-//            val end = input.indexOf("\n", index)
-//            val toPrint = input.substring(index, if (end < index) input.length else end)
-//            val indent = (0 until Exception().stackTrace.size).joinToString("") { " " }
-//            File("dump.txt").appendText("$indent$ruleName, $index: $toPrint\n")
-//        }
+        if (trace) {
+            val input = memo.input.joinToString("")
+            val end = input.indexOf("\n", index)
+            val toPrint = input.substring(index, if (end < index) input.length else end)
+            val indent = (0 until Exception().stackTrace.size).joinToString("") { " " }
+            File("out/dump.txt").appendText("$indent$ruleName, $index: $toPrint\n")
+        }
 
         var result: MatchItem<TInput, TResult>? = null
 
@@ -562,6 +559,24 @@ abstract class Matcher<TInput, TResult>(
         memo.addError(argIndex.element, "not enough arguments")
         return null
     }
+
+    protected val MatchItem<TInput, TResult>?.r: TResult
+        get() = nr!!
+
+    protected val MatchItem<TInput, TResult>?.nr: TResult?
+        get() = this?.asResult()
+
+    protected val MatchItem<TInput, TResult>?.i: TInput
+        get() = this?.asInput()!!
+
+    protected val MatchItem<TInput, TResult>?.l: List<TResult>
+        get() = this?.results?.filterNotNull() ?: emptyList()
+
+    protected val MatchItem<TInput, TResult>?.il: List<TInput>
+        get() = this?.inputs?.filterNotNull() ?: emptyList()
+
+    protected val MatchItem<TInput, TResult>?.s: String
+        get() = this.il.joinToString("")
 
     companion object {
         private val NOT_FOUND = Any()

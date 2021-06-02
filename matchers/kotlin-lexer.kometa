@@ -1,0 +1,229 @@
+import kometa.kotlin.Token;
+import kometa.Matcher;
+
+kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
+    tokens = (token WS)* EOF -> { it.l };
+
+    token = "#!" (~NL .)*:s -> { Token.ShebangLine(s.s) };
+
+    // LITERALS
+    token = floatLiteral ~identifierPart -> { Token.FloatLiteral(it.s) };
+    token = doubleLiteral ~identifierPart -> { Token.DoubleLiteral(it.s) };
+    token = longLiteral ~identifierPart -> { Token.LongLiteral(it.s) };
+    token = booleanLiteral ~identifierPart -> { Token.BooleanLiteral(it.s) };
+    token = characterLiteral -> { Token.CharacterLiteral(it.s) };
+    token = multiLineStringLiteral -> { Token.StringLiteral(it.s) };
+    token = stringLiteral -> { Token.StringLiteral(it.s) };
+
+    // Operators and Punctuators
+    token = NL -> { Token.NL };
+    token = "..." -> { Token.RESERVED };
+    token = ".." -> { Token.RANGE };
+    token = "." -> { Token.DOT };
+    token = "," -> { Token.COMMA };
+    token = "("-> { Token.LPAREN };
+    token = ")" -> { Token.RPAREN };
+    token = "["-> { Token.LSQUARE };
+    token = "]" -> { Token.RSQUARE };
+    token = "{" -> { Token.LCURL };
+    token = "}" -> { Token.RCURL };
+    token = "++" -> { Token.INCR };
+    token = "+=" -> { Token.ADD_ASSIGNMENT };
+    token = "+" -> { Token.ADD };
+    token = "--" -> { Token.DECR };
+    token = "->" -> { Token.ARROW };
+    token = "-=" -> { Token.SUB_ASSIGNMENT };
+    token = "-" -> { Token.SUB };
+    token = "*=" -> { Token.MULT_ASSIGNMENT };
+    token = "*" -> { Token.MULT };
+    token = "/=" -> { Token.DIV_ASSIGNMENT };
+    token = "/" -> { Token.DIV };
+    token = "%=" -> { Token.MOD_ASSIGNMENT };
+    token = "%" -> { Token.MOD };
+    token = "&&" -> { Token.CONJ };
+    token = "||" -> { Token.DISJ };
+    token = "!==" -> { Token.EXCL_EQEQ };
+    token = "!=" -> { Token.EXCL_EQ };
+    token = "!" -> { Token.EXCL };
+    token = ";" -> { Token.SEMICOLON };
+    token = "::" -> { Token.COLONCOLON };
+    token = ":" -> { Token.COLON };
+    token = "#" -> { Token.HASH };
+    token = "@" -> { Token.AT };
+    token = "?::" -> { Token.Q_COLONCOLON };
+    token = "?:" -> { Token.ELVIS };
+    token = "?" -> { Token.QUEST };
+    token = "<=" -> { Token.LE };
+    token = "<" -> { Token.LANGLE };
+    token = ">=" -> { Token.GE };
+    token = ">" -> { Token.RANGLE };
+    token = "as?" -> { Token.AS_SAFE };
+    token = "===" -> { Token.EQEQEQ };
+    token = "==" -> { Token.EQEQ };
+    token = "=>" -> { Token.DOUBLE_ARROW };
+    token = "=" -> { Token.ASSIGNMENT };
+
+    // KEYWORDS
+    token = "return@" identifier:name -> { Token.ReturnAt(name.s) };
+    token = "continue@" identifier:name -> { Token.ContinueAt(name.s) };
+    token = "break@" identifier:name -> { Token.BreakAt(name.s) };
+
+    token = "file" ~identifierPart -> { Token.FILE };
+    token = "package" ~identifierPart -> { Token.PACKAGE };
+    token = "import" ~identifierPart -> { Token.IMPORT };
+    token = "class" ~identifierPart -> { Token.CLASS };
+    token = "interface" ~identifierPart -> { Token.INTERFACE };
+    token = "fun" ~identifierPart -> { Token.FUN };
+    token = "object" ~identifierPart -> { Token.OBJECT };
+    token = "val" ~identifierPart -> { Token.VAL };
+    token = "var" ~identifierPart -> { Token.VAR };
+    token = "typealias" ~identifierPart -> { Token.TYPE_ALIAS };
+    token = "constructor" ~identifierPart -> { Token.CONSTRUCTOR };
+    token = "by" ~identifierPart -> { Token.BY };
+    token = "companion" ~identifierPart -> { Token.COMPANION };
+    token = "init'" ~identifierPart -> { Token.INIT };
+    token = "this" ~identifierPart -> { Token.THIS };
+    token = "super" ~identifierPart -> { Token.SUPER };
+    token = "typeof" ~identifierPart -> { Token.TYPEOF };
+    token = "where" ~identifierPart -> { Token.WHERE };
+    token = "if" ~identifierPart -> { Token.IF };
+    token = "else" ~identifierPart -> { Token.ELSE };
+    token = "when" ~identifierPart -> { Token.WHEN };
+    token = "try" ~identifierPart -> { Token.TRY };
+    token = "catch" ~identifierPart -> { Token.CATCH };
+    token = "finally" ~identifierPart -> { Token.FINALLY };
+    token = "for" ~identifierPart -> { Token.FOR };
+    token = "do" ~identifierPart -> { Token.DO };
+    token = "while" ~identifierPart -> { Token.WHILE };
+    token = "throw" ~identifierPart -> { Token.THROW };
+    token = "return" ~identifierPart -> { Token.RETURN };
+    token = "continue" ~identifierPart -> { Token.CONTINUE };
+    token = "break" ~identifierPart -> { Token.BREAK };
+    token = "as" ~identifierPart -> { Token.AS };
+    token = "is" ~identifierPart -> { Token.IS };
+    token = "in" ~identifierPart -> { Token.IN };
+    token = "!is" ~identifierPart -> { Token.NOT_IS };
+    token = "!in" ~identifierPart -> { Token.NOT_IN };
+    token = "out" ~identifierPart -> { Token.OUT };
+    token = "field" ~identifierPart -> { Token.FIELD };
+    token = "property" ~identifierPart -> { Token.PROPERTY };
+    token = "get" ~identifierPart -> { Token.GET };
+    token = "set" ~identifierPart -> { Token.SET };
+    token = "receiver" ~identifierPart -> { Token.RECEIVER };
+    token = "param" ~identifierPart -> { Token.PARAM };
+    token = "setparam" ~identifierPart -> { Token.SETPARAM };
+    token = "delegate" ~identifierPart -> { Token.DELEGATE };
+    token = "dynamic" ~identifierPart -> { Token.DYNAMIC };
+
+    // MODIFIERS
+
+    token = "public" ~identifierPart -> { Token.PUBLIC };
+    token = "private" ~identifierPart -> { Token.PRIVATE };
+    token = "protected" ~identifierPart -> { Token.PROTECTED };
+    token = "internal" ~identifierPart -> { Token.INTERNAL };
+    token = "enum" ~identifierPart -> { Token.ENUM };
+    token = "sealed" ~identifierPart -> { Token.SEALED };
+    token = "annotation" ~identifierPart -> { Token.ANNOTATION };
+    token = "data" ~identifierPart -> { Token.DATA };
+    token = "inner" ~identifierPart -> { Token.INNER };
+    token = "tailrec" ~identifierPart -> { Token.TAILREC };
+    token = "operator" ~identifierPart -> { Token.OPERATOR };
+    token = "inline" ~identifierPart -> { Token.INLINE };
+    token = "infix" ~identifierPart -> { Token.INFIX };
+    token = "external" ~identifierPart -> { Token.EXTERNAL };
+    token = "suspend" ~identifierPart -> { Token.SUSPEND };
+    token = "override" ~identifierPart -> { Token.OVERRIDE };
+    token = "abstract" ~identifierPart -> { Token.ABSTRACT };
+    token = "final" ~identifierPart -> { Token.FINAL };
+    token = "open" ~identifierPart -> { Token.OPEN };
+    token = "const" ~identifierPart -> { Token.CONST };
+    token = "lateinit" ~identifierPart -> { Token.LATEINIT };
+    token = "vararg" ~identifierPart -> { Token.VARARG };
+    token = "noinline" ~identifierPart -> { Token.NOINLINE };
+    token = "crossinline" ~identifierPart -> { Token.CROSSINLINE };
+    token = "reified" ~identifierPart -> { Token.REIFIED };
+
+    // Identifier
+    token = identifier -> { Token.Identifier(it.s) };
+
+    floatLiteral = (doubleLiteral | decLiteral) ('f' | 'F');
+    doubleLiteral = doubleLiteralStart doubleLiteralPart;
+
+    doubleLiteralStart = (decDigitNoZero (decDigit | '_')* decDigit)? '.';
+    doubleLiteralStart = ((decDigitNoZero decDigit*) | '0')? '.';
+
+    doubleLiteralPart = decDigit (decDigit | '_')+ decDigit ('e' | 'E') ('+' | '-')? decDigit (decDigit | '_')+ decDigit;
+    doubleLiteralPart = decDigit (decDigit | '_')+ decDigit ('e' | 'E') ('+' | '-')? decDigit+;
+    doubleLiteralPart = decDigit+ ('e' | 'E') ('+' | '-')? decDigit (decDigit | '_')+ decDigit;
+    doubleLiteralPart = decDigit+ ('e' | 'E') ('+' | '-')? decDigit+;
+    doubleLiteralPart = decDigit (decDigit | '_')+ decDigit;
+    doubleLiteralPart = decDigit+;
+
+    longLiteral = (decLiteral | hexLiteral | binLiteral) ('l' | 'L');
+
+    decLiteral = '0';
+    decLiteral = decDigitNoZero (decDigit | '_')+ decDigit ('e' | 'E') ('+' | '-')? decDigit (decDigit | '_')+ decDigit;
+    decLiteral = decDigitNoZero (decDigit | '_')+ decDigit ('e' | 'E') ('+' | '-')? decDigit+;
+    decLiteral = decDigitNoZero decDigit* ('e' | 'E') ('+' | '-')? decDigit (decDigit | '_')+ decDigit;
+    decLiteral = decDigitNoZero decDigit* ('e' | 'E') ('+' | '-')? decDigit+;
+    decLiteral = decDigitNoZero (decDigit | '_')+ decDigit;
+    decLiteral = decDigitNoZero decDigit*;
+
+    decDigit = '0' | decDigitNoZero;
+    decDigitNoZero = ['1'-'9'];
+
+    hexLiteral = '0' ('x' | 'X') hexDigit (hexDigit | '_')*;
+
+    hexDigit = decDigit | ['a'-'h'] | ['A'-'H'];
+
+    binLiteral = '0' ('b' | 'B') binDigit (binDigit | '_')*;
+
+    binDigit = '0' | '1';
+
+    booleanLiteral = "true" | "false";
+
+    characterLiteral = '\'' (escapeSeq | '.') '\'';
+
+    escapeSeq = '\\' ('t' | 'b' | 'r' | 'n' | '\'' | '"' | '\\' | '$') | uniEscapeChar;
+
+    uniEscapeChar = "\\u" hexDigit hexDigit hexDigit hexDigit;
+
+    multiLineStringLiteral = "\"\"\"" (stringExpression | strRef | multiLineStrText | multiLineStringQuote)* "\"\"\"";
+
+    stringExpression = '$' &'{' kotlinCode;
+
+    strRef = '$' identifier;
+
+    multiLineStrText = ~('\\' | '"' | '$') . | '$';
+
+    multiLineStringQuote = "\"\"" | '"';
+
+    stringLiteral = '"' (stringExpression | strRef | strEscapedChar | strText)* '"';
+
+    strText = ~('\\' | '"' | '$') . | '$';
+
+    strEscapedChar = '\\' . | uniEscapeChar;
+
+    kotlinCode = '{' (~'}' (NL | comment | kotlinCode | .))* '}';
+    kotlinCode = '(' (~')' (NL | comment | kotlinCode | .))* ')';
+    kotlinCode = '\u0027' (NL | "\u005c\u0027" | "\u005c\u005c" | ~'\u0027' .)* '\u0027';   // '
+    kotlinCode = '\u0022' (NL | "\u005c\u0022" | "\u005c\u005c" | ~'\u0022' .)* '\u0022';   // "
+
+    identifier = identifierStart identifierStart*;
+
+    identifierStart = . ?(it.i.isJavaIdentifierStart());
+
+    identifierPart = . ?(it.i.isJavaIdentifierPart());
+
+    WS = ('\u0020' | '\u0009' | '\u000C' | comment)*;
+
+    comment = lineComment | delimetedComment;
+
+    lineComment = "//" (~NL .)*;
+
+    delimetedComment = "/*" (delimetedComment | .)* "*/";
+
+    NL = '\n' | ('\r' '\n');
+
+    EOF = ~.;
+}

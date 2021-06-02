@@ -197,7 +197,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                     val _r0 = _memo.results.peek()
                     if (_r0 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_Parser_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ AST.GrammarFile(il?.asResult()!!, g?.asResult()!!) }, _r0), true))
+                        _memo.results.push(_Parser_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ AST.GrammarFile(il.nr, g.r) }, _r0), true))
                     }
 
                     break
@@ -3515,39 +3515,37 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
         val _arg_input_index = Ref.IntRef()
 
         var r: _Parser_Item? = null
+        var code: _Parser_Item? = null
 
         // OR 0
         var _start_i0 = _index.element
 
-        // COND 1
+        // OR 1
         var _start_i1 = _index.element
 
-        // AND 5
-        var _start_i5 = _index.element
-
-        // OR 6
-        var _start_i6 = _index.element
+        // COND 3
+        var _start_i3 = _index.element
 
         // AND 7
         var _start_i7 = _index.element
 
-        // AND 8
-        var _start_i8 = _index.element
+        // AND 10
+        var _start_i10 = _index.element
 
         // AND 11
         var _start_i11 = _index.element
 
-        // LOOK 14
-        var _start_i14 = _index.element
-
-        // LOOK 16
-        var _start_i16 = _index.element
-
-        // OR 17
+        // AND 17
         var _start_i17 = _index.element
 
-        // OR 18
+        // LOOK 18
         var _start_i18 = _index.element
+
+        // OR 19
+        var _start_i19 = _index.element
+
+        // OR 20
+        var _start_i20 = _index.element
 
         var _label = -1
         while(true) {
@@ -3556,57 +3554,61 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                     // OR 0
                     _start_i0 = _index.element
 
-                    // COND 1
+                    // OR 1
                     _start_i1 = _index.element
 
+                    // COND 3
+                    _start_i3 = _index.element
+
                     // CALLORVAR Regexp
-                    var _r3: _Parser_Item? = null
-                    _r3 = _MemoCall(_memo, "Regexp", _index.element, ::Regexp, null)
-                    if (_r3 != null) _index.element = _r3.nextIndex
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "Regexp", _index.element, ::Regexp, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     // BIND r
                     r = _memo.results.peek()
 
-                    // COND 1
-                    val lambda1: (_Parser_Item) -> Boolean = { (AST.Regexp.isValid(r?.inputs?.joinToString("")!!)) }
-                    if (_memo.results.peek() == null || !lambda1(_memo.results.peek()!!)) {
+                    // COND 3
+                    val lambda3: (_Parser_Item) -> Boolean = { (AST.Regexp.isValid(r?.inputs?.joinToString("")!!)) }
+                    if (_memo.results.peek() == null || !lambda3(_memo.results.peek()!!)) {
                         _memo.results.pop()
                         _memo.results.push(null)
-                        _index.element = _start_i1
+                        _index.element = _start_i3
                     }
 
-                    // OR shortcut 0
+                    // ACT 2
+                    val _r2 = _memo.results.peek()
+                    if (_r2 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_Parser_Item(_r2.startIndex, _r2.nextIndex, _memo.input, _Thunk({ AST.Code(it) }, _r2), true))
+                    }
+
+                    // OR shortcut 1
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i0
+                        _index.element = _start_i1
                     } else {
-                        _label = 0
+                        _label = 1
                         continue
                     }
-
-                    // AND 5
-                    _start_i5 = _index.element
-
-                    // OR 6
-                    _start_i6 = _index.element
 
                     // AND 7
                     _start_i7 = _index.element
 
-                    // AND 8
-                    _start_i8 = _index.element
-
                     // CALLORVAR NEW
-                    var _r9: _Parser_Item? = null
-                    _r9 = _MemoCall(_memo, "NEW", _index.element, ::NEW, null)
-                    if (_r9 != null) _index.element = _r9.nextIndex
+                    var _r8: _Parser_Item? = null
+                    _r8 = _MemoCall(_memo, "NEW", _index.element, ::NEW, null)
+                    if (_r8 != null) _index.element = _r8.nextIndex
 
-                    // AND shortcut 8
+                    // AND shortcut 7
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 8
+                        _label = 7
                         continue
                     }
+
+                    // AND 10
+                    _start_i10 = _index.element
 
                     // AND 11
                     _start_i11 = _index.element
@@ -3642,42 +3644,39 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                         _index.element = _start_i11
                     }
 
-                    // QUES 10
+                    // AND shortcut 10
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 10
+                        continue
+                    }
+
+                    // CALLORVAR KotlinCode
+                    var _r15: _Parser_Item? = null
+                    _r15 = _MemoCall(_memo, "KotlinCode", _index.element, ::KotlinCode, null)
+                    if (_r15 != null) _index.element = _r15.nextIndex
+
+                    // QUES 14
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_Parser_Item(_index.element, _memo.input))
                     }
-                    _label = 8
+                    _label = 10
                 }
-                // AND 8
-                8 -> {
-                    val _r8_2 = _memo.results.pop()
-                    val _r8_1 = _memo.results.pop()
+                // AND 10
+                10 -> {
+                    val _r10_2 = _memo.results.pop()
+                    val _r10_1 = _memo.results.pop()
 
-                    if (_r8_1 != null && _r8_2 != null) {
-                        _memo.results.push(_Parser_Item(_start_i8, _index.element, _memo.input, (_r8_1.results + _r8_2.results).filterNotNull(), true))
+                    if (_r10_1 != null && _r10_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i10, _index.element, _memo.input, (_r10_1.results + _r10_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i8
+                        _index.element = _start_i10
                     }
 
-                    // AND shortcut 7
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 7
-                        continue
-                    }
-
-                    // LOOK 14
-                    _start_i14 = _index.element
-
-                    // LITERAL '{'
-                    _ParseLiteralChar(_memo, _index, '{')
-
-                    // LOOK 14
-                    val _r14 = _memo.results.pop()
-                    _memo.results.push(if (_r14 != null) _Parser_Item(_start_i14, _memo.input) else null)
-                    _index.element = _start_i14
+                    // BIND code
+                    code = _memo.results.peek()
 
                     _label = 7
                 }
@@ -3693,99 +3692,109 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
                         _index.element = _start_i7
                     }
 
-                    // OR shortcut 6
+                    // ACT 6
+                    val _r6 = _memo.results.peek()
+                    if (_r6 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_Parser_Item(_r6.startIndex, _r6.nextIndex, _memo.input, _Thunk({ AST.Code(code!!) }, _r6), true))
+                    }
+
+                    _label = 1
+                }
+                // OR 1
+                1 -> {
+                    // OR shortcut 0
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i6
+                        _index.element = _start_i0
                     } else {
-                        _label = 6
+                        _label = 0
                         continue
                     }
 
-                    // LOOK 16
-                    _start_i16 = _index.element
-
-                    // OR 17
+                    // AND 17
                     _start_i17 = _index.element
 
-                    // OR 18
+                    // LOOK 18
                     _start_i18 = _index.element
+
+                    // OR 19
+                    _start_i19 = _index.element
+
+                    // OR 20
+                    _start_i20 = _index.element
 
                     // LITERAL '\u0022'
                     _ParseLiteralChar(_memo, _index, '\u0022')
 
-                    // OR shortcut 18
+                    // OR shortcut 20
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i18
+                        _index.element = _start_i20
                     } else {
-                        _label = 18
+                        _label = 20
                         continue
                     }
 
                     // LITERAL '\u0027'
                     _ParseLiteralChar(_memo, _index, '\u0027')
 
-                    _label = 18
+                    _label = 20
                 }
-                // OR 18
-                18 -> {
-                    // OR shortcut 17
+                // OR 20
+                20 -> {
+                    // OR shortcut 19
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i17
+                        _index.element = _start_i19
                     } else {
-                        _label = 17
+                        _label = 19
                         continue
                     }
 
                     // LITERAL '{'
                     _ParseLiteralChar(_memo, _index, '{')
 
-                    _label = 17
+                    _label = 19
                 }
-                // OR 17
-                17 -> {
-                    // LOOK 16
-                    val _r16 = _memo.results.pop()
-                    _memo.results.push(if (_r16 != null) _Parser_Item(_start_i16, _memo.input) else null)
-                    _index.element = _start_i16
+                // OR 19
+                19 -> {
+                    // LOOK 18
+                    val _r18 = _memo.results.pop()
+                    _memo.results.push(if (_r18 != null) _Parser_Item(_start_i18, _memo.input) else null)
+                    _index.element = _start_i18
 
-                    _label = 6
-                }
-                // OR 6
-                6 -> {
-                    // AND shortcut 5
+                    // AND shortcut 17
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 5
+                        _label = 17
                         continue
                     }
 
                     // CALLORVAR KotlinCode
-                    var _r22: _Parser_Item? = null
-                    _r22 = _MemoCall(_memo, "KotlinCode", _index.element, ::KotlinCode, null)
-                    if (_r22 != null) _index.element = _r22.nextIndex
+                    var _r24: _Parser_Item? = null
+                    _r24 = _MemoCall(_memo, "KotlinCode", _index.element, ::KotlinCode, null)
+                    if (_r24 != null) _index.element = _r24.nextIndex
 
-                    _label = 5
+                    _label = 17
                 }
-                // AND 5
-                5 -> {
-                    val _r5_2 = _memo.results.pop()
-                    val _r5_1 = _memo.results.pop()
+                // AND 17
+                17 -> {
+                    val _r17_2 = _memo.results.pop()
+                    val _r17_1 = _memo.results.pop()
 
-                    if (_r5_1 != null && _r5_2 != null) {
-                        _memo.results.push(_Parser_Item(_start_i5, _index.element, _memo.input, (_r5_1.results + _r5_2.results).filterNotNull(), true))
+                    if (_r17_1 != null && _r17_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i17, _index.element, _memo.input, (_r17_1.results + _r17_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i5
+                        _index.element = _start_i17
                     }
 
-                    // ACT 4
-                    val _r4 = _memo.results.peek()
-                    if (_r4 != null) {
+                    // ACT 16
+                    val _r16 = _memo.results.peek()
+                    if (_r16 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_Parser_Item(_r4.startIndex, _r4.nextIndex, _memo.input, _Thunk({ AST.Code(it) }, _r4), true))
+                        _memo.results.push(_Parser_Item(_r16.startIndex, _r16.nextIndex, _memo.input, _Thunk({ AST.Code(it) }, _r16), true))
                     }
 
                     _label = 0

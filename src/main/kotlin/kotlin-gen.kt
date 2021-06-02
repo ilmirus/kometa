@@ -125,10 +125,10 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
             writeLine("import kotlin.jvm.internal.Ref")
             appendLine()
 
-            for (imp in grammarFile.importList.imports) {
+            for (imp in (grammarFile.importList?.imports ?: emptyList())) {
                 writeLine("import ${imp.getText()}")
             }
-            if (grammarFile.importList.imports.toList().isNotEmpty()) {
+            if ((grammarFile.importList?.imports?.toList() ?: emptyList()).isNotEmpty()) {
                 appendLine()
             }
         }

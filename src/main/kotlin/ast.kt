@@ -229,11 +229,11 @@ object AST {
 
     data class ImportList(val imports: Iterable<AstNode>) : AstNode()
 
-    data class GrammarFile(val importList: ImportList, val grammar: Grammar) : AstNode() {
+    data class GrammarFile(val importList: ImportList?, val grammar: Grammar) : AstNode() {
         init {
             children = listOf(grammar)
         }
 
-        constructor(preamble: AstNode, grammar: AstNode) : this(preamble.cast(), grammar.cast())
+        constructor(preamble: AstNode?, grammar: AstNode) : this(preamble?.cast(), grammar.cast())
     }
 }

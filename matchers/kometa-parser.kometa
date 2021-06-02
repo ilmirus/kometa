@@ -3,7 +3,7 @@ import kometa.ast.AST;
 
 kometa Parser<Char, AST.AstNode> : Matcher<Char, AST.AstNode> {
 
-    KOMetaFile = SP ImportsList?:il Grammar:g SP EOF -> { AST.GrammarFile(il?.asResult()!!, g?.asResult()!!) };
+    KOMetaFile = SP ImportsList?:il Grammar:g SP EOF -> { AST.GrammarFile(il.nr, g.r) };
 
     ImportsList = Import+:i -> { AST.ImportList(i!!.results.filterNotNull()) };
 
@@ -77,8 +77,10 @@ kometa Parser<Char, AST.AstNode> : Matcher<Char, AST.AstNode> {
     Parameter = Disjunction;
 
     CallOrVar = ~KEYWORD QualifiedId:name SP -> { AST.CallOrVar(name!!) };
-    Literal = Regexp:r ?(AST.Regexp.isValid(r?.inputs?.joinToString("")!!))
-        | ((NEW (GenericId SP)? &'{') | &('\u0022' | '\u0027' | '{')) KotlinCode -> { AST.Code(it) };
+
+    Literal = Regexp:r ?(AST.Regexp.isValid(r?.inputs?.joinToString("")!!)) -> { AST.Code(it) };
+    Literal = NEW (GenericId SP KotlinCode?):code -> { AST.Code(code!!) };
+    Literal = &('\u0022' | '\u0027' | '{') KotlinCode -> { AST.Code(it) };
 
     Regexp = '/' ('\\' '/' | ~'/' .)+ '/' SP;
 
