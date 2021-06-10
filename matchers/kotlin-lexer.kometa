@@ -10,7 +10,9 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     token = floatLiteral ~identifierPart -> { Token.FloatLiteral(it.s) };
     token = doubleLiteral ~identifierPart -> { Token.DoubleLiteral(it.s) };
     token = longLiteral ~identifierPart -> { Token.LongLiteral(it.s) };
-    token = booleanLiteral ~identifierPart -> { Token.BooleanLiteral(it.s) };
+    token = unsignedLiteral ~identifierPart -> { Token.UnsignedLiteral(it.s) };
+    token = unsignedLongLiteral ~identifierPart -> { Token.UnsignedLongLiteral(it.s) };
+    token = integerLiteral ~identifierPart -> { Token.IntegerLiteral(it.s) };
     token = characterLiteral -> { Token.CharacterLiteral(it.s) };
     token = multiLineStringLiteral -> { Token.StringLiteral(it.s) };
     token = stringLiteral -> { Token.StringLiteral(it.s) };
@@ -42,6 +44,7 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     token = "%" -> { Token.MOD };
     token = "&&" -> { Token.CONJ };
     token = "||" -> { Token.DISJ };
+    token = "!!" -> { Token.EXCL_EXCL };
     token = "!==" -> { Token.EXCL_EQEQ };
     token = "!=" -> { Token.EXCL_EQ };
     token = "!" -> { Token.EXCL };
@@ -52,6 +55,7 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     token = "@" -> { Token.AT };
     token = "?::" -> { Token.Q_COLONCOLON };
     token = "?:" -> { Token.ELVIS };
+    token = "?." -> { Token.QUEST_DOT };
     token = "?" -> { Token.QUEST };
     token = "<=" -> { Token.LE };
     token = "<" -> { Token.LANGLE };
@@ -67,6 +71,7 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     token = "return@" identifier:name -> { Token.ReturnAt(name.s) };
     token = "continue@" identifier:name -> { Token.ContinueAt(name.s) };
     token = "break@" identifier:name -> { Token.BreakAt(name.s) };
+    token = "this@" identifier:name -> { Token.ThisAt(name.s) };
 
     token = "file" ~identifierPart -> { Token.FILE };
     token = "package" ~identifierPart -> { Token.PACKAGE };
@@ -142,6 +147,12 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     token = "noinline" ~identifierPart -> { Token.NOINLINE };
     token = "crossinline" ~identifierPart -> { Token.CROSSINLINE };
     token = "reified" ~identifierPart -> { Token.REIFIED };
+    token = "true" ~identifierPart -> { Token.TRUE };
+    token = "false" ~identifierPart -> { Token.FALSE };
+    token = "null" ~identifierPart -> { Token.NULL };
+    token = "value" ~identifierPart -> { Token.VALUE };
+    token = "expect" ~identifierPart -> { Token.EXPECT };
+    token = "actual" ~identifierPart -> { Token.ACTUAL };
 
     // Identifier
     token = identifier -> { Token.Identifier(it.s) };
@@ -159,7 +170,10 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     doubleLiteralPart = decDigit (decDigit | '_')+ decDigit;
     doubleLiteralPart = decDigit+;
 
-    longLiteral = (decLiteral | hexLiteral | binLiteral) ('l' | 'L');
+    longLiteral = integerLiteral ('l' | 'L');
+    unsignedLiteral = integerLiteral ('l' | 'L');
+    unsignedLongLiteral = integerLiteral ("ul" | "UL");
+    integerLiteral = decLiteral | hexLiteral | binLiteral;
 
     decLiteral = '0';
     decLiteral = decDigitNoZero (decDigit | '_')+ decDigit ('e' | 'E') ('+' | '-')? decDigit (decDigit | '_')+ decDigit;
@@ -179,8 +193,6 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     binLiteral = '0' ('b' | 'B') binDigit (binDigit | '_')*;
 
     binDigit = '0' | '1';
-
-    booleanLiteral = "true" | "false";
 
     characterLiteral = '\'' (escapeSeq | '.') '\'';
 

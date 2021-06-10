@@ -3,15 +3,22 @@ package kometa.kotlin
 sealed class Token {
     class ShebangLine(val s: String): Token()
     class LongLiteral(val s: String): Token()
+    class UnsignedLiteral(val s: String): Token()
+    class UnsignedLongLiteral(val s: String): Token()
+    class IntegerLiteral(val s: String): Token()
     class FloatLiteral(val s: String): Token()
     class DoubleLiteral(val s: String): Token()
-    class BooleanLiteral(val s: String): Token()
     class CharacterLiteral(val s: String): Token()
     class StringLiteral(val s: String): Token()
+    sealed class BooleanLiteral: Token()
+
+    object TRUE: BooleanLiteral()
+    object FALSE: BooleanLiteral()
 
     class ReturnAt(val s: String): Token()
     class ContinueAt(val s: String): Token()
     class BreakAt(val s: String): Token()
+    class ThisAt(val s: String): Token()
 
     class Identifier(val s: String): Token()
 
@@ -44,6 +51,8 @@ sealed class Token {
     object EXCL_EQEQ: Token()
     object EXCL_EQ: Token()
     object EXCL: Token()
+    object EXCL_EXCL: Token()
+    object QUEST_DOT: Token()
     object SEMICOLON: Token()
     object COLONCOLON: Token()
     object COLON: Token()
@@ -133,6 +142,10 @@ sealed class Token {
     object NOINLINE: Token()
     object CROSSINLINE: Token()
     object REIFIED: Token()
+    object NULL: Token()
+    object VALUE: Token()
+    object EXPECT: Token()
+    object ACTUAL: Token()
 
     override fun toString(): String = when (this) {
         ABSTRACT -> "abstract"
@@ -146,8 +159,10 @@ sealed class Token {
         AT -> "@"
         BREAK -> "break"
         BY -> "by"
-        is BooleanLiteral -> s
-        is BreakAt -> "break@s"
+        TRUE -> "true"
+        FALSE -> "false"
+        NULL -> "null"
+        is BreakAt -> "break@$s"
         CATCH -> "catch"
         CLASS -> "class"
         COLON -> ":"
@@ -159,8 +174,9 @@ sealed class Token {
         CONSTRUCTOR -> "constructor"
         CONTINUE -> "continue"
         CROSSINLINE -> "crossinline"
-        is CharacterLiteral -> ""
-        is ContinueAt -> "continue@s"
+        is CharacterLiteral -> s
+        is ContinueAt -> "continue@$s"
+        is ThisAt -> "this@$s"
         DATA -> "data"
         DECR -> "--"
         DELEGATE -> "delegate"
@@ -210,6 +226,9 @@ sealed class Token {
         LPAREN -> "("
         LSQUARE -> "["
         is LongLiteral -> s
+        is IntegerLiteral -> s
+        is UnsignedLiteral -> s
+        is UnsignedLongLiteral -> s
         MOD -> "%"
         MOD_ASSIGNMENT -> "%="
         MULT -> "*"
@@ -263,5 +282,10 @@ sealed class Token {
         WHEN -> "when"
         WHERE -> "where"
         WHILE -> "while"
+        EXCL_EXCL -> "!!"
+        QUEST_DOT -> "?."
+        VALUE -> "value"
+        EXPECT -> "expect"
+        ACTUAL -> "actual"
     }
 }

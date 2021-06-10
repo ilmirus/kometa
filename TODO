@@ -1,2 +1,4 @@
 * Infer types of variables (nullable or list)
 * Rework callable references (calc.kometa uses callable references, which look like variables. This is OK to C#, but not for Kotlin)
+* die keyword to simplify debugging
+* add ~identifierPart to keywords

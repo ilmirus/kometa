@@ -364,7 +364,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
                 } else if (isCharMatcher && literal.startsWith("'")) {
                     writeLine("_ParseLiteralChar(_memo, _index, $literal)")
                 } else {
-                    writeLine("_ParseLiteralObject(_memo, _index, $literal)")
+                    writeLine("_ParseLiteralObj(_memo, _index, $literal)")
                 }
             }
 

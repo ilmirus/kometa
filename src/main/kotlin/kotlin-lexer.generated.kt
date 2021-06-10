@@ -25,7 +25,6 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
             "EOF",
             "NL",
             "binDigit",
-            "booleanLiteral",
             "decDigitNoZero",
             "identifierPart",
             "identifierStart",
@@ -544,88 +543,100 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
         // OR 127
         var _start_i127 = _index.element
 
-        // AND 129
+        // OR 128
+        var _start_i128 = _index.element
+
+        // OR 129
         var _start_i129 = _index.element
 
-        // STAR 132
-        var _start_i132 = _index.element
-        val _inp132 = arrayListOf<Char?>()
-        val _res132 = arrayListOf<Token?>()
+        // OR 130
+        var _start_i130 = _index.element
 
-        // AND 133
+        // OR 131
+        var _start_i131 = _index.element
+
+        // OR 132
+        var _start_i132 = _index.element
+
+        // OR 133
         var _start_i133 = _index.element
 
-        // NOT 134
+        // OR 134
         var _start_i134 = _index.element
 
-        // AND 138
+        // OR 135
+        var _start_i135 = _index.element
+
+        // OR 136
+        var _start_i136 = _index.element
+
+        // OR 137
+        var _start_i137 = _index.element
+
+        // OR 138
         var _start_i138 = _index.element
 
-        // NOT 140
+        // AND 140
         var _start_i140 = _index.element
 
-        // AND 143
+        // STAR 143
         var _start_i143 = _index.element
+        val _inp143 = arrayListOf<Char?>()
+        val _res143 = arrayListOf<Token?>()
+
+        // AND 144
+        var _start_i144 = _index.element
 
         // NOT 145
         var _start_i145 = _index.element
 
-        // AND 148
-        var _start_i148 = _index.element
+        // AND 149
+        var _start_i149 = _index.element
 
-        // NOT 150
-        var _start_i150 = _index.element
+        // NOT 151
+        var _start_i151 = _index.element
 
-        // AND 153
-        var _start_i153 = _index.element
+        // AND 154
+        var _start_i154 = _index.element
 
-        // NOT 155
-        var _start_i155 = _index.element
+        // NOT 156
+        var _start_i156 = _index.element
 
-        // AND 256
-        var _start_i256 = _index.element
+        // AND 159
+        var _start_i159 = _index.element
 
-        // AND 261
-        var _start_i261 = _index.element
+        // NOT 161
+        var _start_i161 = _index.element
 
-        // AND 266
-        var _start_i266 = _index.element
+        // AND 164
+        var _start_i164 = _index.element
 
-        // AND 271
-        var _start_i271 = _index.element
+        // NOT 166
+        var _start_i166 = _index.element
 
-        // NOT 273
-        var _start_i273 = _index.element
+        // AND 169
+        var _start_i169 = _index.element
 
-        // AND 276
-        var _start_i276 = _index.element
+        // NOT 171
+        var _start_i171 = _index.element
 
-        // NOT 278
-        var _start_i278 = _index.element
+        // AND 174
+        var _start_i174 = _index.element
+
+        // NOT 176
+        var _start_i176 = _index.element
 
         // AND 281
         var _start_i281 = _index.element
 
-        // NOT 283
-        var _start_i283 = _index.element
-
         // AND 286
         var _start_i286 = _index.element
-
-        // NOT 288
-        var _start_i288 = _index.element
 
         // AND 291
         var _start_i291 = _index.element
 
-        // NOT 293
-        var _start_i293 = _index.element
-
         // AND 296
         var _start_i296 = _index.element
-
-        // NOT 298
-        var _start_i298 = _index.element
 
         // AND 301
         var _start_i301 = _index.element
@@ -1017,6 +1028,78 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
         // NOT 623
         var _start_i623 = _index.element
 
+        // AND 626
+        var _start_i626 = _index.element
+
+        // NOT 628
+        var _start_i628 = _index.element
+
+        // AND 631
+        var _start_i631 = _index.element
+
+        // NOT 633
+        var _start_i633 = _index.element
+
+        // AND 636
+        var _start_i636 = _index.element
+
+        // NOT 638
+        var _start_i638 = _index.element
+
+        // AND 641
+        var _start_i641 = _index.element
+
+        // NOT 643
+        var _start_i643 = _index.element
+
+        // AND 646
+        var _start_i646 = _index.element
+
+        // NOT 648
+        var _start_i648 = _index.element
+
+        // AND 651
+        var _start_i651 = _index.element
+
+        // NOT 653
+        var _start_i653 = _index.element
+
+        // AND 656
+        var _start_i656 = _index.element
+
+        // NOT 658
+        var _start_i658 = _index.element
+
+        // AND 661
+        var _start_i661 = _index.element
+
+        // NOT 663
+        var _start_i663 = _index.element
+
+        // AND 666
+        var _start_i666 = _index.element
+
+        // NOT 668
+        var _start_i668 = _index.element
+
+        // AND 671
+        var _start_i671 = _index.element
+
+        // NOT 673
+        var _start_i673 = _index.element
+
+        // AND 676
+        var _start_i676 = _index.element
+
+        // NOT 678
+        var _start_i678 = _index.element
+
+        // AND 681
+        var _start_i681 = _index.element
+
+        // NOT 683
+        var _start_i683 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -1405,98 +1488,620 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     // OR 127
                     _start_i127 = _index.element
 
-                    // AND 129
+                    // OR 128
+                    _start_i128 = _index.element
+
+                    // OR 129
                     _start_i129 = _index.element
+
+                    // OR 130
+                    _start_i130 = _index.element
+
+                    // OR 131
+                    _start_i131 = _index.element
+
+                    // OR 132
+                    _start_i132 = _index.element
+
+                    // OR 133
+                    _start_i133 = _index.element
+
+                    // OR 134
+                    _start_i134 = _index.element
+
+                    // OR 135
+                    _start_i135 = _index.element
+
+                    // OR 136
+                    _start_i136 = _index.element
+
+                    // OR 137
+                    _start_i137 = _index.element
+
+                    // OR 138
+                    _start_i138 = _index.element
+
+                    // AND 140
+                    _start_i140 = _index.element
 
                     // LITERAL "#!"
                     _ParseLiteralString(_memo, _index, "#!")
 
-                    // AND shortcut 129
+                    // AND shortcut 140
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 129
+                        _label = 140
                         continue
                     }
 
-                    // STAR 132
-                    _start_i132 = _index.element
-                    _label = 132
+                    // STAR 143
+                    _start_i143 = _index.element
+                    _label = 143
                 }
-                // STAR 132
-                132 -> {
-                    // AND 133
-                    _start_i133 = _index.element
+                // STAR 143
+                143 -> {
+                    // AND 144
+                    _start_i144 = _index.element
 
-                    // NOT 134
-                    _start_i134 = _index.element
+                    // NOT 145
+                    _start_i145 = _index.element
 
                     // CALLORVAR NL
-                    var _r135: _KotlinLexer_Item? = null
-                    _r135 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r135 != null) _index.element = _r135.nextIndex
+                    var _r146: _KotlinLexer_Item? = null
+                    _r146 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r146 != null) _index.element = _r146.nextIndex
 
-                    // NOT 134
-                    val _r134 = _memo.results.pop()
-                    _memo.results.push(if (_r134 == null) _KotlinLexer_Item(_start_i134, _memo.input) else null)
-                    _index.element = _start_i134
-                    // AND shortcut 133
+                    // NOT 145
+                    val _r145 = _memo.results.pop()
+                    _memo.results.push(if (_r145 == null) _KotlinLexer_Item(_start_i145, _memo.input) else null)
+                    _index.element = _start_i145
+                    // AND shortcut 144
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 133
+                        _label = 144
                         continue
                     }
 
                     // ANY
                     _ParseAny(_memo, _index)
 
-                    _label = 133
+                    _label = 144
                 }
-                // AND 133
-                133 -> {
-                    val _r133_2 = _memo.results.pop()
-                    val _r133_1 = _memo.results.pop()
+                // AND 144
+                144 -> {
+                    val _r144_2 = _memo.results.pop()
+                    val _r144_1 = _memo.results.pop()
 
-                    if (_r133_1 != null && _r133_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i133, _index.element, _memo.input, (_r133_1.results + _r133_2.results).filterNotNull(), true))
+                    if (_r144_1 != null && _r144_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i144, _index.element, _memo.input, (_r144_1.results + _r144_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i133
+                        _index.element = _start_i144
                     }
 
-                    // STAR 132
-                    val _r132 = _memo.results.pop()
-                    if (_r132 != null) {
-                        _res132 += _r132.results
-                        _label = 132
+                    // STAR 143
+                    val _r143 = _memo.results.pop()
+                    if (_r143 != null) {
+                        _res143 += _r143.results
+                        _label = 143
                         continue
                     } else {
-                        _memo.results.push(_KotlinLexer_Item(_start_i132, _index.element, _memo.input, _res132.filterNotNull(), true))
+                        _memo.results.push(_KotlinLexer_Item(_start_i143, _index.element, _memo.input, _res143.filterNotNull(), true))
                     }
 
                     // BIND s
                     s = _memo.results.peek()
 
-                    _label = 129
+                    _label = 140
                 }
-                // AND 129
-                129 -> {
-                    val _r129_2 = _memo.results.pop()
-                    val _r129_1 = _memo.results.pop()
+                // AND 140
+                140 -> {
+                    val _r140_2 = _memo.results.pop()
+                    val _r140_1 = _memo.results.pop()
 
-                    if (_r129_1 != null && _r129_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i129, _index.element, _memo.input, (_r129_1.results + _r129_2.results).filterNotNull(), true))
+                    if (_r140_1 != null && _r140_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i140, _index.element, _memo.input, (_r140_1.results + _r140_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i129
+                        _index.element = _start_i140
                     }
 
-                    // ACT 128
-                    val _r128 = _memo.results.peek()
-                    if (_r128 != null) {
+                    // ACT 139
+                    val _r139 = _memo.results.peek()
+                    if (_r139 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r128.startIndex, _r128.nextIndex, _memo.input, _Thunk({ Token.ShebangLine(s.s) }, _r128), true))
+                        _memo.results.push(_KotlinLexer_Item(_r139.startIndex, _r139.nextIndex, _memo.input, _Thunk({ Token.ShebangLine(s.s) }, _r139), true))
                     }
 
+                    // OR shortcut 138
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i138
+                    } else {
+                        _label = 138
+                        continue
+                    }
+
+                    // AND 149
+                    _start_i149 = _index.element
+
+                    // CALLORVAR floatLiteral
+                    var _r150: _KotlinLexer_Item? = null
+                    _r150 = _MemoCall(_memo, "floatLiteral", _index.element, ::floatLiteral, null)
+                    if (_r150 != null) _index.element = _r150.nextIndex
+
+                    // AND shortcut 149
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 149
+                        continue
+                    }
+
+                    // NOT 151
+                    _start_i151 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r152: _KotlinLexer_Item? = null
+                    _r152 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r152 != null) _index.element = _r152.nextIndex
+
+                    // NOT 151
+                    val _r151 = _memo.results.pop()
+                    _memo.results.push(if (_r151 == null) _KotlinLexer_Item(_start_i151, _memo.input) else null)
+                    _index.element = _start_i151
+                    _label = 149
+                }
+                // AND 149
+                149 -> {
+                    val _r149_2 = _memo.results.pop()
+                    val _r149_1 = _memo.results.pop()
+
+                    if (_r149_1 != null && _r149_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i149, _index.element, _memo.input, (_r149_1.results + _r149_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i149
+                    }
+
+                    // ACT 148
+                    val _r148 = _memo.results.peek()
+                    if (_r148 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r148.startIndex, _r148.nextIndex, _memo.input, _Thunk({ Token.FloatLiteral(it.s) }, _r148), true))
+                    }
+
+                    _label = 138
+                }
+                // OR 138
+                138 -> {
+                    // OR shortcut 137
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i137
+                    } else {
+                        _label = 137
+                        continue
+                    }
+
+                    // AND 154
+                    _start_i154 = _index.element
+
+                    // CALLORVAR doubleLiteral
+                    var _r155: _KotlinLexer_Item? = null
+                    _r155 = _MemoCall(_memo, "doubleLiteral", _index.element, ::doubleLiteral, null)
+                    if (_r155 != null) _index.element = _r155.nextIndex
+
+                    // AND shortcut 154
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 154
+                        continue
+                    }
+
+                    // NOT 156
+                    _start_i156 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r157: _KotlinLexer_Item? = null
+                    _r157 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r157 != null) _index.element = _r157.nextIndex
+
+                    // NOT 156
+                    val _r156 = _memo.results.pop()
+                    _memo.results.push(if (_r156 == null) _KotlinLexer_Item(_start_i156, _memo.input) else null)
+                    _index.element = _start_i156
+                    _label = 154
+                }
+                // AND 154
+                154 -> {
+                    val _r154_2 = _memo.results.pop()
+                    val _r154_1 = _memo.results.pop()
+
+                    if (_r154_1 != null && _r154_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i154, _index.element, _memo.input, (_r154_1.results + _r154_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i154
+                    }
+
+                    // ACT 153
+                    val _r153 = _memo.results.peek()
+                    if (_r153 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r153.startIndex, _r153.nextIndex, _memo.input, _Thunk({ Token.DoubleLiteral(it.s) }, _r153), true))
+                    }
+
+                    _label = 137
+                }
+                // OR 137
+                137 -> {
+                    // OR shortcut 136
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i136
+                    } else {
+                        _label = 136
+                        continue
+                    }
+
+                    // AND 159
+                    _start_i159 = _index.element
+
+                    // CALLORVAR longLiteral
+                    var _r160: _KotlinLexer_Item? = null
+                    _r160 = _MemoCall(_memo, "longLiteral", _index.element, ::longLiteral, null)
+                    if (_r160 != null) _index.element = _r160.nextIndex
+
+                    // AND shortcut 159
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 159
+                        continue
+                    }
+
+                    // NOT 161
+                    _start_i161 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r162: _KotlinLexer_Item? = null
+                    _r162 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r162 != null) _index.element = _r162.nextIndex
+
+                    // NOT 161
+                    val _r161 = _memo.results.pop()
+                    _memo.results.push(if (_r161 == null) _KotlinLexer_Item(_start_i161, _memo.input) else null)
+                    _index.element = _start_i161
+                    _label = 159
+                }
+                // AND 159
+                159 -> {
+                    val _r159_2 = _memo.results.pop()
+                    val _r159_1 = _memo.results.pop()
+
+                    if (_r159_1 != null && _r159_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i159, _index.element, _memo.input, (_r159_1.results + _r159_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i159
+                    }
+
+                    // ACT 158
+                    val _r158 = _memo.results.peek()
+                    if (_r158 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r158.startIndex, _r158.nextIndex, _memo.input, _Thunk({ Token.LongLiteral(it.s) }, _r158), true))
+                    }
+
+                    _label = 136
+                }
+                // OR 136
+                136 -> {
+                    // OR shortcut 135
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i135
+                    } else {
+                        _label = 135
+                        continue
+                    }
+
+                    // AND 164
+                    _start_i164 = _index.element
+
+                    // CALLORVAR unsignedLiteral
+                    var _r165: _KotlinLexer_Item? = null
+                    _r165 = _MemoCall(_memo, "unsignedLiteral", _index.element, ::unsignedLiteral, null)
+                    if (_r165 != null) _index.element = _r165.nextIndex
+
+                    // AND shortcut 164
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 164
+                        continue
+                    }
+
+                    // NOT 166
+                    _start_i166 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r167: _KotlinLexer_Item? = null
+                    _r167 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r167 != null) _index.element = _r167.nextIndex
+
+                    // NOT 166
+                    val _r166 = _memo.results.pop()
+                    _memo.results.push(if (_r166 == null) _KotlinLexer_Item(_start_i166, _memo.input) else null)
+                    _index.element = _start_i166
+                    _label = 164
+                }
+                // AND 164
+                164 -> {
+                    val _r164_2 = _memo.results.pop()
+                    val _r164_1 = _memo.results.pop()
+
+                    if (_r164_1 != null && _r164_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i164, _index.element, _memo.input, (_r164_1.results + _r164_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i164
+                    }
+
+                    // ACT 163
+                    val _r163 = _memo.results.peek()
+                    if (_r163 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r163.startIndex, _r163.nextIndex, _memo.input, _Thunk({ Token.UnsignedLiteral(it.s) }, _r163), true))
+                    }
+
+                    _label = 135
+                }
+                // OR 135
+                135 -> {
+                    // OR shortcut 134
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i134
+                    } else {
+                        _label = 134
+                        continue
+                    }
+
+                    // AND 169
+                    _start_i169 = _index.element
+
+                    // CALLORVAR unsignedLongLiteral
+                    var _r170: _KotlinLexer_Item? = null
+                    _r170 = _MemoCall(_memo, "unsignedLongLiteral", _index.element, ::unsignedLongLiteral, null)
+                    if (_r170 != null) _index.element = _r170.nextIndex
+
+                    // AND shortcut 169
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 169
+                        continue
+                    }
+
+                    // NOT 171
+                    _start_i171 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r172: _KotlinLexer_Item? = null
+                    _r172 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r172 != null) _index.element = _r172.nextIndex
+
+                    // NOT 171
+                    val _r171 = _memo.results.pop()
+                    _memo.results.push(if (_r171 == null) _KotlinLexer_Item(_start_i171, _memo.input) else null)
+                    _index.element = _start_i171
+                    _label = 169
+                }
+                // AND 169
+                169 -> {
+                    val _r169_2 = _memo.results.pop()
+                    val _r169_1 = _memo.results.pop()
+
+                    if (_r169_1 != null && _r169_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i169, _index.element, _memo.input, (_r169_1.results + _r169_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i169
+                    }
+
+                    // ACT 168
+                    val _r168 = _memo.results.peek()
+                    if (_r168 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r168.startIndex, _r168.nextIndex, _memo.input, _Thunk({ Token.UnsignedLongLiteral(it.s) }, _r168), true))
+                    }
+
+                    _label = 134
+                }
+                // OR 134
+                134 -> {
+                    // OR shortcut 133
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i133
+                    } else {
+                        _label = 133
+                        continue
+                    }
+
+                    // AND 174
+                    _start_i174 = _index.element
+
+                    // CALLORVAR integerLiteral
+                    var _r175: _KotlinLexer_Item? = null
+                    _r175 = _MemoCall(_memo, "integerLiteral", _index.element, ::integerLiteral, null)
+                    if (_r175 != null) _index.element = _r175.nextIndex
+
+                    // AND shortcut 174
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 174
+                        continue
+                    }
+
+                    // NOT 176
+                    _start_i176 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r177: _KotlinLexer_Item? = null
+                    _r177 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r177 != null) _index.element = _r177.nextIndex
+
+                    // NOT 176
+                    val _r176 = _memo.results.pop()
+                    _memo.results.push(if (_r176 == null) _KotlinLexer_Item(_start_i176, _memo.input) else null)
+                    _index.element = _start_i176
+                    _label = 174
+                }
+                // AND 174
+                174 -> {
+                    val _r174_2 = _memo.results.pop()
+                    val _r174_1 = _memo.results.pop()
+
+                    if (_r174_1 != null && _r174_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i174, _index.element, _memo.input, (_r174_1.results + _r174_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i174
+                    }
+
+                    // ACT 173
+                    val _r173 = _memo.results.peek()
+                    if (_r173 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r173.startIndex, _r173.nextIndex, _memo.input, _Thunk({ Token.IntegerLiteral(it.s) }, _r173), true))
+                    }
+
+                    _label = 133
+                }
+                // OR 133
+                133 -> {
+                    // OR shortcut 132
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i132
+                    } else {
+                        _label = 132
+                        continue
+                    }
+
+                    // CALLORVAR characterLiteral
+                    var _r179: _KotlinLexer_Item? = null
+                    _r179 = _MemoCall(_memo, "characterLiteral", _index.element, ::characterLiteral, null)
+                    if (_r179 != null) _index.element = _r179.nextIndex
+
+                    // ACT 178
+                    val _r178 = _memo.results.peek()
+                    if (_r178 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r178.startIndex, _r178.nextIndex, _memo.input, _Thunk({ Token.CharacterLiteral(it.s) }, _r178), true))
+                    }
+
+                    _label = 132
+                }
+                // OR 132
+                132 -> {
+                    // OR shortcut 131
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i131
+                    } else {
+                        _label = 131
+                        continue
+                    }
+
+                    // CALLORVAR multiLineStringLiteral
+                    var _r181: _KotlinLexer_Item? = null
+                    _r181 = _MemoCall(_memo, "multiLineStringLiteral", _index.element, ::multiLineStringLiteral, null)
+                    if (_r181 != null) _index.element = _r181.nextIndex
+
+                    // ACT 180
+                    val _r180 = _memo.results.peek()
+                    if (_r180 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r180.startIndex, _r180.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.s) }, _r180), true))
+                    }
+
+                    _label = 131
+                }
+                // OR 131
+                131 -> {
+                    // OR shortcut 130
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i130
+                    } else {
+                        _label = 130
+                        continue
+                    }
+
+                    // CALLORVAR stringLiteral
+                    var _r183: _KotlinLexer_Item? = null
+                    _r183 = _MemoCall(_memo, "stringLiteral", _index.element, ::stringLiteral, null)
+                    if (_r183 != null) _index.element = _r183.nextIndex
+
+                    // ACT 182
+                    val _r182 = _memo.results.peek()
+                    if (_r182 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r182.startIndex, _r182.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.s) }, _r182), true))
+                    }
+
+                    _label = 130
+                }
+                // OR 130
+                130 -> {
+                    // OR shortcut 129
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i129
+                    } else {
+                        _label = 129
+                        continue
+                    }
+
+                    // CALLORVAR NL
+                    var _r185: _KotlinLexer_Item? = null
+                    _r185 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r185 != null) _index.element = _r185.nextIndex
+
+                    // ACT 184
+                    val _r184 = _memo.results.peek()
+                    if (_r184 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r184.startIndex, _r184.nextIndex, _memo.input, _Thunk({ Token.NL }, _r184), true))
+                    }
+
+                    _label = 129
+                }
+                // OR 129
+                129 -> {
+                    // OR shortcut 128
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i128
+                    } else {
+                        _label = 128
+                        continue
+                    }
+
+                    // LITERAL "..."
+                    _ParseLiteralString(_memo, _index, "...")
+
+                    // ACT 186
+                    val _r186 = _memo.results.peek()
+                    if (_r186 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r186.startIndex, _r186.nextIndex, _memo.input, _Thunk({ Token.RESERVED }, _r186), true))
+                    }
+
+                    _label = 128
+                }
+                // OR 128
+                128 -> {
                     // OR shortcut 127
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
@@ -1506,52 +2111,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // AND 138
-                    _start_i138 = _index.element
+                    // LITERAL ".."
+                    _ParseLiteralString(_memo, _index, "..")
 
-                    // CALLORVAR floatLiteral
-                    var _r139: _KotlinLexer_Item? = null
-                    _r139 = _MemoCall(_memo, "floatLiteral", _index.element, ::floatLiteral, null)
-                    if (_r139 != null) _index.element = _r139.nextIndex
-
-                    // AND shortcut 138
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 138
-                        continue
-                    }
-
-                    // NOT 140
-                    _start_i140 = _index.element
-
-                    // CALLORVAR identifierPart
-                    var _r141: _KotlinLexer_Item? = null
-                    _r141 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
-                    if (_r141 != null) _index.element = _r141.nextIndex
-
-                    // NOT 140
-                    val _r140 = _memo.results.pop()
-                    _memo.results.push(if (_r140 == null) _KotlinLexer_Item(_start_i140, _memo.input) else null)
-                    _index.element = _start_i140
-                    _label = 138
-                }
-                // AND 138
-                138 -> {
-                    val _r138_2 = _memo.results.pop()
-                    val _r138_1 = _memo.results.pop()
-
-                    if (_r138_1 != null && _r138_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i138, _index.element, _memo.input, (_r138_1.results + _r138_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i138
-                    }
-
-                    // ACT 137
-                    val _r137 = _memo.results.peek()
-                    if (_r137 != null) {
+                    // ACT 188
+                    val _r188 = _memo.results.peek()
+                    if (_r188 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r137.startIndex, _r137.nextIndex, _memo.input, _Thunk({ Token.FloatLiteral(it.s) }, _r137), true))
+                        _memo.results.push(_KotlinLexer_Item(_r188.startIndex, _r188.nextIndex, _memo.input, _Thunk({ Token.RANGE }, _r188), true))
                     }
 
                     _label = 127
@@ -1567,52 +2134,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // AND 143
-                    _start_i143 = _index.element
+                    // LITERAL "."
+                    _ParseLiteralString(_memo, _index, ".")
 
-                    // CALLORVAR doubleLiteral
-                    var _r144: _KotlinLexer_Item? = null
-                    _r144 = _MemoCall(_memo, "doubleLiteral", _index.element, ::doubleLiteral, null)
-                    if (_r144 != null) _index.element = _r144.nextIndex
-
-                    // AND shortcut 143
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 143
-                        continue
-                    }
-
-                    // NOT 145
-                    _start_i145 = _index.element
-
-                    // CALLORVAR identifierPart
-                    var _r146: _KotlinLexer_Item? = null
-                    _r146 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
-                    if (_r146 != null) _index.element = _r146.nextIndex
-
-                    // NOT 145
-                    val _r145 = _memo.results.pop()
-                    _memo.results.push(if (_r145 == null) _KotlinLexer_Item(_start_i145, _memo.input) else null)
-                    _index.element = _start_i145
-                    _label = 143
-                }
-                // AND 143
-                143 -> {
-                    val _r143_2 = _memo.results.pop()
-                    val _r143_1 = _memo.results.pop()
-
-                    if (_r143_1 != null && _r143_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i143, _index.element, _memo.input, (_r143_1.results + _r143_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i143
-                    }
-
-                    // ACT 142
-                    val _r142 = _memo.results.peek()
-                    if (_r142 != null) {
+                    // ACT 190
+                    val _r190 = _memo.results.peek()
+                    if (_r190 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r142.startIndex, _r142.nextIndex, _memo.input, _Thunk({ Token.DoubleLiteral(it.s) }, _r142), true))
+                        _memo.results.push(_KotlinLexer_Item(_r190.startIndex, _r190.nextIndex, _memo.input, _Thunk({ Token.DOT }, _r190), true))
                     }
 
                     _label = 126
@@ -1628,52 +2157,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // AND 148
-                    _start_i148 = _index.element
+                    // LITERAL ","
+                    _ParseLiteralString(_memo, _index, ",")
 
-                    // CALLORVAR longLiteral
-                    var _r149: _KotlinLexer_Item? = null
-                    _r149 = _MemoCall(_memo, "longLiteral", _index.element, ::longLiteral, null)
-                    if (_r149 != null) _index.element = _r149.nextIndex
-
-                    // AND shortcut 148
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 148
-                        continue
-                    }
-
-                    // NOT 150
-                    _start_i150 = _index.element
-
-                    // CALLORVAR identifierPart
-                    var _r151: _KotlinLexer_Item? = null
-                    _r151 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
-                    if (_r151 != null) _index.element = _r151.nextIndex
-
-                    // NOT 150
-                    val _r150 = _memo.results.pop()
-                    _memo.results.push(if (_r150 == null) _KotlinLexer_Item(_start_i150, _memo.input) else null)
-                    _index.element = _start_i150
-                    _label = 148
-                }
-                // AND 148
-                148 -> {
-                    val _r148_2 = _memo.results.pop()
-                    val _r148_1 = _memo.results.pop()
-
-                    if (_r148_1 != null && _r148_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i148, _index.element, _memo.input, (_r148_1.results + _r148_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i148
-                    }
-
-                    // ACT 147
-                    val _r147 = _memo.results.peek()
-                    if (_r147 != null) {
+                    // ACT 192
+                    val _r192 = _memo.results.peek()
+                    if (_r192 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r147.startIndex, _r147.nextIndex, _memo.input, _Thunk({ Token.LongLiteral(it.s) }, _r147), true))
+                        _memo.results.push(_KotlinLexer_Item(_r192.startIndex, _r192.nextIndex, _memo.input, _Thunk({ Token.COMMA }, _r192), true))
                     }
 
                     _label = 125
@@ -1689,52 +2180,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // AND 153
-                    _start_i153 = _index.element
+                    // LITERAL "("
+                    _ParseLiteralString(_memo, _index, "(")
 
-                    // CALLORVAR booleanLiteral
-                    var _r154: _KotlinLexer_Item? = null
-                    _r154 = _MemoCall(_memo, "booleanLiteral", _index.element, ::booleanLiteral, null)
-                    if (_r154 != null) _index.element = _r154.nextIndex
-
-                    // AND shortcut 153
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 153
-                        continue
-                    }
-
-                    // NOT 155
-                    _start_i155 = _index.element
-
-                    // CALLORVAR identifierPart
-                    var _r156: _KotlinLexer_Item? = null
-                    _r156 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
-                    if (_r156 != null) _index.element = _r156.nextIndex
-
-                    // NOT 155
-                    val _r155 = _memo.results.pop()
-                    _memo.results.push(if (_r155 == null) _KotlinLexer_Item(_start_i155, _memo.input) else null)
-                    _index.element = _start_i155
-                    _label = 153
-                }
-                // AND 153
-                153 -> {
-                    val _r153_2 = _memo.results.pop()
-                    val _r153_1 = _memo.results.pop()
-
-                    if (_r153_1 != null && _r153_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i153, _index.element, _memo.input, (_r153_1.results + _r153_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i153
-                    }
-
-                    // ACT 152
-                    val _r152 = _memo.results.peek()
-                    if (_r152 != null) {
+                    // ACT 194
+                    val _r194 = _memo.results.peek()
+                    if (_r194 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r152.startIndex, _r152.nextIndex, _memo.input, _Thunk({ Token.BooleanLiteral(it.s) }, _r152), true))
+                        _memo.results.push(_KotlinLexer_Item(_r194.startIndex, _r194.nextIndex, _memo.input, _Thunk({ Token.LPAREN }, _r194), true))
                     }
 
                     _label = 124
@@ -1750,16 +2203,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // CALLORVAR characterLiteral
-                    var _r158: _KotlinLexer_Item? = null
-                    _r158 = _MemoCall(_memo, "characterLiteral", _index.element, ::characterLiteral, null)
-                    if (_r158 != null) _index.element = _r158.nextIndex
+                    // LITERAL ")"
+                    _ParseLiteralString(_memo, _index, ")")
 
-                    // ACT 157
-                    val _r157 = _memo.results.peek()
-                    if (_r157 != null) {
+                    // ACT 196
+                    val _r196 = _memo.results.peek()
+                    if (_r196 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r157.startIndex, _r157.nextIndex, _memo.input, _Thunk({ Token.CharacterLiteral(it.s) }, _r157), true))
+                        _memo.results.push(_KotlinLexer_Item(_r196.startIndex, _r196.nextIndex, _memo.input, _Thunk({ Token.RPAREN }, _r196), true))
                     }
 
                     _label = 123
@@ -1775,16 +2226,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // CALLORVAR multiLineStringLiteral
-                    var _r160: _KotlinLexer_Item? = null
-                    _r160 = _MemoCall(_memo, "multiLineStringLiteral", _index.element, ::multiLineStringLiteral, null)
-                    if (_r160 != null) _index.element = _r160.nextIndex
+                    // LITERAL "["
+                    _ParseLiteralString(_memo, _index, "[")
 
-                    // ACT 159
-                    val _r159 = _memo.results.peek()
-                    if (_r159 != null) {
+                    // ACT 198
+                    val _r198 = _memo.results.peek()
+                    if (_r198 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r159.startIndex, _r159.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.s) }, _r159), true))
+                        _memo.results.push(_KotlinLexer_Item(_r198.startIndex, _r198.nextIndex, _memo.input, _Thunk({ Token.LSQUARE }, _r198), true))
                     }
 
                     _label = 122
@@ -1800,16 +2249,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // CALLORVAR stringLiteral
-                    var _r162: _KotlinLexer_Item? = null
-                    _r162 = _MemoCall(_memo, "stringLiteral", _index.element, ::stringLiteral, null)
-                    if (_r162 != null) _index.element = _r162.nextIndex
+                    // LITERAL "]"
+                    _ParseLiteralString(_memo, _index, "]")
 
-                    // ACT 161
-                    val _r161 = _memo.results.peek()
-                    if (_r161 != null) {
+                    // ACT 200
+                    val _r200 = _memo.results.peek()
+                    if (_r200 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r161.startIndex, _r161.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.s) }, _r161), true))
+                        _memo.results.push(_KotlinLexer_Item(_r200.startIndex, _r200.nextIndex, _memo.input, _Thunk({ Token.RSQUARE }, _r200), true))
                     }
 
                     _label = 121
@@ -1825,16 +2272,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // CALLORVAR NL
-                    var _r164: _KotlinLexer_Item? = null
-                    _r164 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r164 != null) _index.element = _r164.nextIndex
+                    // LITERAL "{"
+                    _ParseLiteralString(_memo, _index, "{")
 
-                    // ACT 163
-                    val _r163 = _memo.results.peek()
-                    if (_r163 != null) {
+                    // ACT 202
+                    val _r202 = _memo.results.peek()
+                    if (_r202 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r163.startIndex, _r163.nextIndex, _memo.input, _Thunk({ Token.NL }, _r163), true))
+                        _memo.results.push(_KotlinLexer_Item(_r202.startIndex, _r202.nextIndex, _memo.input, _Thunk({ Token.LCURL }, _r202), true))
                     }
 
                     _label = 120
@@ -1850,14 +2295,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "..."
-                    _ParseLiteralString(_memo, _index, "...")
+                    // LITERAL "}"
+                    _ParseLiteralString(_memo, _index, "}")
 
-                    // ACT 165
-                    val _r165 = _memo.results.peek()
-                    if (_r165 != null) {
+                    // ACT 204
+                    val _r204 = _memo.results.peek()
+                    if (_r204 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r165.startIndex, _r165.nextIndex, _memo.input, _Thunk({ Token.RESERVED }, _r165), true))
+                        _memo.results.push(_KotlinLexer_Item(_r204.startIndex, _r204.nextIndex, _memo.input, _Thunk({ Token.RCURL }, _r204), true))
                     }
 
                     _label = 119
@@ -1873,14 +2318,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL ".."
-                    _ParseLiteralString(_memo, _index, "..")
+                    // LITERAL "++"
+                    _ParseLiteralString(_memo, _index, "++")
 
-                    // ACT 167
-                    val _r167 = _memo.results.peek()
-                    if (_r167 != null) {
+                    // ACT 206
+                    val _r206 = _memo.results.peek()
+                    if (_r206 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r167.startIndex, _r167.nextIndex, _memo.input, _Thunk({ Token.RANGE }, _r167), true))
+                        _memo.results.push(_KotlinLexer_Item(_r206.startIndex, _r206.nextIndex, _memo.input, _Thunk({ Token.INCR }, _r206), true))
                     }
 
                     _label = 118
@@ -1896,14 +2341,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "."
-                    _ParseLiteralString(_memo, _index, ".")
+                    // LITERAL "+="
+                    _ParseLiteralString(_memo, _index, "+=")
 
-                    // ACT 169
-                    val _r169 = _memo.results.peek()
-                    if (_r169 != null) {
+                    // ACT 208
+                    val _r208 = _memo.results.peek()
+                    if (_r208 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r169.startIndex, _r169.nextIndex, _memo.input, _Thunk({ Token.DOT }, _r169), true))
+                        _memo.results.push(_KotlinLexer_Item(_r208.startIndex, _r208.nextIndex, _memo.input, _Thunk({ Token.ADD_ASSIGNMENT }, _r208), true))
                     }
 
                     _label = 117
@@ -1919,14 +2364,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL ","
-                    _ParseLiteralString(_memo, _index, ",")
+                    // LITERAL "+"
+                    _ParseLiteralString(_memo, _index, "+")
 
-                    // ACT 171
-                    val _r171 = _memo.results.peek()
-                    if (_r171 != null) {
+                    // ACT 210
+                    val _r210 = _memo.results.peek()
+                    if (_r210 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r171.startIndex, _r171.nextIndex, _memo.input, _Thunk({ Token.COMMA }, _r171), true))
+                        _memo.results.push(_KotlinLexer_Item(_r210.startIndex, _r210.nextIndex, _memo.input, _Thunk({ Token.ADD }, _r210), true))
                     }
 
                     _label = 116
@@ -1942,14 +2387,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "("
-                    _ParseLiteralString(_memo, _index, "(")
+                    // LITERAL "--"
+                    _ParseLiteralString(_memo, _index, "--")
 
-                    // ACT 173
-                    val _r173 = _memo.results.peek()
-                    if (_r173 != null) {
+                    // ACT 212
+                    val _r212 = _memo.results.peek()
+                    if (_r212 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r173.startIndex, _r173.nextIndex, _memo.input, _Thunk({ Token.LPAREN }, _r173), true))
+                        _memo.results.push(_KotlinLexer_Item(_r212.startIndex, _r212.nextIndex, _memo.input, _Thunk({ Token.DECR }, _r212), true))
                     }
 
                     _label = 115
@@ -1965,14 +2410,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL ")"
-                    _ParseLiteralString(_memo, _index, ")")
+                    // LITERAL "->"
+                    _ParseLiteralString(_memo, _index, "->")
 
-                    // ACT 175
-                    val _r175 = _memo.results.peek()
-                    if (_r175 != null) {
+                    // ACT 214
+                    val _r214 = _memo.results.peek()
+                    if (_r214 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r175.startIndex, _r175.nextIndex, _memo.input, _Thunk({ Token.RPAREN }, _r175), true))
+                        _memo.results.push(_KotlinLexer_Item(_r214.startIndex, _r214.nextIndex, _memo.input, _Thunk({ Token.ARROW }, _r214), true))
                     }
 
                     _label = 114
@@ -1988,14 +2433,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "["
-                    _ParseLiteralString(_memo, _index, "[")
+                    // LITERAL "-="
+                    _ParseLiteralString(_memo, _index, "-=")
 
-                    // ACT 177
-                    val _r177 = _memo.results.peek()
-                    if (_r177 != null) {
+                    // ACT 216
+                    val _r216 = _memo.results.peek()
+                    if (_r216 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r177.startIndex, _r177.nextIndex, _memo.input, _Thunk({ Token.LSQUARE }, _r177), true))
+                        _memo.results.push(_KotlinLexer_Item(_r216.startIndex, _r216.nextIndex, _memo.input, _Thunk({ Token.SUB_ASSIGNMENT }, _r216), true))
                     }
 
                     _label = 113
@@ -2011,14 +2456,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "]"
-                    _ParseLiteralString(_memo, _index, "]")
+                    // LITERAL "-"
+                    _ParseLiteralString(_memo, _index, "-")
 
-                    // ACT 179
-                    val _r179 = _memo.results.peek()
-                    if (_r179 != null) {
+                    // ACT 218
+                    val _r218 = _memo.results.peek()
+                    if (_r218 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r179.startIndex, _r179.nextIndex, _memo.input, _Thunk({ Token.RSQUARE }, _r179), true))
+                        _memo.results.push(_KotlinLexer_Item(_r218.startIndex, _r218.nextIndex, _memo.input, _Thunk({ Token.SUB }, _r218), true))
                     }
 
                     _label = 112
@@ -2034,14 +2479,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "{"
-                    _ParseLiteralString(_memo, _index, "{")
+                    // LITERAL "*="
+                    _ParseLiteralString(_memo, _index, "*=")
 
-                    // ACT 181
-                    val _r181 = _memo.results.peek()
-                    if (_r181 != null) {
+                    // ACT 220
+                    val _r220 = _memo.results.peek()
+                    if (_r220 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r181.startIndex, _r181.nextIndex, _memo.input, _Thunk({ Token.LCURL }, _r181), true))
+                        _memo.results.push(_KotlinLexer_Item(_r220.startIndex, _r220.nextIndex, _memo.input, _Thunk({ Token.MULT_ASSIGNMENT }, _r220), true))
                     }
 
                     _label = 111
@@ -2057,14 +2502,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "}"
-                    _ParseLiteralString(_memo, _index, "}")
+                    // LITERAL "*"
+                    _ParseLiteralString(_memo, _index, "*")
 
-                    // ACT 183
-                    val _r183 = _memo.results.peek()
-                    if (_r183 != null) {
+                    // ACT 222
+                    val _r222 = _memo.results.peek()
+                    if (_r222 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r183.startIndex, _r183.nextIndex, _memo.input, _Thunk({ Token.RCURL }, _r183), true))
+                        _memo.results.push(_KotlinLexer_Item(_r222.startIndex, _r222.nextIndex, _memo.input, _Thunk({ Token.MULT }, _r222), true))
                     }
 
                     _label = 110
@@ -2080,14 +2525,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "++"
-                    _ParseLiteralString(_memo, _index, "++")
+                    // LITERAL "/="
+                    _ParseLiteralString(_memo, _index, "/=")
 
-                    // ACT 185
-                    val _r185 = _memo.results.peek()
-                    if (_r185 != null) {
+                    // ACT 224
+                    val _r224 = _memo.results.peek()
+                    if (_r224 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r185.startIndex, _r185.nextIndex, _memo.input, _Thunk({ Token.INCR }, _r185), true))
+                        _memo.results.push(_KotlinLexer_Item(_r224.startIndex, _r224.nextIndex, _memo.input, _Thunk({ Token.DIV_ASSIGNMENT }, _r224), true))
                     }
 
                     _label = 109
@@ -2103,14 +2548,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "+="
-                    _ParseLiteralString(_memo, _index, "+=")
+                    // LITERAL "/"
+                    _ParseLiteralString(_memo, _index, "/")
 
-                    // ACT 187
-                    val _r187 = _memo.results.peek()
-                    if (_r187 != null) {
+                    // ACT 226
+                    val _r226 = _memo.results.peek()
+                    if (_r226 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r187.startIndex, _r187.nextIndex, _memo.input, _Thunk({ Token.ADD_ASSIGNMENT }, _r187), true))
+                        _memo.results.push(_KotlinLexer_Item(_r226.startIndex, _r226.nextIndex, _memo.input, _Thunk({ Token.DIV }, _r226), true))
                     }
 
                     _label = 108
@@ -2126,14 +2571,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "+"
-                    _ParseLiteralString(_memo, _index, "+")
+                    // LITERAL "%="
+                    _ParseLiteralString(_memo, _index, "%=")
 
-                    // ACT 189
-                    val _r189 = _memo.results.peek()
-                    if (_r189 != null) {
+                    // ACT 228
+                    val _r228 = _memo.results.peek()
+                    if (_r228 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r189.startIndex, _r189.nextIndex, _memo.input, _Thunk({ Token.ADD }, _r189), true))
+                        _memo.results.push(_KotlinLexer_Item(_r228.startIndex, _r228.nextIndex, _memo.input, _Thunk({ Token.MOD_ASSIGNMENT }, _r228), true))
                     }
 
                     _label = 107
@@ -2149,14 +2594,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "--"
-                    _ParseLiteralString(_memo, _index, "--")
+                    // LITERAL "%"
+                    _ParseLiteralString(_memo, _index, "%")
 
-                    // ACT 191
-                    val _r191 = _memo.results.peek()
-                    if (_r191 != null) {
+                    // ACT 230
+                    val _r230 = _memo.results.peek()
+                    if (_r230 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r191.startIndex, _r191.nextIndex, _memo.input, _Thunk({ Token.DECR }, _r191), true))
+                        _memo.results.push(_KotlinLexer_Item(_r230.startIndex, _r230.nextIndex, _memo.input, _Thunk({ Token.MOD }, _r230), true))
                     }
 
                     _label = 106
@@ -2172,14 +2617,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "->"
-                    _ParseLiteralString(_memo, _index, "->")
+                    // LITERAL "&&"
+                    _ParseLiteralString(_memo, _index, "&&")
 
-                    // ACT 193
-                    val _r193 = _memo.results.peek()
-                    if (_r193 != null) {
+                    // ACT 232
+                    val _r232 = _memo.results.peek()
+                    if (_r232 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r193.startIndex, _r193.nextIndex, _memo.input, _Thunk({ Token.ARROW }, _r193), true))
+                        _memo.results.push(_KotlinLexer_Item(_r232.startIndex, _r232.nextIndex, _memo.input, _Thunk({ Token.CONJ }, _r232), true))
                     }
 
                     _label = 105
@@ -2195,14 +2640,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "-="
-                    _ParseLiteralString(_memo, _index, "-=")
+                    // LITERAL "||"
+                    _ParseLiteralString(_memo, _index, "||")
 
-                    // ACT 195
-                    val _r195 = _memo.results.peek()
-                    if (_r195 != null) {
+                    // ACT 234
+                    val _r234 = _memo.results.peek()
+                    if (_r234 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r195.startIndex, _r195.nextIndex, _memo.input, _Thunk({ Token.SUB_ASSIGNMENT }, _r195), true))
+                        _memo.results.push(_KotlinLexer_Item(_r234.startIndex, _r234.nextIndex, _memo.input, _Thunk({ Token.DISJ }, _r234), true))
                     }
 
                     _label = 104
@@ -2218,14 +2663,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "-"
-                    _ParseLiteralString(_memo, _index, "-")
+                    // LITERAL "!!"
+                    _ParseLiteralString(_memo, _index, "!!")
 
-                    // ACT 197
-                    val _r197 = _memo.results.peek()
-                    if (_r197 != null) {
+                    // ACT 236
+                    val _r236 = _memo.results.peek()
+                    if (_r236 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r197.startIndex, _r197.nextIndex, _memo.input, _Thunk({ Token.SUB }, _r197), true))
+                        _memo.results.push(_KotlinLexer_Item(_r236.startIndex, _r236.nextIndex, _memo.input, _Thunk({ Token.EXCL_EXCL }, _r236), true))
                     }
 
                     _label = 103
@@ -2241,14 +2686,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "*="
-                    _ParseLiteralString(_memo, _index, "*=")
+                    // LITERAL "!=="
+                    _ParseLiteralString(_memo, _index, "!==")
 
-                    // ACT 199
-                    val _r199 = _memo.results.peek()
-                    if (_r199 != null) {
+                    // ACT 238
+                    val _r238 = _memo.results.peek()
+                    if (_r238 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r199.startIndex, _r199.nextIndex, _memo.input, _Thunk({ Token.MULT_ASSIGNMENT }, _r199), true))
+                        _memo.results.push(_KotlinLexer_Item(_r238.startIndex, _r238.nextIndex, _memo.input, _Thunk({ Token.EXCL_EQEQ }, _r238), true))
                     }
 
                     _label = 102
@@ -2264,14 +2709,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "*"
-                    _ParseLiteralString(_memo, _index, "*")
+                    // LITERAL "!="
+                    _ParseLiteralString(_memo, _index, "!=")
 
-                    // ACT 201
-                    val _r201 = _memo.results.peek()
-                    if (_r201 != null) {
+                    // ACT 240
+                    val _r240 = _memo.results.peek()
+                    if (_r240 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r201.startIndex, _r201.nextIndex, _memo.input, _Thunk({ Token.MULT }, _r201), true))
+                        _memo.results.push(_KotlinLexer_Item(_r240.startIndex, _r240.nextIndex, _memo.input, _Thunk({ Token.EXCL_EQ }, _r240), true))
                     }
 
                     _label = 101
@@ -2287,14 +2732,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "/="
-                    _ParseLiteralString(_memo, _index, "/=")
+                    // LITERAL "!"
+                    _ParseLiteralString(_memo, _index, "!")
 
-                    // ACT 203
-                    val _r203 = _memo.results.peek()
-                    if (_r203 != null) {
+                    // ACT 242
+                    val _r242 = _memo.results.peek()
+                    if (_r242 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r203.startIndex, _r203.nextIndex, _memo.input, _Thunk({ Token.DIV_ASSIGNMENT }, _r203), true))
+                        _memo.results.push(_KotlinLexer_Item(_r242.startIndex, _r242.nextIndex, _memo.input, _Thunk({ Token.EXCL }, _r242), true))
                     }
 
                     _label = 100
@@ -2310,14 +2755,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "/"
-                    _ParseLiteralString(_memo, _index, "/")
+                    // LITERAL ";"
+                    _ParseLiteralString(_memo, _index, ";")
 
-                    // ACT 205
-                    val _r205 = _memo.results.peek()
-                    if (_r205 != null) {
+                    // ACT 244
+                    val _r244 = _memo.results.peek()
+                    if (_r244 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r205.startIndex, _r205.nextIndex, _memo.input, _Thunk({ Token.DIV }, _r205), true))
+                        _memo.results.push(_KotlinLexer_Item(_r244.startIndex, _r244.nextIndex, _memo.input, _Thunk({ Token.SEMICOLON }, _r244), true))
                     }
 
                     _label = 99
@@ -2333,14 +2778,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "%="
-                    _ParseLiteralString(_memo, _index, "%=")
+                    // LITERAL "::"
+                    _ParseLiteralString(_memo, _index, "::")
 
-                    // ACT 207
-                    val _r207 = _memo.results.peek()
-                    if (_r207 != null) {
+                    // ACT 246
+                    val _r246 = _memo.results.peek()
+                    if (_r246 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r207.startIndex, _r207.nextIndex, _memo.input, _Thunk({ Token.MOD_ASSIGNMENT }, _r207), true))
+                        _memo.results.push(_KotlinLexer_Item(_r246.startIndex, _r246.nextIndex, _memo.input, _Thunk({ Token.COLONCOLON }, _r246), true))
                     }
 
                     _label = 98
@@ -2356,14 +2801,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "%"
-                    _ParseLiteralString(_memo, _index, "%")
+                    // LITERAL ":"
+                    _ParseLiteralString(_memo, _index, ":")
 
-                    // ACT 209
-                    val _r209 = _memo.results.peek()
-                    if (_r209 != null) {
+                    // ACT 248
+                    val _r248 = _memo.results.peek()
+                    if (_r248 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r209.startIndex, _r209.nextIndex, _memo.input, _Thunk({ Token.MOD }, _r209), true))
+                        _memo.results.push(_KotlinLexer_Item(_r248.startIndex, _r248.nextIndex, _memo.input, _Thunk({ Token.COLON }, _r248), true))
                     }
 
                     _label = 97
@@ -2379,14 +2824,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "&&"
-                    _ParseLiteralString(_memo, _index, "&&")
+                    // LITERAL "#"
+                    _ParseLiteralString(_memo, _index, "#")
 
-                    // ACT 211
-                    val _r211 = _memo.results.peek()
-                    if (_r211 != null) {
+                    // ACT 250
+                    val _r250 = _memo.results.peek()
+                    if (_r250 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r211.startIndex, _r211.nextIndex, _memo.input, _Thunk({ Token.CONJ }, _r211), true))
+                        _memo.results.push(_KotlinLexer_Item(_r250.startIndex, _r250.nextIndex, _memo.input, _Thunk({ Token.HASH }, _r250), true))
                     }
 
                     _label = 96
@@ -2402,14 +2847,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "||"
-                    _ParseLiteralString(_memo, _index, "||")
+                    // LITERAL "@"
+                    _ParseLiteralString(_memo, _index, "@")
 
-                    // ACT 213
-                    val _r213 = _memo.results.peek()
-                    if (_r213 != null) {
+                    // ACT 252
+                    val _r252 = _memo.results.peek()
+                    if (_r252 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r213.startIndex, _r213.nextIndex, _memo.input, _Thunk({ Token.DISJ }, _r213), true))
+                        _memo.results.push(_KotlinLexer_Item(_r252.startIndex, _r252.nextIndex, _memo.input, _Thunk({ Token.AT }, _r252), true))
                     }
 
                     _label = 95
@@ -2425,14 +2870,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "!=="
-                    _ParseLiteralString(_memo, _index, "!==")
+                    // LITERAL "?::"
+                    _ParseLiteralString(_memo, _index, "?::")
 
-                    // ACT 215
-                    val _r215 = _memo.results.peek()
-                    if (_r215 != null) {
+                    // ACT 254
+                    val _r254 = _memo.results.peek()
+                    if (_r254 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r215.startIndex, _r215.nextIndex, _memo.input, _Thunk({ Token.EXCL_EQEQ }, _r215), true))
+                        _memo.results.push(_KotlinLexer_Item(_r254.startIndex, _r254.nextIndex, _memo.input, _Thunk({ Token.Q_COLONCOLON }, _r254), true))
                     }
 
                     _label = 94
@@ -2448,14 +2893,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "!="
-                    _ParseLiteralString(_memo, _index, "!=")
+                    // LITERAL "?:"
+                    _ParseLiteralString(_memo, _index, "?:")
 
-                    // ACT 217
-                    val _r217 = _memo.results.peek()
-                    if (_r217 != null) {
+                    // ACT 256
+                    val _r256 = _memo.results.peek()
+                    if (_r256 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r217.startIndex, _r217.nextIndex, _memo.input, _Thunk({ Token.EXCL_EQ }, _r217), true))
+                        _memo.results.push(_KotlinLexer_Item(_r256.startIndex, _r256.nextIndex, _memo.input, _Thunk({ Token.ELVIS }, _r256), true))
                     }
 
                     _label = 93
@@ -2471,14 +2916,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "!"
-                    _ParseLiteralString(_memo, _index, "!")
+                    // LITERAL "?."
+                    _ParseLiteralString(_memo, _index, "?.")
 
-                    // ACT 219
-                    val _r219 = _memo.results.peek()
-                    if (_r219 != null) {
+                    // ACT 258
+                    val _r258 = _memo.results.peek()
+                    if (_r258 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r219.startIndex, _r219.nextIndex, _memo.input, _Thunk({ Token.EXCL }, _r219), true))
+                        _memo.results.push(_KotlinLexer_Item(_r258.startIndex, _r258.nextIndex, _memo.input, _Thunk({ Token.QUEST_DOT }, _r258), true))
                     }
 
                     _label = 92
@@ -2494,14 +2939,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL ";"
-                    _ParseLiteralString(_memo, _index, ";")
+                    // LITERAL "?"
+                    _ParseLiteralString(_memo, _index, "?")
 
-                    // ACT 221
-                    val _r221 = _memo.results.peek()
-                    if (_r221 != null) {
+                    // ACT 260
+                    val _r260 = _memo.results.peek()
+                    if (_r260 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r221.startIndex, _r221.nextIndex, _memo.input, _Thunk({ Token.SEMICOLON }, _r221), true))
+                        _memo.results.push(_KotlinLexer_Item(_r260.startIndex, _r260.nextIndex, _memo.input, _Thunk({ Token.QUEST }, _r260), true))
                     }
 
                     _label = 91
@@ -2517,14 +2962,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "::"
-                    _ParseLiteralString(_memo, _index, "::")
+                    // LITERAL "<="
+                    _ParseLiteralString(_memo, _index, "<=")
 
-                    // ACT 223
-                    val _r223 = _memo.results.peek()
-                    if (_r223 != null) {
+                    // ACT 262
+                    val _r262 = _memo.results.peek()
+                    if (_r262 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r223.startIndex, _r223.nextIndex, _memo.input, _Thunk({ Token.COLONCOLON }, _r223), true))
+                        _memo.results.push(_KotlinLexer_Item(_r262.startIndex, _r262.nextIndex, _memo.input, _Thunk({ Token.LE }, _r262), true))
                     }
 
                     _label = 90
@@ -2540,14 +2985,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL ":"
-                    _ParseLiteralString(_memo, _index, ":")
+                    // LITERAL "<"
+                    _ParseLiteralString(_memo, _index, "<")
 
-                    // ACT 225
-                    val _r225 = _memo.results.peek()
-                    if (_r225 != null) {
+                    // ACT 264
+                    val _r264 = _memo.results.peek()
+                    if (_r264 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r225.startIndex, _r225.nextIndex, _memo.input, _Thunk({ Token.COLON }, _r225), true))
+                        _memo.results.push(_KotlinLexer_Item(_r264.startIndex, _r264.nextIndex, _memo.input, _Thunk({ Token.LANGLE }, _r264), true))
                     }
 
                     _label = 89
@@ -2563,14 +3008,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "#"
-                    _ParseLiteralString(_memo, _index, "#")
+                    // LITERAL ">="
+                    _ParseLiteralString(_memo, _index, ">=")
 
-                    // ACT 227
-                    val _r227 = _memo.results.peek()
-                    if (_r227 != null) {
+                    // ACT 266
+                    val _r266 = _memo.results.peek()
+                    if (_r266 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r227.startIndex, _r227.nextIndex, _memo.input, _Thunk({ Token.HASH }, _r227), true))
+                        _memo.results.push(_KotlinLexer_Item(_r266.startIndex, _r266.nextIndex, _memo.input, _Thunk({ Token.GE }, _r266), true))
                     }
 
                     _label = 88
@@ -2586,14 +3031,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "@"
-                    _ParseLiteralString(_memo, _index, "@")
+                    // LITERAL ">"
+                    _ParseLiteralString(_memo, _index, ">")
 
-                    // ACT 229
-                    val _r229 = _memo.results.peek()
-                    if (_r229 != null) {
+                    // ACT 268
+                    val _r268 = _memo.results.peek()
+                    if (_r268 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r229.startIndex, _r229.nextIndex, _memo.input, _Thunk({ Token.AT }, _r229), true))
+                        _memo.results.push(_KotlinLexer_Item(_r268.startIndex, _r268.nextIndex, _memo.input, _Thunk({ Token.RANGLE }, _r268), true))
                     }
 
                     _label = 87
@@ -2609,14 +3054,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "?::"
-                    _ParseLiteralString(_memo, _index, "?::")
+                    // LITERAL "as?"
+                    _ParseLiteralString(_memo, _index, "as?")
 
-                    // ACT 231
-                    val _r231 = _memo.results.peek()
-                    if (_r231 != null) {
+                    // ACT 270
+                    val _r270 = _memo.results.peek()
+                    if (_r270 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r231.startIndex, _r231.nextIndex, _memo.input, _Thunk({ Token.Q_COLONCOLON }, _r231), true))
+                        _memo.results.push(_KotlinLexer_Item(_r270.startIndex, _r270.nextIndex, _memo.input, _Thunk({ Token.AS_SAFE }, _r270), true))
                     }
 
                     _label = 86
@@ -2632,14 +3077,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "?:"
-                    _ParseLiteralString(_memo, _index, "?:")
+                    // LITERAL "==="
+                    _ParseLiteralString(_memo, _index, "===")
 
-                    // ACT 233
-                    val _r233 = _memo.results.peek()
-                    if (_r233 != null) {
+                    // ACT 272
+                    val _r272 = _memo.results.peek()
+                    if (_r272 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r233.startIndex, _r233.nextIndex, _memo.input, _Thunk({ Token.ELVIS }, _r233), true))
+                        _memo.results.push(_KotlinLexer_Item(_r272.startIndex, _r272.nextIndex, _memo.input, _Thunk({ Token.EQEQEQ }, _r272), true))
                     }
 
                     _label = 85
@@ -2655,14 +3100,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "?"
-                    _ParseLiteralString(_memo, _index, "?")
+                    // LITERAL "=="
+                    _ParseLiteralString(_memo, _index, "==")
 
-                    // ACT 235
-                    val _r235 = _memo.results.peek()
-                    if (_r235 != null) {
+                    // ACT 274
+                    val _r274 = _memo.results.peek()
+                    if (_r274 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r235.startIndex, _r235.nextIndex, _memo.input, _Thunk({ Token.QUEST }, _r235), true))
+                        _memo.results.push(_KotlinLexer_Item(_r274.startIndex, _r274.nextIndex, _memo.input, _Thunk({ Token.EQEQ }, _r274), true))
                     }
 
                     _label = 84
@@ -2678,14 +3123,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "<="
-                    _ParseLiteralString(_memo, _index, "<=")
+                    // LITERAL "=>"
+                    _ParseLiteralString(_memo, _index, "=>")
 
-                    // ACT 237
-                    val _r237 = _memo.results.peek()
-                    if (_r237 != null) {
+                    // ACT 276
+                    val _r276 = _memo.results.peek()
+                    if (_r276 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r237.startIndex, _r237.nextIndex, _memo.input, _Thunk({ Token.LE }, _r237), true))
+                        _memo.results.push(_KotlinLexer_Item(_r276.startIndex, _r276.nextIndex, _memo.input, _Thunk({ Token.DOUBLE_ARROW }, _r276), true))
                     }
 
                     _label = 83
@@ -2701,14 +3146,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL "<"
-                    _ParseLiteralString(_memo, _index, "<")
+                    // LITERAL "="
+                    _ParseLiteralString(_memo, _index, "=")
 
-                    // ACT 239
-                    val _r239 = _memo.results.peek()
-                    if (_r239 != null) {
+                    // ACT 278
+                    val _r278 = _memo.results.peek()
+                    if (_r278 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r239.startIndex, _r239.nextIndex, _memo.input, _Thunk({ Token.LANGLE }, _r239), true))
+                        _memo.results.push(_KotlinLexer_Item(_r278.startIndex, _r278.nextIndex, _memo.input, _Thunk({ Token.ASSIGNMENT }, _r278), true))
                     }
 
                     _label = 82
@@ -2724,455 +3169,11 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // LITERAL ">="
-                    _ParseLiteralString(_memo, _index, ">=")
-
-                    // ACT 241
-                    val _r241 = _memo.results.peek()
-                    if (_r241 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r241.startIndex, _r241.nextIndex, _memo.input, _Thunk({ Token.GE }, _r241), true))
-                    }
-
-                    _label = 81
-                }
-                // OR 81
-                81 -> {
-                    // OR shortcut 80
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i80
-                    } else {
-                        _label = 80
-                        continue
-                    }
-
-                    // LITERAL ">"
-                    _ParseLiteralString(_memo, _index, ">")
-
-                    // ACT 243
-                    val _r243 = _memo.results.peek()
-                    if (_r243 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r243.startIndex, _r243.nextIndex, _memo.input, _Thunk({ Token.RANGLE }, _r243), true))
-                    }
-
-                    _label = 80
-                }
-                // OR 80
-                80 -> {
-                    // OR shortcut 79
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i79
-                    } else {
-                        _label = 79
-                        continue
-                    }
-
-                    // LITERAL "as?"
-                    _ParseLiteralString(_memo, _index, "as?")
-
-                    // ACT 245
-                    val _r245 = _memo.results.peek()
-                    if (_r245 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r245.startIndex, _r245.nextIndex, _memo.input, _Thunk({ Token.AS_SAFE }, _r245), true))
-                    }
-
-                    _label = 79
-                }
-                // OR 79
-                79 -> {
-                    // OR shortcut 78
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i78
-                    } else {
-                        _label = 78
-                        continue
-                    }
-
-                    // LITERAL "==="
-                    _ParseLiteralString(_memo, _index, "===")
-
-                    // ACT 247
-                    val _r247 = _memo.results.peek()
-                    if (_r247 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r247.startIndex, _r247.nextIndex, _memo.input, _Thunk({ Token.EQEQEQ }, _r247), true))
-                    }
-
-                    _label = 78
-                }
-                // OR 78
-                78 -> {
-                    // OR shortcut 77
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i77
-                    } else {
-                        _label = 77
-                        continue
-                    }
-
-                    // LITERAL "=="
-                    _ParseLiteralString(_memo, _index, "==")
-
-                    // ACT 249
-                    val _r249 = _memo.results.peek()
-                    if (_r249 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r249.startIndex, _r249.nextIndex, _memo.input, _Thunk({ Token.EQEQ }, _r249), true))
-                    }
-
-                    _label = 77
-                }
-                // OR 77
-                77 -> {
-                    // OR shortcut 76
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i76
-                    } else {
-                        _label = 76
-                        continue
-                    }
-
-                    // LITERAL "=>"
-                    _ParseLiteralString(_memo, _index, "=>")
-
-                    // ACT 251
-                    val _r251 = _memo.results.peek()
-                    if (_r251 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r251.startIndex, _r251.nextIndex, _memo.input, _Thunk({ Token.DOUBLE_ARROW }, _r251), true))
-                    }
-
-                    _label = 76
-                }
-                // OR 76
-                76 -> {
-                    // OR shortcut 75
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i75
-                    } else {
-                        _label = 75
-                        continue
-                    }
-
-                    // LITERAL "="
-                    _ParseLiteralString(_memo, _index, "=")
-
-                    // ACT 253
-                    val _r253 = _memo.results.peek()
-                    if (_r253 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r253.startIndex, _r253.nextIndex, _memo.input, _Thunk({ Token.ASSIGNMENT }, _r253), true))
-                    }
-
-                    _label = 75
-                }
-                // OR 75
-                75 -> {
-                    // OR shortcut 74
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i74
-                    } else {
-                        _label = 74
-                        continue
-                    }
-
-                    // AND 256
-                    _start_i256 = _index.element
-
-                    // LITERAL "return@"
-                    _ParseLiteralString(_memo, _index, "return@")
-
-                    // AND shortcut 256
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 256
-                        continue
-                    }
-
-                    // CALLORVAR identifier
-                    var _r259: _KotlinLexer_Item? = null
-                    _r259 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
-                    if (_r259 != null) _index.element = _r259.nextIndex
-
-                    // BIND name
-                    name = _memo.results.peek()
-
-                    _label = 256
-                }
-                // AND 256
-                256 -> {
-                    val _r256_2 = _memo.results.pop()
-                    val _r256_1 = _memo.results.pop()
-
-                    if (_r256_1 != null && _r256_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i256, _index.element, _memo.input, (_r256_1.results + _r256_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i256
-                    }
-
-                    // ACT 255
-                    val _r255 = _memo.results.peek()
-                    if (_r255 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r255.startIndex, _r255.nextIndex, _memo.input, _Thunk({ Token.ReturnAt(name.s) }, _r255), true))
-                    }
-
-                    _label = 74
-                }
-                // OR 74
-                74 -> {
-                    // OR shortcut 73
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i73
-                    } else {
-                        _label = 73
-                        continue
-                    }
-
-                    // AND 261
-                    _start_i261 = _index.element
-
-                    // LITERAL "continue@"
-                    _ParseLiteralString(_memo, _index, "continue@")
-
-                    // AND shortcut 261
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 261
-                        continue
-                    }
-
-                    // CALLORVAR identifier
-                    var _r264: _KotlinLexer_Item? = null
-                    _r264 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
-                    if (_r264 != null) _index.element = _r264.nextIndex
-
-                    // BIND name
-                    name = _memo.results.peek()
-
-                    _label = 261
-                }
-                // AND 261
-                261 -> {
-                    val _r261_2 = _memo.results.pop()
-                    val _r261_1 = _memo.results.pop()
-
-                    if (_r261_1 != null && _r261_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i261, _index.element, _memo.input, (_r261_1.results + _r261_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i261
-                    }
-
-                    // ACT 260
-                    val _r260 = _memo.results.peek()
-                    if (_r260 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r260.startIndex, _r260.nextIndex, _memo.input, _Thunk({ Token.ContinueAt(name.s) }, _r260), true))
-                    }
-
-                    _label = 73
-                }
-                // OR 73
-                73 -> {
-                    // OR shortcut 72
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i72
-                    } else {
-                        _label = 72
-                        continue
-                    }
-
-                    // AND 266
-                    _start_i266 = _index.element
-
-                    // LITERAL "break@"
-                    _ParseLiteralString(_memo, _index, "break@")
-
-                    // AND shortcut 266
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 266
-                        continue
-                    }
-
-                    // CALLORVAR identifier
-                    var _r269: _KotlinLexer_Item? = null
-                    _r269 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
-                    if (_r269 != null) _index.element = _r269.nextIndex
-
-                    // BIND name
-                    name = _memo.results.peek()
-
-                    _label = 266
-                }
-                // AND 266
-                266 -> {
-                    val _r266_2 = _memo.results.pop()
-                    val _r266_1 = _memo.results.pop()
-
-                    if (_r266_1 != null && _r266_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i266, _index.element, _memo.input, (_r266_1.results + _r266_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i266
-                    }
-
-                    // ACT 265
-                    val _r265 = _memo.results.peek()
-                    if (_r265 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r265.startIndex, _r265.nextIndex, _memo.input, _Thunk({ Token.BreakAt(name.s) }, _r265), true))
-                    }
-
-                    _label = 72
-                }
-                // OR 72
-                72 -> {
-                    // OR shortcut 71
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i71
-                    } else {
-                        _label = 71
-                        continue
-                    }
-
-                    // AND 271
-                    _start_i271 = _index.element
-
-                    // LITERAL "file"
-                    _ParseLiteralString(_memo, _index, "file")
-
-                    // AND shortcut 271
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 271
-                        continue
-                    }
-
-                    // NOT 273
-                    _start_i273 = _index.element
-
-                    // CALLORVAR identifierPart
-                    var _r274: _KotlinLexer_Item? = null
-                    _r274 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
-                    if (_r274 != null) _index.element = _r274.nextIndex
-
-                    // NOT 273
-                    val _r273 = _memo.results.pop()
-                    _memo.results.push(if (_r273 == null) _KotlinLexer_Item(_start_i273, _memo.input) else null)
-                    _index.element = _start_i273
-                    _label = 271
-                }
-                // AND 271
-                271 -> {
-                    val _r271_2 = _memo.results.pop()
-                    val _r271_1 = _memo.results.pop()
-
-                    if (_r271_1 != null && _r271_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i271, _index.element, _memo.input, (_r271_1.results + _r271_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i271
-                    }
-
-                    // ACT 270
-                    val _r270 = _memo.results.peek()
-                    if (_r270 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r270.startIndex, _r270.nextIndex, _memo.input, _Thunk({ Token.FILE }, _r270), true))
-                    }
-
-                    _label = 71
-                }
-                // OR 71
-                71 -> {
-                    // OR shortcut 70
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i70
-                    } else {
-                        _label = 70
-                        continue
-                    }
-
-                    // AND 276
-                    _start_i276 = _index.element
-
-                    // LITERAL "package"
-                    _ParseLiteralString(_memo, _index, "package")
-
-                    // AND shortcut 276
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 276
-                        continue
-                    }
-
-                    // NOT 278
-                    _start_i278 = _index.element
-
-                    // CALLORVAR identifierPart
-                    var _r279: _KotlinLexer_Item? = null
-                    _r279 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
-                    if (_r279 != null) _index.element = _r279.nextIndex
-
-                    // NOT 278
-                    val _r278 = _memo.results.pop()
-                    _memo.results.push(if (_r278 == null) _KotlinLexer_Item(_start_i278, _memo.input) else null)
-                    _index.element = _start_i278
-                    _label = 276
-                }
-                // AND 276
-                276 -> {
-                    val _r276_2 = _memo.results.pop()
-                    val _r276_1 = _memo.results.pop()
-
-                    if (_r276_1 != null && _r276_2 != null) {
-                        _memo.results.push(_KotlinLexer_Item(_start_i276, _index.element, _memo.input, (_r276_1.results + _r276_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i276
-                    }
-
-                    // ACT 275
-                    val _r275 = _memo.results.peek()
-                    if (_r275 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r275.startIndex, _r275.nextIndex, _memo.input, _Thunk({ Token.PACKAGE }, _r275), true))
-                    }
-
-                    _label = 70
-                }
-                // OR 70
-                70 -> {
-                    // OR shortcut 69
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i69
-                    } else {
-                        _label = 69
-                        continue
-                    }
-
                     // AND 281
                     _start_i281 = _index.element
 
-                    // LITERAL "import"
-                    _ParseLiteralString(_memo, _index, "import")
+                    // LITERAL "return@"
+                    _ParseLiteralString(_memo, _index, "return@")
 
                     // AND shortcut 281
                     if (_memo.results.peek() == null) {
@@ -3181,18 +3182,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // NOT 283
-                    _start_i283 = _index.element
-
-                    // CALLORVAR identifierPart
+                    // CALLORVAR identifier
                     var _r284: _KotlinLexer_Item? = null
-                    _r284 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    _r284 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
                     if (_r284 != null) _index.element = _r284.nextIndex
 
-                    // NOT 283
-                    val _r283 = _memo.results.pop()
-                    _memo.results.push(if (_r283 == null) _KotlinLexer_Item(_start_i283, _memo.input) else null)
-                    _index.element = _start_i283
+                    // BIND name
+                    name = _memo.results.peek()
+
                     _label = 281
                 }
                 // AND 281
@@ -3211,27 +3208,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r280 = _memo.results.peek()
                     if (_r280 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r280.startIndex, _r280.nextIndex, _memo.input, _Thunk({ Token.IMPORT }, _r280), true))
+                        _memo.results.push(_KotlinLexer_Item(_r280.startIndex, _r280.nextIndex, _memo.input, _Thunk({ Token.ReturnAt(name.s) }, _r280), true))
                     }
 
-                    _label = 69
+                    _label = 81
                 }
-                // OR 69
-                69 -> {
-                    // OR shortcut 68
+                // OR 81
+                81 -> {
+                    // OR shortcut 80
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i68
+                        _index.element = _start_i80
                     } else {
-                        _label = 68
+                        _label = 80
                         continue
                     }
 
                     // AND 286
                     _start_i286 = _index.element
 
-                    // LITERAL "class"
-                    _ParseLiteralString(_memo, _index, "class")
+                    // LITERAL "continue@"
+                    _ParseLiteralString(_memo, _index, "continue@")
 
                     // AND shortcut 286
                     if (_memo.results.peek() == null) {
@@ -3240,18 +3237,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // NOT 288
-                    _start_i288 = _index.element
-
-                    // CALLORVAR identifierPart
+                    // CALLORVAR identifier
                     var _r289: _KotlinLexer_Item? = null
-                    _r289 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    _r289 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
                     if (_r289 != null) _index.element = _r289.nextIndex
 
-                    // NOT 288
-                    val _r288 = _memo.results.pop()
-                    _memo.results.push(if (_r288 == null) _KotlinLexer_Item(_start_i288, _memo.input) else null)
-                    _index.element = _start_i288
+                    // BIND name
+                    name = _memo.results.peek()
+
                     _label = 286
                 }
                 // AND 286
@@ -3270,27 +3263,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r285 = _memo.results.peek()
                     if (_r285 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r285.startIndex, _r285.nextIndex, _memo.input, _Thunk({ Token.CLASS }, _r285), true))
+                        _memo.results.push(_KotlinLexer_Item(_r285.startIndex, _r285.nextIndex, _memo.input, _Thunk({ Token.ContinueAt(name.s) }, _r285), true))
                     }
 
-                    _label = 68
+                    _label = 80
                 }
-                // OR 68
-                68 -> {
-                    // OR shortcut 67
+                // OR 80
+                80 -> {
+                    // OR shortcut 79
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i67
+                        _index.element = _start_i79
                     } else {
-                        _label = 67
+                        _label = 79
                         continue
                     }
 
                     // AND 291
                     _start_i291 = _index.element
 
-                    // LITERAL "interface"
-                    _ParseLiteralString(_memo, _index, "interface")
+                    // LITERAL "break@"
+                    _ParseLiteralString(_memo, _index, "break@")
 
                     // AND shortcut 291
                     if (_memo.results.peek() == null) {
@@ -3299,18 +3292,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // NOT 293
-                    _start_i293 = _index.element
-
-                    // CALLORVAR identifierPart
+                    // CALLORVAR identifier
                     var _r294: _KotlinLexer_Item? = null
-                    _r294 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    _r294 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
                     if (_r294 != null) _index.element = _r294.nextIndex
 
-                    // NOT 293
-                    val _r293 = _memo.results.pop()
-                    _memo.results.push(if (_r293 == null) _KotlinLexer_Item(_start_i293, _memo.input) else null)
-                    _index.element = _start_i293
+                    // BIND name
+                    name = _memo.results.peek()
+
                     _label = 291
                 }
                 // AND 291
@@ -3329,27 +3318,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r290 = _memo.results.peek()
                     if (_r290 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r290.startIndex, _r290.nextIndex, _memo.input, _Thunk({ Token.INTERFACE }, _r290), true))
+                        _memo.results.push(_KotlinLexer_Item(_r290.startIndex, _r290.nextIndex, _memo.input, _Thunk({ Token.BreakAt(name.s) }, _r290), true))
                     }
 
-                    _label = 67
+                    _label = 79
                 }
-                // OR 67
-                67 -> {
-                    // OR shortcut 66
+                // OR 79
+                79 -> {
+                    // OR shortcut 78
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i66
+                        _index.element = _start_i78
                     } else {
-                        _label = 66
+                        _label = 78
                         continue
                     }
 
                     // AND 296
                     _start_i296 = _index.element
 
-                    // LITERAL "fun"
-                    _ParseLiteralString(_memo, _index, "fun")
+                    // LITERAL "this@"
+                    _ParseLiteralString(_memo, _index, "this@")
 
                     // AND shortcut 296
                     if (_memo.results.peek() == null) {
@@ -3358,18 +3347,14 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // NOT 298
-                    _start_i298 = _index.element
-
-                    // CALLORVAR identifierPart
+                    // CALLORVAR identifier
                     var _r299: _KotlinLexer_Item? = null
-                    _r299 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    _r299 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
                     if (_r299 != null) _index.element = _r299.nextIndex
 
-                    // NOT 298
-                    val _r298 = _memo.results.pop()
-                    _memo.results.push(if (_r298 == null) _KotlinLexer_Item(_start_i298, _memo.input) else null)
-                    _index.element = _start_i298
+                    // BIND name
+                    name = _memo.results.peek()
+
                     _label = 296
                 }
                 // AND 296
@@ -3388,27 +3373,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r295 = _memo.results.peek()
                     if (_r295 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r295.startIndex, _r295.nextIndex, _memo.input, _Thunk({ Token.FUN }, _r295), true))
+                        _memo.results.push(_KotlinLexer_Item(_r295.startIndex, _r295.nextIndex, _memo.input, _Thunk({ Token.ThisAt(name.s) }, _r295), true))
                     }
 
-                    _label = 66
+                    _label = 78
                 }
-                // OR 66
-                66 -> {
-                    // OR shortcut 65
+                // OR 78
+                78 -> {
+                    // OR shortcut 77
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i65
+                        _index.element = _start_i77
                     } else {
-                        _label = 65
+                        _label = 77
                         continue
                     }
 
                     // AND 301
                     _start_i301 = _index.element
 
-                    // LITERAL "object"
-                    _ParseLiteralString(_memo, _index, "object")
+                    // LITERAL "file"
+                    _ParseLiteralString(_memo, _index, "file")
 
                     // AND shortcut 301
                     if (_memo.results.peek() == null) {
@@ -3447,27 +3432,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r300 = _memo.results.peek()
                     if (_r300 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r300.startIndex, _r300.nextIndex, _memo.input, _Thunk({ Token.OBJECT }, _r300), true))
+                        _memo.results.push(_KotlinLexer_Item(_r300.startIndex, _r300.nextIndex, _memo.input, _Thunk({ Token.FILE }, _r300), true))
                     }
 
-                    _label = 65
+                    _label = 77
                 }
-                // OR 65
-                65 -> {
-                    // OR shortcut 64
+                // OR 77
+                77 -> {
+                    // OR shortcut 76
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i64
+                        _index.element = _start_i76
                     } else {
-                        _label = 64
+                        _label = 76
                         continue
                     }
 
                     // AND 306
                     _start_i306 = _index.element
 
-                    // LITERAL "val"
-                    _ParseLiteralString(_memo, _index, "val")
+                    // LITERAL "package"
+                    _ParseLiteralString(_memo, _index, "package")
 
                     // AND shortcut 306
                     if (_memo.results.peek() == null) {
@@ -3506,27 +3491,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r305 = _memo.results.peek()
                     if (_r305 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r305.startIndex, _r305.nextIndex, _memo.input, _Thunk({ Token.VAL }, _r305), true))
+                        _memo.results.push(_KotlinLexer_Item(_r305.startIndex, _r305.nextIndex, _memo.input, _Thunk({ Token.PACKAGE }, _r305), true))
                     }
 
-                    _label = 64
+                    _label = 76
                 }
-                // OR 64
-                64 -> {
-                    // OR shortcut 63
+                // OR 76
+                76 -> {
+                    // OR shortcut 75
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i63
+                        _index.element = _start_i75
                     } else {
-                        _label = 63
+                        _label = 75
                         continue
                     }
 
                     // AND 311
                     _start_i311 = _index.element
 
-                    // LITERAL "var"
-                    _ParseLiteralString(_memo, _index, "var")
+                    // LITERAL "import"
+                    _ParseLiteralString(_memo, _index, "import")
 
                     // AND shortcut 311
                     if (_memo.results.peek() == null) {
@@ -3565,27 +3550,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r310 = _memo.results.peek()
                     if (_r310 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r310.startIndex, _r310.nextIndex, _memo.input, _Thunk({ Token.VAR }, _r310), true))
+                        _memo.results.push(_KotlinLexer_Item(_r310.startIndex, _r310.nextIndex, _memo.input, _Thunk({ Token.IMPORT }, _r310), true))
                     }
 
-                    _label = 63
+                    _label = 75
                 }
-                // OR 63
-                63 -> {
-                    // OR shortcut 62
+                // OR 75
+                75 -> {
+                    // OR shortcut 74
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i62
+                        _index.element = _start_i74
                     } else {
-                        _label = 62
+                        _label = 74
                         continue
                     }
 
                     // AND 316
                     _start_i316 = _index.element
 
-                    // LITERAL "typealias"
-                    _ParseLiteralString(_memo, _index, "typealias")
+                    // LITERAL "class"
+                    _ParseLiteralString(_memo, _index, "class")
 
                     // AND shortcut 316
                     if (_memo.results.peek() == null) {
@@ -3624,27 +3609,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r315 = _memo.results.peek()
                     if (_r315 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r315.startIndex, _r315.nextIndex, _memo.input, _Thunk({ Token.TYPE_ALIAS }, _r315), true))
+                        _memo.results.push(_KotlinLexer_Item(_r315.startIndex, _r315.nextIndex, _memo.input, _Thunk({ Token.CLASS }, _r315), true))
                     }
 
-                    _label = 62
+                    _label = 74
                 }
-                // OR 62
-                62 -> {
-                    // OR shortcut 61
+                // OR 74
+                74 -> {
+                    // OR shortcut 73
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i61
+                        _index.element = _start_i73
                     } else {
-                        _label = 61
+                        _label = 73
                         continue
                     }
 
                     // AND 321
                     _start_i321 = _index.element
 
-                    // LITERAL "constructor"
-                    _ParseLiteralString(_memo, _index, "constructor")
+                    // LITERAL "interface"
+                    _ParseLiteralString(_memo, _index, "interface")
 
                     // AND shortcut 321
                     if (_memo.results.peek() == null) {
@@ -3683,27 +3668,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r320 = _memo.results.peek()
                     if (_r320 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r320.startIndex, _r320.nextIndex, _memo.input, _Thunk({ Token.CONSTRUCTOR }, _r320), true))
+                        _memo.results.push(_KotlinLexer_Item(_r320.startIndex, _r320.nextIndex, _memo.input, _Thunk({ Token.INTERFACE }, _r320), true))
                     }
 
-                    _label = 61
+                    _label = 73
                 }
-                // OR 61
-                61 -> {
-                    // OR shortcut 60
+                // OR 73
+                73 -> {
+                    // OR shortcut 72
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i60
+                        _index.element = _start_i72
                     } else {
-                        _label = 60
+                        _label = 72
                         continue
                     }
 
                     // AND 326
                     _start_i326 = _index.element
 
-                    // LITERAL "by"
-                    _ParseLiteralString(_memo, _index, "by")
+                    // LITERAL "fun"
+                    _ParseLiteralString(_memo, _index, "fun")
 
                     // AND shortcut 326
                     if (_memo.results.peek() == null) {
@@ -3742,27 +3727,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r325 = _memo.results.peek()
                     if (_r325 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r325.startIndex, _r325.nextIndex, _memo.input, _Thunk({ Token.BY }, _r325), true))
+                        _memo.results.push(_KotlinLexer_Item(_r325.startIndex, _r325.nextIndex, _memo.input, _Thunk({ Token.FUN }, _r325), true))
                     }
 
-                    _label = 60
+                    _label = 72
                 }
-                // OR 60
-                60 -> {
-                    // OR shortcut 59
+                // OR 72
+                72 -> {
+                    // OR shortcut 71
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i59
+                        _index.element = _start_i71
                     } else {
-                        _label = 59
+                        _label = 71
                         continue
                     }
 
                     // AND 331
                     _start_i331 = _index.element
 
-                    // LITERAL "companion"
-                    _ParseLiteralString(_memo, _index, "companion")
+                    // LITERAL "object"
+                    _ParseLiteralString(_memo, _index, "object")
 
                     // AND shortcut 331
                     if (_memo.results.peek() == null) {
@@ -3801,27 +3786,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r330 = _memo.results.peek()
                     if (_r330 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r330.startIndex, _r330.nextIndex, _memo.input, _Thunk({ Token.COMPANION }, _r330), true))
+                        _memo.results.push(_KotlinLexer_Item(_r330.startIndex, _r330.nextIndex, _memo.input, _Thunk({ Token.OBJECT }, _r330), true))
                     }
 
-                    _label = 59
+                    _label = 71
                 }
-                // OR 59
-                59 -> {
-                    // OR shortcut 58
+                // OR 71
+                71 -> {
+                    // OR shortcut 70
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i58
+                        _index.element = _start_i70
                     } else {
-                        _label = 58
+                        _label = 70
                         continue
                     }
 
                     // AND 336
                     _start_i336 = _index.element
 
-                    // LITERAL "init'"
-                    _ParseLiteralString(_memo, _index, "init'")
+                    // LITERAL "val"
+                    _ParseLiteralString(_memo, _index, "val")
 
                     // AND shortcut 336
                     if (_memo.results.peek() == null) {
@@ -3860,27 +3845,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r335 = _memo.results.peek()
                     if (_r335 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r335.startIndex, _r335.nextIndex, _memo.input, _Thunk({ Token.INIT }, _r335), true))
+                        _memo.results.push(_KotlinLexer_Item(_r335.startIndex, _r335.nextIndex, _memo.input, _Thunk({ Token.VAL }, _r335), true))
                     }
 
-                    _label = 58
+                    _label = 70
                 }
-                // OR 58
-                58 -> {
-                    // OR shortcut 57
+                // OR 70
+                70 -> {
+                    // OR shortcut 69
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i57
+                        _index.element = _start_i69
                     } else {
-                        _label = 57
+                        _label = 69
                         continue
                     }
 
                     // AND 341
                     _start_i341 = _index.element
 
-                    // LITERAL "this"
-                    _ParseLiteralString(_memo, _index, "this")
+                    // LITERAL "var"
+                    _ParseLiteralString(_memo, _index, "var")
 
                     // AND shortcut 341
                     if (_memo.results.peek() == null) {
@@ -3919,27 +3904,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r340 = _memo.results.peek()
                     if (_r340 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r340.startIndex, _r340.nextIndex, _memo.input, _Thunk({ Token.THIS }, _r340), true))
+                        _memo.results.push(_KotlinLexer_Item(_r340.startIndex, _r340.nextIndex, _memo.input, _Thunk({ Token.VAR }, _r340), true))
                     }
 
-                    _label = 57
+                    _label = 69
                 }
-                // OR 57
-                57 -> {
-                    // OR shortcut 56
+                // OR 69
+                69 -> {
+                    // OR shortcut 68
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i56
+                        _index.element = _start_i68
                     } else {
-                        _label = 56
+                        _label = 68
                         continue
                     }
 
                     // AND 346
                     _start_i346 = _index.element
 
-                    // LITERAL "super"
-                    _ParseLiteralString(_memo, _index, "super")
+                    // LITERAL "typealias"
+                    _ParseLiteralString(_memo, _index, "typealias")
 
                     // AND shortcut 346
                     if (_memo.results.peek() == null) {
@@ -3978,27 +3963,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r345 = _memo.results.peek()
                     if (_r345 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r345.startIndex, _r345.nextIndex, _memo.input, _Thunk({ Token.SUPER }, _r345), true))
+                        _memo.results.push(_KotlinLexer_Item(_r345.startIndex, _r345.nextIndex, _memo.input, _Thunk({ Token.TYPE_ALIAS }, _r345), true))
                     }
 
-                    _label = 56
+                    _label = 68
                 }
-                // OR 56
-                56 -> {
-                    // OR shortcut 55
+                // OR 68
+                68 -> {
+                    // OR shortcut 67
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i55
+                        _index.element = _start_i67
                     } else {
-                        _label = 55
+                        _label = 67
                         continue
                     }
 
                     // AND 351
                     _start_i351 = _index.element
 
-                    // LITERAL "typeof"
-                    _ParseLiteralString(_memo, _index, "typeof")
+                    // LITERAL "constructor"
+                    _ParseLiteralString(_memo, _index, "constructor")
 
                     // AND shortcut 351
                     if (_memo.results.peek() == null) {
@@ -4037,27 +4022,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r350 = _memo.results.peek()
                     if (_r350 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r350.startIndex, _r350.nextIndex, _memo.input, _Thunk({ Token.TYPEOF }, _r350), true))
+                        _memo.results.push(_KotlinLexer_Item(_r350.startIndex, _r350.nextIndex, _memo.input, _Thunk({ Token.CONSTRUCTOR }, _r350), true))
                     }
 
-                    _label = 55
+                    _label = 67
                 }
-                // OR 55
-                55 -> {
-                    // OR shortcut 54
+                // OR 67
+                67 -> {
+                    // OR shortcut 66
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i54
+                        _index.element = _start_i66
                     } else {
-                        _label = 54
+                        _label = 66
                         continue
                     }
 
                     // AND 356
                     _start_i356 = _index.element
 
-                    // LITERAL "where"
-                    _ParseLiteralString(_memo, _index, "where")
+                    // LITERAL "by"
+                    _ParseLiteralString(_memo, _index, "by")
 
                     // AND shortcut 356
                     if (_memo.results.peek() == null) {
@@ -4096,27 +4081,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r355 = _memo.results.peek()
                     if (_r355 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r355.startIndex, _r355.nextIndex, _memo.input, _Thunk({ Token.WHERE }, _r355), true))
+                        _memo.results.push(_KotlinLexer_Item(_r355.startIndex, _r355.nextIndex, _memo.input, _Thunk({ Token.BY }, _r355), true))
                     }
 
-                    _label = 54
+                    _label = 66
                 }
-                // OR 54
-                54 -> {
-                    // OR shortcut 53
+                // OR 66
+                66 -> {
+                    // OR shortcut 65
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i53
+                        _index.element = _start_i65
                     } else {
-                        _label = 53
+                        _label = 65
                         continue
                     }
 
                     // AND 361
                     _start_i361 = _index.element
 
-                    // LITERAL "if"
-                    _ParseLiteralString(_memo, _index, "if")
+                    // LITERAL "companion"
+                    _ParseLiteralString(_memo, _index, "companion")
 
                     // AND shortcut 361
                     if (_memo.results.peek() == null) {
@@ -4155,27 +4140,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r360 = _memo.results.peek()
                     if (_r360 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r360.startIndex, _r360.nextIndex, _memo.input, _Thunk({ Token.IF }, _r360), true))
+                        _memo.results.push(_KotlinLexer_Item(_r360.startIndex, _r360.nextIndex, _memo.input, _Thunk({ Token.COMPANION }, _r360), true))
                     }
 
-                    _label = 53
+                    _label = 65
                 }
-                // OR 53
-                53 -> {
-                    // OR shortcut 52
+                // OR 65
+                65 -> {
+                    // OR shortcut 64
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i52
+                        _index.element = _start_i64
                     } else {
-                        _label = 52
+                        _label = 64
                         continue
                     }
 
                     // AND 366
                     _start_i366 = _index.element
 
-                    // LITERAL "else"
-                    _ParseLiteralString(_memo, _index, "else")
+                    // LITERAL "init'"
+                    _ParseLiteralString(_memo, _index, "init'")
 
                     // AND shortcut 366
                     if (_memo.results.peek() == null) {
@@ -4214,27 +4199,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r365 = _memo.results.peek()
                     if (_r365 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r365.startIndex, _r365.nextIndex, _memo.input, _Thunk({ Token.ELSE }, _r365), true))
+                        _memo.results.push(_KotlinLexer_Item(_r365.startIndex, _r365.nextIndex, _memo.input, _Thunk({ Token.INIT }, _r365), true))
                     }
 
-                    _label = 52
+                    _label = 64
                 }
-                // OR 52
-                52 -> {
-                    // OR shortcut 51
+                // OR 64
+                64 -> {
+                    // OR shortcut 63
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i51
+                        _index.element = _start_i63
                     } else {
-                        _label = 51
+                        _label = 63
                         continue
                     }
 
                     // AND 371
                     _start_i371 = _index.element
 
-                    // LITERAL "when"
-                    _ParseLiteralString(_memo, _index, "when")
+                    // LITERAL "this"
+                    _ParseLiteralString(_memo, _index, "this")
 
                     // AND shortcut 371
                     if (_memo.results.peek() == null) {
@@ -4273,27 +4258,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r370 = _memo.results.peek()
                     if (_r370 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r370.startIndex, _r370.nextIndex, _memo.input, _Thunk({ Token.WHEN }, _r370), true))
+                        _memo.results.push(_KotlinLexer_Item(_r370.startIndex, _r370.nextIndex, _memo.input, _Thunk({ Token.THIS }, _r370), true))
                     }
 
-                    _label = 51
+                    _label = 63
                 }
-                // OR 51
-                51 -> {
-                    // OR shortcut 50
+                // OR 63
+                63 -> {
+                    // OR shortcut 62
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i50
+                        _index.element = _start_i62
                     } else {
-                        _label = 50
+                        _label = 62
                         continue
                     }
 
                     // AND 376
                     _start_i376 = _index.element
 
-                    // LITERAL "try"
-                    _ParseLiteralString(_memo, _index, "try")
+                    // LITERAL "super"
+                    _ParseLiteralString(_memo, _index, "super")
 
                     // AND shortcut 376
                     if (_memo.results.peek() == null) {
@@ -4332,27 +4317,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r375 = _memo.results.peek()
                     if (_r375 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r375.startIndex, _r375.nextIndex, _memo.input, _Thunk({ Token.TRY }, _r375), true))
+                        _memo.results.push(_KotlinLexer_Item(_r375.startIndex, _r375.nextIndex, _memo.input, _Thunk({ Token.SUPER }, _r375), true))
                     }
 
-                    _label = 50
+                    _label = 62
                 }
-                // OR 50
-                50 -> {
-                    // OR shortcut 49
+                // OR 62
+                62 -> {
+                    // OR shortcut 61
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i49
+                        _index.element = _start_i61
                     } else {
-                        _label = 49
+                        _label = 61
                         continue
                     }
 
                     // AND 381
                     _start_i381 = _index.element
 
-                    // LITERAL "catch"
-                    _ParseLiteralString(_memo, _index, "catch")
+                    // LITERAL "typeof"
+                    _ParseLiteralString(_memo, _index, "typeof")
 
                     // AND shortcut 381
                     if (_memo.results.peek() == null) {
@@ -4391,27 +4376,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r380 = _memo.results.peek()
                     if (_r380 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r380.startIndex, _r380.nextIndex, _memo.input, _Thunk({ Token.CATCH }, _r380), true))
+                        _memo.results.push(_KotlinLexer_Item(_r380.startIndex, _r380.nextIndex, _memo.input, _Thunk({ Token.TYPEOF }, _r380), true))
                     }
 
-                    _label = 49
+                    _label = 61
                 }
-                // OR 49
-                49 -> {
-                    // OR shortcut 48
+                // OR 61
+                61 -> {
+                    // OR shortcut 60
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i48
+                        _index.element = _start_i60
                     } else {
-                        _label = 48
+                        _label = 60
                         continue
                     }
 
                     // AND 386
                     _start_i386 = _index.element
 
-                    // LITERAL "finally"
-                    _ParseLiteralString(_memo, _index, "finally")
+                    // LITERAL "where"
+                    _ParseLiteralString(_memo, _index, "where")
 
                     // AND shortcut 386
                     if (_memo.results.peek() == null) {
@@ -4450,27 +4435,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r385 = _memo.results.peek()
                     if (_r385 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r385.startIndex, _r385.nextIndex, _memo.input, _Thunk({ Token.FINALLY }, _r385), true))
+                        _memo.results.push(_KotlinLexer_Item(_r385.startIndex, _r385.nextIndex, _memo.input, _Thunk({ Token.WHERE }, _r385), true))
                     }
 
-                    _label = 48
+                    _label = 60
                 }
-                // OR 48
-                48 -> {
-                    // OR shortcut 47
+                // OR 60
+                60 -> {
+                    // OR shortcut 59
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i47
+                        _index.element = _start_i59
                     } else {
-                        _label = 47
+                        _label = 59
                         continue
                     }
 
                     // AND 391
                     _start_i391 = _index.element
 
-                    // LITERAL "for"
-                    _ParseLiteralString(_memo, _index, "for")
+                    // LITERAL "if"
+                    _ParseLiteralString(_memo, _index, "if")
 
                     // AND shortcut 391
                     if (_memo.results.peek() == null) {
@@ -4509,27 +4494,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r390 = _memo.results.peek()
                     if (_r390 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r390.startIndex, _r390.nextIndex, _memo.input, _Thunk({ Token.FOR }, _r390), true))
+                        _memo.results.push(_KotlinLexer_Item(_r390.startIndex, _r390.nextIndex, _memo.input, _Thunk({ Token.IF }, _r390), true))
                     }
 
-                    _label = 47
+                    _label = 59
                 }
-                // OR 47
-                47 -> {
-                    // OR shortcut 46
+                // OR 59
+                59 -> {
+                    // OR shortcut 58
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i46
+                        _index.element = _start_i58
                     } else {
-                        _label = 46
+                        _label = 58
                         continue
                     }
 
                     // AND 396
                     _start_i396 = _index.element
 
-                    // LITERAL "do"
-                    _ParseLiteralString(_memo, _index, "do")
+                    // LITERAL "else"
+                    _ParseLiteralString(_memo, _index, "else")
 
                     // AND shortcut 396
                     if (_memo.results.peek() == null) {
@@ -4568,27 +4553,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r395 = _memo.results.peek()
                     if (_r395 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r395.startIndex, _r395.nextIndex, _memo.input, _Thunk({ Token.DO }, _r395), true))
+                        _memo.results.push(_KotlinLexer_Item(_r395.startIndex, _r395.nextIndex, _memo.input, _Thunk({ Token.ELSE }, _r395), true))
                     }
 
-                    _label = 46
+                    _label = 58
                 }
-                // OR 46
-                46 -> {
-                    // OR shortcut 45
+                // OR 58
+                58 -> {
+                    // OR shortcut 57
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i45
+                        _index.element = _start_i57
                     } else {
-                        _label = 45
+                        _label = 57
                         continue
                     }
 
                     // AND 401
                     _start_i401 = _index.element
 
-                    // LITERAL "while"
-                    _ParseLiteralString(_memo, _index, "while")
+                    // LITERAL "when"
+                    _ParseLiteralString(_memo, _index, "when")
 
                     // AND shortcut 401
                     if (_memo.results.peek() == null) {
@@ -4627,27 +4612,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r400 = _memo.results.peek()
                     if (_r400 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r400.startIndex, _r400.nextIndex, _memo.input, _Thunk({ Token.WHILE }, _r400), true))
+                        _memo.results.push(_KotlinLexer_Item(_r400.startIndex, _r400.nextIndex, _memo.input, _Thunk({ Token.WHEN }, _r400), true))
                     }
 
-                    _label = 45
+                    _label = 57
                 }
-                // OR 45
-                45 -> {
-                    // OR shortcut 44
+                // OR 57
+                57 -> {
+                    // OR shortcut 56
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i44
+                        _index.element = _start_i56
                     } else {
-                        _label = 44
+                        _label = 56
                         continue
                     }
 
                     // AND 406
                     _start_i406 = _index.element
 
-                    // LITERAL "throw"
-                    _ParseLiteralString(_memo, _index, "throw")
+                    // LITERAL "try"
+                    _ParseLiteralString(_memo, _index, "try")
 
                     // AND shortcut 406
                     if (_memo.results.peek() == null) {
@@ -4686,27 +4671,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r405 = _memo.results.peek()
                     if (_r405 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r405.startIndex, _r405.nextIndex, _memo.input, _Thunk({ Token.THROW }, _r405), true))
+                        _memo.results.push(_KotlinLexer_Item(_r405.startIndex, _r405.nextIndex, _memo.input, _Thunk({ Token.TRY }, _r405), true))
                     }
 
-                    _label = 44
+                    _label = 56
                 }
-                // OR 44
-                44 -> {
-                    // OR shortcut 43
+                // OR 56
+                56 -> {
+                    // OR shortcut 55
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i43
+                        _index.element = _start_i55
                     } else {
-                        _label = 43
+                        _label = 55
                         continue
                     }
 
                     // AND 411
                     _start_i411 = _index.element
 
-                    // LITERAL "return"
-                    _ParseLiteralString(_memo, _index, "return")
+                    // LITERAL "catch"
+                    _ParseLiteralString(_memo, _index, "catch")
 
                     // AND shortcut 411
                     if (_memo.results.peek() == null) {
@@ -4745,27 +4730,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r410 = _memo.results.peek()
                     if (_r410 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r410.startIndex, _r410.nextIndex, _memo.input, _Thunk({ Token.RETURN }, _r410), true))
+                        _memo.results.push(_KotlinLexer_Item(_r410.startIndex, _r410.nextIndex, _memo.input, _Thunk({ Token.CATCH }, _r410), true))
                     }
 
-                    _label = 43
+                    _label = 55
                 }
-                // OR 43
-                43 -> {
-                    // OR shortcut 42
+                // OR 55
+                55 -> {
+                    // OR shortcut 54
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i42
+                        _index.element = _start_i54
                     } else {
-                        _label = 42
+                        _label = 54
                         continue
                     }
 
                     // AND 416
                     _start_i416 = _index.element
 
-                    // LITERAL "continue"
-                    _ParseLiteralString(_memo, _index, "continue")
+                    // LITERAL "finally"
+                    _ParseLiteralString(_memo, _index, "finally")
 
                     // AND shortcut 416
                     if (_memo.results.peek() == null) {
@@ -4804,27 +4789,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r415 = _memo.results.peek()
                     if (_r415 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r415.startIndex, _r415.nextIndex, _memo.input, _Thunk({ Token.CONTINUE }, _r415), true))
+                        _memo.results.push(_KotlinLexer_Item(_r415.startIndex, _r415.nextIndex, _memo.input, _Thunk({ Token.FINALLY }, _r415), true))
                     }
 
-                    _label = 42
+                    _label = 54
                 }
-                // OR 42
-                42 -> {
-                    // OR shortcut 41
+                // OR 54
+                54 -> {
+                    // OR shortcut 53
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i41
+                        _index.element = _start_i53
                     } else {
-                        _label = 41
+                        _label = 53
                         continue
                     }
 
                     // AND 421
                     _start_i421 = _index.element
 
-                    // LITERAL "break"
-                    _ParseLiteralString(_memo, _index, "break")
+                    // LITERAL "for"
+                    _ParseLiteralString(_memo, _index, "for")
 
                     // AND shortcut 421
                     if (_memo.results.peek() == null) {
@@ -4863,27 +4848,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r420 = _memo.results.peek()
                     if (_r420 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r420.startIndex, _r420.nextIndex, _memo.input, _Thunk({ Token.BREAK }, _r420), true))
+                        _memo.results.push(_KotlinLexer_Item(_r420.startIndex, _r420.nextIndex, _memo.input, _Thunk({ Token.FOR }, _r420), true))
                     }
 
-                    _label = 41
+                    _label = 53
                 }
-                // OR 41
-                41 -> {
-                    // OR shortcut 40
+                // OR 53
+                53 -> {
+                    // OR shortcut 52
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i40
+                        _index.element = _start_i52
                     } else {
-                        _label = 40
+                        _label = 52
                         continue
                     }
 
                     // AND 426
                     _start_i426 = _index.element
 
-                    // LITERAL "as"
-                    _ParseLiteralString(_memo, _index, "as")
+                    // LITERAL "do"
+                    _ParseLiteralString(_memo, _index, "do")
 
                     // AND shortcut 426
                     if (_memo.results.peek() == null) {
@@ -4922,27 +4907,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r425 = _memo.results.peek()
                     if (_r425 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r425.startIndex, _r425.nextIndex, _memo.input, _Thunk({ Token.AS }, _r425), true))
+                        _memo.results.push(_KotlinLexer_Item(_r425.startIndex, _r425.nextIndex, _memo.input, _Thunk({ Token.DO }, _r425), true))
                     }
 
-                    _label = 40
+                    _label = 52
                 }
-                // OR 40
-                40 -> {
-                    // OR shortcut 39
+                // OR 52
+                52 -> {
+                    // OR shortcut 51
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i39
+                        _index.element = _start_i51
                     } else {
-                        _label = 39
+                        _label = 51
                         continue
                     }
 
                     // AND 431
                     _start_i431 = _index.element
 
-                    // LITERAL "is"
-                    _ParseLiteralString(_memo, _index, "is")
+                    // LITERAL "while"
+                    _ParseLiteralString(_memo, _index, "while")
 
                     // AND shortcut 431
                     if (_memo.results.peek() == null) {
@@ -4981,27 +4966,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r430 = _memo.results.peek()
                     if (_r430 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r430.startIndex, _r430.nextIndex, _memo.input, _Thunk({ Token.IS }, _r430), true))
+                        _memo.results.push(_KotlinLexer_Item(_r430.startIndex, _r430.nextIndex, _memo.input, _Thunk({ Token.WHILE }, _r430), true))
                     }
 
-                    _label = 39
+                    _label = 51
                 }
-                // OR 39
-                39 -> {
-                    // OR shortcut 38
+                // OR 51
+                51 -> {
+                    // OR shortcut 50
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i38
+                        _index.element = _start_i50
                     } else {
-                        _label = 38
+                        _label = 50
                         continue
                     }
 
                     // AND 436
                     _start_i436 = _index.element
 
-                    // LITERAL "in"
-                    _ParseLiteralString(_memo, _index, "in")
+                    // LITERAL "throw"
+                    _ParseLiteralString(_memo, _index, "throw")
 
                     // AND shortcut 436
                     if (_memo.results.peek() == null) {
@@ -5040,27 +5025,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r435 = _memo.results.peek()
                     if (_r435 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r435.startIndex, _r435.nextIndex, _memo.input, _Thunk({ Token.IN }, _r435), true))
+                        _memo.results.push(_KotlinLexer_Item(_r435.startIndex, _r435.nextIndex, _memo.input, _Thunk({ Token.THROW }, _r435), true))
                     }
 
-                    _label = 38
+                    _label = 50
                 }
-                // OR 38
-                38 -> {
-                    // OR shortcut 37
+                // OR 50
+                50 -> {
+                    // OR shortcut 49
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i37
+                        _index.element = _start_i49
                     } else {
-                        _label = 37
+                        _label = 49
                         continue
                     }
 
                     // AND 441
                     _start_i441 = _index.element
 
-                    // LITERAL "!is"
-                    _ParseLiteralString(_memo, _index, "!is")
+                    // LITERAL "return"
+                    _ParseLiteralString(_memo, _index, "return")
 
                     // AND shortcut 441
                     if (_memo.results.peek() == null) {
@@ -5099,27 +5084,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r440 = _memo.results.peek()
                     if (_r440 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r440.startIndex, _r440.nextIndex, _memo.input, _Thunk({ Token.NOT_IS }, _r440), true))
+                        _memo.results.push(_KotlinLexer_Item(_r440.startIndex, _r440.nextIndex, _memo.input, _Thunk({ Token.RETURN }, _r440), true))
                     }
 
-                    _label = 37
+                    _label = 49
                 }
-                // OR 37
-                37 -> {
-                    // OR shortcut 36
+                // OR 49
+                49 -> {
+                    // OR shortcut 48
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i36
+                        _index.element = _start_i48
                     } else {
-                        _label = 36
+                        _label = 48
                         continue
                     }
 
                     // AND 446
                     _start_i446 = _index.element
 
-                    // LITERAL "!in"
-                    _ParseLiteralString(_memo, _index, "!in")
+                    // LITERAL "continue"
+                    _ParseLiteralString(_memo, _index, "continue")
 
                     // AND shortcut 446
                     if (_memo.results.peek() == null) {
@@ -5158,27 +5143,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r445 = _memo.results.peek()
                     if (_r445 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r445.startIndex, _r445.nextIndex, _memo.input, _Thunk({ Token.NOT_IN }, _r445), true))
+                        _memo.results.push(_KotlinLexer_Item(_r445.startIndex, _r445.nextIndex, _memo.input, _Thunk({ Token.CONTINUE }, _r445), true))
                     }
 
-                    _label = 36
+                    _label = 48
                 }
-                // OR 36
-                36 -> {
-                    // OR shortcut 35
+                // OR 48
+                48 -> {
+                    // OR shortcut 47
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i35
+                        _index.element = _start_i47
                     } else {
-                        _label = 35
+                        _label = 47
                         continue
                     }
 
                     // AND 451
                     _start_i451 = _index.element
 
-                    // LITERAL "out"
-                    _ParseLiteralString(_memo, _index, "out")
+                    // LITERAL "break"
+                    _ParseLiteralString(_memo, _index, "break")
 
                     // AND shortcut 451
                     if (_memo.results.peek() == null) {
@@ -5217,27 +5202,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r450 = _memo.results.peek()
                     if (_r450 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r450.startIndex, _r450.nextIndex, _memo.input, _Thunk({ Token.OUT }, _r450), true))
+                        _memo.results.push(_KotlinLexer_Item(_r450.startIndex, _r450.nextIndex, _memo.input, _Thunk({ Token.BREAK }, _r450), true))
                     }
 
-                    _label = 35
+                    _label = 47
                 }
-                // OR 35
-                35 -> {
-                    // OR shortcut 34
+                // OR 47
+                47 -> {
+                    // OR shortcut 46
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i34
+                        _index.element = _start_i46
                     } else {
-                        _label = 34
+                        _label = 46
                         continue
                     }
 
                     // AND 456
                     _start_i456 = _index.element
 
-                    // LITERAL "field"
-                    _ParseLiteralString(_memo, _index, "field")
+                    // LITERAL "as"
+                    _ParseLiteralString(_memo, _index, "as")
 
                     // AND shortcut 456
                     if (_memo.results.peek() == null) {
@@ -5276,27 +5261,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r455 = _memo.results.peek()
                     if (_r455 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r455.startIndex, _r455.nextIndex, _memo.input, _Thunk({ Token.FIELD }, _r455), true))
+                        _memo.results.push(_KotlinLexer_Item(_r455.startIndex, _r455.nextIndex, _memo.input, _Thunk({ Token.AS }, _r455), true))
                     }
 
-                    _label = 34
+                    _label = 46
                 }
-                // OR 34
-                34 -> {
-                    // OR shortcut 33
+                // OR 46
+                46 -> {
+                    // OR shortcut 45
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i33
+                        _index.element = _start_i45
                     } else {
-                        _label = 33
+                        _label = 45
                         continue
                     }
 
                     // AND 461
                     _start_i461 = _index.element
 
-                    // LITERAL "property"
-                    _ParseLiteralString(_memo, _index, "property")
+                    // LITERAL "is"
+                    _ParseLiteralString(_memo, _index, "is")
 
                     // AND shortcut 461
                     if (_memo.results.peek() == null) {
@@ -5335,27 +5320,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r460 = _memo.results.peek()
                     if (_r460 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r460.startIndex, _r460.nextIndex, _memo.input, _Thunk({ Token.PROPERTY }, _r460), true))
+                        _memo.results.push(_KotlinLexer_Item(_r460.startIndex, _r460.nextIndex, _memo.input, _Thunk({ Token.IS }, _r460), true))
                     }
 
-                    _label = 33
+                    _label = 45
                 }
-                // OR 33
-                33 -> {
-                    // OR shortcut 32
+                // OR 45
+                45 -> {
+                    // OR shortcut 44
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i32
+                        _index.element = _start_i44
                     } else {
-                        _label = 32
+                        _label = 44
                         continue
                     }
 
                     // AND 466
                     _start_i466 = _index.element
 
-                    // LITERAL "get"
-                    _ParseLiteralString(_memo, _index, "get")
+                    // LITERAL "in"
+                    _ParseLiteralString(_memo, _index, "in")
 
                     // AND shortcut 466
                     if (_memo.results.peek() == null) {
@@ -5394,27 +5379,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r465 = _memo.results.peek()
                     if (_r465 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r465.startIndex, _r465.nextIndex, _memo.input, _Thunk({ Token.GET }, _r465), true))
+                        _memo.results.push(_KotlinLexer_Item(_r465.startIndex, _r465.nextIndex, _memo.input, _Thunk({ Token.IN }, _r465), true))
                     }
 
-                    _label = 32
+                    _label = 44
                 }
-                // OR 32
-                32 -> {
-                    // OR shortcut 31
+                // OR 44
+                44 -> {
+                    // OR shortcut 43
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i31
+                        _index.element = _start_i43
                     } else {
-                        _label = 31
+                        _label = 43
                         continue
                     }
 
                     // AND 471
                     _start_i471 = _index.element
 
-                    // LITERAL "set"
-                    _ParseLiteralString(_memo, _index, "set")
+                    // LITERAL "!is"
+                    _ParseLiteralString(_memo, _index, "!is")
 
                     // AND shortcut 471
                     if (_memo.results.peek() == null) {
@@ -5453,27 +5438,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r470 = _memo.results.peek()
                     if (_r470 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r470.startIndex, _r470.nextIndex, _memo.input, _Thunk({ Token.SET }, _r470), true))
+                        _memo.results.push(_KotlinLexer_Item(_r470.startIndex, _r470.nextIndex, _memo.input, _Thunk({ Token.NOT_IS }, _r470), true))
                     }
 
-                    _label = 31
+                    _label = 43
                 }
-                // OR 31
-                31 -> {
-                    // OR shortcut 30
+                // OR 43
+                43 -> {
+                    // OR shortcut 42
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i30
+                        _index.element = _start_i42
                     } else {
-                        _label = 30
+                        _label = 42
                         continue
                     }
 
                     // AND 476
                     _start_i476 = _index.element
 
-                    // LITERAL "receiver"
-                    _ParseLiteralString(_memo, _index, "receiver")
+                    // LITERAL "!in"
+                    _ParseLiteralString(_memo, _index, "!in")
 
                     // AND shortcut 476
                     if (_memo.results.peek() == null) {
@@ -5512,27 +5497,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r475 = _memo.results.peek()
                     if (_r475 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r475.startIndex, _r475.nextIndex, _memo.input, _Thunk({ Token.RECEIVER }, _r475), true))
+                        _memo.results.push(_KotlinLexer_Item(_r475.startIndex, _r475.nextIndex, _memo.input, _Thunk({ Token.NOT_IN }, _r475), true))
                     }
 
-                    _label = 30
+                    _label = 42
                 }
-                // OR 30
-                30 -> {
-                    // OR shortcut 29
+                // OR 42
+                42 -> {
+                    // OR shortcut 41
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i29
+                        _index.element = _start_i41
                     } else {
-                        _label = 29
+                        _label = 41
                         continue
                     }
 
                     // AND 481
                     _start_i481 = _index.element
 
-                    // LITERAL "param"
-                    _ParseLiteralString(_memo, _index, "param")
+                    // LITERAL "out"
+                    _ParseLiteralString(_memo, _index, "out")
 
                     // AND shortcut 481
                     if (_memo.results.peek() == null) {
@@ -5571,27 +5556,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r480 = _memo.results.peek()
                     if (_r480 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r480.startIndex, _r480.nextIndex, _memo.input, _Thunk({ Token.PARAM }, _r480), true))
+                        _memo.results.push(_KotlinLexer_Item(_r480.startIndex, _r480.nextIndex, _memo.input, _Thunk({ Token.OUT }, _r480), true))
                     }
 
-                    _label = 29
+                    _label = 41
                 }
-                // OR 29
-                29 -> {
-                    // OR shortcut 28
+                // OR 41
+                41 -> {
+                    // OR shortcut 40
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i28
+                        _index.element = _start_i40
                     } else {
-                        _label = 28
+                        _label = 40
                         continue
                     }
 
                     // AND 486
                     _start_i486 = _index.element
 
-                    // LITERAL "setparam"
-                    _ParseLiteralString(_memo, _index, "setparam")
+                    // LITERAL "field"
+                    _ParseLiteralString(_memo, _index, "field")
 
                     // AND shortcut 486
                     if (_memo.results.peek() == null) {
@@ -5630,27 +5615,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r485 = _memo.results.peek()
                     if (_r485 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r485.startIndex, _r485.nextIndex, _memo.input, _Thunk({ Token.SETPARAM }, _r485), true))
+                        _memo.results.push(_KotlinLexer_Item(_r485.startIndex, _r485.nextIndex, _memo.input, _Thunk({ Token.FIELD }, _r485), true))
                     }
 
-                    _label = 28
+                    _label = 40
                 }
-                // OR 28
-                28 -> {
-                    // OR shortcut 27
+                // OR 40
+                40 -> {
+                    // OR shortcut 39
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i27
+                        _index.element = _start_i39
                     } else {
-                        _label = 27
+                        _label = 39
                         continue
                     }
 
                     // AND 491
                     _start_i491 = _index.element
 
-                    // LITERAL "delegate"
-                    _ParseLiteralString(_memo, _index, "delegate")
+                    // LITERAL "property"
+                    _ParseLiteralString(_memo, _index, "property")
 
                     // AND shortcut 491
                     if (_memo.results.peek() == null) {
@@ -5689,27 +5674,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r490 = _memo.results.peek()
                     if (_r490 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r490.startIndex, _r490.nextIndex, _memo.input, _Thunk({ Token.DELEGATE }, _r490), true))
+                        _memo.results.push(_KotlinLexer_Item(_r490.startIndex, _r490.nextIndex, _memo.input, _Thunk({ Token.PROPERTY }, _r490), true))
                     }
 
-                    _label = 27
+                    _label = 39
                 }
-                // OR 27
-                27 -> {
-                    // OR shortcut 26
+                // OR 39
+                39 -> {
+                    // OR shortcut 38
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i26
+                        _index.element = _start_i38
                     } else {
-                        _label = 26
+                        _label = 38
                         continue
                     }
 
                     // AND 496
                     _start_i496 = _index.element
 
-                    // LITERAL "dynamic"
-                    _ParseLiteralString(_memo, _index, "dynamic")
+                    // LITERAL "get"
+                    _ParseLiteralString(_memo, _index, "get")
 
                     // AND shortcut 496
                     if (_memo.results.peek() == null) {
@@ -5748,27 +5733,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r495 = _memo.results.peek()
                     if (_r495 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r495.startIndex, _r495.nextIndex, _memo.input, _Thunk({ Token.DYNAMIC }, _r495), true))
+                        _memo.results.push(_KotlinLexer_Item(_r495.startIndex, _r495.nextIndex, _memo.input, _Thunk({ Token.GET }, _r495), true))
                     }
 
-                    _label = 26
+                    _label = 38
                 }
-                // OR 26
-                26 -> {
-                    // OR shortcut 25
+                // OR 38
+                38 -> {
+                    // OR shortcut 37
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i25
+                        _index.element = _start_i37
                     } else {
-                        _label = 25
+                        _label = 37
                         continue
                     }
 
                     // AND 501
                     _start_i501 = _index.element
 
-                    // LITERAL "public"
-                    _ParseLiteralString(_memo, _index, "public")
+                    // LITERAL "set"
+                    _ParseLiteralString(_memo, _index, "set")
 
                     // AND shortcut 501
                     if (_memo.results.peek() == null) {
@@ -5807,27 +5792,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r500 = _memo.results.peek()
                     if (_r500 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r500.startIndex, _r500.nextIndex, _memo.input, _Thunk({ Token.PUBLIC }, _r500), true))
+                        _memo.results.push(_KotlinLexer_Item(_r500.startIndex, _r500.nextIndex, _memo.input, _Thunk({ Token.SET }, _r500), true))
                     }
 
-                    _label = 25
+                    _label = 37
                 }
-                // OR 25
-                25 -> {
-                    // OR shortcut 24
+                // OR 37
+                37 -> {
+                    // OR shortcut 36
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i24
+                        _index.element = _start_i36
                     } else {
-                        _label = 24
+                        _label = 36
                         continue
                     }
 
                     // AND 506
                     _start_i506 = _index.element
 
-                    // LITERAL "private"
-                    _ParseLiteralString(_memo, _index, "private")
+                    // LITERAL "receiver"
+                    _ParseLiteralString(_memo, _index, "receiver")
 
                     // AND shortcut 506
                     if (_memo.results.peek() == null) {
@@ -5866,27 +5851,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r505 = _memo.results.peek()
                     if (_r505 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r505.startIndex, _r505.nextIndex, _memo.input, _Thunk({ Token.PRIVATE }, _r505), true))
+                        _memo.results.push(_KotlinLexer_Item(_r505.startIndex, _r505.nextIndex, _memo.input, _Thunk({ Token.RECEIVER }, _r505), true))
                     }
 
-                    _label = 24
+                    _label = 36
                 }
-                // OR 24
-                24 -> {
-                    // OR shortcut 23
+                // OR 36
+                36 -> {
+                    // OR shortcut 35
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i23
+                        _index.element = _start_i35
                     } else {
-                        _label = 23
+                        _label = 35
                         continue
                     }
 
                     // AND 511
                     _start_i511 = _index.element
 
-                    // LITERAL "protected"
-                    _ParseLiteralString(_memo, _index, "protected")
+                    // LITERAL "param"
+                    _ParseLiteralString(_memo, _index, "param")
 
                     // AND shortcut 511
                     if (_memo.results.peek() == null) {
@@ -5925,27 +5910,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r510 = _memo.results.peek()
                     if (_r510 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r510.startIndex, _r510.nextIndex, _memo.input, _Thunk({ Token.PROTECTED }, _r510), true))
+                        _memo.results.push(_KotlinLexer_Item(_r510.startIndex, _r510.nextIndex, _memo.input, _Thunk({ Token.PARAM }, _r510), true))
                     }
 
-                    _label = 23
+                    _label = 35
                 }
-                // OR 23
-                23 -> {
-                    // OR shortcut 22
+                // OR 35
+                35 -> {
+                    // OR shortcut 34
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i22
+                        _index.element = _start_i34
                     } else {
-                        _label = 22
+                        _label = 34
                         continue
                     }
 
                     // AND 516
                     _start_i516 = _index.element
 
-                    // LITERAL "internal"
-                    _ParseLiteralString(_memo, _index, "internal")
+                    // LITERAL "setparam"
+                    _ParseLiteralString(_memo, _index, "setparam")
 
                     // AND shortcut 516
                     if (_memo.results.peek() == null) {
@@ -5984,27 +5969,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r515 = _memo.results.peek()
                     if (_r515 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r515.startIndex, _r515.nextIndex, _memo.input, _Thunk({ Token.INTERNAL }, _r515), true))
+                        _memo.results.push(_KotlinLexer_Item(_r515.startIndex, _r515.nextIndex, _memo.input, _Thunk({ Token.SETPARAM }, _r515), true))
                     }
 
-                    _label = 22
+                    _label = 34
                 }
-                // OR 22
-                22 -> {
-                    // OR shortcut 21
+                // OR 34
+                34 -> {
+                    // OR shortcut 33
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i21
+                        _index.element = _start_i33
                     } else {
-                        _label = 21
+                        _label = 33
                         continue
                     }
 
                     // AND 521
                     _start_i521 = _index.element
 
-                    // LITERAL "enum"
-                    _ParseLiteralString(_memo, _index, "enum")
+                    // LITERAL "delegate"
+                    _ParseLiteralString(_memo, _index, "delegate")
 
                     // AND shortcut 521
                     if (_memo.results.peek() == null) {
@@ -6043,27 +6028,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r520 = _memo.results.peek()
                     if (_r520 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r520.startIndex, _r520.nextIndex, _memo.input, _Thunk({ Token.ENUM }, _r520), true))
+                        _memo.results.push(_KotlinLexer_Item(_r520.startIndex, _r520.nextIndex, _memo.input, _Thunk({ Token.DELEGATE }, _r520), true))
                     }
 
-                    _label = 21
+                    _label = 33
                 }
-                // OR 21
-                21 -> {
-                    // OR shortcut 20
+                // OR 33
+                33 -> {
+                    // OR shortcut 32
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i20
+                        _index.element = _start_i32
                     } else {
-                        _label = 20
+                        _label = 32
                         continue
                     }
 
                     // AND 526
                     _start_i526 = _index.element
 
-                    // LITERAL "sealed"
-                    _ParseLiteralString(_memo, _index, "sealed")
+                    // LITERAL "dynamic"
+                    _ParseLiteralString(_memo, _index, "dynamic")
 
                     // AND shortcut 526
                     if (_memo.results.peek() == null) {
@@ -6102,27 +6087,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r525 = _memo.results.peek()
                     if (_r525 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r525.startIndex, _r525.nextIndex, _memo.input, _Thunk({ Token.SEALED }, _r525), true))
+                        _memo.results.push(_KotlinLexer_Item(_r525.startIndex, _r525.nextIndex, _memo.input, _Thunk({ Token.DYNAMIC }, _r525), true))
                     }
 
-                    _label = 20
+                    _label = 32
                 }
-                // OR 20
-                20 -> {
-                    // OR shortcut 19
+                // OR 32
+                32 -> {
+                    // OR shortcut 31
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i19
+                        _index.element = _start_i31
                     } else {
-                        _label = 19
+                        _label = 31
                         continue
                     }
 
                     // AND 531
                     _start_i531 = _index.element
 
-                    // LITERAL "annotation"
-                    _ParseLiteralString(_memo, _index, "annotation")
+                    // LITERAL "public"
+                    _ParseLiteralString(_memo, _index, "public")
 
                     // AND shortcut 531
                     if (_memo.results.peek() == null) {
@@ -6161,27 +6146,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r530 = _memo.results.peek()
                     if (_r530 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r530.startIndex, _r530.nextIndex, _memo.input, _Thunk({ Token.ANNOTATION }, _r530), true))
+                        _memo.results.push(_KotlinLexer_Item(_r530.startIndex, _r530.nextIndex, _memo.input, _Thunk({ Token.PUBLIC }, _r530), true))
                     }
 
-                    _label = 19
+                    _label = 31
                 }
-                // OR 19
-                19 -> {
-                    // OR shortcut 18
+                // OR 31
+                31 -> {
+                    // OR shortcut 30
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i18
+                        _index.element = _start_i30
                     } else {
-                        _label = 18
+                        _label = 30
                         continue
                     }
 
                     // AND 536
                     _start_i536 = _index.element
 
-                    // LITERAL "data"
-                    _ParseLiteralString(_memo, _index, "data")
+                    // LITERAL "private"
+                    _ParseLiteralString(_memo, _index, "private")
 
                     // AND shortcut 536
                     if (_memo.results.peek() == null) {
@@ -6220,27 +6205,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r535 = _memo.results.peek()
                     if (_r535 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r535.startIndex, _r535.nextIndex, _memo.input, _Thunk({ Token.DATA }, _r535), true))
+                        _memo.results.push(_KotlinLexer_Item(_r535.startIndex, _r535.nextIndex, _memo.input, _Thunk({ Token.PRIVATE }, _r535), true))
                     }
 
-                    _label = 18
+                    _label = 30
                 }
-                // OR 18
-                18 -> {
-                    // OR shortcut 17
+                // OR 30
+                30 -> {
+                    // OR shortcut 29
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i17
+                        _index.element = _start_i29
                     } else {
-                        _label = 17
+                        _label = 29
                         continue
                     }
 
                     // AND 541
                     _start_i541 = _index.element
 
-                    // LITERAL "inner"
-                    _ParseLiteralString(_memo, _index, "inner")
+                    // LITERAL "protected"
+                    _ParseLiteralString(_memo, _index, "protected")
 
                     // AND shortcut 541
                     if (_memo.results.peek() == null) {
@@ -6279,27 +6264,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r540 = _memo.results.peek()
                     if (_r540 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r540.startIndex, _r540.nextIndex, _memo.input, _Thunk({ Token.INNER }, _r540), true))
+                        _memo.results.push(_KotlinLexer_Item(_r540.startIndex, _r540.nextIndex, _memo.input, _Thunk({ Token.PROTECTED }, _r540), true))
                     }
 
-                    _label = 17
+                    _label = 29
                 }
-                // OR 17
-                17 -> {
-                    // OR shortcut 16
+                // OR 29
+                29 -> {
+                    // OR shortcut 28
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i16
+                        _index.element = _start_i28
                     } else {
-                        _label = 16
+                        _label = 28
                         continue
                     }
 
                     // AND 546
                     _start_i546 = _index.element
 
-                    // LITERAL "tailrec"
-                    _ParseLiteralString(_memo, _index, "tailrec")
+                    // LITERAL "internal"
+                    _ParseLiteralString(_memo, _index, "internal")
 
                     // AND shortcut 546
                     if (_memo.results.peek() == null) {
@@ -6338,27 +6323,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r545 = _memo.results.peek()
                     if (_r545 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r545.startIndex, _r545.nextIndex, _memo.input, _Thunk({ Token.TAILREC }, _r545), true))
+                        _memo.results.push(_KotlinLexer_Item(_r545.startIndex, _r545.nextIndex, _memo.input, _Thunk({ Token.INTERNAL }, _r545), true))
                     }
 
-                    _label = 16
+                    _label = 28
                 }
-                // OR 16
-                16 -> {
-                    // OR shortcut 15
+                // OR 28
+                28 -> {
+                    // OR shortcut 27
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i15
+                        _index.element = _start_i27
                     } else {
-                        _label = 15
+                        _label = 27
                         continue
                     }
 
                     // AND 551
                     _start_i551 = _index.element
 
-                    // LITERAL "operator"
-                    _ParseLiteralString(_memo, _index, "operator")
+                    // LITERAL "enum"
+                    _ParseLiteralString(_memo, _index, "enum")
 
                     // AND shortcut 551
                     if (_memo.results.peek() == null) {
@@ -6397,27 +6382,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r550 = _memo.results.peek()
                     if (_r550 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r550.startIndex, _r550.nextIndex, _memo.input, _Thunk({ Token.OPERATOR }, _r550), true))
+                        _memo.results.push(_KotlinLexer_Item(_r550.startIndex, _r550.nextIndex, _memo.input, _Thunk({ Token.ENUM }, _r550), true))
                     }
 
-                    _label = 15
+                    _label = 27
                 }
-                // OR 15
-                15 -> {
-                    // OR shortcut 14
+                // OR 27
+                27 -> {
+                    // OR shortcut 26
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i14
+                        _index.element = _start_i26
                     } else {
-                        _label = 14
+                        _label = 26
                         continue
                     }
 
                     // AND 556
                     _start_i556 = _index.element
 
-                    // LITERAL "inline"
-                    _ParseLiteralString(_memo, _index, "inline")
+                    // LITERAL "sealed"
+                    _ParseLiteralString(_memo, _index, "sealed")
 
                     // AND shortcut 556
                     if (_memo.results.peek() == null) {
@@ -6456,27 +6441,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r555 = _memo.results.peek()
                     if (_r555 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r555.startIndex, _r555.nextIndex, _memo.input, _Thunk({ Token.INLINE }, _r555), true))
+                        _memo.results.push(_KotlinLexer_Item(_r555.startIndex, _r555.nextIndex, _memo.input, _Thunk({ Token.SEALED }, _r555), true))
                     }
 
-                    _label = 14
+                    _label = 26
                 }
-                // OR 14
-                14 -> {
-                    // OR shortcut 13
+                // OR 26
+                26 -> {
+                    // OR shortcut 25
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i13
+                        _index.element = _start_i25
                     } else {
-                        _label = 13
+                        _label = 25
                         continue
                     }
 
                     // AND 561
                     _start_i561 = _index.element
 
-                    // LITERAL "infix"
-                    _ParseLiteralString(_memo, _index, "infix")
+                    // LITERAL "annotation"
+                    _ParseLiteralString(_memo, _index, "annotation")
 
                     // AND shortcut 561
                     if (_memo.results.peek() == null) {
@@ -6515,27 +6500,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r560 = _memo.results.peek()
                     if (_r560 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r560.startIndex, _r560.nextIndex, _memo.input, _Thunk({ Token.INFIX }, _r560), true))
+                        _memo.results.push(_KotlinLexer_Item(_r560.startIndex, _r560.nextIndex, _memo.input, _Thunk({ Token.ANNOTATION }, _r560), true))
                     }
 
-                    _label = 13
+                    _label = 25
                 }
-                // OR 13
-                13 -> {
-                    // OR shortcut 12
+                // OR 25
+                25 -> {
+                    // OR shortcut 24
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i12
+                        _index.element = _start_i24
                     } else {
-                        _label = 12
+                        _label = 24
                         continue
                     }
 
                     // AND 566
                     _start_i566 = _index.element
 
-                    // LITERAL "external"
-                    _ParseLiteralString(_memo, _index, "external")
+                    // LITERAL "data"
+                    _ParseLiteralString(_memo, _index, "data")
 
                     // AND shortcut 566
                     if (_memo.results.peek() == null) {
@@ -6574,27 +6559,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r565 = _memo.results.peek()
                     if (_r565 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r565.startIndex, _r565.nextIndex, _memo.input, _Thunk({ Token.EXTERNAL }, _r565), true))
+                        _memo.results.push(_KotlinLexer_Item(_r565.startIndex, _r565.nextIndex, _memo.input, _Thunk({ Token.DATA }, _r565), true))
                     }
 
-                    _label = 12
+                    _label = 24
                 }
-                // OR 12
-                12 -> {
-                    // OR shortcut 11
+                // OR 24
+                24 -> {
+                    // OR shortcut 23
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i11
+                        _index.element = _start_i23
                     } else {
-                        _label = 11
+                        _label = 23
                         continue
                     }
 
                     // AND 571
                     _start_i571 = _index.element
 
-                    // LITERAL "suspend"
-                    _ParseLiteralString(_memo, _index, "suspend")
+                    // LITERAL "inner"
+                    _ParseLiteralString(_memo, _index, "inner")
 
                     // AND shortcut 571
                     if (_memo.results.peek() == null) {
@@ -6633,27 +6618,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r570 = _memo.results.peek()
                     if (_r570 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r570.startIndex, _r570.nextIndex, _memo.input, _Thunk({ Token.SUSPEND }, _r570), true))
+                        _memo.results.push(_KotlinLexer_Item(_r570.startIndex, _r570.nextIndex, _memo.input, _Thunk({ Token.INNER }, _r570), true))
                     }
 
-                    _label = 11
+                    _label = 23
                 }
-                // OR 11
-                11 -> {
-                    // OR shortcut 10
+                // OR 23
+                23 -> {
+                    // OR shortcut 22
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i10
+                        _index.element = _start_i22
                     } else {
-                        _label = 10
+                        _label = 22
                         continue
                     }
 
                     // AND 576
                     _start_i576 = _index.element
 
-                    // LITERAL "override"
-                    _ParseLiteralString(_memo, _index, "override")
+                    // LITERAL "tailrec"
+                    _ParseLiteralString(_memo, _index, "tailrec")
 
                     // AND shortcut 576
                     if (_memo.results.peek() == null) {
@@ -6692,27 +6677,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r575 = _memo.results.peek()
                     if (_r575 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r575.startIndex, _r575.nextIndex, _memo.input, _Thunk({ Token.OVERRIDE }, _r575), true))
+                        _memo.results.push(_KotlinLexer_Item(_r575.startIndex, _r575.nextIndex, _memo.input, _Thunk({ Token.TAILREC }, _r575), true))
                     }
 
-                    _label = 10
+                    _label = 22
                 }
-                // OR 10
-                10 -> {
-                    // OR shortcut 9
+                // OR 22
+                22 -> {
+                    // OR shortcut 21
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i9
+                        _index.element = _start_i21
                     } else {
-                        _label = 9
+                        _label = 21
                         continue
                     }
 
                     // AND 581
                     _start_i581 = _index.element
 
-                    // LITERAL "abstract"
-                    _ParseLiteralString(_memo, _index, "abstract")
+                    // LITERAL "operator"
+                    _ParseLiteralString(_memo, _index, "operator")
 
                     // AND shortcut 581
                     if (_memo.results.peek() == null) {
@@ -6751,27 +6736,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r580 = _memo.results.peek()
                     if (_r580 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r580.startIndex, _r580.nextIndex, _memo.input, _Thunk({ Token.ABSTRACT }, _r580), true))
+                        _memo.results.push(_KotlinLexer_Item(_r580.startIndex, _r580.nextIndex, _memo.input, _Thunk({ Token.OPERATOR }, _r580), true))
                     }
 
-                    _label = 9
+                    _label = 21
                 }
-                // OR 9
-                9 -> {
-                    // OR shortcut 8
+                // OR 21
+                21 -> {
+                    // OR shortcut 20
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i8
+                        _index.element = _start_i20
                     } else {
-                        _label = 8
+                        _label = 20
                         continue
                     }
 
                     // AND 586
                     _start_i586 = _index.element
 
-                    // LITERAL "final"
-                    _ParseLiteralString(_memo, _index, "final")
+                    // LITERAL "inline"
+                    _ParseLiteralString(_memo, _index, "inline")
 
                     // AND shortcut 586
                     if (_memo.results.peek() == null) {
@@ -6810,27 +6795,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r585 = _memo.results.peek()
                     if (_r585 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r585.startIndex, _r585.nextIndex, _memo.input, _Thunk({ Token.FINAL }, _r585), true))
+                        _memo.results.push(_KotlinLexer_Item(_r585.startIndex, _r585.nextIndex, _memo.input, _Thunk({ Token.INLINE }, _r585), true))
                     }
 
-                    _label = 8
+                    _label = 20
                 }
-                // OR 8
-                8 -> {
-                    // OR shortcut 7
+                // OR 20
+                20 -> {
+                    // OR shortcut 19
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i7
+                        _index.element = _start_i19
                     } else {
-                        _label = 7
+                        _label = 19
                         continue
                     }
 
                     // AND 591
                     _start_i591 = _index.element
 
-                    // LITERAL "open"
-                    _ParseLiteralString(_memo, _index, "open")
+                    // LITERAL "infix"
+                    _ParseLiteralString(_memo, _index, "infix")
 
                     // AND shortcut 591
                     if (_memo.results.peek() == null) {
@@ -6869,27 +6854,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r590 = _memo.results.peek()
                     if (_r590 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r590.startIndex, _r590.nextIndex, _memo.input, _Thunk({ Token.OPEN }, _r590), true))
+                        _memo.results.push(_KotlinLexer_Item(_r590.startIndex, _r590.nextIndex, _memo.input, _Thunk({ Token.INFIX }, _r590), true))
                     }
 
-                    _label = 7
+                    _label = 19
                 }
-                // OR 7
-                7 -> {
-                    // OR shortcut 6
+                // OR 19
+                19 -> {
+                    // OR shortcut 18
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i6
+                        _index.element = _start_i18
                     } else {
-                        _label = 6
+                        _label = 18
                         continue
                     }
 
                     // AND 596
                     _start_i596 = _index.element
 
-                    // LITERAL "const"
-                    _ParseLiteralString(_memo, _index, "const")
+                    // LITERAL "external"
+                    _ParseLiteralString(_memo, _index, "external")
 
                     // AND shortcut 596
                     if (_memo.results.peek() == null) {
@@ -6928,27 +6913,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r595 = _memo.results.peek()
                     if (_r595 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r595.startIndex, _r595.nextIndex, _memo.input, _Thunk({ Token.CONST }, _r595), true))
+                        _memo.results.push(_KotlinLexer_Item(_r595.startIndex, _r595.nextIndex, _memo.input, _Thunk({ Token.EXTERNAL }, _r595), true))
                     }
 
-                    _label = 6
+                    _label = 18
                 }
-                // OR 6
-                6 -> {
-                    // OR shortcut 5
+                // OR 18
+                18 -> {
+                    // OR shortcut 17
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i5
+                        _index.element = _start_i17
                     } else {
-                        _label = 5
+                        _label = 17
                         continue
                     }
 
                     // AND 601
                     _start_i601 = _index.element
 
-                    // LITERAL "lateinit"
-                    _ParseLiteralString(_memo, _index, "lateinit")
+                    // LITERAL "suspend"
+                    _ParseLiteralString(_memo, _index, "suspend")
 
                     // AND shortcut 601
                     if (_memo.results.peek() == null) {
@@ -6987,27 +6972,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r600 = _memo.results.peek()
                     if (_r600 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r600.startIndex, _r600.nextIndex, _memo.input, _Thunk({ Token.LATEINIT }, _r600), true))
+                        _memo.results.push(_KotlinLexer_Item(_r600.startIndex, _r600.nextIndex, _memo.input, _Thunk({ Token.SUSPEND }, _r600), true))
                     }
 
-                    _label = 5
+                    _label = 17
                 }
-                // OR 5
-                5 -> {
-                    // OR shortcut 4
+                // OR 17
+                17 -> {
+                    // OR shortcut 16
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i4
+                        _index.element = _start_i16
                     } else {
-                        _label = 4
+                        _label = 16
                         continue
                     }
 
                     // AND 606
                     _start_i606 = _index.element
 
-                    // LITERAL "vararg"
-                    _ParseLiteralString(_memo, _index, "vararg")
+                    // LITERAL "override"
+                    _ParseLiteralString(_memo, _index, "override")
 
                     // AND shortcut 606
                     if (_memo.results.peek() == null) {
@@ -7046,27 +7031,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r605 = _memo.results.peek()
                     if (_r605 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r605.startIndex, _r605.nextIndex, _memo.input, _Thunk({ Token.VARARG }, _r605), true))
+                        _memo.results.push(_KotlinLexer_Item(_r605.startIndex, _r605.nextIndex, _memo.input, _Thunk({ Token.OVERRIDE }, _r605), true))
                     }
 
-                    _label = 4
+                    _label = 16
                 }
-                // OR 4
-                4 -> {
-                    // OR shortcut 3
+                // OR 16
+                16 -> {
+                    // OR shortcut 15
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i3
+                        _index.element = _start_i15
                     } else {
-                        _label = 3
+                        _label = 15
                         continue
                     }
 
                     // AND 611
                     _start_i611 = _index.element
 
-                    // LITERAL "noinline"
-                    _ParseLiteralString(_memo, _index, "noinline")
+                    // LITERAL "abstract"
+                    _ParseLiteralString(_memo, _index, "abstract")
 
                     // AND shortcut 611
                     if (_memo.results.peek() == null) {
@@ -7105,27 +7090,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r610 = _memo.results.peek()
                     if (_r610 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r610.startIndex, _r610.nextIndex, _memo.input, _Thunk({ Token.NOINLINE }, _r610), true))
+                        _memo.results.push(_KotlinLexer_Item(_r610.startIndex, _r610.nextIndex, _memo.input, _Thunk({ Token.ABSTRACT }, _r610), true))
                     }
 
-                    _label = 3
+                    _label = 15
                 }
-                // OR 3
-                3 -> {
-                    // OR shortcut 2
+                // OR 15
+                15 -> {
+                    // OR shortcut 14
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i2
+                        _index.element = _start_i14
                     } else {
-                        _label = 2
+                        _label = 14
                         continue
                     }
 
                     // AND 616
                     _start_i616 = _index.element
 
-                    // LITERAL "crossinline"
-                    _ParseLiteralString(_memo, _index, "crossinline")
+                    // LITERAL "final"
+                    _ParseLiteralString(_memo, _index, "final")
 
                     // AND shortcut 616
                     if (_memo.results.peek() == null) {
@@ -7164,27 +7149,27 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r615 = _memo.results.peek()
                     if (_r615 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r615.startIndex, _r615.nextIndex, _memo.input, _Thunk({ Token.CROSSINLINE }, _r615), true))
+                        _memo.results.push(_KotlinLexer_Item(_r615.startIndex, _r615.nextIndex, _memo.input, _Thunk({ Token.FINAL }, _r615), true))
                     }
 
-                    _label = 2
+                    _label = 14
                 }
-                // OR 2
-                2 -> {
-                    // OR shortcut 1
+                // OR 14
+                14 -> {
+                    // OR shortcut 13
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i1
+                        _index.element = _start_i13
                     } else {
-                        _label = 1
+                        _label = 13
                         continue
                     }
 
                     // AND 621
                     _start_i621 = _index.element
 
-                    // LITERAL "reified"
-                    _ParseLiteralString(_memo, _index, "reified")
+                    // LITERAL "open"
+                    _ParseLiteralString(_memo, _index, "open")
 
                     // AND shortcut 621
                     if (_memo.results.peek() == null) {
@@ -7223,7 +7208,715 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     val _r620 = _memo.results.peek()
                     if (_r620 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r620.startIndex, _r620.nextIndex, _memo.input, _Thunk({ Token.REIFIED }, _r620), true))
+                        _memo.results.push(_KotlinLexer_Item(_r620.startIndex, _r620.nextIndex, _memo.input, _Thunk({ Token.OPEN }, _r620), true))
+                    }
+
+                    _label = 13
+                }
+                // OR 13
+                13 -> {
+                    // OR shortcut 12
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i12
+                    } else {
+                        _label = 12
+                        continue
+                    }
+
+                    // AND 626
+                    _start_i626 = _index.element
+
+                    // LITERAL "const"
+                    _ParseLiteralString(_memo, _index, "const")
+
+                    // AND shortcut 626
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 626
+                        continue
+                    }
+
+                    // NOT 628
+                    _start_i628 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r629: _KotlinLexer_Item? = null
+                    _r629 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r629 != null) _index.element = _r629.nextIndex
+
+                    // NOT 628
+                    val _r628 = _memo.results.pop()
+                    _memo.results.push(if (_r628 == null) _KotlinLexer_Item(_start_i628, _memo.input) else null)
+                    _index.element = _start_i628
+                    _label = 626
+                }
+                // AND 626
+                626 -> {
+                    val _r626_2 = _memo.results.pop()
+                    val _r626_1 = _memo.results.pop()
+
+                    if (_r626_1 != null && _r626_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i626, _index.element, _memo.input, (_r626_1.results + _r626_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i626
+                    }
+
+                    // ACT 625
+                    val _r625 = _memo.results.peek()
+                    if (_r625 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r625.startIndex, _r625.nextIndex, _memo.input, _Thunk({ Token.CONST }, _r625), true))
+                    }
+
+                    _label = 12
+                }
+                // OR 12
+                12 -> {
+                    // OR shortcut 11
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i11
+                    } else {
+                        _label = 11
+                        continue
+                    }
+
+                    // AND 631
+                    _start_i631 = _index.element
+
+                    // LITERAL "lateinit"
+                    _ParseLiteralString(_memo, _index, "lateinit")
+
+                    // AND shortcut 631
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 631
+                        continue
+                    }
+
+                    // NOT 633
+                    _start_i633 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r634: _KotlinLexer_Item? = null
+                    _r634 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r634 != null) _index.element = _r634.nextIndex
+
+                    // NOT 633
+                    val _r633 = _memo.results.pop()
+                    _memo.results.push(if (_r633 == null) _KotlinLexer_Item(_start_i633, _memo.input) else null)
+                    _index.element = _start_i633
+                    _label = 631
+                }
+                // AND 631
+                631 -> {
+                    val _r631_2 = _memo.results.pop()
+                    val _r631_1 = _memo.results.pop()
+
+                    if (_r631_1 != null && _r631_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i631, _index.element, _memo.input, (_r631_1.results + _r631_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i631
+                    }
+
+                    // ACT 630
+                    val _r630 = _memo.results.peek()
+                    if (_r630 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r630.startIndex, _r630.nextIndex, _memo.input, _Thunk({ Token.LATEINIT }, _r630), true))
+                    }
+
+                    _label = 11
+                }
+                // OR 11
+                11 -> {
+                    // OR shortcut 10
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i10
+                    } else {
+                        _label = 10
+                        continue
+                    }
+
+                    // AND 636
+                    _start_i636 = _index.element
+
+                    // LITERAL "vararg"
+                    _ParseLiteralString(_memo, _index, "vararg")
+
+                    // AND shortcut 636
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 636
+                        continue
+                    }
+
+                    // NOT 638
+                    _start_i638 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r639: _KotlinLexer_Item? = null
+                    _r639 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r639 != null) _index.element = _r639.nextIndex
+
+                    // NOT 638
+                    val _r638 = _memo.results.pop()
+                    _memo.results.push(if (_r638 == null) _KotlinLexer_Item(_start_i638, _memo.input) else null)
+                    _index.element = _start_i638
+                    _label = 636
+                }
+                // AND 636
+                636 -> {
+                    val _r636_2 = _memo.results.pop()
+                    val _r636_1 = _memo.results.pop()
+
+                    if (_r636_1 != null && _r636_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i636, _index.element, _memo.input, (_r636_1.results + _r636_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i636
+                    }
+
+                    // ACT 635
+                    val _r635 = _memo.results.peek()
+                    if (_r635 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r635.startIndex, _r635.nextIndex, _memo.input, _Thunk({ Token.VARARG }, _r635), true))
+                    }
+
+                    _label = 10
+                }
+                // OR 10
+                10 -> {
+                    // OR shortcut 9
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i9
+                    } else {
+                        _label = 9
+                        continue
+                    }
+
+                    // AND 641
+                    _start_i641 = _index.element
+
+                    // LITERAL "noinline"
+                    _ParseLiteralString(_memo, _index, "noinline")
+
+                    // AND shortcut 641
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 641
+                        continue
+                    }
+
+                    // NOT 643
+                    _start_i643 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r644: _KotlinLexer_Item? = null
+                    _r644 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r644 != null) _index.element = _r644.nextIndex
+
+                    // NOT 643
+                    val _r643 = _memo.results.pop()
+                    _memo.results.push(if (_r643 == null) _KotlinLexer_Item(_start_i643, _memo.input) else null)
+                    _index.element = _start_i643
+                    _label = 641
+                }
+                // AND 641
+                641 -> {
+                    val _r641_2 = _memo.results.pop()
+                    val _r641_1 = _memo.results.pop()
+
+                    if (_r641_1 != null && _r641_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i641, _index.element, _memo.input, (_r641_1.results + _r641_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i641
+                    }
+
+                    // ACT 640
+                    val _r640 = _memo.results.peek()
+                    if (_r640 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r640.startIndex, _r640.nextIndex, _memo.input, _Thunk({ Token.NOINLINE }, _r640), true))
+                    }
+
+                    _label = 9
+                }
+                // OR 9
+                9 -> {
+                    // OR shortcut 8
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i8
+                    } else {
+                        _label = 8
+                        continue
+                    }
+
+                    // AND 646
+                    _start_i646 = _index.element
+
+                    // LITERAL "crossinline"
+                    _ParseLiteralString(_memo, _index, "crossinline")
+
+                    // AND shortcut 646
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 646
+                        continue
+                    }
+
+                    // NOT 648
+                    _start_i648 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r649: _KotlinLexer_Item? = null
+                    _r649 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r649 != null) _index.element = _r649.nextIndex
+
+                    // NOT 648
+                    val _r648 = _memo.results.pop()
+                    _memo.results.push(if (_r648 == null) _KotlinLexer_Item(_start_i648, _memo.input) else null)
+                    _index.element = _start_i648
+                    _label = 646
+                }
+                // AND 646
+                646 -> {
+                    val _r646_2 = _memo.results.pop()
+                    val _r646_1 = _memo.results.pop()
+
+                    if (_r646_1 != null && _r646_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i646, _index.element, _memo.input, (_r646_1.results + _r646_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i646
+                    }
+
+                    // ACT 645
+                    val _r645 = _memo.results.peek()
+                    if (_r645 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r645.startIndex, _r645.nextIndex, _memo.input, _Thunk({ Token.CROSSINLINE }, _r645), true))
+                    }
+
+                    _label = 8
+                }
+                // OR 8
+                8 -> {
+                    // OR shortcut 7
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i7
+                    } else {
+                        _label = 7
+                        continue
+                    }
+
+                    // AND 651
+                    _start_i651 = _index.element
+
+                    // LITERAL "reified"
+                    _ParseLiteralString(_memo, _index, "reified")
+
+                    // AND shortcut 651
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 651
+                        continue
+                    }
+
+                    // NOT 653
+                    _start_i653 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r654: _KotlinLexer_Item? = null
+                    _r654 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r654 != null) _index.element = _r654.nextIndex
+
+                    // NOT 653
+                    val _r653 = _memo.results.pop()
+                    _memo.results.push(if (_r653 == null) _KotlinLexer_Item(_start_i653, _memo.input) else null)
+                    _index.element = _start_i653
+                    _label = 651
+                }
+                // AND 651
+                651 -> {
+                    val _r651_2 = _memo.results.pop()
+                    val _r651_1 = _memo.results.pop()
+
+                    if (_r651_1 != null && _r651_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i651, _index.element, _memo.input, (_r651_1.results + _r651_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i651
+                    }
+
+                    // ACT 650
+                    val _r650 = _memo.results.peek()
+                    if (_r650 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r650.startIndex, _r650.nextIndex, _memo.input, _Thunk({ Token.REIFIED }, _r650), true))
+                    }
+
+                    _label = 7
+                }
+                // OR 7
+                7 -> {
+                    // OR shortcut 6
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i6
+                    } else {
+                        _label = 6
+                        continue
+                    }
+
+                    // AND 656
+                    _start_i656 = _index.element
+
+                    // LITERAL "true"
+                    _ParseLiteralString(_memo, _index, "true")
+
+                    // AND shortcut 656
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 656
+                        continue
+                    }
+
+                    // NOT 658
+                    _start_i658 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r659: _KotlinLexer_Item? = null
+                    _r659 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r659 != null) _index.element = _r659.nextIndex
+
+                    // NOT 658
+                    val _r658 = _memo.results.pop()
+                    _memo.results.push(if (_r658 == null) _KotlinLexer_Item(_start_i658, _memo.input) else null)
+                    _index.element = _start_i658
+                    _label = 656
+                }
+                // AND 656
+                656 -> {
+                    val _r656_2 = _memo.results.pop()
+                    val _r656_1 = _memo.results.pop()
+
+                    if (_r656_1 != null && _r656_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i656, _index.element, _memo.input, (_r656_1.results + _r656_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i656
+                    }
+
+                    // ACT 655
+                    val _r655 = _memo.results.peek()
+                    if (_r655 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r655.startIndex, _r655.nextIndex, _memo.input, _Thunk({ Token.TRUE }, _r655), true))
+                    }
+
+                    _label = 6
+                }
+                // OR 6
+                6 -> {
+                    // OR shortcut 5
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i5
+                    } else {
+                        _label = 5
+                        continue
+                    }
+
+                    // AND 661
+                    _start_i661 = _index.element
+
+                    // LITERAL "false"
+                    _ParseLiteralString(_memo, _index, "false")
+
+                    // AND shortcut 661
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 661
+                        continue
+                    }
+
+                    // NOT 663
+                    _start_i663 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r664: _KotlinLexer_Item? = null
+                    _r664 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r664 != null) _index.element = _r664.nextIndex
+
+                    // NOT 663
+                    val _r663 = _memo.results.pop()
+                    _memo.results.push(if (_r663 == null) _KotlinLexer_Item(_start_i663, _memo.input) else null)
+                    _index.element = _start_i663
+                    _label = 661
+                }
+                // AND 661
+                661 -> {
+                    val _r661_2 = _memo.results.pop()
+                    val _r661_1 = _memo.results.pop()
+
+                    if (_r661_1 != null && _r661_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i661, _index.element, _memo.input, (_r661_1.results + _r661_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i661
+                    }
+
+                    // ACT 660
+                    val _r660 = _memo.results.peek()
+                    if (_r660 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r660.startIndex, _r660.nextIndex, _memo.input, _Thunk({ Token.FALSE }, _r660), true))
+                    }
+
+                    _label = 5
+                }
+                // OR 5
+                5 -> {
+                    // OR shortcut 4
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i4
+                    } else {
+                        _label = 4
+                        continue
+                    }
+
+                    // AND 666
+                    _start_i666 = _index.element
+
+                    // LITERAL "null"
+                    _ParseLiteralString(_memo, _index, "null")
+
+                    // AND shortcut 666
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 666
+                        continue
+                    }
+
+                    // NOT 668
+                    _start_i668 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r669: _KotlinLexer_Item? = null
+                    _r669 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r669 != null) _index.element = _r669.nextIndex
+
+                    // NOT 668
+                    val _r668 = _memo.results.pop()
+                    _memo.results.push(if (_r668 == null) _KotlinLexer_Item(_start_i668, _memo.input) else null)
+                    _index.element = _start_i668
+                    _label = 666
+                }
+                // AND 666
+                666 -> {
+                    val _r666_2 = _memo.results.pop()
+                    val _r666_1 = _memo.results.pop()
+
+                    if (_r666_1 != null && _r666_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i666, _index.element, _memo.input, (_r666_1.results + _r666_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i666
+                    }
+
+                    // ACT 665
+                    val _r665 = _memo.results.peek()
+                    if (_r665 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r665.startIndex, _r665.nextIndex, _memo.input, _Thunk({ Token.NULL }, _r665), true))
+                    }
+
+                    _label = 4
+                }
+                // OR 4
+                4 -> {
+                    // OR shortcut 3
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i3
+                    } else {
+                        _label = 3
+                        continue
+                    }
+
+                    // AND 671
+                    _start_i671 = _index.element
+
+                    // LITERAL "value"
+                    _ParseLiteralString(_memo, _index, "value")
+
+                    // AND shortcut 671
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 671
+                        continue
+                    }
+
+                    // NOT 673
+                    _start_i673 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r674: _KotlinLexer_Item? = null
+                    _r674 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r674 != null) _index.element = _r674.nextIndex
+
+                    // NOT 673
+                    val _r673 = _memo.results.pop()
+                    _memo.results.push(if (_r673 == null) _KotlinLexer_Item(_start_i673, _memo.input) else null)
+                    _index.element = _start_i673
+                    _label = 671
+                }
+                // AND 671
+                671 -> {
+                    val _r671_2 = _memo.results.pop()
+                    val _r671_1 = _memo.results.pop()
+
+                    if (_r671_1 != null && _r671_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i671, _index.element, _memo.input, (_r671_1.results + _r671_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i671
+                    }
+
+                    // ACT 670
+                    val _r670 = _memo.results.peek()
+                    if (_r670 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r670.startIndex, _r670.nextIndex, _memo.input, _Thunk({ Token.VALUE }, _r670), true))
+                    }
+
+                    _label = 3
+                }
+                // OR 3
+                3 -> {
+                    // OR shortcut 2
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i2
+                    } else {
+                        _label = 2
+                        continue
+                    }
+
+                    // AND 676
+                    _start_i676 = _index.element
+
+                    // LITERAL "expect"
+                    _ParseLiteralString(_memo, _index, "expect")
+
+                    // AND shortcut 676
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 676
+                        continue
+                    }
+
+                    // NOT 678
+                    _start_i678 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r679: _KotlinLexer_Item? = null
+                    _r679 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r679 != null) _index.element = _r679.nextIndex
+
+                    // NOT 678
+                    val _r678 = _memo.results.pop()
+                    _memo.results.push(if (_r678 == null) _KotlinLexer_Item(_start_i678, _memo.input) else null)
+                    _index.element = _start_i678
+                    _label = 676
+                }
+                // AND 676
+                676 -> {
+                    val _r676_2 = _memo.results.pop()
+                    val _r676_1 = _memo.results.pop()
+
+                    if (_r676_1 != null && _r676_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i676, _index.element, _memo.input, (_r676_1.results + _r676_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i676
+                    }
+
+                    // ACT 675
+                    val _r675 = _memo.results.peek()
+                    if (_r675 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r675.startIndex, _r675.nextIndex, _memo.input, _Thunk({ Token.EXPECT }, _r675), true))
+                    }
+
+                    _label = 2
+                }
+                // OR 2
+                2 -> {
+                    // OR shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i1
+                    } else {
+                        _label = 1
+                        continue
+                    }
+
+                    // AND 681
+                    _start_i681 = _index.element
+
+                    // LITERAL "actual"
+                    _ParseLiteralString(_memo, _index, "actual")
+
+                    // AND shortcut 681
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 681
+                        continue
+                    }
+
+                    // NOT 683
+                    _start_i683 = _index.element
+
+                    // CALLORVAR identifierPart
+                    var _r684: _KotlinLexer_Item? = null
+                    _r684 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
+                    if (_r684 != null) _index.element = _r684.nextIndex
+
+                    // NOT 683
+                    val _r683 = _memo.results.pop()
+                    _memo.results.push(if (_r683 == null) _KotlinLexer_Item(_start_i683, _memo.input) else null)
+                    _index.element = _start_i683
+                    _label = 681
+                }
+                // AND 681
+                681 -> {
+                    val _r681_2 = _memo.results.pop()
+                    val _r681_1 = _memo.results.pop()
+
+                    if (_r681_1 != null && _r681_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i681, _index.element, _memo.input, (_r681_1.results + _r681_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i681
+                    }
+
+                    // ACT 680
+                    val _r680 = _memo.results.peek()
+                    if (_r680 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinLexer_Item(_r680.startIndex, _r680.nextIndex, _memo.input, _Thunk({ Token.ACTUAL }, _r680), true))
                     }
 
                     _label = 1
@@ -7240,15 +7933,15 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     }
 
                     // CALLORVAR identifier
-                    var _r626: _KotlinLexer_Item? = null
-                    _r626 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
-                    if (_r626 != null) _index.element = _r626.nextIndex
+                    var _r686: _KotlinLexer_Item? = null
+                    _r686 = _MemoCall(_memo, "identifier", _index.element, ::identifier, null)
+                    if (_r686 != null) _index.element = _r686.nextIndex
 
-                    // ACT 625
-                    val _r625 = _memo.results.peek()
-                    if (_r625 != null) {
+                    // ACT 685
+                    val _r685 = _memo.results.peek()
+                    if (_r685 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r625.startIndex, _r625.nextIndex, _memo.input, _Thunk({ Token.Identifier(it.s) }, _r625), true))
+                        _memo.results.push(_KotlinLexer_Item(_r685.startIndex, _r685.nextIndex, _memo.input, _Thunk({ Token.Identifier(it.s) }, _r685), true))
                     }
 
                     _label = 0
@@ -9112,14 +9805,8 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
         // AND 0
         var _start_i0 = _index.element
 
-        // OR 1
-        var _start_i1 = _index.element
-
         // OR 2
         var _start_i2 = _index.element
-
-        // OR 6
-        var _start_i6 = _index.element
 
         var _label = -1
         while(true) {
@@ -9128,16 +9815,23 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                     // AND 0
                     _start_i0 = _index.element
 
-                    // OR 1
-                    _start_i1 = _index.element
+                    // CALLORVAR integerLiteral
+                    var _r1: _KotlinLexer_Item? = null
+                    _r1 = _MemoCall(_memo, "integerLiteral", _index.element, ::integerLiteral, null)
+                    if (_r1 != null) _index.element = _r1.nextIndex
+
+                    // AND shortcut 0
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 0
+                        continue
+                    }
 
                     // OR 2
                     _start_i2 = _index.element
 
-                    // CALLORVAR decLiteral
-                    var _r3: _KotlinLexer_Item? = null
-                    _r3 = _MemoCall(_memo, "decLiteral", _index.element, ::decLiteral, null)
-                    if (_r3 != null) _index.element = _r3.nextIndex
+                    // LITERAL 'l'
+                    _ParseLiteralChar(_memo, _index, 'l')
 
                     // OR shortcut 2
                     if (_memo.results.peek() == null) {
@@ -9148,62 +9842,13 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         continue
                     }
 
-                    // CALLORVAR hexLiteral
-                    var _r4: _KotlinLexer_Item? = null
-                    _r4 = _MemoCall(_memo, "hexLiteral", _index.element, ::hexLiteral, null)
-                    if (_r4 != null) _index.element = _r4.nextIndex
+                    // LITERAL 'L'
+                    _ParseLiteralChar(_memo, _index, 'L')
 
                     _label = 2
                 }
                 // OR 2
                 2 -> {
-                    // OR shortcut 1
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i1
-                    } else {
-                        _label = 1
-                        continue
-                    }
-
-                    // CALLORVAR binLiteral
-                    var _r5: _KotlinLexer_Item? = null
-                    _r5 = _MemoCall(_memo, "binLiteral", _index.element, ::binLiteral, null)
-                    if (_r5 != null) _index.element = _r5.nextIndex
-
-                    _label = 1
-                }
-                // OR 1
-                1 -> {
-                    // AND shortcut 0
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 0
-                        continue
-                    }
-
-                    // OR 6
-                    _start_i6 = _index.element
-
-                    // LITERAL 'l'
-                    _ParseLiteralChar(_memo, _index, 'l')
-
-                    // OR shortcut 6
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i6
-                    } else {
-                        _label = 6
-                        continue
-                    }
-
-                    // LITERAL 'L'
-                    _ParseLiteralChar(_memo, _index, 'L')
-
-                    _label = 6
-                }
-                // OR 6
-                6 -> {
                     _label = 0
                 }
                 // AND 0
@@ -9218,6 +9863,227 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                         _index.element = _start_i0
                     }
 
+                    break
+                }
+            }
+        }
+    }
+
+
+    fun unsignedLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        // AND 0
+        var _start_i0 = _index.element
+
+        // OR 2
+        var _start_i2 = _index.element
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // AND 0
+                    _start_i0 = _index.element
+
+                    // CALLORVAR integerLiteral
+                    var _r1: _KotlinLexer_Item? = null
+                    _r1 = _MemoCall(_memo, "integerLiteral", _index.element, ::integerLiteral, null)
+                    if (_r1 != null) _index.element = _r1.nextIndex
+
+                    // AND shortcut 0
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 0
+                        continue
+                    }
+
+                    // OR 2
+                    _start_i2 = _index.element
+
+                    // LITERAL 'l'
+                    _ParseLiteralChar(_memo, _index, 'l')
+
+                    // OR shortcut 2
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i2
+                    } else {
+                        _label = 2
+                        continue
+                    }
+
+                    // LITERAL 'L'
+                    _ParseLiteralChar(_memo, _index, 'L')
+
+                    _label = 2
+                }
+                // OR 2
+                2 -> {
+                    _label = 0
+                }
+                // AND 0
+                0 -> {
+                    val _r0_2 = _memo.results.pop()
+                    val _r0_1 = _memo.results.pop()
+
+                    if (_r0_1 != null && _r0_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i0, _index.element, _memo.input, (_r0_1.results + _r0_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i0
+                    }
+
+                    break
+                }
+            }
+        }
+    }
+
+
+    fun unsignedLongLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        // AND 0
+        var _start_i0 = _index.element
+
+        // OR 2
+        var _start_i2 = _index.element
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // AND 0
+                    _start_i0 = _index.element
+
+                    // CALLORVAR integerLiteral
+                    var _r1: _KotlinLexer_Item? = null
+                    _r1 = _MemoCall(_memo, "integerLiteral", _index.element, ::integerLiteral, null)
+                    if (_r1 != null) _index.element = _r1.nextIndex
+
+                    // AND shortcut 0
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 0
+                        continue
+                    }
+
+                    // OR 2
+                    _start_i2 = _index.element
+
+                    // LITERAL "ul"
+                    _ParseLiteralString(_memo, _index, "ul")
+
+                    // OR shortcut 2
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i2
+                    } else {
+                        _label = 2
+                        continue
+                    }
+
+                    // LITERAL "UL"
+                    _ParseLiteralString(_memo, _index, "UL")
+
+                    _label = 2
+                }
+                // OR 2
+                2 -> {
+                    _label = 0
+                }
+                // AND 0
+                0 -> {
+                    val _r0_2 = _memo.results.pop()
+                    val _r0_1 = _memo.results.pop()
+
+                    if (_r0_1 != null && _r0_2 != null) {
+                        _memo.results.push(_KotlinLexer_Item(_start_i0, _index.element, _memo.input, (_r0_1.results + _r0_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i0
+                    }
+
+                    break
+                }
+            }
+        }
+    }
+
+
+    fun integerLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        // OR 0
+        var _start_i0 = _index.element
+
+        // OR 1
+        var _start_i1 = _index.element
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // OR 0
+                    _start_i0 = _index.element
+
+                    // OR 1
+                    _start_i1 = _index.element
+
+                    // CALLORVAR decLiteral
+                    var _r2: _KotlinLexer_Item? = null
+                    _r2 = _MemoCall(_memo, "decLiteral", _index.element, ::decLiteral, null)
+                    if (_r2 != null) _index.element = _r2.nextIndex
+
+                    // OR shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i1
+                    } else {
+                        _label = 1
+                        continue
+                    }
+
+                    // CALLORVAR hexLiteral
+                    var _r3: _KotlinLexer_Item? = null
+                    _r3 = _MemoCall(_memo, "hexLiteral", _index.element, ::hexLiteral, null)
+                    if (_r3 != null) _index.element = _r3.nextIndex
+
+                    _label = 1
+                }
+                // OR 1
+                1 -> {
+                    // OR shortcut 0
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i0
+                    } else {
+                        _label = 0
+                        continue
+                    }
+
+                    // CALLORVAR binLiteral
+                    var _r4: _KotlinLexer_Item? = null
+                    _r4 = _MemoCall(_memo, "binLiteral", _index.element, ::binLiteral, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
+
+                    _label = 0
+                }
+                // OR 0
+                0 -> {
                     break
                 }
             }
@@ -11242,49 +12108,6 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
 
                     // LITERAL '1'
                     _ParseLiteralChar(_memo, _index, '1')
-
-                    _label = 0
-                }
-                // OR 0
-                0 -> {
-                    break
-                }
-            }
-        }
-    }
-
-
-    fun booleanLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
-        val _index = Ref.IntRef()
-        _index.element = __index
-
-        val _arg_index = Ref.IntRef()
-        val _arg_input_index = Ref.IntRef()
-
-        // OR 0
-        var _start_i0 = _index.element
-
-        var _label = -1
-        while(true) {
-            when(_label) {
-                -1 -> {
-                    // OR 0
-                    _start_i0 = _index.element
-
-                    // LITERAL "true"
-                    _ParseLiteralString(_memo, _index, "true")
-
-                    // OR shortcut 0
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i0
-                    } else {
-                        _label = 0
-                        continue
-                    }
-
-                    // LITERAL "false"
-                    _ParseLiteralString(_memo, _index, "false")
 
                     _label = 0
                 }

@@ -8,4 +8,5 @@ fun main() {
     generateParser("matchers/kometa-parser.kometa", true)
     generateParser("matchers/calc.kometa", true)
     generateParser("matchers/kotlin-lexer.kometa", true)
+    generateParser("matchers/kotlin-parser.kometa", true)
 }

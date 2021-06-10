@@ -569,14 +569,23 @@ abstract class Matcher<TInput, TResult>(
     protected val MatchItem<TInput, TResult>?.i: TInput
         get() = this?.asInput()!!
 
+    protected val MatchItem<TInput, TResult>?.ni: TInput?
+        get() = this?.asInput()
+
     protected val MatchItem<TInput, TResult>?.l: List<TResult>
         get() = this?.results?.filterNotNull() ?: emptyList()
 
     protected val MatchItem<TInput, TResult>?.il: List<TInput>
         get() = this?.inputs?.filterNotNull() ?: emptyList()
 
-    protected val MatchItem<TInput, TResult>?.s: String
+    protected val MatchItem<TInput, TResult>?.ls: String
         get() = this.il.joinToString("")
+
+    protected val MatchItem<TInput, TResult>?.s: String
+        get() = this.i.toString()
+
+    protected val MatchItem<TInput, TResult>?.ns: String?
+        get() = this?.i?.toString()
 
     companion object {
         private val NOT_FOUND = Any()

@@ -1,36 +1,36 @@
-import kometa.kotlin.AST
-import kometa.kotlin.Token
-import kometa.Matcher
+import kometa.kotlin.AST;
+import kometa.kotlin.Token;
+import kometa.Matcher;
 
 kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     // SECTION: general
 
-    kotlinFile = shebangLine? NL* fileAnnotation*:fa packageHeader:ph importList:il topLevelObject*:obj EOF
-               -> { AST.KotlinFile(fa.l, ph.r, il.l, obj.l) };
+    kotlinFile = shebangLine? NL* fileAnnotation*:fa packageHeader?:ph ImportList:il topLevelObject*:obj EOF
+               -> { AST.KotlinFile(fa.l, ph.nr, il.l, obj.l) };
 
-    script = shebangLine? NL* fileAnnotation* packageHeader importList (statement semi)* EOF
+    script = shebangLine? NL* fileAnnotation* packageHeader? ImportList (statement semi)* EOF
            -> { error("scripts are not supported") };
 
     shebangLine = ShebangLine NL+ -> { error("ShebangLine is not supported") };
 
+    ShebangLine = .:t ?(t.ni is Token.ShebangLine);
+
     fileAnnotation = AT FILE NL* COLON NL* (LSQUARE unescapedAnnotation+:a RSQUARE) NL* -> { a.l };
     fileAnnotation = AT FILE NL* COLON NL* unescapedAnnotation:a NL* -> { a.r };
 
-    packageHeader = (PACKAGE identifier:id semi?)? -> { AST.PackageHeader(id.s) };
+    packageHeader = PACKAGE identifier:id semi? -> { AST.PackageHeader(id.s) };
 
-    importList = importHeader*:i -> { i.l };
+    ImportList = ImportHeader*:i -> { i.l };
 
-    importHeader = IMPORT identifier:name DOT MULT semi? -> { AST.ImportHeader(name, star = true) };
-    importHeader = IMPORT identifier:name importAlias:alias semi? -> { AST.ImportHeader(name, alias = alias) };
-    importHeader = IMPORT identifier:name semi? -> { AST.ImportHeader(name) };
-
-    importAlias = AS simpleIdentifier:name -> { name.s };
+    ImportHeader = IMPORT identifier:name DOT MULT semi? -> { AST.ImportHeader(name.s, star = true) };
+    ImportHeader = IMPORT identifier:name AS simpleIdentifier:alias semi? -> { AST.ImportHeader(name.s, alias = alias.s) };
+    ImportHeader = IMPORT identifier:name semi? -> { AST.ImportHeader(name.s) };
 
     topLevelObject = declaration:d semis? -> { d.r };
 
     typeAlias = modifiers?:mod TYPE_ALIAS NL* simpleIdentifier:name (NL* typeParameters:tp)? NL* ASSIGNMENT NL* type:t
-              -> { AST.TypeAlias(mod?.l, name.s, tp?.rl) };
+              -> { AST.TypeAlias(mod.l, name.s, tp.l, t.r) };
 
     declaration = classDeclaration | objectDeclaration | functionDeclaration | propertyDeclaration | typeAlias;
 
@@ -38,44 +38,48 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     classDeclaration = modifiers?:mod CLASS NL* classHeader:ch (NL* classBody | NL* enumClassBody)?:body
                      -> { val h = ch.r as AST.ClassHeader
-                          AST.Class(mod.l, h.name, h.typeParams, h.primaryConstructor, h.delegationSpecifiers, h.typeConstraints, body?.r, AST.Class.Class) };
-    classDeclaration = modifiers?:mod INTERFACE NL* classHeader:ch (NL* classBody | NL* enumClassBody)?:body
+                          AST.Class(mod.l, h.name, h.typeParameters, h.primaryConstructor, h.delegationSpecifiers, h.typeConstraints, body.nr) };
+    classDeclaration = modifiers?:mod INTERFACE NL* classHeader:ch NL* classBody?:body
                      -> { val h = ch.r as AST.ClassHeader
-                          AST.Class(mod.l, h.name, h.typeParams, h.primaryConstructor, h.delegationSpecifiers, h.typeConstraints, body?.r, AST.Class.Interface) };
-    classDeclaration = modifiers?:mod FUN NL* INTERFACE NL* classHeader:ch (NL* classBody | NL* enumClassBody)?:body
+                          if (h.primaryConstructor != null) error("Interface should have no constructor")
+                          if (h.delegationSpecifiers.isNotEmpty()) error("Interface should have no delegation specifiers")
+                          AST.Interface(mod.l, h.name, h.typeParameters, h.typeConstraints, body.nr) };
+    classDeclaration = modifiers?:mod FUN NL* INTERFACE NL* classHeader:ch NL* enumClassBody?:body
                      -> { val h = ch.r as AST.ClassHeader
-                          AST.Class(mod.l, h.name, h.typeParams, h.primaryConstructor, h.delegationSpecifiers, h.typeConstraints, body?.r, AST.Class.FunInterface) };
+                          if (h.primaryConstructor != null) error("Fun interface should have no constructor")
+                          if (h.delegationSpecifiers.isNotEmpty()) error("Fun interface should have no delegation specifiers")
+                          AST.FunInterface(mod.l, h.name, h.typeParameters, h.typeConstraints, body.nr) };
 
-    classHeader = simpleIdentifier:name (NL* typeParameters:tp)? (NL* primaryConstructor:pc)? (NL* COLON NL* delegationSpecifiers:ds)? (NL* typeConstraints:tc)?
-                -> { AST.ClassHeader(name.s, tp.l, ps?.r, ds.l, tc.l) }
+    classHeader = simpleIdentifier:name (NL* typeParameters:tp)? (NL* primaryConstructor:pc)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* typeConstraints:tc)?
+                -> { AST.ClassHeader(name.s, tp.l, pc.nr, ds.l, tc.l) };
 
     primaryConstructor = (modifiers?:mods CONSTRUCTOR NL*)? classParameters:cps
-                       -> { AST.Constructor(mods.l, cps.l, null, null) };
+                       -> { AST.Constructor(mods.l, cps.l, null, null, primary = true) };
 
-    classBody = LCURL NL* classMemberDeclarations:members NL* RCURL -> { members.l };
+    classBody = LCURL NL* classMemberDeclarations:members NL* RCURL -> { AST.ClassBody(members.l) };
 
     classParameters = LPAREN NL* (classParameter (NL* COMMA NL* classParameter)* (NL* COMMA)?)?:cps NL* RPAREN -> { cps.l };
 
-    classParameter = modifiers:mods (varOrVar:vov)? NL* simpleIdentifier:name COLON NL* type:t (NL* ASSIGNMENT NL* expression:expr)?
-                   -> { AST.ClassParameter(mods.l, name.s, t.r, expr?.r, vov.r) };
+    classParameter = modifiers:mods (valOrVar:vov)? NL* simpleIdentifier:name COLON NL* type:t (NL* ASSIGNMENT NL* expression:expr)?
+                   -> { AST.ClassParameter(mods.l, name.s, t.r, expr.nr, vov.nr) };
 
-    valOrVar = VAR -> { AST.ValOrVar.Var }
-    valOrVar = VAL -> { AST.ValOrVar.Val }
+    valOrVar = VAR -> { AST.VAR };
+    valOrVar = VAL -> { AST.VAL };
 
-    delegationSpecifiers = annotatedDelegationSpecifier (NL* COMMA NL* annotatedDelegationSpecifier)* -> { it.l };
+    annotatedDelegationSpecifiers = annotatedDelegationSpecifier (NL* COMMA NL* annotatedDelegationSpecifier)* -> { it.l };
 
     delegationSpecifier = constructorInvocation | explicitDelegation | userType | functionType;
 
     constructorInvocation = userType:t valueArguments:args -> { AST.ConstructorInvocation(t.r, args.l) };
 
-    annotatedDelegationSpecifier = annotation*:a NL* delegationSpecifier:ds -> { AST.AnnotatedDelegationSpecifier(a.l, ds.r) };
+    annotatedDelegationSpecifier = annotation*:a NL* delegationSpecifier:ds -> { AST.AnnotatedDelegationSpecifier.invoke(a.l, ds.l) };
 
     explicitDelegation = userType:t NL* BY NL* expression:expr -> { AST.ExplicitDelegation(t.r, expr.r) };
     explicitDelegation = functionType:t NL* BY NL* expression:expr -> { AST.ExplicitDelegation(t.r, expr.r) };
 
     typeParameters = LANGLE NL* typeParameter (NL* COMMA NL* typeParameter)* (NL* COMMA)? NL* RANGLE -> { it.l };
 
-    typeParameter = typeParameterModifiers?:mods NL* simpleIdentifier:name (NL* COLON NL* type:t)? -> { TypeParameter(mods.l, name.s, t?.r) };
+    typeParameter = typeParameterModifiers?:mods NL* simpleIdentifier:name (NL* COLON NL* type:t)? -> { AST.TypeParameter(mods.l, name.s, t.nr) };
 
     typeConstraints = WHERE NL* typeConstraint (NL* COMMA NL* typeConstraint)* -> { it.l };
 
@@ -87,131 +91,133 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     classMemberDeclaration = declaration | companionObject | anonymousInitializer | secondaryConstructor;
 
-    anonymousInitializer = INIT NL* block:b -> { AST.AnonymousInitializer(b) };
+    anonymousInitializer = INIT NL* block:b -> { AST.AnonymousInitializer(b.r) };
 
-    companionObject = modifiers?:mods COMPANION NL* OBJECT (NL* simpleIdentifier:name)? (NL* COLON NL* delegationSpecifiers:ds)? (NL* classBody:b)?
-                    -> { AST.CompanionObject(mods.l, name?.s, ds.l, b?.r) };
+    companionObject = modifiers?:mods COMPANION NL* OBJECT (NL* simpleIdentifier:name)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* classBody:b)?
+                    -> { AST.CompanionObject(mods.l, name.ns, ds.l, b.nr) };
 
     functionValueParameters = LPAREN NL* (functionValueParameter (NL* COMMA NL* functionValueParameter)* (NL* COMMA)?)? NL* RPAREN -> { it.l };
 
-    functionValueParameter = parameterModifiers?:mods parameter:param (NL* ASSIGNMENT NL* expression:expr)? -> { AST.ValueParameter(mods.l, param.r.name, param.r.type, expr?.r) };
+    functionValueParameter = parameterModifiers?:mods parameter:param (NL* ASSIGNMENT NL* expression:expr)?
+                           -> { val (name, type) = param.r as AST.NameAndType
+                                AST.ValueParameter(mods.l, name!!, type!!, expr.nr) };
 
     functionDeclaration = modifiers?:mods FUN (NL* typeParameters:tp)?
                           (NL* receiverType:rt NL* DOT)? NL* simpleIdentifier:name NL* functionValueParameters:params (NL* COLON NL* type:t)? (NL* typeConstraints:tcs)?
                           (NL* functionBody:b)?
-                        -> { AST.FunctionDeclaration(mods.l, tp.l, rt?.r, name.s, t?.r, tcs.l, b?.r) };
+                        -> { AST.FunctionDeclaration(mods.l, tp.l, rt.nr, name.s, params.l, t.nr, tcs.l, b.nr) };
 
     functionBody = blockBody | expressionBody;
 
     blockBody = block -> { AST.BlockBody(it.r) };
     expressionBody = ASSIGNMENT NL* expression:expr -> { AST.ExpressionBody(expr.r) };
 
-    variableDeclaration = annotation*:anns NL* simpleIdentifier:name (NL* COLON NL* type:t)? -> { AST.VariableDeclaration(anns.l, name.s, t?.r) };
+    variableDeclaration = annotation*:anns NL* simpleIdentifier:name (NL* COLON NL* type:t)? -> { AST.VariableDeclaration(anns.l, name.s, t.nr) };
 
     multiVariableDeclaration = LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN -> { it.l };
 
     propertyDeclaration = modifiers?:mods valOrVar:vov (NL* typeParameters:tps)?
                           (NL* receiverType:rt NL* DOT)? (NL* varDecls:vds) (NL* typeConstraints:tcs)?
                           (NL* (expressionBody | propertyDelegate):b)?
-                          (NL+ SEMICOLON)? NL* (getter:gttr? (NL* semi? setter:sttr)? | setter:sttr? (NL* semi? getter:gttr)?)
-                        -> { AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt?.r, vds.l, tcs.l, b?.r, gttr?.r, sttr?.r) };
+                          (NL+ SEMICOLON)? NL* (getter?:gttr (NL* semi? setter:sttr)? | setter?:sttr (NL* semi? getter:gttr)?)
+                        -> { AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.l, tcs.l, b.nr, gttr.nr, sttr.nr) };
 
     varDecls = multiVariableDeclaration -> { it.l };
-    varDecls = variableDeclaration -> { listOf(it.r) };
+    varDecls = variableDeclaration -> { it.r };
 
     propertyDelegate = BY NL* expression:expr -> { AST.PropertyDelegate(expr.r) };
 
-    getter = modifiers?:mods GET (NL* LPAREN NL* RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)? -> { AST.Getter(mods.l, t?.r, b?.r) };
+    getter = modifiers?:mods GET (NL* LPAREN NL* RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)? -> { AST.Getter(mods.l, t.nr, b.nr) };
 
     setter = modifiers?:mods SET (NL* LPAREN NL* functionValueParameterWithOptionalType:param (NL* COMMA)? NL* RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)?
-           -> { AST.Setter(mods.l, param.r, t?.r, b?.r) };
+           -> { AST.Setter(mods.l, param.r, t.nr, b.nr) };
 
     parametersWithOptionalType = LPAREN NL* (functionValueParameterWithOptionalType (NL* COMMA NL* functionValueParameterWithOptionalType)* (NL* COMMA)?)? NL* RPAREN -> { it.l };
 
     functionValueParameterWithOptionalType = parameterModifiers?:mods parameterWithOptionalType:param (NL* ASSIGNMENT NL* expression:expr)?
-                                           -> { AST.ValueParameter(mods.l, param.r.name, param,r.type, expr?.r) };
+                                           -> { val (name, type) = param.r as AST.NameAndType
+                                                AST.ValueParameter(mods.l, name!!, type!!, expr.nr) };
 
-    parameterWithOptionalType = simpleIdentifier:name NL* (COLON NL* type:t)? -> { AST.NameAndType(name.s, t?.r) };
+    parameterWithOptionalType = simpleIdentifier:name NL* (COLON NL* type:t)? -> { AST.NameAndType(name.s, t.nr) };
 
     parameter = simpleIdentifier:name NL* COLON NL* type:t -> { AST.NameAndType(name.s, t.r) };
 
     objectDeclaration = modifiers?:mods OBJECT
                         NL* simpleIdentifier:name
-                        (NL* COLON NL* delegationSpecifiers:ds)?
+                        (NL* COLON NL* annotatedDelegationSpecifiers:ds)?
                         (NL* classBody:b)?
-                      -> { AST.ObjectDeclaration(mods.l, name.s, ds.l, b?.r) };
+                      -> { AST.ObjectDeclaration(mods.l, name.s, ds.l, b.nr) };
 
-    secondaryConstructor = modifiers?:mods CONSTRUCTOR NL* functionValueParameters:params (NL* COLON NL* constructorDelegationCall:cdc)? NL* block:b?
-                         -> { AST.Constructor(mods.l, params.r, cdc?.r, b?.r) };
+    secondaryConstructor = modifiers?:mods CONSTRUCTOR NL* functionValueParameters:params (NL* COLON NL* constructorDelegationCall:cdc)? NL* block?:b
+                         -> { AST.Constructor(mods.l, params.l, cdc.nr, b.nr, false) };
 
-    constructorDelegationCall : THIS NL* valueArguments:args -> { AST.ThisCall(args.l) };
-    constructorDelegationCall : SUPER NL* valueArguments -> { AST.SuperCall(args.l) };
+    constructorDelegationCall = THIS NL* valueArguments:args -> { AST.ThisCall(args.l) };
+    constructorDelegationCall = SUPER NL* valueArguments:args -> { AST.SuperCall(args.l) };
 
     // SECTION: enumClasses
 
-    enumClassBody = LCURL NL* enumEntries:es? (NL* SEMICOLON NL* classMemberDeclarations:ms)? NL* RCURL -> { AST.EnumClassBody(es.l, ms.l) };
+    enumClassBody = LCURL NL* enumEntries?:es (NL* SEMICOLON NL* classMemberDeclarations:ms)? NL* RCURL -> { AST.EnumClassBody(es.l, ms.l) };
 
     enumEntries = enumEntry (NL* COMMA NL* enumEntry)* NL* COMMA? -> { it.l };
 
-    enumEntry = (modifiers:mods NL*)? simpleIdentifier:name (NL* valueArguments:args)? (NL* classBody:b)? -> { AST.EnumEntry(mods.l, name.s, args.l, b?.r) };
+    enumEntry = (modifiers:mods NL*)? simpleIdentifier:name (NL* valueArguments:args)? (NL* classBody:b)? -> { AST.EnumEntry(mods.l, name.s, args.l, b.nr) };
 
     // SECTION: types
 
-    type = typeModifiers?:mods (parenthesizedType | nullableType | typeReference | functionType):t -> { (t.r as AST.Type).withModifiers(mods.l) };
+    type = receiverType;
+    type = typeModifiers?:mods functionType:t -> { AST.FunctionTypeWithModifiers(mods.l, t.r) };
+
+    receiverType = typeModifiers?:mods (parenthesizedType | nullableType | typeReference):t -> { AST.ReceiverType(mods.l, t.r) };
 
     typeReference = userType;
-    typeReference = DYNAMIC -> { AST.Type.Dynamic };
+    typeReference = DYNAMIC -> { AST.DYNAMIC };
 
-    nullableType = (typeReference | parenthesizedType):t NL* quest+ -> { AST.Type.Nullable(t.r) };
+    nullableType = (typeReference | parenthesizedType):t NL* quest+ -> { AST.NullableType(t.r) };
 
-    quest = QUEST_NO_WS | QUEST_WS;
+    quest = QUEST;
 
-    userType = simpleUserType (NL* DOT NL* simpleUserType)* -> { AST.Type.User(it.l) };
+    userType = simpleUserType (NL* DOT NL* simpleUserType)* -> { AST.UserType(it.l) };
 
-    simpleUserType = simpleIdentifier:name (NL* typeArguments:args)? -> { AST.Type.SimpleUser(name.s, args.l) };
+    simpleUserType = simpleIdentifier:name (NL* typeArguments:args)? -> { AST.SimpleUserType(name.s, args.l) };
 
-    typeProjection = typeProjectionModifiers?:mods type:t -> { AST.TypeProjection(mods.l, t.r) };
-    typeProjection = MULT -> { AST.TypeProjection.Wildcard };
+    typeProjection = typeProjectionModifiers?:mods type:t -> { AST.TypeProjectionWithType(mods.l, t.r) };
+    typeProjection = MULT -> { AST.MULT };
 
     typeProjectionModifiers = typeProjectionModifier+ -> { it.l };
 
     typeProjectionModifier = varianceModifier:vm NL* -> { vm.r };
     typeProjectionModifier = annotation;
 
-    functionType = (receiverType:rt NL* DOT NL*)? functionTypeParameters:params NL* ARROW NL* type:t -> { AST.Type.Function(rt?.r, params.l, t.r) };
+    functionType = (receiverType:rt NL* DOT NL*)? functionTypeParameters:params NL* ARROW NL* type:t -> { AST.FunctionType(rt.nr, params.l, t.r) };
 
     functionTypeParameters = LPAREN NL* (parameter | type)? (NL* COMMA NL* (parameter | type))* (NL* COMMA)? NL* RPAREN
                            -> { it.l.map { p -> if (p is AST.NameAndType) p.type else p }.filterIsInstance<AST.Type>() };
 
     parenthesizedType = LPAREN NL* type:t NL* RPAREN -> { t.r };
 
-    receiverType = typeModifiers?:mods (parenthesizedType | nullableType | typeReference):t -> { (t.r as AST.Type).withModifiers(mods.l) };
-
-    parenthesizedUserType = LPAREN NL* (userType | parenthesizedUserType):t NL* RPAREN -> { t.r };
-
     // SECTION: statements
 
     statements = (statement (semis statement)*)? semis? -> { it.l };
 
-    statement = (label | annotation)*:p ( declaration | assignment | loopStatement | expression):expr -> { if (p.l.isEmpty()) expr.r else AST.Statement.Labelled(p.l, expr.r) };
+    statement = (label | annotation)*:p ( declaration | assignment | loopStatement | expression):expr -> { if (p.l.isEmpty()) expr.r else AST.Statement(p.l, expr.r) };
 
     label = simpleIdentifier:name AT NL* -> { AST.Label(name.s) };
 
     controlStructureBody = block | statement;
 
-    block = LCURL NL* statements:stmts NL* RCURL -> { it.l };
+    block = LCURL NL* statements:stmts NL* RCURL -> { AST.Block(it.l) };
 
     loopStatement = forStatement | whileStatement | doWhileStatement;
 
     forStatement = FOR NL* LPAREN annotation*:anns varDecls:vds IN expression:expr RPAREN NL* controlStructureBody?:csb
-                 -> { AST.Statement.For(anns.l, vds.l, expr.r, csb?.r) };
+                 -> { AST.ForStatement(anns.l, vds.l, expr.r, csb.nr) };
 
-    whileStatement = WHILE NL* LPAREN expression:expr RPAREN NL* (controlStructureBody:csb | SEMICOLON) -> { AST.Statement.While(expr.r, csb?.r) };
+    whileStatement = WHILE NL* LPAREN expression:expr RPAREN NL* (controlStructureBody:csb | SEMICOLON) -> { AST.WhileStatement(expr.r, csb.nr) };
 
-    doWhileStatement = DO NL* controlStructureBody?:csb NL* WHILE NL* LPAREN expression:expr RPAREN -> { AST.Statement.Do(csb?.r, expr.r) };
+    doWhileStatement = DO NL* controlStructureBody?:csb NL* WHILE NL* LPAREN expression:expr RPAREN -> { AST.DoWhileStatement(csb.nr, expr.r) };
 
-    assignment = directlyAssignableExpression:lhs ASSIGNMENT NL* expression:rhs -> { AST.Statement.Assignment(lhs.r, rhs.r) };
-    assignment = assignableExpression:lhs assignmentAndOperator:op NL* expression:rhs -> { AST.Statement.Assignment(lhs.r, op.s, rhs.r) };
+    assignment = directlyAssignableExpression:lhs ASSIGNMENT NL* expression:rhs -> { AST.DirectAssignment(lhs.r, rhs.r) };
+    assignment = assignableExpression:lhs assignmentAndOperator:op NL* expression:rhs -> { AST.AugmentedAssignment(lhs.r, op.r, rhs.r) };
 
     semi = (SEMICOLON | NL) NL* | EOF;
 
@@ -221,46 +227,46 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     expression = disjunction;
 
-    disjunction = conjunction (NL* DISJ NL* conjunction)* -> { AST.Expression.Disjunction(it.l) };
+    disjunction = conjunction (NL* DISJ NL* conjunction)* -> { AST.Disjunction(it.l) };
 
-    conjunction = equality (NL* CONJ NL* equality)* -> { AST.Expression.Conjunction(it.l) };
+    conjunction = equality (NL* CONJ NL* equality)* -> { AST.Conjunction(it.l) };
 
-    equality = comparison (equalityOperator NL* comparison)* -> { AST.Expression.Equality(it.l) };
+    equality = comparison (equalityOperator NL* comparison)* -> { AST.Equality(it.l) };
 
-    comparison = genericCallLikeComparison (comparisonOperator NL* genericCallLikeComparison)* -> { AST.Expression.Comparison(it.l) };
+    comparison = genericCallLikeComparison (comparisonOperator NL* genericCallLikeComparison)* -> { AST.Comparison(it.l) };
 
-    genericCallLikeComparison -> infixOperation:op callSuffix*:s -> { AST.Expression.GenericCallLikeComparison(op.r, s.l) };
+    genericCallLikeComparison = infixOperation:op callSuffix*:s -> { AST.GenericCallLikeComparison(op.r, s.l) };
 
-    infixOperation = elvisExpression:lhs (inCheck | isCheck)*:rest -> { AST.Expression.InfixOperation(lhs.r, rest.l) };
+    infixOperation = elvisExpression:lhs (inCheck | isCheck)*:rest -> { AST.InfixOperation(lhs.r, rest.l) };
 
     inCheck = inOperator:op NL* elvisExpression:expr -> { AST.InCheckSuffix(op.r, expr.r) };
 
     isCheck = isOperator:op NL* type:t -> { AST.IsCheckSuffix(op.r, t.r) };
 
-    elvisExpression = infixFunctionCall (NL* elvis NL* infixFunctionCall)* -> { AST.Expression.Elvis(it.l) };
+    elvisExpression = infixFunctionCall (NL* ELVIS NL* infixFunctionCall)* -> { AST.ElvisExpression(it.l) };
 
-    elvis = QUEST_NO_WS COLON;
+    infixFunctionCall = rangeExpression (simpleIdentifier NL* rangeExpression)* -> { AST.InfixFunctionCall(it.l) };
 
-    infixFunctionCall = rangeExpression (simpleIdentifier NL* rangeExpression)* -> { AST.Expression.InfixFunctionCall(it.l) };
+    rangeExpression = additiveExpression (RANGE NL* additiveExpression)* -> { AST.RangeExpression(it.l) };
 
-    rangeExpression = additiveExpression (RANGE NL* additiveExpression)* -> { AST.Expression.Range(it.l) };
+    additiveExpression = multiplicativeExpression (additiveOperator NL* multiplicativeExpression)* -> { AST.Additive(it.l) };
 
-    additiveExpression = multiplicativeExpression (additiveOperator NL* multiplicativeExpression)* -> { AST.Expression.Additive(it.l) };
+    multiplicativeExpression = asExpression (multiplicativeOperator NL* asExpression)* -> { AST.Multiplicative(it.l) };
 
-    multiplicativeExpression = asExpression (multiplicativeOperator NL* asExpression)* -> { AST.Expression.Multiplicative(it.l) };
+    asExpression = prefixUnaryExpression (NL* asOperator NL* type)* -> { AST.AsExpression(it.l) };
 
-    asExpression = prefixUnaryExpression (NL* asOperator NL* type)* -> { AST.Expression.As(it.l) };
-
-    prefixUnaryExpression = unaryPrefix*:p postfixUnaryExpression:expr -> { AST.Expression.PrefixUnary(p.l, expr.r) };
+    prefixUnaryExpression = unaryPrefix*:p postfixUnaryExpression:expr -> { AST.PrefixUnaryExpression(p.l, expr.r) };
 
     unaryPrefix = annotation | label | prefixUnaryOperator NL*;
 
-    postfixUnaryExpression = primaryExpression:expr postfixUnarySuffix*:s -> { AST.Expression.PostfixUnary(expr.r, s.l) };
+    postfixUnaryExpression = primaryExpression:expr postfixUnarySuffix*:s -> { AST.PostfixUnaryExpression(expr.r, s.l) };
 
-    postfixUnarySuffix = postfixUnaryOperator | typeArguments | callSuffix | indexingSuffix | navigationSuffix;
+    postfixUnarySuffix = postfixUnaryOperator | callSuffix | assignableSuffix;
 
-    directlyAssignableExpression = postfixUnaryExpression:expr assignableSuffix:s -> { AST.Expression.DirectlyAssignable(expr.r, s.r) };
-    directlyAssignableExpression = simpleIdentifier -> { AST.Expression.DirectlyAssignable(it.s) };
+    typeArgumentsPostfix = typeArguments -> { AST.TypeArgumentsPostfix(it.l) };
+
+    directlyAssignableExpression = postfixUnaryExpression:expr assignableSuffix:s -> { AST.DirectlyAssignableExpression(expr.r, s.r) };
+    directlyAssignableExpression = simpleIdentifier -> { AST.NameExpression(it.s) };
     directlyAssignableExpression = parenthesizedDirectlyAssignableExpression;
 
     parenthesizedDirectlyAssignableExpression = LPAREN NL* directlyAssignableExpression:expr NL* RPAREN -> { expr.r };
@@ -269,139 +275,131 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     parenthesizedAssignableExpression = LPAREN NL* assignableExpression:expr NL* RPAREN -> { expr.r };
 
-    assignableSuffix = typeArguments -> { AST.AssignableSuffix.Typed(it.l) };
-    assignableSuffix = indexingSuffix -> { AST.AssignableSuffix.Indexed(it.r) };
-    assignableSuffix = navigationSuffix -> { AST.AssignableSuffix.Navigation(it.r) };
+    assignableSuffix = typeArgumentsPostfix | indexingSuffix | navigationSuffix;
 
     indexingSuffix = LSQUARE NL* expression (NL* COMMA NL* expression)* (NL* COMMA)? NL* RSQUARE -> { AST.IndexingSuffix(it.l) };
 
-    navigationSuffix = memberAccessOperator:op NL* simpleIdentifier:name -> { AST.NavigationSuffix.Identifier(op.r, name.s) };
-    navigationSuffix = memberAccessOperator:op NL* parenthesizedExpression:expr -> { AST.NavigationSuffix.Suffix(op.r, expr.r) };
-    navigationSuffix = memberAccessOperator:op NL* CLASS -> { AST.NavigationSuffix.Class(op.r) };
+    navigationSuffix = memberAccessOperator:op NL* simpleIdentifier:name -> { AST.IdentifierNavigationSuffix(op.r, name.s) };
+    navigationSuffix = memberAccessOperator:op NL* parenthesizedExpression:expr -> { AST.ExpressionNavigationSuffix(op.r, expr.r) };
+    navigationSuffix = memberAccessOperator:op NL* CLASS -> { AST.ClassNavigationSuffix(op.r) };
 
     callSuffix = typeArguments?:tas valueArguments?:args annotatedLambda:l -> { AST.CallSuffix(tas.l, args.l, l.r) };
     callSuffix = typeArguments?:tas valueArguments:args -> { AST.CallSuffix(tas.l, args.l, null) };
 
-    annotatedLambda = annotation*:anns label?:l NL* lambdaLiteral:ll -> { AST.AnnotatedLambda(anns.l, l?.r, ll.r) };
+    annotatedLambda = annotation*:anns label?:l NL* lambdaLiteral:ll -> { AST.AnnotatedLambda(anns.l, l.nr, ll.r) };
 
     typeArguments = LANGLE NL* typeProjection (NL* COMMA NL* typeProjection)* (NL* COMMA)? NL* RANGLE -> { it.l };
 
     valueArguments = LPAREN NL* (valueArgument (NL* COMMA NL* valueArgument)* (NL* COMMA)? NL*)? RPAREN -> { it.l };
 
-    valueArgument = annotation?:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? MULT NL* expression:expr -> { AST.ValueArgument(ann?.r, name?.r, expr.r, withSpread = true) };
-    valueArgument = annotation?:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? expression:expr -> { AST.ValueArgument(ann?.r, name?.r, expr.r, withSpread = false) };
+    valueArgument = annotation*:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? MULT NL* expression:expr -> { AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = true) };
+    valueArgument = annotation*:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? expression:expr -> { AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = false) };
 
     primaryExpression = parenthesizedExpression | simpleIdentifier | literalConstant | stringLiteral | callableReference | functionLiteral | objectLiteral
                       | collectionLiteral | thisExpression | superExpression | ifExpression | whenExpression | tryExpression | jumpExpression;
 
     parenthesizedExpression = LPAREN NL* expression:expr NL* RPAREN -> { expr.r };
 
-    collectionLiteral = LSQUARE NL* (expression (NL* COMMA NL* expression)* (NL* COMMA)? NL*)? RSQUARE -> { AST.Expression.CollectionLiteral(it.l) };
+    collectionLiteral = LSQUARE NL* (expression (NL* COMMA NL* expression)* (NL* COMMA)? NL*)? RSQUARE -> { AST.CollectionLiteral(it.l) };
 
-    literalConstant = BooleanLiteral | IntegerLiteral | HexLiteral | BinLiteral | CharacterLiteral | RealLiteral | NullLiteral
-                    | LongLiteral | UnsignedLiteral ;
+    literalConstant = BooleanLiteral | IntegerLiteral | CharacterLiteral | RealLiteral | NullLiteral | LongLiteral | UnsignedLiteral;
 
-    lambdaLiteral = LCURL NL* (lambdaParameters?:params NL* ARROW NL*)? statements:stmts NL* RCURL -> { AST.LambdaLiteral(params.l, stmts.l);
+    lambdaLiteral = LCURL NL* (lambdaParameters?:params NL* ARROW NL*)? statements:stmts NL* RCURL -> { AST.LambdaLiteral(params.l, stmts.l) };
 
     lambdaParameters = lambdaParameter (NL* COMMA NL* lambdaParameter)* (NL* COMMA)? -> { it.l };
 
-    lambdaParameter = variableDeclaration -> { AST.LambdaParameter(it) };
-    lambdaParameter = multiVariableDeclaration:mvd (NL* COLON NL* type:t)? -> { AST.LambdaParameter(mvd.r, t.r) };
+    lambdaParameter = variableDeclaration -> { AST.LambdaParameter(listOf(it.r), null) };
+    lambdaParameter = multiVariableDeclaration:mvd (NL* COLON NL* type:t)? -> { AST.LambdaParameter(mvd.l, t.nr) };
 
     anonymousFunction = FUN (NL* type:t1 NL* DOT)? NL* parametersWithOptionalType:valueParams (NL* COLON NL* type:t2)?
                         (NL* typeConstraints:tcs)? (NL* functionBody:b)?
-                      -> { AST.AnonymousFunction(t1?.r, valueParams.l, t2.r, tcs.l, b?.r) };
+                      -> { AST.AnonymousFunction(t1.nr, valueParams.l, t2.nr, tcs.l, b.nr) };
 
     functionLiteral = lambdaLiteral | anonymousFunction;
 
-    objectLiteral = OBJECT (NL* COLON NL* delegationSpecifiers:dss NL*)? (NL* classBody:b)? -> { AST.ObjectLiteral(dss.l, b?.r) };
+    objectLiteral = OBJECT (NL* COLON NL* annotatedDelegationSpecifiers:dss NL*)? (NL* classBody:b)? -> { AST.ObjectLiteral(dss.l, b.nr) };
 
-    thisExpression = THIS -> { AST.ThisExpression };
-    thisExpression = thisAt:label -> { AST.ThisAtExpression(label.s) };
+    thisExpression = THIS -> { AST.THIS };
+    thisExpression = ThisAt:label -> { AST.ThisAt(label.s) };
 
-    superExpression = SUPER (LANGLE NL* type:t NL* RANGLE)? (AT_NO_WS simpleIdentifier:name)? -> { AST.SuperExpression(t?.r, name?.s) };
-    superExpression = SUPER_AT -> { AST.SuperAtExpression };
+    superExpression = SUPER (LANGLE NL* type:t NL* RANGLE)? (AT simpleIdentifier:name)? -> { AST.Super(t.nr, name.ns) };
 
-    ifExpression = IF NL* LPAREN NL* expression:expr NL* RPAREN NL* controlStructureBody:thenExpr SEMICOLON? -> { AST.IfExpression(expr.r, thenExpr.r, false) }
+    ifExpression = IF NL* LPAREN NL* expression:expr NL* RPAREN NL* controlStructureBody:thenExpr SEMICOLON? -> { AST.IfExpression(expr.r, thenExpr.r, null) };
     ifExpression = IF NL* LPAREN NL* expression:expr NL* RPAREN NL* controlStructureBody?:thenExpr NL* SEMICOLON? NL* ELSE NL* SEMICOLON? controlStructureBody:elseExpr
-                 -> { AST.IfExpression(expr.r, thenExpr?.r, elseExpr.r) }
+                 -> { AST.IfExpression(expr.r, thenExpr.nr, elseExpr.r) };
 
-    whenSubject = LPAREN (annotation*:anns NL* VAL NL* variableDeclaration:varDecl NL* ASSIGNMENT NL*)? expression:expr RPAREN -> { AST.WhenSubject(anns.l, varDecl?.r, expr.r) };
+    whenSubject = LPAREN (annotation*:anns NL* VAL NL* variableDeclaration:varDecl NL* ASSIGNMENT NL*)? expression:expr RPAREN -> { AST.WhenSubject(anns.l, varDecl.nr, expr.r) };
 
-    whenExpression = WHEN NL* whenSubject?:subj NL* LCURL NL* (whenEntry NL*)*:entries NL* RCURL -> { AST.WhenExpression(subj?.r, entries.l) };
+    whenExpression = WHEN NL* whenSubject?:subj NL* LCURL NL* (whenEntry NL*)*:entries NL* RCURL -> { AST.WhenExpression(subj.nr, entries.l) };
 
     whenEntry = (whenCondition (NL* COMMA NL* whenCondition)*):conds (NL* COMMA)? NL* ARROW NL* controlStructureBody:b semi? -> { AST.WhenEntry(conds.l, b.r) };
-    whenEntry = ELSE NL* ARROW NL* controlStructureBody:r semi? -> { AST.WhenEntry(null, b.r) };
+    whenEntry = ELSE NL* ARROW NL* controlStructureBody:b semi? -> { AST.WhenEntry(null, b.r) };
 
-    whenCondition = expression | rangeTest | typeTest;
+    whenCondition = expression | isCheck | inCheck;
 
-    rangeTest = inOperator:op NL* expression:expr -> { AST.RangeTest(op.r, expr.r) };
-
-    typeTest = isCheck;
-
-    tryExpression = TRY NL* block:b (NL* catchBlock)+:cs (NL* finallyBlock:fb)? -> { AST.TryExpression(b.r, cs.l, fb?.r) };
+    tryExpression = TRY NL* block:b (NL* catchBlock)+:cs (NL* finallyBlock:fb)? -> { AST.TryExpression(b.r, cs.l, fb.nr) };
     tryExpression = TRY NL* block:b NL* finallyBlock:fb -> { AST.TryExpression(b.r, emptyList(), fb.r) };
 
     catchBlock = CATCH NL* LPAREN annotation*:anns simpleIdentifier:name COLON type:t (NL* COMMA)? RPAREN NL* block:b -> { AST.CatchBlock(anns.l, name.s, t.r, b.r) };
 
-    finallyBlock = FINALLY NL* block:b -> { AST.FinallyBlock(b.r) };
+    finallyBlock = FINALLY NL* block:b -> { b.r };
 
     jumpExpression = THROW NL* expression:expr -> { AST.Throw(expr.r) };
-    jumpExpression = RETURN expression?:expr -> { AST.Return(expr?.r) };
-    jumpExpression = (new Token.ReturnAt):label expression?:expr -> { AST.ReturnAt(label.s, expr?.r) };
-    jumpExpression = CONTINUE -> { AST.Continue };
-    jumpExpression = (new Token.ContinueAt):label -> { AST.ContinueAt(label.s) };
-    jumpExpression = BREAK -> { AST.Break };
-    jumpExpression = (new Token.BreakAt):label -> { AST.BreakAt(label.s) };
+    jumpExpression = RETURN expression?:expr -> { AST.Return(expr.nr) };
+    jumpExpression = ReturnAt:label expression?:expr -> { AST.ReturnAt(label.s, expr.nr) };
+    jumpExpression = CONTINUE -> { AST.CONTINUE };
+    jumpExpression = ContinueAt:label -> { AST.ContinueAt(label.s) };
+    jumpExpression = BREAK -> { AST.BREAK };
+    jumpExpression = BreakAt:label -> { AST.BreakAt(label.s) };
 
     callableReference = receiverType?:rt COLONCOLON NL* simpleIdentifier:name -> { AST.CallableReference(rt?.r, name.s) };
     callableReference = receiverType?:rt COLONCOLON NL* CLASS -> { AST.CallableReference(rt?.r, null) };
 
-    assignmentAndOperator = new Token.ADD_ASSIGNMENT -> { "+=" };
-    assignmentAndOperator = new Token.SUB_ASSIGNMENT -> { "-=" };
-    assignmentAndOperator = new Token.MULT_ASSIGNMENT -> { "*=" };
-    assignmentAndOperator = new Token.DIV_ASSIGNMENT -> { "/=" };
-    assignmentAndOperator = new Token.MOD_ASSIGNMENT -> { "%=" };
+    assignmentAndOperator = ADD_ASSIGNMENT -> { AST.ADD_ASSIGNMENT };
+    assignmentAndOperator = SUB_ASSIGNMENT -> { AST.SUB_ASSIGNMENT };
+    assignmentAndOperator = MULT_ASSIGNMENT -> { AST.MULT_ASSIGNMENT };
+    assignmentAndOperator = DIV_ASSIGNMENT -> { AST.DIV_ASSIGNMENT };
+    assignmentAndOperator = MOD_ASSIGNMENT -> { AST.MOD_ASSIGNMENT };
 
-    equalityOperator = new Token.EXCL_EQ -> { "!=" };
-    equalityOperator = new Token.EXCL_EQEQ -> { "!==" };
-    equalityOperator = new Token.EQEQ -> { "==" };
-    equalityOperator = new Token.EQEQEQ -> { "===" };
+    equalityOperator = EXCL_EQ -> { AST.EXCL_EQ };
+    equalityOperator = EXCL_EQEQ -> { AST.EXCL_EQEQ };
+    equalityOperator = EQEQ -> { AST.EQEQ };
+    equalityOperator = EQEQEQ -> { AST.EQEQEQ };
 
-    comparisonOperator = new Token.LANGLE -> { "<" };
-    comparisonOperator = new Token.RANGLE -> { ">" };
-    comparisonOperator = new Token.LE -> { "<=" };
-    comparisonOperator = new Token.GE -> { ">=" };
+    comparisonOperator = LANGLE -> { AST.LESS };
+    comparisonOperator = RANGLE -> { AST.GREATER };
+    comparisonOperator = LE -> { AST.LE };
+    comparisonOperator = GE -> { AST.GE };
 
-    inOperator = IN -> { "in" };
-    inOperator = NOT_IN -> { "!in" };
+    inOperator = IN -> { AST.IN };
+    inOperator = NOT_IN -> { AST.NOT_IN };
 
-    isOperator = IS -> { "is" };
-    isOperator = NOT_IS -> { "!is" };
+    isOperator = IS -> { AST.IS };
+    isOperator = NOT_IS -> { AST.NOT_IS };
 
-    additiveOperator = ADD -> { "+" };
-    additiveOperator = SUB -> { "-" };
+    additiveOperator = ADD -> { AST.ADD };
+    additiveOperator = SUB -> { AST.SUB };
 
-    multiplicativeOperator = MULT -> { "*" };
-    multiplicativeOperator = DIV -> { "/" };
-    multiplicativeOperator = MOD -> { "%" };
+    multiplicativeOperator = MULT -> { AST.MULT };
+    multiplicativeOperator = DIV -> { AST.DIV };
+    multiplicativeOperator = MOD -> { AST.MOD };
 
-    asOperator = AS -> { "as" };
-    asOperator = AS_SAFE -> { "as?" };
+    asOperator = AS -> { AST.AS };
+    asOperator = AS_SAFE -> { AST.AS_SAFE };
 
-    prefixUnaryOperator = INCR -> { "++" };
-    prefixUnaryOperator = DECR -> { "--" };
-    prefixUnaryOperator = SUB -> { "-" };
-    prefixUnaryOperator = ADD -> { "+" };
-    prefixUnaryOperator = EXCL -> { "!" };
+    prefixUnaryOperator = INCR -> { AST.INCR };
+    prefixUnaryOperator = DECR -> { AST.DECR };
+    prefixUnaryOperator = SUB -> { AST.SUB };
+    prefixUnaryOperator = ADD -> { AST.ADD };
+    prefixUnaryOperator = EXCL -> { AST.EXCL };
 
-    postfixUnaryOperator = INCR -> { "++" };
-    postfixUnaryOperator = DECR -> { "--" };
-    postfixUnaryOperator = EXCL_EXCL -> { "!!" };
+    postfixUnaryOperator = INCR -> { AST.INCR };
+    postfixUnaryOperator = DECR -> { AST.DECR };
+    postfixUnaryOperator = EXCL_EXCL -> { AST.EXCL_EXCL };
 
-    memberAccessOperator = NL* DOT -> { "." };
-    memberAccessOperator = NL* QUEST_DOT -> { "?." };
-    memberAccessOperator = COLONCOLON -> { "::" };
+    memberAccessOperator = NL* DOT -> { AST.DOT };
+    memberAccessOperator = NL* QUEST_DOT -> { AST.QUEST_DOT };
+    memberAccessOperator = COLONCOLON -> { AST.COLONCOLON };
 
     // SECTION: modifiers
 
@@ -411,142 +409,278 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     modifier = (classModifier | memberModifier | visibilityModifier | functionModifier | propertyModifier | inheritanceModifier | parameterModifier | platformModifier) NL*;
 
-    typeModifiers : typeModifier+ -> { it.l };
+    typeModifiers = typeModifier+ -> { it.l };
 
     typeModifier = annotation;
-    typeModifier = SUSPEND:s NL* -> { s.r };
+    typeModifier = SUSPEND NL* -> { AST.SUSPEND };
 
-    classModifier = ENUM -> { "enum" };
-    classModifier = SEALED -> { "sealed" };
-    classModifier = ANNOTATION -> { "annotation" };
-    classModifier = DATA -> { "data" };
-    classModifier = INNER -> { "inner" };
-    classModifier = VALUE -> { "value" };
+    classModifier = ENUM -> { AST.ENUM };
+    classModifier = SEALED -> { AST.SEALED };
+    classModifier = ANNOTATION_ -> { AST.ANNOTATION_ };
+    classModifier = DATA -> { AST.DATA };
+    classModifier = INNER -> { AST.INNER };
+    classModifier = VALUE -> { AST.VALUE };
 
-    memberModifier = OVERRIDE -> { "override" };
-    memberModifier = LATEINIT -> { "lateinit" };
+    memberModifier = OVERRIDE -> { AST.OVERRIDE };
+    memberModifier = LATEINIT -> { AST.LATEINIT };
 
-    visibilityModifier = PUBLIC -> { "public" };
-    visibilityModifier = PRIVATE -> { "private" };
-    visibilityModifier = INTERNAL -> { "internal" };
-    visibilityModifier = PROTECTED -> { "protected" };
+    visibilityModifier = PUBLIC -> { AST.PUBLIC };
+    visibilityModifier = PRIVATE -> { AST.PRIVATE };
+    visibilityModifier = INTERNAL -> { AST.INTERNAL };
+    visibilityModifier = PROTECTED -> { AST.PROTECTED };
 
-    varianceModifier = IN -> { "in" };
-    varianceModifier = OUT -> { "out" };
+    varianceModifier = IN -> { AST.IN };
+    varianceModifier = OUT -> { AST.OUT };
 
     typeParameterModifiers = typeParameterModifier+;
 
-    typeParameterModifier = reificationModifier:mod NL* -> { mod.r };
+    typeParameterModifier = reificationModifier NL* -> { AST.REIFIED };
     typeParameterModifier = varianceModifier:mod NL* -> { mod.r };
     typeParameterModifier = annotation;
 
-    functionModifier = TAILREC -> { "tailrec" };
-    functionModifier = OPERATOR -> { "operator" };
-    functionModifier = INFIX -> { "infix" };
-    functionModifier = INLINE -> { "inline" };
-    functionModifier = EXTERNAL -> { "external" };
-    functionModifier = SUSPEND -> { "suspend" };
+    functionModifier = TAILREC -> { AST.TAILREC };
+    functionModifier = OPERATOR -> { AST.OPERATOR };
+    functionModifier = INFIX -> { AST.INFIX };
+    functionModifier = INLINE -> { AST.INLINE };
+    functionModifier = EXTERNAL -> { AST.EXTERNAL };
+    functionModifier = SUSPEND -> { AST.SUSPEND };
 
-    propertyModifier = CONST -> { "const" };
+    propertyModifier = CONST -> { AST.CONST };
 
-    inheritanceModifier = ABSTRACT -> { "abstract" };
-    inheritanceModifier = FINAL -> { "final" };
-    inheritanceModifier = OPEN -> { "open" };
+    inheritanceModifier = ABSTRACT -> { AST.ABSTRACT };
+    inheritanceModifier = FINAL -> { AST.FINAL };
+    inheritanceModifier = OPEN -> { AST.OPEN };
 
-    parameterModifier = VARARG -> { "vararg" };
-    parameterModifier = NOINLINE -> { "noinline" };
-    parameterModifier = CROSSINLINE -> { "crossinline" };
+    parameterModifier = VARARG -> { AST.VARARG };
+    parameterModifier = NOINLINE -> { AST.NOINLINE };
+    parameterModifier = CROSSINLINE -> { AST.CROSSINLINE };
 
-    reificationModifier = REIFIED -> { "reified" };
+    reificationModifier = REIFIED;
 
-    platformModifier = EXPECT -> { "expect" };
-    platformModifier = ACTUAL -> { "actual" };
+    platformModifier = EXPECT -> { AST.EXPECT };
+    platformModifier = ACTUAL -> { AST.ACTUAL };
 
     // SECTION: annotations
 
     annotation = (singleAnnotation | multiAnnotation):ann NL* -> { ann.r };
 
-    singleAnnotation = annotationUseSiteTarget:target NL* unescapedAnnotation:ann -> { AST.SingleAnnotation(target.s, ann.r) }
+    singleAnnotation = annotationUseSiteTarget:target NL* unescapedAnnotation:ann -> { AST.SingleAnnotation(target.r, ann.r) };
     singleAnnotation = AT unescapedAnnotation:ann -> { AST.SingleAnnotation(null, ann.r) };
 
-    multiAnnotation = annotationUseSiteTarget:target NL* LSQUARE unescapedAnnotation+:anns RSQUARE -> { AST.MultiAnnotation(target.s, anns.l) };
-    multiAnnotation = AT LSQUARE unescapedAnnotation+:anns RSQUARE -> { AST.MultiAnnotation(null, anns.l) }
+    multiAnnotation = annotationUseSiteTarget:target NL* LSQUARE unescapedAnnotation+:anns RSQUARE -> { AST.MultiAnnotation(target.r, anns.l) };
+    multiAnnotation = AT LSQUARE unescapedAnnotation+:anns RSQUARE -> { AST.MultiAnnotation(null, anns.l) };
 
-    annotationUseSiteTarget = AT FIELD NL* COLON -> { "field" };
-    annotationUseSiteTarget = AT PROPERTY NL* COLON -> { "property" };
-    annotationUseSiteTarget = AT GET NL* COLON -> { "get" };
-    annotationUseSiteTarget = AT SET NL* COLON -> { "set" };
-    annotationUseSiteTarget = AT RECEIVER NL* COLON -> { "receiver" };
-    annotationUseSiteTarget = AT PARAM NL* COLON -> { "param" };
-    annotationUseSiteTarget = AT SETPARAM NL* COLON -> { "setparam" };
-    annotationUseSiteTarget = AT DELEGATE NL* COLO -> { "delegate" };
+    annotationUseSiteTarget = AT FIELD NL* COLON -> { AST.FIELD };
+    annotationUseSiteTarget = AT PROPERTY NL* COLON -> { AST.PROPERTY };
+    annotationUseSiteTarget = AT GET NL* COLON -> { AST.GET };
+    annotationUseSiteTarget = AT SET NL* COLON -> { AST.SET };
+    annotationUseSiteTarget = AT RECEIVER NL* COLON -> { AST.RECEIVER };
+    annotationUseSiteTarget = AT PARAM NL* COLON -> { AST.PARAM };
+    annotationUseSiteTarget = AT SETPARAM NL* COLON -> { AST.SETPARAM };
+    annotationUseSiteTarget = AT DELEGATE NL* COLON -> { AST.DELEGATE };
 
     unescapedAnnotation = constructorInvocation | userType;
 
     // SECTION: identifiers
 
-    simpleIdentifier = new Token.Identifier -> { it.s };
-    simpleIdentifier = new Token.ABSTRACT -> { "abstract" };
-    simpleIdentifier = new Token.ANNOTATION -> { "annotation" };
-    simpleIdentifier = new Token.BY -> { "by" };
-    simpleIdentifier = new Token.CATCH -> { "catch" };
-    simpleIdentifier = new Token.COMPANION -> { "companion" };
-    simpleIdentifier = new Token.CONSTRUCTOR -> { "constructor" };
-    simpleIdentifier = new Token.CROSSINLINE -> { "crossinline" };
-    simpleIdentifier = new Token.DATA -> { "data" };
-    simpleIdentifier = new Token.DYNAMIC -> { "dynamic" };
-    simpleIdentifier = new Token.ENUM -> { "enum" };
-    simpleIdentifier = new Token.EXTERNAL -> { "external" };
-    simpleIdentifier = new Token.FINAL -> { "final" };
-    simpleIdentifier = new Token.FINALLY -> { "finally" };
-    simpleIdentifier = new Token.GET -> { "get" };
-    simpleIdentifier = new Token.IMPORT -> { "import" };
-    simpleIdentifier = new Token.INFIX -> { "infix" };
-    simpleIdentifier = new Token.INIT -> { "init" };
-    simpleIdentifier = new Token.INLINE -> { "inline" };
-    simpleIdentifier = new Token.INNER -> { "inner" };
-    simpleIdentifier = new Token.INTERNAL -> { "internal" };
-    simpleIdentifier = new Token.LATEINIT -> { "lateinit" };
-    simpleIdentifier = new Token.NOINLINE -> { "noinline" };
-    simpleIdentifier = new Token.OPEN -> { "open" };
-    simpleIdentifier = new Token.OPERATOR -> { "operator" };
-    simpleIdentifier = new Token.OUT -> { "out" };
-    simpleIdentifier = new Token.OVERRIDE -> { "override" };
-    simpleIdentifier = new Token.PRIVATE -> { "private" };
-    simpleIdentifier = new Token.PROTECTED -> { "protected" };
-    simpleIdentifier = new Token.PUBLIC -> { "public" };
-    simpleIdentifier = new Token.REIFIED -> { "reified" };
-    simpleIdentifier = new Token.SEALED -> { "sealed" };
-    simpleIdentifier = new Token.TAILREC -> { "tailrec" };
-    simpleIdentifier = new Token.SET -> { "set" };
-    simpleIdentifier = new Token.VARARG -> { "vararg" };
-    simpleIdentifier = new Token.WHERE -> { "where" };
-    simpleIdentifier = new Token.FIELD -> { "field" };
-    simpleIdentifier = new Token.PROPERTY -> { "property" };
-    simpleIdentifier = new Token.RECEIVER -> { "receiver" };
-    simpleIdentifier = new Token.PARAM -> { "param" };
-    simpleIdentifier = new Token.SETPARAM -> { "setparam" };
-    simpleIdentifier = new Token.DELEGATE -> { "delegate" };
-    simpleIdentifier = new Token.FILE -> { "file" };
-    simpleIdentifier = new Token.EXPECT -> { "expect" };
-    simpleIdentifier = new Token.ACTUAL -> { "actual" };
-    simpleIdentifier = new Token.CONST -> { "const" };
-    simpleIdentifier = new Token.SUSPEND -> { "suspend" };
-    simpleIdentifier = new Token.VALUE -> { "value" };
+    simpleIdentifier = .:t ?(t.i is Token.Identifier) -> { AST.Name(t.i.cast<Token.Identifier>().s) };
+    simpleIdentifier = ABSTRACT -> { AST.Name("abstract") };
+    simpleIdentifier = ANNOTATION_ -> { AST.Name("annotation") };
+    simpleIdentifier = BY -> { AST.Name("by") };
+    simpleIdentifier = CATCH -> { AST.Name("catch") };
+    simpleIdentifier = COMPANION -> { AST.Name("companion") };
+    simpleIdentifier = CONSTRUCTOR -> { AST.Name("constructor") };
+    simpleIdentifier = CROSSINLINE -> { AST.Name("crossinline") };
+    simpleIdentifier = DATA -> { AST.Name("data") };
+    simpleIdentifier = DYNAMIC -> { AST.Name("dynamic") };
+    simpleIdentifier = ENUM -> { AST.Name("enum") };
+    simpleIdentifier = EXTERNAL -> { AST.Name("external") };
+    simpleIdentifier = FINAL -> { AST.Name("final") };
+    simpleIdentifier = FINALLY -> { AST.Name("finally") };
+    simpleIdentifier = GET -> { AST.Name("get") };
+    simpleIdentifier = IMPORT -> { AST.Name("import") };
+    simpleIdentifier = INFIX -> { AST.Name("infix") };
+    simpleIdentifier = INIT -> { AST.Name("init") };
+    simpleIdentifier = INLINE -> { AST.Name("inline") };
+    simpleIdentifier = INNER -> { AST.Name("inner") };
+    simpleIdentifier = INTERNAL -> { AST.Name("internal") };
+    simpleIdentifier = LATEINIT -> { AST.Name("lateinit") };
+    simpleIdentifier = NOINLINE -> { AST.Name("noinline") };
+    simpleIdentifier = OPEN -> { AST.Name("open") };
+    simpleIdentifier = OPERATOR -> { AST.Name("operator") };
+    simpleIdentifier = OUT -> { AST.Name("out") };
+    simpleIdentifier = OVERRIDE -> { AST.Name("override") };
+    simpleIdentifier = PRIVATE -> { AST.Name("private") };
+    simpleIdentifier = PROTECTED -> { AST.Name("protected") };
+    simpleIdentifier = PUBLIC -> { AST.Name("public") };
+    simpleIdentifier = REIFIED -> { AST.Name("reified") };
+    simpleIdentifier = SEALED -> { AST.Name("sealed") };
+    simpleIdentifier = TAILREC -> { AST.Name("tailrec") };
+    simpleIdentifier = SET -> { AST.Name("set") };
+    simpleIdentifier = VARARG -> { AST.Name("vararg") };
+    simpleIdentifier = WHERE -> { AST.Name("where") };
+    simpleIdentifier = FIELD -> { AST.Name("field") };
+    simpleIdentifier = PROPERTY -> { AST.Name("property") };
+    simpleIdentifier = RECEIVER -> { AST.Name("receiver") };
+    simpleIdentifier = PARAM -> { AST.Name("param") };
+    simpleIdentifier = SETPARAM -> { AST.Name("setparam") };
+    simpleIdentifier = DELEGATE -> { AST.Name("delegate") };
+    simpleIdentifier = FILE -> { AST.Name("file") };
+    simpleIdentifier = EXPECT -> { AST.Name("expect") };
+    simpleIdentifier = ACTUAL -> { AST.Name("actual") };
+    simpleIdentifier = CONST -> { AST.Name("const") };
+    simpleIdentifier = SUSPEND -> { AST.Name("suspend") };
+    simpleIdentifier = VALUE -> { AST.Name("value") };
 
-    identifier = simpleIdentifier (NL* DOT simpleIdentifier)* -> { it.joinToString(".") };
+    identifier = simpleIdentifier (NL* DOT simpleIdentifier)* -> { AST.Name(it.l.joinToString(".")) };
+
+    // SECTION: Literals
+
+    stringLiteral = .:t ?(t.i is Token.StringLiteral) -> { AST.StringLiteral(t.i.cast<Token.StringLiteral>().s) };
+    BooleanLiteral = TRUE -> { AST.TRUE };
+    BooleanLiteral = FALSE -> { AST.FALSE };
+    NullLiteral = NULL -> { AST.NULL };
+    IntegerLiteral = .:t ?(t.i is Token.IntegerLiteral) -> { AST.IntegerLiteral(t.i.cast<Token.IntegerLiteral>().s) };
+    CharacterLiteral = .:t ?(t.i is Token.CharacterLiteral) -> { AST.CharacterLiteral(t.i.cast<Token.CharacterLiteral>().s) };
+    RealLiteral = FloatLiteral | DoubleLiteral;
+    FloatLiteral = .:t ?(t.i is Token.FloatLiteral) -> { AST.FloatLiteral(t.i.cast<Token.FloatLiteral>().s) };
+    DoubleLiteral = .:t ?(t.i is Token.DoubleLiteral) -> { AST.DoubleLiteral(t.i.cast<Token.DoubleLiteral>().s) };
+    LongLiteral = .:t ?(t.i is Token.LongLiteral) -> { AST.LongLiteral(t.i.cast<Token.LongLiteral>().s) };
+    UnsignedLiteral = .:t ?(t.i is Token.UnsignedLiteral) -> { AST.UnsignedLiteral(t.i.cast<Token.UnsignedLiteral>().s) };
+    UnsignedLongLiteral = .:t ?(t.i is Token.UnsignedLongLiteral) -> { AST.UnsignedLongLiteral(t.i.cast<Token.UnsignedLongLiteral>().s) };
+    CharacterLiteral = .:t ?(t.i is Token.CharacterLiteral) -> { AST.CharacterLiteral(t.i.cast<Token.CharacterLiteral>().s) };
+
+    ThisAt = .:t ?(t.i is Token.ThisAt) -> { AST.Name(t.i.cast<Token.ThisAt>().s) };
+    BreakAt = .:t ?(t.i is Token.BreakAt) -> { AST.Name(t.i.cast<Token.BreakAt>().s) };
+    ReturnAt = .:t ?(t.i is Token.ReturnAt) -> { AST.Name(t.i.cast<Token.ReturnAt>().s) };
+    ContinueAt = .:t ?(t.i is Token.ContinueAt) -> { AST.Name(t.i.cast<Token.ContinueAt>().s) };
 
     // SECTION: Terminals
 
-    EOF = ~.
-    NL = new Token.NL
-    AT = new Token.AT
-    FILE = new Token.FILE
-    COLON = new Token.COLON
-    LSQUARE = new Token.LSQUARE
-    RSQUARE = new Token.RSQUARE
-    PACKAGE = new Token.PACKAGE
-    IMPORT = new Token.IMPORT
-    DOT = new Token.DOT
-    MULT = new Token.MULT
+    EOF = ~.;
+    NL = new Token.NL;
+    RESERVED = new Token.RESERVED;
+    RANGE = new Token.RANGE;
+    DOT = new Token.DOT;
+    COMMA = new Token.COMMA;
+    LPAREN = new Token.LPAREN;
+    RPAREN = new Token.RPAREN;
+    LSQUARE = new Token.LSQUARE;
+    RSQUARE = new Token.RSQUARE;
+    LCURL = new Token.LCURL;
+    RCURL = new Token.RCURL;
+    INCR = new Token.INCR;
+    ADD_ASSIGNMENT = new Token.ADD_ASSIGNMENT;
+    ADD = new Token.ADD;
+    DECR = new Token.DECR;
+    ARROW = new Token.ARROW;
+    SUB_ASSIGNMENT = new Token.SUB_ASSIGNMENT;
+    SUB = new Token.SUB;
+    MULT_ASSIGNMENT = new Token.MULT_ASSIGNMENT;
+    MULT = new Token.MULT;
+    DIV_ASSIGNMENT = new Token.DIV_ASSIGNMENT;
+    DIV = new Token.DIV;
+    MOD_ASSIGNMENT = new Token.MOD_ASSIGNMENT;
+    MOD = new Token.MOD;
+    CONJ = new Token.CONJ;
+    DISJ = new Token.DISJ;
+    EXCL_EQEQ = new Token.EXCL_EQEQ;
+    EXCL_EQ = new Token.EXCL_EQ;
+    EXCL = new Token.EXCL;
+    SEMICOLON = new Token.SEMICOLON;
+    COLONCOLON = new Token.COLONCOLON;
+    COLON = new Token.COLON;
+    HASH = new Token.HASH;
+    AT = new Token.AT;
+    Q_COLONCOLON = new Token.Q_COLONCOLON;
+    ELVIS = new Token.ELVIS;
+    QUEST = new Token.QUEST;
+    LE = new Token.LE;
+    LANGLE = new Token.LANGLE;
+    GE = new Token.GE;
+    RANGLE = new Token.RANGLE;
+    AS_SAFE = new Token.AS_SAFE;
+    EQEQEQ = new Token.EQEQEQ;
+    EQEQ = new Token.EQEQ;
+    DOUBLE_ARROW = new Token.DOUBLE_ARROW;
+    ASSIGNMENT = new Token.ASSIGNMENT;
+    FILE = new Token.FILE;
+    PACKAGE = new Token.PACKAGE;
+    IMPORT = new Token.IMPORT;
+    CLASS = new Token.CLASS;
+    INTERFACE = new Token.INTERFACE;
+    FUN = new Token.FUN;
+    OBJECT = new Token.OBJECT;
+    VAL = new Token.VAL;
+    VAR = new Token.VAR;
+    TYPE_ALIAS = new Token.TYPE_ALIAS;
+    CONSTRUCTOR = new Token.CONSTRUCTOR;
+    BY = new Token.BY;
+    COMPANION = new Token.COMPANION;
+    INIT = new Token.INIT;
+    THIS = new Token.THIS;
+    SUPER = new Token.SUPER;
+    TYPEOF = new Token.TYPEOF;
+    WHERE = new Token.WHERE;
+    IF = new Token.IF;
+    ELSE = new Token.ELSE;
+    WHEN = new Token.WHEN;
+    TRY = new Token.TRY;
+    CATCH = new Token.CATCH;
+    FINALLY = new Token.FINALLY;
+    FOR = new Token.FOR;
+    DO = new Token.DO;
+    WHILE = new Token.WHILE;
+    THROW = new Token.THROW;
+    RETURN = new Token.RETURN;
+    CONTINUE = new Token.CONTINUE;
+    BREAK = new Token.BREAK;
+    AS = new Token.AS;
+    IS = new Token.IS;
+    IN = new Token.IN;
+    NOT_IS = new Token.NOT_IS;
+    NOT_IN = new Token.NOT_IN;
+    OUT = new Token.OUT;
+    FIELD = new Token.FIELD;
+    PROPERTY = new Token.PROPERTY;
+    GET = new Token.GET;
+    SET = new Token.SET;
+    RECEIVER = new Token.RECEIVER;
+    PARAM = new Token.PARAM;
+    SETPARAM = new Token.SETPARAM;
+    DELEGATE = new Token.DELEGATE;
+    DYNAMIC = new Token.DYNAMIC;
+    PUBLIC = new Token.PUBLIC;
+    PRIVATE = new Token.PRIVATE;
+    PROTECTED = new Token.PROTECTED;
+    INTERNAL = new Token.INTERNAL;
+    ENUM = new Token.ENUM;
+    SEALED = new Token.SEALED;
+    ANNOTATION_ = new Token.ANNOTATION;
+    DATA = new Token.DATA;
+    INNER = new Token.INNER;
+    TAILREC = new Token.TAILREC;
+    OPERATOR = new Token.OPERATOR;
+    INLINE = new Token.INLINE;
+    INFIX = new Token.INFIX;
+    EXTERNAL = new Token.EXTERNAL;
+    SUSPEND = new Token.SUSPEND;
+    OVERRIDE = new Token.OVERRIDE;
+    ABSTRACT = new Token.ABSTRACT;
+    FINAL = new Token.FINAL;
+    OPEN = new Token.OPEN;
+    CONST = new Token.CONST;
+    LATEINIT = new Token.LATEINIT;
+    VARARG = new Token.VARARG;
+    NOINLINE = new Token.NOINLINE;
+    CROSSINLINE = new Token.CROSSINLINE;
+    REIFIED = new Token.REIFIED;
+    TRUE = new Token.TRUE;
+    FALSE = new Token.FALSE;
+    NULL = new Token.NULL;
+    VALUE = new Token.VALUE;
+    EXPECT = new Token.EXPECT;
+    ACTUAL = new Token.ACTUAL;
+    EXCL_EXCL = new Token.EXCL_EXCL;
+    QUEST_DOT = new Token.QUEST_DOT;
 }
