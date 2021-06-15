@@ -103,7 +103,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
                                 AST.ValueParameter(mods.l, name!!, type!!, expr.nr) };
 
     functionDeclaration = modifiers?:mods FUN (NL* typeParameters:tp)?
-                          (NL* receiverType:rt NL* DOT)? NL* simpleIdentifier:name NL* functionValueParameters:params (NL* COLON NL* type:t)? (NL* typeConstraints:tcs)?
+                          (NL* receiverType NL* DOT)?:rt NL* simpleIdentifier:name NL* functionValueParameters:params (NL* COLON NL* type:t)? (NL* typeConstraints:tcs)?
                           (NL* functionBody:b)?
                         -> { AST.FunctionDeclaration(mods.l, tp.l, rt.nr, name.s, params.l, t.nr, tcs.l, b.nr) };
 
@@ -295,8 +295,9 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     valueArgument = annotation*:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? MULT NL* expression:expr -> { AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = true) };
     valueArgument = annotation*:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? expression:expr -> { AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = false) };
 
-    primaryExpression = parenthesizedExpression | simpleIdentifier | literalConstant | stringLiteral | callableReference | functionLiteral | objectLiteral
+    primaryExpression = parenthesizedExpression | literalConstant | stringLiteral | callableReference | functionLiteral | objectLiteral
                       | collectionLiteral | thisExpression | superExpression | ifExpression | whenExpression | tryExpression | jumpExpression;
+    primaryExpression = simpleIdentifier -> { AST.NameExpression(it.s) };
 
     parenthesizedExpression = LPAREN NL* expression:expr NL* RPAREN -> { expr.r };
 

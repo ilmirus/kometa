@@ -261,7 +261,7 @@ object AST {
         val returnType: Type?,
         val typeConstraints: List<TypeConstraint>,
         val body: FunctionBody?
-    ) : AstNode() {
+    ) : AstNode(), Declaration {
         constructor(
             modifiers: List<AstNode>,
             typeParameters: List<AstNode>,
@@ -432,7 +432,7 @@ object AST {
     sealed interface TypeModifier
 
     class UserType(val simpleTypes: List<SimpleUserType>) : TypeReference(), UserTypeOrFunctionType,
-        DelegationSpecifier, UnescapedAnnotation {
+        DelegationSpecifier, UnescapedAnnotation, ReceiverTypeWithoutModifiers {
         companion object {
             operator fun invoke(simpleTypes: List<AstNode>): UserType = UserType(simpleTypes.cast())
         }
@@ -529,7 +529,7 @@ object AST {
         )
     }
 
-    sealed class Expression : AstNode(), WhenCondition
+    sealed class Expression : AstNode(), WhenCondition, Labellable
 
     class Disjunction(val subs: List<Expression>) : Expression() {
         companion object {
@@ -562,11 +562,19 @@ object AST {
     }
 
     class GenericCallLikeComparison(val infixOperation: InfixOperation, val suffixes: List<CallSuffix>) : Expression() {
-        constructor(infixOperation: AstNode, suffixes: List<AstNode>) : this(infixOperation.cast(), suffixes.cast())
+        companion object {
+            operator fun invoke(infixOperation: AstNode, suffixes: List<AstNode>): Expression =
+                if (suffixes.isEmpty()) infixOperation.cast()
+                else GenericCallLikeComparison(infixOperation.cast(), suffixes.cast())
+        }
     }
 
     class InfixOperation(val lhs: Expression, val suffixes: List<IsOrInCheckSuffix>) : Expression() {
-        constructor(lhs: AstNode, suffixes: List<AstNode>) : this(lhs.cast(), suffixes.cast())
+        companion object {
+            operator fun invoke(lhs: AstNode, suffixes: List<AstNode>): Expression =
+                if (suffixes.isEmpty()) lhs.cast()
+                else InfixOperation(lhs.cast(), suffixes.cast())
+        }
     }
 
     sealed class IsOrInCheckSuffix : AstNode(), WhenCondition
@@ -637,18 +645,20 @@ object AST {
     class PrefixUnaryExpression(
         val unaryPrefixes: List<UnaryPrefix>, val expression: Expression
     ) : Expression(), AssignableExpression {
-        constructor(unaryPrefixes: List<AstNode>, expression: AstNode) : this(
-            unaryPrefixes.cast<List<UnaryPrefix>>(),
-            expression.cast()
-        )
+        companion object {
+            operator fun invoke(unaryPrefixes: List<AstNode>, expression: AstNode): Expression =
+                if (unaryPrefixes.isEmpty()) expression.cast()
+                else PrefixUnaryExpression(unaryPrefixes.cast(), expression.cast())
+        }
     }
 
     class PostfixUnaryExpression(val expression: Expression, val postfixUnarySuffixes: List<PostfixUnarySuffix>) :
         Expression() {
-        constructor(expression: AstNode, postfixUnarySuffixes: List<AstNode>) : this(
-            expression.cast<Expression>(),
-            postfixUnarySuffixes.cast<List<PostfixUnarySuffix>>()
-        )
+        companion object {
+            operator fun invoke(expression: AstNode, postfixUnarySuffixes: List<AstNode>): Expression =
+                if (postfixUnarySuffixes.isEmpty()) expression.cast()
+                else PostfixUnaryExpression(expression.cast(), postfixUnarySuffixes.cast())
+        }
     }
 
     sealed interface UnaryPrefix

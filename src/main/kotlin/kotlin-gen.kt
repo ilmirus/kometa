@@ -1,10 +1,11 @@
-import kometa.kotlin.AST
+package kometa.kotlin
+
 import kometa.util.peek
 import kometa.util.pop
 import kometa.util.push
 
 class KotlinGen {
-    private val buffer = StringBuffer()
+    private var buffer = StringBuffer()
     private var indent = 0
     private val expressionPriorityStack = arrayListOf<Int>()
 
@@ -60,7 +61,15 @@ class KotlinGen {
         is AST.WhenExpression -> 15
     }
 
-    fun dump(astNode: AST.AstNode) {
+    fun generateCode(kotlinFile: AST.KotlinFile): String {
+        buffer = StringBuffer()
+        indent = 0
+        expressionPriorityStack.clear()
+        dump(kotlinFile)
+        return buffer.toString()
+    }
+
+    private fun dump(astNode: AST.AstNode) {
         var surroundWithParens = false
         if (astNode is AST.Expression) {
             val currentPriority = expressionPriority(astNode)
@@ -972,18 +981,7 @@ class KotlinGen {
                     }
                 }
 
-                when(val expr = astNode.expression) {
-                    is AST.AugmentedAssignment -> dump(expr)
-                    is AST.DirectAssignment -> dump(expr)
-                    is AST.Class -> dump(expr)
-                    is AST.FunInterface -> dump(expr)
-                    is AST.Interface -> dump(expr)
-                    is AST.ObjectDeclaration -> dump(expr)
-                    is AST.TypeAlias -> dump(expr)
-                    is AST.DoWhileStatement -> dump(expr)
-                    is AST.ForStatement -> dump(expr)
-                    is AST.WhileStatement -> dump(expr)
-                }
+                dump(astNode.expression as AST.AstNode)
             }
             is AST.FunctionTypeWithModifiers -> error("AST.FunctionTypeWithModifiers should not be present in final AST")
             is AST.ReceiverType -> {
@@ -1191,6 +1189,7 @@ class KotlinGen {
             is AST.Interface -> dump(declaration)
             is AST.ObjectDeclaration -> dump(declaration)
             is AST.TypeAlias -> dump(declaration)
+            is AST.FunctionDeclaration -> dump(declaration)
         }
     }
 
@@ -1241,11 +1240,13 @@ class KotlinGen {
 
     private fun dumpValueParameters(valueParameters: List<AST.ValueParameter>) {
         buffer.append("(")
-        for (param in valueParameters.dropLast(1)) {
-            dump(param)
-            buffer.append(", ")
+        if (valueParameters.isNotEmpty()) {
+            for (param in valueParameters.dropLast(1)) {
+                dump(param)
+                buffer.append(", ")
+            }
+            dump(valueParameters.last())
         }
-        dump(valueParameters.last())
         buffer.append(")")
     }
 
@@ -1298,6 +1299,7 @@ class KotlinGen {
             is AST.Interface -> dump(member)
             is AST.ObjectDeclaration -> dump(member)
             is AST.TypeAlias -> dump(member)
+            is AST.FunctionDeclaration -> dump(member)
         }
     }
 

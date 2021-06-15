@@ -578,11 +578,8 @@ abstract class Matcher<TInput, TResult>(
     protected val MatchItem<TInput, TResult>?.il: List<TInput>
         get() = this?.inputs?.filterNotNull() ?: emptyList()
 
-    protected val MatchItem<TInput, TResult>?.ls: String
-        get() = this.il.joinToString("")
-
     protected val MatchItem<TInput, TResult>?.s: String
-        get() = this.i.toString()
+        get() = this.il.joinToString("")
 
     protected val MatchItem<TInput, TResult>?.ns: String?
         get() = this?.i?.toString()

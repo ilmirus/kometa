@@ -9568,19 +9568,19 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         val _inp17 = arrayListOf<Token?>()
         val _res17 = arrayListOf<AST.AstNode?>()
 
-        // AND 22
-        var _start_i22 = _index.element
-
         // AND 23
         var _start_i23 = _index.element
 
         // AND 24
         var _start_i24 = _index.element
 
-        // STAR 25
+        // AND 25
         var _start_i25 = _index.element
-        val _inp25 = arrayListOf<Token?>()
-        val _res25 = arrayListOf<AST.AstNode?>()
+
+        // STAR 26
+        var _start_i26 = _index.element
+        val _inp26 = arrayListOf<Token?>()
+        val _res26 = arrayListOf<AST.AstNode?>()
 
         // STAR 29
         var _start_i29 = _index.element
@@ -9791,40 +9791,40 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 22
-                    _start_i22 = _index.element
-
                     // AND 23
                     _start_i23 = _index.element
 
                     // AND 24
                     _start_i24 = _index.element
 
-                    // STAR 25
+                    // AND 25
                     _start_i25 = _index.element
-                    _label = 25
-                }
-                // STAR 25
-                25 -> {
-                    // CALLORVAR NL
-                    var _r26: _KotlinParser_Item? = null
-                    _r26 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r26 != null) _index.element = _r26.nextIndex
 
-                    // STAR 25
-                    val _r25 = _memo.results.pop()
-                    if (_r25 != null) {
-                        _res25 += _r25.results
-                        _label = 25
+                    // STAR 26
+                    _start_i26 = _index.element
+                    _label = 26
+                }
+                // STAR 26
+                26 -> {
+                    // CALLORVAR NL
+                    var _r27: _KotlinParser_Item? = null
+                    _r27 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r27 != null) _index.element = _r27.nextIndex
+
+                    // STAR 26
+                    val _r26 = _memo.results.pop()
+                    if (_r26 != null) {
+                        _res26 += _r26.results
+                        _label = 26
                         continue
                     } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i25, _index.element, _memo.input, _res25.filterNotNull(), true))
+                        _memo.results.push(_KotlinParser_Item(_start_i26, _index.element, _memo.input, _res26.filterNotNull(), true))
                     }
 
-                    // AND shortcut 24
+                    // AND shortcut 25
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 24
+                        _label = 25
                         continue
                     }
 
@@ -9833,27 +9833,24 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     _r28 = _MemoCall(_memo, "receiverType", _index.element, ::receiverType, null)
                     if (_r28 != null) _index.element = _r28.nextIndex
 
-                    // BIND rt
-                    rt = _memo.results.peek()
-
-                    _label = 24
+                    _label = 25
                 }
-                // AND 24
-                24 -> {
-                    val _r24_2 = _memo.results.pop()
-                    val _r24_1 = _memo.results.pop()
+                // AND 25
+                25 -> {
+                    val _r25_2 = _memo.results.pop()
+                    val _r25_1 = _memo.results.pop()
 
-                    if (_r24_1 != null && _r24_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i24, _index.element, _memo.input, (_r24_1.results + _r24_2.results).filterNotNull(), true))
+                    if (_r25_1 != null && _r25_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i25, _index.element, _memo.input, (_r25_1.results + _r25_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i24
+                        _index.element = _start_i25
                     }
 
-                    // AND shortcut 23
+                    // AND shortcut 24
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 23
+                        _label = 24
                         continue
                     }
 
@@ -9878,6 +9875,32 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i29, _index.element, _memo.input, _res29.filterNotNull(), true))
                     }
 
+                    _label = 24
+                }
+                // AND 24
+                24 -> {
+                    val _r24_2 = _memo.results.pop()
+                    val _r24_1 = _memo.results.pop()
+
+                    if (_r24_1 != null && _r24_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i24, _index.element, _memo.input, (_r24_1.results + _r24_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i24
+                    }
+
+                    // AND shortcut 23
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 23
+                        continue
+                    }
+
+                    // CALLORVAR DOT
+                    var _r31: _KotlinParser_Item? = null
+                    _r31 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
+                    if (_r31 != null) _index.element = _r31.nextIndex
+
                     _label = 23
                 }
                 // AND 23
@@ -9892,37 +9915,14 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _index.element = _start_i23
                     }
 
-                    // AND shortcut 22
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 22
-                        continue
-                    }
-
-                    // CALLORVAR DOT
-                    var _r31: _KotlinParser_Item? = null
-                    _r31 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
-                    if (_r31 != null) _index.element = _r31.nextIndex
-
-                    _label = 22
-                }
-                // AND 22
-                22 -> {
-                    val _r22_2 = _memo.results.pop()
-                    val _r22_1 = _memo.results.pop()
-
-                    if (_r22_1 != null && _r22_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i22, _index.element, _memo.input, (_r22_1.results + _r22_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i22
-                    }
-
-                    // QUES 21
+                    // QUES 22
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
+                    // BIND rt
+                    rt = _memo.results.peek()
+
                     _label = 8
                 }
                 // AND 8
@@ -28266,9 +28266,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR simpleIdentifier
+                    // CALLORVAR literalConstant
                     var _r14: _KotlinParser_Item? = null
-                    _r14 = _MemoCall(_memo, "simpleIdentifier", _index.element, ::simpleIdentifier, null)
+                    _r14 = _MemoCall(_memo, "literalConstant", _index.element, ::literalConstant, null)
                     if (_r14 != null) _index.element = _r14.nextIndex
 
                     _label = 12
@@ -28284,9 +28284,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR literalConstant
+                    // CALLORVAR stringLiteral
                     var _r15: _KotlinParser_Item? = null
-                    _r15 = _MemoCall(_memo, "literalConstant", _index.element, ::literalConstant, null)
+                    _r15 = _MemoCall(_memo, "stringLiteral", _index.element, ::stringLiteral, null)
                     if (_r15 != null) _index.element = _r15.nextIndex
 
                     _label = 11
@@ -28302,9 +28302,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR stringLiteral
+                    // CALLORVAR callableReference
                     var _r16: _KotlinParser_Item? = null
-                    _r16 = _MemoCall(_memo, "stringLiteral", _index.element, ::stringLiteral, null)
+                    _r16 = _MemoCall(_memo, "callableReference", _index.element, ::callableReference, null)
                     if (_r16 != null) _index.element = _r16.nextIndex
 
                     _label = 10
@@ -28320,9 +28320,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR callableReference
+                    // CALLORVAR functionLiteral
                     var _r17: _KotlinParser_Item? = null
-                    _r17 = _MemoCall(_memo, "callableReference", _index.element, ::callableReference, null)
+                    _r17 = _MemoCall(_memo, "functionLiteral", _index.element, ::functionLiteral, null)
                     if (_r17 != null) _index.element = _r17.nextIndex
 
                     _label = 9
@@ -28338,9 +28338,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR functionLiteral
+                    // CALLORVAR objectLiteral
                     var _r18: _KotlinParser_Item? = null
-                    _r18 = _MemoCall(_memo, "functionLiteral", _index.element, ::functionLiteral, null)
+                    _r18 = _MemoCall(_memo, "objectLiteral", _index.element, ::objectLiteral, null)
                     if (_r18 != null) _index.element = _r18.nextIndex
 
                     _label = 8
@@ -28356,9 +28356,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR objectLiteral
+                    // CALLORVAR collectionLiteral
                     var _r19: _KotlinParser_Item? = null
-                    _r19 = _MemoCall(_memo, "objectLiteral", _index.element, ::objectLiteral, null)
+                    _r19 = _MemoCall(_memo, "collectionLiteral", _index.element, ::collectionLiteral, null)
                     if (_r19 != null) _index.element = _r19.nextIndex
 
                     _label = 7
@@ -28374,9 +28374,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR collectionLiteral
+                    // CALLORVAR thisExpression
                     var _r20: _KotlinParser_Item? = null
-                    _r20 = _MemoCall(_memo, "collectionLiteral", _index.element, ::collectionLiteral, null)
+                    _r20 = _MemoCall(_memo, "thisExpression", _index.element, ::thisExpression, null)
                     if (_r20 != null) _index.element = _r20.nextIndex
 
                     _label = 6
@@ -28392,9 +28392,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR thisExpression
+                    // CALLORVAR superExpression
                     var _r21: _KotlinParser_Item? = null
-                    _r21 = _MemoCall(_memo, "thisExpression", _index.element, ::thisExpression, null)
+                    _r21 = _MemoCall(_memo, "superExpression", _index.element, ::superExpression, null)
                     if (_r21 != null) _index.element = _r21.nextIndex
 
                     _label = 5
@@ -28410,9 +28410,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR superExpression
+                    // CALLORVAR ifExpression
                     var _r22: _KotlinParser_Item? = null
-                    _r22 = _MemoCall(_memo, "superExpression", _index.element, ::superExpression, null)
+                    _r22 = _MemoCall(_memo, "ifExpression", _index.element, ::ifExpression, null)
                     if (_r22 != null) _index.element = _r22.nextIndex
 
                     _label = 4
@@ -28428,9 +28428,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR ifExpression
+                    // CALLORVAR whenExpression
                     var _r23: _KotlinParser_Item? = null
-                    _r23 = _MemoCall(_memo, "ifExpression", _index.element, ::ifExpression, null)
+                    _r23 = _MemoCall(_memo, "whenExpression", _index.element, ::whenExpression, null)
                     if (_r23 != null) _index.element = _r23.nextIndex
 
                     _label = 3
@@ -28446,9 +28446,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR whenExpression
+                    // CALLORVAR tryExpression
                     var _r24: _KotlinParser_Item? = null
-                    _r24 = _MemoCall(_memo, "whenExpression", _index.element, ::whenExpression, null)
+                    _r24 = _MemoCall(_memo, "tryExpression", _index.element, ::tryExpression, null)
                     if (_r24 != null) _index.element = _r24.nextIndex
 
                     _label = 2
@@ -28464,9 +28464,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR tryExpression
+                    // CALLORVAR jumpExpression
                     var _r25: _KotlinParser_Item? = null
-                    _r25 = _MemoCall(_memo, "tryExpression", _index.element, ::tryExpression, null)
+                    _r25 = _MemoCall(_memo, "jumpExpression", _index.element, ::jumpExpression, null)
                     if (_r25 != null) _index.element = _r25.nextIndex
 
                     _label = 1
@@ -28482,10 +28482,17 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR jumpExpression
-                    var _r26: _KotlinParser_Item? = null
-                    _r26 = _MemoCall(_memo, "jumpExpression", _index.element, ::jumpExpression, null)
-                    if (_r26 != null) _index.element = _r26.nextIndex
+                    // CALLORVAR simpleIdentifier
+                    var _r27: _KotlinParser_Item? = null
+                    _r27 = _MemoCall(_memo, "simpleIdentifier", _index.element, ::simpleIdentifier, null)
+                    if (_r27 != null) _index.element = _r27.nextIndex
+
+                    // ACT 26
+                    val _r26 = _memo.results.peek()
+                    if (_r26 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_r26.startIndex, _r26.nextIndex, _memo.input, _Thunk({ AST.NameExpression(it.s) }, _r26), true))
+                    }
 
                     _label = 0
                 }
