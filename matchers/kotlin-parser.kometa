@@ -112,25 +112,25 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     blockBody = block -> { AST.BlockBody(it.r) };
     expressionBody = ASSIGNMENT NL* expression:expr -> { AST.ExpressionBody(expr.r) };
 
-    variableDeclaration = annotation*:anns NL* simpleIdentifier:name (NL* COLON NL* type:t)? -> { AST.VariableDeclaration(anns.l, name.s, t.nr) };
+    variableDeclaration = annotation*:anns NL* simpleIdentifier:name (NL* COLON NL* type:t)? -> { AST.SingleVariableDeclaration(anns.l, name.s, t.nr) };
 
-    multiVariableDeclaration = LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN -> { it.l };
+    multiVariableDeclaration = LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN -> { AST.MultiVariableDeclaration(it.l) };
 
     propertyDeclaration = modifiers?:mods valOrVar:vov (NL* typeParameters:tps)?
-                          (NL* receiverType:rt NL* DOT)? (NL* varDecls:vds) (NL* typeConstraints:tcs)?
+                          (NL* receiverType:rt NL* DOT)? NL* varDecls:vds (NL* typeConstraints:tcs)?
                           (NL* (expressionBody | propertyDelegate):b)?
                           (NL+ SEMICOLON)? NL* (getter?:gttr (NL* semi? setter:sttr)? | setter?:sttr (NL* semi? getter:gttr)?)
-                        -> { AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.l, tcs.l, b.nr, gttr.nr, sttr.nr) };
+                        -> { AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.r, tcs.l, b.nr, gttr.nr, sttr.nr) };
 
-    varDecls = multiVariableDeclaration -> { it.l };
-    varDecls = variableDeclaration -> { it.r };
+    varDecls = multiVariableDeclaration | variableDeclaration;
 
     propertyDelegate = BY NL* expression:expr -> { AST.PropertyDelegate(expr.r) };
 
     getter = modifiers?:mods GET (NL* LPAREN NL* RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)? -> { AST.Getter(mods.l, t.nr, b.nr) };
 
-    setter = modifiers?:mods SET (NL* LPAREN NL* functionValueParameterWithOptionalType:param (NL* COMMA)? NL* RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)?
-           -> { AST.Setter(mods.l, param.r, t.nr, b.nr) };
+    setter = modifiers?:mods SET (NL* LPAREN NL* functionValueParameterWithOptionalType:param (NL* COMMA)? NL*
+                                  RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)?
+           -> { AST.Setter(mods.l, param.nr, t.nr, b.nr) };
 
     parametersWithOptionalType = LPAREN NL* (functionValueParameterWithOptionalType (NL* COMMA NL* functionValueParameterWithOptionalType)* (NL* COMMA)?)? NL* RPAREN -> { it.l };
 
@@ -199,7 +199,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     statements = (statement (semis statement)*)? semis? -> { it.l };
 
-    statement = (label | annotation)*:p ( declaration | assignment | loopStatement | expression):expr -> { if (p.l.isEmpty()) expr.r else AST.Statement(p.l, expr.r) };
+    statement = (label | annotation)*:p ( declaration | assignment | loopStatement | expression):expr -> { AST.Statement(p.l, expr.r) };
 
     label = simpleIdentifier:name AT NL* -> { AST.Label(name.s) };
 
@@ -210,7 +210,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     loopStatement = forStatement | whileStatement | doWhileStatement;
 
     forStatement = FOR NL* LPAREN annotation*:anns varDecls:vds IN expression:expr RPAREN NL* controlStructureBody?:csb
-                 -> { AST.ForStatement(anns.l, vds.l, expr.r, csb.nr) };
+                 -> { AST.ForStatement(anns.l, vds.r, expr.r, csb.nr) };
 
     whileStatement = WHILE NL* LPAREN expression:expr RPAREN NL* (controlStructureBody:csb | SEMICOLON) -> { AST.WhileStatement(expr.r, csb.nr) };
 
@@ -308,8 +308,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     lambdaParameters = lambdaParameter (NL* COMMA NL* lambdaParameter)* (NL* COMMA)? -> { it.l };
 
-    lambdaParameter = variableDeclaration -> { AST.LambdaParameter(listOf(it.r), null) };
-    lambdaParameter = multiVariableDeclaration:mvd (NL* COLON NL* type:t)? -> { AST.LambdaParameter(mvd.l, t.nr) };
+    lambdaParameter = varDecls:mvd (NL* COLON NL* type:t)? -> { AST.LambdaParameter(mvd.r, t.nr) };
 
     anonymousFunction = FUN (NL* type:t1 NL* DOT)? NL* parametersWithOptionalType:valueParams (NL* COLON NL* type:t2)?
                         (NL* typeConstraints:tcs)? (NL* functionBody:b)?
@@ -353,7 +352,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     jumpExpression = BreakAt:label -> { AST.BreakAt(label.s) };
 
     callableReference = receiverType?:rt COLONCOLON NL* simpleIdentifier:name -> { AST.CallableReference(rt?.r, name.s) };
-    callableReference = receiverType?:rt COLONCOLON NL* CLASS -> { AST.CallableReference(rt?.r, null) };
+    callableReference = receiverType?:rt COLONCOLON NL* CLASS -> { AST.CallableReference(rt?.r, "class") };
 
     assignmentAndOperator = ADD_ASSIGNMENT -> { AST.ADD_ASSIGNMENT };
     assignmentAndOperator = SUB_ASSIGNMENT -> { AST.SUB_ASSIGNMENT };
@@ -478,6 +477,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     annotationUseSiteTarget = AT PARAM NL* COLON -> { AST.PARAM };
     annotationUseSiteTarget = AT SETPARAM NL* COLON -> { AST.SETPARAM };
     annotationUseSiteTarget = AT DELEGATE NL* COLON -> { AST.DELEGATE };
+    annotationUseSiteTarget = AT FILE NL* COLON -> { AST.FILE };
 
     unescapedAnnotation = constructorInvocation | userType;
 
@@ -548,7 +548,6 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     LongLiteral = .:t ?(t.i is Token.LongLiteral) -> { AST.LongLiteral(t.i.cast<Token.LongLiteral>().s) };
     UnsignedLiteral = .:t ?(t.i is Token.UnsignedLiteral) -> { AST.UnsignedLiteral(t.i.cast<Token.UnsignedLiteral>().s) };
     UnsignedLongLiteral = .:t ?(t.i is Token.UnsignedLongLiteral) -> { AST.UnsignedLongLiteral(t.i.cast<Token.UnsignedLongLiteral>().s) };
-    CharacterLiteral = .:t ?(t.i is Token.CharacterLiteral) -> { AST.CharacterLiteral(t.i.cast<Token.CharacterLiteral>().s) };
 
     ThisAt = .:t ?(t.i is Token.ThisAt) -> { AST.Name(t.i.cast<Token.ThisAt>().s) };
     BreakAt = .:t ?(t.i is Token.BreakAt) -> { AST.Name(t.i.cast<Token.BreakAt>().s) };

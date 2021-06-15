@@ -297,14 +297,24 @@ object AST {
         constructor(expression: AstNode) : this(expression.cast())
     }
 
-    class VariableDeclaration(
+    sealed class VariableDeclaration : AstNode()
+
+    class SingleVariableDeclaration(
         val annotations: List<Annotation>,
         val name: String,
         val type: Type?
-    ) : AstNode() {
+    ) : VariableDeclaration() {
         constructor(
             annotations: List<AstNode>, name: String, type: AstNode?
         ) : this(annotations.cast(), name, type.cast())
+    }
+
+    class MultiVariableDeclaration(
+        val decls: List<SingleVariableDeclaration>
+    ) : VariableDeclaration() {
+        companion object {
+            operator fun invoke(decls: List<AstNode>) = MultiVariableDeclaration(decls.cast())
+        }
     }
 
     class PropertyDeclaration(
@@ -312,7 +322,7 @@ object AST {
         val vov: ValOrVar,
         val typeParameters: List<TypeParameter>,
         val receiverType: ReceiverType?,
-        val variableDeclarations: List<VariableDeclaration>,
+        val variableDeclaration: VariableDeclaration,
         val typeConstraints: List<TypeConstraint>,
         val body: ExpressionBodyOrPropertyDelegate?,
         val getter: Getter?,
@@ -323,7 +333,7 @@ object AST {
             vov: AstNode,
             typeParameters: List<AstNode>,
             receiverType: AstNode?,
-            variableDeclarations: List<AstNode>,
+            variableDeclarations: AstNode,
             typeConstraints: List<AstNode>,
             body: AstNode?,
             getter: AstNode?,
@@ -333,7 +343,7 @@ object AST {
             vov.cast<ValOrVar>(),
             typeParameters.cast<List<TypeParameter>>(),
             receiverType.cast<ReceiverType?>(),
-            variableDeclarations.cast<List<VariableDeclaration>>(),
+            variableDeclarations.cast<VariableDeclaration>(),
             typeConstraints.cast<List<TypeConstraint>>(),
             body.cast<ExpressionBodyOrPropertyDelegate?>(),
             getter.cast<Getter?>(),
@@ -353,12 +363,12 @@ object AST {
 
     class Setter(
         val modifiers: List<Modifier>,
-        val parameter: ValueParameter,
+        val parameter: ValueParameter?,
         val type: Type?,
         val body: FunctionBody?
     ) : AstNode() {
         constructor(
-            modifiers: List<AstNode>, parameter: AstNode, type: AstNode?, body: AstNode?
+            modifiers: List<AstNode>, parameter: AstNode?, type: AstNode?, body: AstNode?
         ) : this(modifiers.cast(), parameter.cast(), type.cast(), body.cast())
     }
 
@@ -369,7 +379,7 @@ object AST {
     class ObjectDeclaration(
         val modifiers: List<Modifier>,
         val name: String,
-        val delegationSpecifiers: List<AnnotatedDelegationSpecifier>,
+        val annotatedDelegationSpecifiers: List<AnnotatedDelegationSpecifier>,
         val body: ClassBody?
     ) : AstNode(), Declaration {
         constructor(
@@ -462,11 +472,6 @@ object AST {
 
     sealed interface ReceiverTypeWithoutModifiers
 
-    class ParenthesizedType(val type: Type) : AstNode(), ReceiverTypeWithoutModifiers,
-        TypeReferenceOrParenthesizedType {
-        constructor(type: AstNode) : this(type.cast())
-    }
-
     class Statement(val label: List<LabelOrAnnotation>, val expression: Labellable) : AstNode(), ControlStructuredBody {
         constructor(label: List<AstNode>, expression: AstNode) : this(
             label.cast<List<LabelOrAnnotation>>(),
@@ -493,18 +498,18 @@ object AST {
 
     class ForStatement(
         val annotations: List<Annotation>,
-        val variableDeclarations: List<VariableDeclaration>,
+        val variableDeclaration: VariableDeclaration,
         val expression: Expression,
         val body: ControlStructuredBody?
     ) : LoopStatement() {
         constructor(
             annotations: List<AstNode>,
-            variableDeclarations: List<AstNode>,
+            variableDeclaration: AstNode,
             expression: AstNode,
             body: AstNode?
         ) : this(
             annotations.cast<List<Annotation>>(),
-            variableDeclarations.cast<List<VariableDeclaration>>(),
+            variableDeclaration.cast<VariableDeclaration>(),
             expression.cast<Expression>(),
             body.cast<ControlStructuredBody?>()
         )
@@ -560,7 +565,7 @@ object AST {
         constructor(infixOperation: AstNode, suffixes: List<AstNode>) : this(infixOperation.cast(), suffixes.cast())
     }
 
-    class InfixOperation(val lhs: Expression, val suffixes: List<IsOrInCheckSuffix>) : AstNode() {
+    class InfixOperation(val lhs: Expression, val suffixes: List<IsOrInCheckSuffix>) : Expression() {
         constructor(lhs: AstNode, suffixes: List<AstNode>) : this(lhs.cast(), suffixes.cast())
     }
 
@@ -629,7 +634,9 @@ object AST {
         }
     }
 
-    class PrefixUnaryExpression(val unaryPrefixes: List<UnaryPrefix>, val expression: Expression) : Expression() {
+    class PrefixUnaryExpression(
+        val unaryPrefixes: List<UnaryPrefix>, val expression: Expression
+    ) : Expression(), AssignableExpression {
         constructor(unaryPrefixes: List<AstNode>, expression: AstNode) : this(
             unaryPrefixes.cast<List<UnaryPrefix>>(),
             expression.cast()
@@ -722,20 +729,20 @@ object AST {
 
     sealed class LiteralConstant : Expression()
 
-    class StringLiteral(val s: String): LiteralConstant()
+    class StringLiteral(val s: String) : LiteralConstant()
 
-    sealed class BooleanLiteral: LiteralConstant()
-    object TRUE: BooleanLiteral()
-    object FALSE: BooleanLiteral()
-    object NULL: LiteralConstant()
+    sealed class BooleanLiteral : LiteralConstant()
+    object TRUE : BooleanLiteral()
+    object FALSE : BooleanLiteral()
+    object NULL : LiteralConstant()
 
-    class IntegerLiteral(val s: String): LiteralConstant()
-    class LongLiteral(val s: String): LiteralConstant()
-    class UnsignedLiteral(val s: String): LiteralConstant()
-    class UnsignedLongLiteral(val s: String): LiteralConstant()
-    class FloatLiteral(val s: String): LiteralConstant()
-    class DoubleLiteral(val s: String): LiteralConstant()
-    class CharacterLiteral(val s: String): LiteralConstant()
+    class IntegerLiteral(val s: String) : LiteralConstant()
+    class LongLiteral(val s: String) : LiteralConstant()
+    class UnsignedLiteral(val s: String) : LiteralConstant()
+    class UnsignedLongLiteral(val s: String) : LiteralConstant()
+    class FloatLiteral(val s: String) : LiteralConstant()
+    class DoubleLiteral(val s: String) : LiteralConstant()
+    class CharacterLiteral(val s: String) : LiteralConstant()
 
     sealed class FunctionLiteral : Expression()
 
@@ -746,8 +753,8 @@ object AST {
         }
     }
 
-    class LambdaParameter(val variableDeclarations: List<VariableDeclaration>, val type: Type?) : AstNode() {
-        constructor(variableDeclarations: List<AstNode>, type: AstNode?) : this(
+    class LambdaParameter(val variableDeclaration: VariableDeclaration, val type: Type?) : AstNode() {
+        constructor(variableDeclarations: AstNode, type: AstNode?) : this(
             variableDeclarations.cast(),
             type.cast()
         )
@@ -797,7 +804,7 @@ object AST {
 
     class WhenSubject(
         val annotations: List<Annotation>,
-        val variableDeclaration: VariableDeclaration?,
+        val variableDeclaration: SingleVariableDeclaration?,
         val expression: Expression
     ) : AstNode() {
         constructor(
@@ -852,8 +859,8 @@ object AST {
 
     class BreakAt(val label: String) : JumpExpression()
 
-    class CallableReference(val receiverType: ReceiverType?, name: String?) : AstNode() {
-        constructor(receiverType: AstNode?, name: String?) : this(receiverType.cast(), name)
+    class CallableReference(val receiverType: ReceiverType?, val name: String) : AstNode() {
+        constructor(receiverType: AstNode?, name: String) : this(receiverType.cast(), name)
     }
 
     sealed class AssignmentAndOperator : AstNode()
@@ -973,7 +980,7 @@ object AST {
     }
 
     class MultiAnnotation(
-        val target: AnnotationUseSiteTarget?, val unescapedAnnotation: List<UnescapedAnnotation>
+        val target: AnnotationUseSiteTarget?, val unescapedAnnotations: List<UnescapedAnnotation>
     ) : Annotation() {
         constructor(
             target: AstNode?, unescapedAnnotation: List<AstNode>
@@ -981,14 +988,15 @@ object AST {
     }
 
     sealed class AnnotationUseSiteTarget : AstNode()
-    object FIELD: AnnotationUseSiteTarget()
-    object PROPERTY: AnnotationUseSiteTarget()
-    object GET: AnnotationUseSiteTarget()
-    object SET: AnnotationUseSiteTarget()
-    object RECEIVER: AnnotationUseSiteTarget()
-    object PARAM: AnnotationUseSiteTarget()
-    object SETPARAM: AnnotationUseSiteTarget()
-    object DELEGATE: AnnotationUseSiteTarget()
+    object FIELD : AnnotationUseSiteTarget()
+    object PROPERTY : AnnotationUseSiteTarget()
+    object GET : AnnotationUseSiteTarget()
+    object SET : AnnotationUseSiteTarget()
+    object RECEIVER : AnnotationUseSiteTarget()
+    object PARAM : AnnotationUseSiteTarget()
+    object SETPARAM : AnnotationUseSiteTarget()
+    object DELEGATE : AnnotationUseSiteTarget()
+    object FILE : AnnotationUseSiteTarget()
 
     sealed interface UnescapedAnnotation
 
