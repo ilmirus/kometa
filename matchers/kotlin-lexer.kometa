@@ -221,7 +221,7 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
     kotlinCode = '\u0027' (NL | "\u005c\u0027" | "\u005c\u005c" | ~'\u0027' .)* '\u0027';   // '
     kotlinCode = '\u0022' (NL | "\u005c\u0022" | "\u005c\u005c" | ~'\u0022' .)* '\u0022';   // "
 
-    identifier = identifierStart identifierStart*;
+    identifier = identifierStart identifierPart*;
 
     identifierStart = . ?(it.i.isJavaIdentifierStart());
 

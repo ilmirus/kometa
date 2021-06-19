@@ -5144,18 +5144,15 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // AND 7
         var _start_i7 = _index.element
 
-        // STAR 13
-        var _start_i13 = _index.element
-        val _inp13 = arrayListOf<Token?>()
-        val _res13 = arrayListOf<AST.AstNode?>()
+        // STAR 14
+        var _start_i14 = _index.element
+        val _inp14 = arrayListOf<Token?>()
+        val _res14 = arrayListOf<AST.AstNode?>()
 
-        // STAR 18
-        var _start_i18 = _index.element
-        val _inp18 = arrayListOf<Token?>()
-        val _res18 = arrayListOf<AST.AstNode?>()
-
-        // AND 23
-        var _start_i23 = _index.element
+        // STAR 19
+        var _start_i19 = _index.element
+        val _inp19 = arrayListOf<Token?>()
+        val _res19 = arrayListOf<AST.AstNode?>()
 
         // AND 24
         var _start_i24 = _index.element
@@ -5163,15 +5160,18 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // AND 25
         var _start_i25 = _index.element
 
-        // STAR 26
+        // AND 26
         var _start_i26 = _index.element
-        val _inp26 = arrayListOf<Token?>()
-        val _res26 = arrayListOf<AST.AstNode?>()
 
-        // STAR 29
-        var _start_i29 = _index.element
-        val _inp29 = arrayListOf<Token?>()
-        val _res29 = arrayListOf<AST.AstNode?>()
+        // STAR 27
+        var _start_i27 = _index.element
+        val _inp27 = arrayListOf<Token?>()
+        val _res27 = arrayListOf<AST.AstNode?>()
+
+        // STAR 30
+        var _start_i30 = _index.element
+        val _inp30 = arrayListOf<Token?>()
+        val _res30 = arrayListOf<AST.AstNode?>()
 
         var _label = -1
         while(true) {
@@ -5199,10 +5199,15 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     _start_i7 = _index.element
 
                     // CALLORVAR modifiers
-                    var _r9: _KotlinParser_Item? = null
-                    _r9 = _MemoCall(_memo, "modifiers", _index.element, ::modifiers, null)
-                    if (_r9 != null) _index.element = _r9.nextIndex
+                    var _r10: _KotlinParser_Item? = null
+                    _r10 = _MemoCall(_memo, "modifiers", _index.element, ::modifiers, null)
+                    if (_r10 != null) _index.element = _r10.nextIndex
 
+                    // QUES 9
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
                     // BIND mods
                     mods = _memo.results.peek()
 
@@ -5214,18 +5219,18 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR valOrVar
-                    var _r12: _KotlinParser_Item? = null
-                    _r12 = _MemoCall(_memo, "valOrVar", _index.element, ::valOrVar, null)
-                    if (_r12 != null) _index.element = _r12.nextIndex
+                    var _r13: _KotlinParser_Item? = null
+                    _r13 = _MemoCall(_memo, "valOrVar", _index.element, ::valOrVar, null)
+                    if (_r13 != null) _index.element = _r13.nextIndex
 
-                    // BIND vov
-                    vov = _memo.results.peek()
-
-                    // QUES 10
+                    // QUES 12
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
+                    // BIND vov
+                    vov = _memo.results.peek()
+
                     _label = 7
                 }
                 // AND 7
@@ -5247,25 +5252,25 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 13
-                    _start_i13 = _index.element
-                    _label = 13
+                    // STAR 14
+                    _start_i14 = _index.element
+                    _label = 14
                 }
-                // STAR 13
-                13 -> {
+                // STAR 14
+                14 -> {
                     // CALLORVAR NL
-                    var _r14: _KotlinParser_Item? = null
-                    _r14 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r14 != null) _index.element = _r14.nextIndex
+                    var _r15: _KotlinParser_Item? = null
+                    _r15 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r15 != null) _index.element = _r15.nextIndex
 
-                    // STAR 13
-                    val _r13 = _memo.results.pop()
-                    if (_r13 != null) {
-                        _res13 += _r13.results
-                        _label = 13
+                    // STAR 14
+                    val _r14 = _memo.results.pop()
+                    if (_r14 != null) {
+                        _res14 += _r14.results
+                        _label = 14
                         continue
                     } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i13, _index.element, _memo.input, _res13.filterNotNull(), true))
+                        _memo.results.push(_KotlinParser_Item(_start_i14, _index.element, _memo.input, _res14.filterNotNull(), true))
                     }
 
                     _label = 6
@@ -5290,9 +5295,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR simpleIdentifier
-                    var _r16: _KotlinParser_Item? = null
-                    _r16 = _MemoCall(_memo, "simpleIdentifier", _index.element, ::simpleIdentifier, null)
-                    if (_r16 != null) _index.element = _r16.nextIndex
+                    var _r17: _KotlinParser_Item? = null
+                    _r17 = _MemoCall(_memo, "simpleIdentifier", _index.element, ::simpleIdentifier, null)
+                    if (_r17 != null) _index.element = _r17.nextIndex
 
                     // BIND name
                     name = _memo.results.peek()
@@ -5319,9 +5324,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR COLON
-                    var _r17: _KotlinParser_Item? = null
-                    _r17 = _MemoCall(_memo, "COLON", _index.element, ::COLON, null)
-                    if (_r17 != null) _index.element = _r17.nextIndex
+                    var _r18: _KotlinParser_Item? = null
+                    _r18 = _MemoCall(_memo, "COLON", _index.element, ::COLON, null)
+                    if (_r18 != null) _index.element = _r18.nextIndex
 
                     _label = 4
                 }
@@ -5344,25 +5349,25 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 18
-                    _start_i18 = _index.element
-                    _label = 18
+                    // STAR 19
+                    _start_i19 = _index.element
+                    _label = 19
                 }
-                // STAR 18
-                18 -> {
+                // STAR 19
+                19 -> {
                     // CALLORVAR NL
-                    var _r19: _KotlinParser_Item? = null
-                    _r19 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r19 != null) _index.element = _r19.nextIndex
+                    var _r20: _KotlinParser_Item? = null
+                    _r20 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r20 != null) _index.element = _r20.nextIndex
 
-                    // STAR 18
-                    val _r18 = _memo.results.pop()
-                    if (_r18 != null) {
-                        _res18 += _r18.results
-                        _label = 18
+                    // STAR 19
+                    val _r19 = _memo.results.pop()
+                    if (_r19 != null) {
+                        _res19 += _r19.results
+                        _label = 19
                         continue
                     } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i18, _index.element, _memo.input, _res18.filterNotNull(), true))
+                        _memo.results.push(_KotlinParser_Item(_start_i19, _index.element, _memo.input, _res19.filterNotNull(), true))
                     }
 
                     _label = 3
@@ -5387,9 +5392,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR type
-                    var _r21: _KotlinParser_Item? = null
-                    _r21 = _MemoCall(_memo, "type", _index.element, ::type, null)
-                    if (_r21 != null) _index.element = _r21.nextIndex
+                    var _r22: _KotlinParser_Item? = null
+                    _r22 = _MemoCall(_memo, "type", _index.element, ::type, null)
+                    if (_r22 != null) _index.element = _r22.nextIndex
 
                     // BIND t
                     t = _memo.results.peek()
@@ -5415,34 +5420,60 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 23
-                    _start_i23 = _index.element
-
                     // AND 24
                     _start_i24 = _index.element
 
                     // AND 25
                     _start_i25 = _index.element
 
-                    // STAR 26
+                    // AND 26
                     _start_i26 = _index.element
-                    _label = 26
-                }
-                // STAR 26
-                26 -> {
-                    // CALLORVAR NL
-                    var _r27: _KotlinParser_Item? = null
-                    _r27 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r27 != null) _index.element = _r27.nextIndex
 
-                    // STAR 26
-                    val _r26 = _memo.results.pop()
-                    if (_r26 != null) {
-                        _res26 += _r26.results
-                        _label = 26
+                    // STAR 27
+                    _start_i27 = _index.element
+                    _label = 27
+                }
+                // STAR 27
+                27 -> {
+                    // CALLORVAR NL
+                    var _r28: _KotlinParser_Item? = null
+                    _r28 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r28 != null) _index.element = _r28.nextIndex
+
+                    // STAR 27
+                    val _r27 = _memo.results.pop()
+                    if (_r27 != null) {
+                        _res27 += _r27.results
+                        _label = 27
                         continue
                     } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i26, _index.element, _memo.input, _res26.filterNotNull(), true))
+                        _memo.results.push(_KotlinParser_Item(_start_i27, _index.element, _memo.input, _res27.filterNotNull(), true))
+                    }
+
+                    // AND shortcut 26
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 26
+                        continue
+                    }
+
+                    // CALLORVAR ASSIGNMENT
+                    var _r29: _KotlinParser_Item? = null
+                    _r29 = _MemoCall(_memo, "ASSIGNMENT", _index.element, ::ASSIGNMENT, null)
+                    if (_r29 != null) _index.element = _r29.nextIndex
+
+                    _label = 26
+                }
+                // AND 26
+                26 -> {
+                    val _r26_2 = _memo.results.pop()
+                    val _r26_1 = _memo.results.pop()
+
+                    if (_r26_1 != null && _r26_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i26, _index.element, _memo.input, (_r26_1.results + _r26_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i26
                     }
 
                     // AND shortcut 25
@@ -5452,10 +5483,26 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR ASSIGNMENT
-                    var _r28: _KotlinParser_Item? = null
-                    _r28 = _MemoCall(_memo, "ASSIGNMENT", _index.element, ::ASSIGNMENT, null)
-                    if (_r28 != null) _index.element = _r28.nextIndex
+                    // STAR 30
+                    _start_i30 = _index.element
+                    _label = 30
+                }
+                // STAR 30
+                30 -> {
+                    // CALLORVAR NL
+                    var _r31: _KotlinParser_Item? = null
+                    _r31 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r31 != null) _index.element = _r31.nextIndex
+
+                    // STAR 30
+                    val _r30 = _memo.results.pop()
+                    if (_r30 != null) {
+                        _res30 += _r30.results
+                        _label = 30
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i30, _index.element, _memo.input, _res30.filterNotNull(), true))
+                    }
 
                     _label = 25
                 }
@@ -5478,26 +5525,13 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 29
-                    _start_i29 = _index.element
-                    _label = 29
-                }
-                // STAR 29
-                29 -> {
-                    // CALLORVAR NL
-                    var _r30: _KotlinParser_Item? = null
-                    _r30 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r30 != null) _index.element = _r30.nextIndex
+                    // CALLORVAR expression
+                    var _r33: _KotlinParser_Item? = null
+                    _r33 = _MemoCall(_memo, "expression", _index.element, ::expression, null)
+                    if (_r33 != null) _index.element = _r33.nextIndex
 
-                    // STAR 29
-                    val _r29 = _memo.results.pop()
-                    if (_r29 != null) {
-                        _res29 += _r29.results
-                        _label = 29
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i29, _index.element, _memo.input, _res29.filterNotNull(), true))
-                    }
+                    // BIND expr
+                    expr = _memo.results.peek()
 
                     _label = 24
                 }
@@ -5513,36 +5547,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _index.element = _start_i24
                     }
 
-                    // AND shortcut 23
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 23
-                        continue
-                    }
-
-                    // CALLORVAR expression
-                    var _r32: _KotlinParser_Item? = null
-                    _r32 = _MemoCall(_memo, "expression", _index.element, ::expression, null)
-                    if (_r32 != null) _index.element = _r32.nextIndex
-
-                    // BIND expr
-                    expr = _memo.results.peek()
-
-                    _label = 23
-                }
-                // AND 23
-                23 -> {
-                    val _r23_2 = _memo.results.pop()
-                    val _r23_1 = _memo.results.pop()
-
-                    if (_r23_1 != null && _r23_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i23, _index.element, _memo.input, (_r23_1.results + _r23_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i23
-                    }
-
-                    // QUES 22
+                    // QUES 23
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
@@ -11447,19 +11452,16 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // AND 8
         var _start_i8 = _index.element
 
-        // AND 9
-        var _start_i9 = _index.element
+        // AND 15
+        var _start_i15 = _index.element
 
-        // AND 10
-        var _start_i10 = _index.element
+        // STAR 16
+        var _start_i16 = _index.element
+        val _inp16 = arrayListOf<Token?>()
+        val _res16 = arrayListOf<AST.AstNode?>()
 
-        // AND 17
-        var _start_i17 = _index.element
-
-        // STAR 18
-        var _start_i18 = _index.element
-        val _inp18 = arrayListOf<Token?>()
-        val _res18 = arrayListOf<AST.AstNode?>()
+        // AND 22
+        var _start_i22 = _index.element
 
         // AND 23
         var _start_i23 = _index.element
@@ -11467,86 +11469,73 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // AND 24
         var _start_i24 = _index.element
 
-        // AND 25
+        // STAR 25
         var _start_i25 = _index.element
+        val _inp25 = arrayListOf<Token?>()
+        val _res25 = arrayListOf<AST.AstNode?>()
 
-        // STAR 26
-        var _start_i26 = _index.element
-        val _inp26 = arrayListOf<Token?>()
-        val _res26 = arrayListOf<AST.AstNode?>()
+        // STAR 28
+        var _start_i28 = _index.element
+        val _inp28 = arrayListOf<Token?>()
+        val _res28 = arrayListOf<AST.AstNode?>()
 
-        // STAR 30
-        var _start_i30 = _index.element
-        val _inp30 = arrayListOf<Token?>()
-        val _res30 = arrayListOf<AST.AstNode?>()
+        // STAR 31
+        var _start_i31 = _index.element
+        val _inp31 = arrayListOf<Token?>()
+        val _res31 = arrayListOf<AST.AstNode?>()
 
-        // STAR 33
-        var _start_i33 = _index.element
-        val _inp33 = arrayListOf<Token?>()
-        val _res33 = arrayListOf<AST.AstNode?>()
+        // AND 36
+        var _start_i36 = _index.element
 
-        // AND 38
-        var _start_i38 = _index.element
+        // STAR 37
+        var _start_i37 = _index.element
+        val _inp37 = arrayListOf<Token?>()
+        val _res37 = arrayListOf<AST.AstNode?>()
 
-        // STAR 39
-        var _start_i39 = _index.element
-        val _inp39 = arrayListOf<Token?>()
-        val _res39 = arrayListOf<AST.AstNode?>()
+        // AND 42
+        var _start_i42 = _index.element
 
-        // AND 44
-        var _start_i44 = _index.element
+        // STAR 43
+        var _start_i43 = _index.element
+        val _inp43 = arrayListOf<Token?>()
+        val _res43 = arrayListOf<AST.AstNode?>()
 
-        // STAR 45
-        var _start_i45 = _index.element
-        val _inp45 = arrayListOf<Token?>()
-        val _res45 = arrayListOf<AST.AstNode?>()
+        // OR 46
+        var _start_i46 = _index.element
 
-        // OR 48
-        var _start_i48 = _index.element
+        // AND 49
+        var _start_i49 = _index.element
 
-        // AND 52
+        // OR 52
         var _start_i52 = _index.element
 
-        // PLUS 53
+        // AND 53
         var _start_i53 = _index.element
-        val _inp53 = arrayListOf<Token?>()
-        val _res53 = arrayListOf<AST.AstNode?>()
 
-        // STAR 56
-        var _start_i56 = _index.element
-        val _inp56 = arrayListOf<Token?>()
-        val _res56 = arrayListOf<AST.AstNode?>()
-
-        // OR 58
+        // AND 58
         var _start_i58 = _index.element
 
         // AND 59
         var _start_i59 = _index.element
 
-        // AND 64
-        var _start_i64 = _index.element
+        // STAR 60
+        var _start_i60 = _index.element
+        val _inp60 = arrayListOf<Token?>()
+        val _res60 = arrayListOf<AST.AstNode?>()
 
-        // AND 65
-        var _start_i65 = _index.element
-
-        // STAR 66
+        // AND 66
         var _start_i66 = _index.element
-        val _inp66 = arrayListOf<Token?>()
-        val _res66 = arrayListOf<AST.AstNode?>()
+
+        // AND 71
+        var _start_i71 = _index.element
 
         // AND 72
         var _start_i72 = _index.element
 
-        // AND 77
-        var _start_i77 = _index.element
-
-        // AND 78
-        var _start_i78 = _index.element
-
-        // STAR 79
-        var _start_i79 = _index.element
-        val _inp79 = arrayListOf<Token?>()
-        val _res79 = arrayListOf<AST.AstNode?>()
+        // STAR 73
+        var _start_i73 = _index.element
+        val _inp73 = arrayListOf<Token?>()
+        val _res73 = arrayListOf<AST.AstNode?>()
 
         var _label = -1
         while(true) {
@@ -11576,132 +11565,18 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     // AND 8
                     _start_i8 = _index.element
 
-                    // AND 9
-                    _start_i9 = _index.element
-
-                    // AND 10
-                    _start_i10 = _index.element
-
                     // CALLORVAR modifiers
-                    var _r13: _KotlinParser_Item? = null
-                    _r13 = _MemoCall(_memo, "modifiers", _index.element, ::modifiers, null)
-                    if (_r13 != null) _index.element = _r13.nextIndex
+                    var _r11: _KotlinParser_Item? = null
+                    _r11 = _MemoCall(_memo, "modifiers", _index.element, ::modifiers, null)
+                    if (_r11 != null) _index.element = _r11.nextIndex
 
-                    // QUES 12
+                    // QUES 10
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
                     // BIND mods
                     mods = _memo.results.peek()
-
-                    // AND shortcut 10
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 10
-                        continue
-                    }
-
-                    // CALLORVAR valOrVar
-                    var _r15: _KotlinParser_Item? = null
-                    _r15 = _MemoCall(_memo, "valOrVar", _index.element, ::valOrVar, null)
-                    if (_r15 != null) _index.element = _r15.nextIndex
-
-                    // BIND vov
-                    vov = _memo.results.peek()
-
-                    _label = 10
-                }
-                // AND 10
-                10 -> {
-                    val _r10_2 = _memo.results.pop()
-                    val _r10_1 = _memo.results.pop()
-
-                    if (_r10_1 != null && _r10_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i10, _index.element, _memo.input, (_r10_1.results + _r10_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i10
-                    }
-
-                    // AND shortcut 9
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 9
-                        continue
-                    }
-
-                    // AND 17
-                    _start_i17 = _index.element
-
-                    // STAR 18
-                    _start_i18 = _index.element
-                    _label = 18
-                }
-                // STAR 18
-                18 -> {
-                    // CALLORVAR NL
-                    var _r19: _KotlinParser_Item? = null
-                    _r19 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r19 != null) _index.element = _r19.nextIndex
-
-                    // STAR 18
-                    val _r18 = _memo.results.pop()
-                    if (_r18 != null) {
-                        _res18 += _r18.results
-                        _label = 18
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i18, _index.element, _memo.input, _res18.filterNotNull(), true))
-                    }
-
-                    // AND shortcut 17
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 17
-                        continue
-                    }
-
-                    // CALLORVAR typeParameters
-                    var _r21: _KotlinParser_Item? = null
-                    _r21 = _MemoCall(_memo, "typeParameters", _index.element, ::typeParameters, null)
-                    if (_r21 != null) _index.element = _r21.nextIndex
-
-                    // BIND tps
-                    tps = _memo.results.peek()
-
-                    _label = 17
-                }
-                // AND 17
-                17 -> {
-                    val _r17_2 = _memo.results.pop()
-                    val _r17_1 = _memo.results.pop()
-
-                    if (_r17_1 != null && _r17_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i17, _index.element, _memo.input, (_r17_1.results + _r17_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i17
-                    }
-
-                    // QUES 16
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
-                    _label = 9
-                }
-                // AND 9
-                9 -> {
-                    val _r9_2 = _memo.results.pop()
-                    val _r9_1 = _memo.results.pop()
-
-                    if (_r9_1 != null && _r9_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i9, _index.element, _memo.input, (_r9_1.results + _r9_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i9
-                    }
 
                     // AND shortcut 8
                     if (_memo.results.peek() == null) {
@@ -11710,63 +11585,142 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
+                    // CALLORVAR valOrVar
+                    var _r13: _KotlinParser_Item? = null
+                    _r13 = _MemoCall(_memo, "valOrVar", _index.element, ::valOrVar, null)
+                    if (_r13 != null) _index.element = _r13.nextIndex
+
+                    // BIND vov
+                    vov = _memo.results.peek()
+
+                    _label = 8
+                }
+                // AND 8
+                8 -> {
+                    val _r8_2 = _memo.results.pop()
+                    val _r8_1 = _memo.results.pop()
+
+                    if (_r8_1 != null && _r8_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i8, _index.element, _memo.input, (_r8_1.results + _r8_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i8
+                    }
+
+                    // AND shortcut 7
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 7
+                        continue
+                    }
+
+                    // AND 15
+                    _start_i15 = _index.element
+
+                    // STAR 16
+                    _start_i16 = _index.element
+                    _label = 16
+                }
+                // STAR 16
+                16 -> {
+                    // CALLORVAR NL
+                    var _r17: _KotlinParser_Item? = null
+                    _r17 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r17 != null) _index.element = _r17.nextIndex
+
+                    // STAR 16
+                    val _r16 = _memo.results.pop()
+                    if (_r16 != null) {
+                        _res16 += _r16.results
+                        _label = 16
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i16, _index.element, _memo.input, _res16.filterNotNull(), true))
+                    }
+
+                    // AND shortcut 15
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 15
+                        continue
+                    }
+
+                    // CALLORVAR typeParameters
+                    var _r19: _KotlinParser_Item? = null
+                    _r19 = _MemoCall(_memo, "typeParameters", _index.element, ::typeParameters, null)
+                    if (_r19 != null) _index.element = _r19.nextIndex
+
+                    // BIND tps
+                    tps = _memo.results.peek()
+
+                    _label = 15
+                }
+                // AND 15
+                15 -> {
+                    val _r15_2 = _memo.results.pop()
+                    val _r15_1 = _memo.results.pop()
+
+                    if (_r15_1 != null && _r15_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i15, _index.element, _memo.input, (_r15_1.results + _r15_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i15
+                    }
+
+                    // QUES 14
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 7
+                }
+                // AND 7
+                7 -> {
+                    val _r7_2 = _memo.results.pop()
+                    val _r7_1 = _memo.results.pop()
+
+                    if (_r7_1 != null && _r7_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i7, _index.element, _memo.input, (_r7_1.results + _r7_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i7
+                    }
+
+                    // AND shortcut 6
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 6
+                        continue
+                    }
+
+                    // AND 22
+                    _start_i22 = _index.element
+
                     // AND 23
                     _start_i23 = _index.element
 
                     // AND 24
                     _start_i24 = _index.element
 
-                    // AND 25
+                    // STAR 25
                     _start_i25 = _index.element
-
-                    // STAR 26
-                    _start_i26 = _index.element
-                    _label = 26
-                }
-                // STAR 26
-                26 -> {
-                    // CALLORVAR NL
-                    var _r27: _KotlinParser_Item? = null
-                    _r27 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r27 != null) _index.element = _r27.nextIndex
-
-                    // STAR 26
-                    val _r26 = _memo.results.pop()
-                    if (_r26 != null) {
-                        _res26 += _r26.results
-                        _label = 26
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i26, _index.element, _memo.input, _res26.filterNotNull(), true))
-                    }
-
-                    // AND shortcut 25
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 25
-                        continue
-                    }
-
-                    // CALLORVAR receiverType
-                    var _r29: _KotlinParser_Item? = null
-                    _r29 = _MemoCall(_memo, "receiverType", _index.element, ::receiverType, null)
-                    if (_r29 != null) _index.element = _r29.nextIndex
-
-                    // BIND rt
-                    rt = _memo.results.peek()
-
                     _label = 25
                 }
-                // AND 25
+                // STAR 25
                 25 -> {
-                    val _r25_2 = _memo.results.pop()
-                    val _r25_1 = _memo.results.pop()
+                    // CALLORVAR NL
+                    var _r26: _KotlinParser_Item? = null
+                    _r26 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r26 != null) _index.element = _r26.nextIndex
 
-                    if (_r25_1 != null && _r25_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i25, _index.element, _memo.input, (_r25_1.results + _r25_2.results).filterNotNull(), true))
+                    // STAR 25
+                    val _r25 = _memo.results.pop()
+                    if (_r25 != null) {
+                        _res25 += _r25.results
+                        _label = 25
+                        continue
                     } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i25
+                        _memo.results.push(_KotlinParser_Item(_start_i25, _index.element, _memo.input, _res25.filterNotNull(), true))
                     }
 
                     // AND shortcut 24
@@ -11776,26 +11730,10 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 30
-                    _start_i30 = _index.element
-                    _label = 30
-                }
-                // STAR 30
-                30 -> {
-                    // CALLORVAR NL
-                    var _r31: _KotlinParser_Item? = null
-                    _r31 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r31 != null) _index.element = _r31.nextIndex
-
-                    // STAR 30
-                    val _r30 = _memo.results.pop()
-                    if (_r30 != null) {
-                        _res30 += _r30.results
-                        _label = 30
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i30, _index.element, _memo.input, _res30.filterNotNull(), true))
-                    }
+                    // CALLORVAR receiverType
+                    var _r27: _KotlinParser_Item? = null
+                    _r27 = _MemoCall(_memo, "receiverType", _index.element, ::receiverType, null)
+                    if (_r27 != null) _index.element = _r27.nextIndex
 
                     _label = 24
                 }
@@ -11818,10 +11756,26 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR DOT
-                    var _r32: _KotlinParser_Item? = null
-                    _r32 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
-                    if (_r32 != null) _index.element = _r32.nextIndex
+                    // STAR 28
+                    _start_i28 = _index.element
+                    _label = 28
+                }
+                // STAR 28
+                28 -> {
+                    // CALLORVAR NL
+                    var _r29: _KotlinParser_Item? = null
+                    _r29 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r29 != null) _index.element = _r29.nextIndex
+
+                    // STAR 28
+                    val _r28 = _memo.results.pop()
+                    if (_r28 != null) {
+                        _res28 += _r28.results
+                        _label = 28
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i28, _index.element, _memo.input, _res28.filterNotNull(), true))
+                    }
 
                     _label = 23
                 }
@@ -11837,81 +11791,39 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _index.element = _start_i23
                     }
 
-                    // QUES 22
+                    // AND shortcut 22
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 22
+                        continue
+                    }
+
+                    // CALLORVAR DOT
+                    var _r30: _KotlinParser_Item? = null
+                    _r30 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
+                    if (_r30 != null) _index.element = _r30.nextIndex
+
+                    _label = 22
+                }
+                // AND 22
+                22 -> {
+                    val _r22_2 = _memo.results.pop()
+                    val _r22_1 = _memo.results.pop()
+
+                    if (_r22_1 != null && _r22_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i22, _index.element, _memo.input, (_r22_1.results + _r22_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i22
+                    }
+
+                    // QUES 21
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
-                    _label = 8
-                }
-                // AND 8
-                8 -> {
-                    val _r8_2 = _memo.results.pop()
-                    val _r8_1 = _memo.results.pop()
-
-                    if (_r8_1 != null && _r8_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i8, _index.element, _memo.input, (_r8_1.results + _r8_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i8
-                    }
-
-                    // AND shortcut 7
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 7
-                        continue
-                    }
-
-                    // STAR 33
-                    _start_i33 = _index.element
-                    _label = 33
-                }
-                // STAR 33
-                33 -> {
-                    // CALLORVAR NL
-                    var _r34: _KotlinParser_Item? = null
-                    _r34 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r34 != null) _index.element = _r34.nextIndex
-
-                    // STAR 33
-                    val _r33 = _memo.results.pop()
-                    if (_r33 != null) {
-                        _res33 += _r33.results
-                        _label = 33
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i33, _index.element, _memo.input, _res33.filterNotNull(), true))
-                    }
-
-                    _label = 7
-                }
-                // AND 7
-                7 -> {
-                    val _r7_2 = _memo.results.pop()
-                    val _r7_1 = _memo.results.pop()
-
-                    if (_r7_1 != null && _r7_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i7, _index.element, _memo.input, (_r7_1.results + _r7_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i7
-                    }
-
-                    // AND shortcut 6
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 6
-                        continue
-                    }
-
-                    // CALLORVAR varDecls
-                    var _r36: _KotlinParser_Item? = null
-                    _r36 = _MemoCall(_memo, "varDecls", _index.element, ::varDecls, null)
-                    if (_r36 != null) _index.element = _r36.nextIndex
-
-                    // BIND vds
-                    vds = _memo.results.peek()
+                    // BIND rt
+                    rt = _memo.results.peek()
 
                     _label = 6
                 }
@@ -11934,64 +11846,27 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 38
-                    _start_i38 = _index.element
-
-                    // STAR 39
-                    _start_i39 = _index.element
-                    _label = 39
+                    // STAR 31
+                    _start_i31 = _index.element
+                    _label = 31
                 }
-                // STAR 39
-                39 -> {
+                // STAR 31
+                31 -> {
                     // CALLORVAR NL
-                    var _r40: _KotlinParser_Item? = null
-                    _r40 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r40 != null) _index.element = _r40.nextIndex
+                    var _r32: _KotlinParser_Item? = null
+                    _r32 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r32 != null) _index.element = _r32.nextIndex
 
-                    // STAR 39
-                    val _r39 = _memo.results.pop()
-                    if (_r39 != null) {
-                        _res39 += _r39.results
-                        _label = 39
+                    // STAR 31
+                    val _r31 = _memo.results.pop()
+                    if (_r31 != null) {
+                        _res31 += _r31.results
+                        _label = 31
                         continue
                     } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i39, _index.element, _memo.input, _res39.filterNotNull(), true))
+                        _memo.results.push(_KotlinParser_Item(_start_i31, _index.element, _memo.input, _res31.filterNotNull(), true))
                     }
 
-                    // AND shortcut 38
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 38
-                        continue
-                    }
-
-                    // CALLORVAR typeConstraints
-                    var _r42: _KotlinParser_Item? = null
-                    _r42 = _MemoCall(_memo, "typeConstraints", _index.element, ::typeConstraints, null)
-                    if (_r42 != null) _index.element = _r42.nextIndex
-
-                    // BIND tcs
-                    tcs = _memo.results.peek()
-
-                    _label = 38
-                }
-                // AND 38
-                38 -> {
-                    val _r38_2 = _memo.results.pop()
-                    val _r38_1 = _memo.results.pop()
-
-                    if (_r38_1 != null && _r38_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i38, _index.element, _memo.input, (_r38_1.results + _r38_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i38
-                    }
-
-                    // QUES 37
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
                     _label = 5
                 }
                 // AND 5
@@ -12013,85 +11888,14 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 44
-                    _start_i44 = _index.element
+                    // CALLORVAR varDecls
+                    var _r34: _KotlinParser_Item? = null
+                    _r34 = _MemoCall(_memo, "varDecls", _index.element, ::varDecls, null)
+                    if (_r34 != null) _index.element = _r34.nextIndex
 
-                    // STAR 45
-                    _start_i45 = _index.element
-                    _label = 45
-                }
-                // STAR 45
-                45 -> {
-                    // CALLORVAR NL
-                    var _r46: _KotlinParser_Item? = null
-                    _r46 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r46 != null) _index.element = _r46.nextIndex
+                    // BIND vds
+                    vds = _memo.results.peek()
 
-                    // STAR 45
-                    val _r45 = _memo.results.pop()
-                    if (_r45 != null) {
-                        _res45 += _r45.results
-                        _label = 45
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i45, _index.element, _memo.input, _res45.filterNotNull(), true))
-                    }
-
-                    // AND shortcut 44
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 44
-                        continue
-                    }
-
-                    // OR 48
-                    _start_i48 = _index.element
-
-                    // CALLORVAR expressionBody
-                    var _r49: _KotlinParser_Item? = null
-                    _r49 = _MemoCall(_memo, "expressionBody", _index.element, ::expressionBody, null)
-                    if (_r49 != null) _index.element = _r49.nextIndex
-
-                    // OR shortcut 48
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i48
-                    } else {
-                        _label = 48
-                        continue
-                    }
-
-                    // CALLORVAR propertyDelegate
-                    var _r50: _KotlinParser_Item? = null
-                    _r50 = _MemoCall(_memo, "propertyDelegate", _index.element, ::propertyDelegate, null)
-                    if (_r50 != null) _index.element = _r50.nextIndex
-
-                    _label = 48
-                }
-                // OR 48
-                48 -> {
-                    // BIND b
-                    b = _memo.results.peek()
-
-                    _label = 44
-                }
-                // AND 44
-                44 -> {
-                    val _r44_2 = _memo.results.pop()
-                    val _r44_1 = _memo.results.pop()
-
-                    if (_r44_1 != null && _r44_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i44, _index.element, _memo.input, (_r44_1.results + _r44_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i44
-                    }
-
-                    // QUES 43
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
                     _label = 4
                 }
                 // AND 4
@@ -12113,61 +11917,60 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 52
-                    _start_i52 = _index.element
+                    // AND 36
+                    _start_i36 = _index.element
 
-                    // PLUS 53
-                    _start_i53 = _index.element
-                    _label = 53
+                    // STAR 37
+                    _start_i37 = _index.element
+                    _label = 37
                 }
-                // PLUS 53
-                53 -> {
+                // STAR 37
+                37 -> {
                     // CALLORVAR NL
-                    var _r54: _KotlinParser_Item? = null
-                    _r54 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r54 != null) _index.element = _r54.nextIndex
+                    var _r38: _KotlinParser_Item? = null
+                    _r38 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r38 != null) _index.element = _r38.nextIndex
 
-                    // PLUS 53
-                    val _r53 = _memo.results.pop()
-                    if (_r53 != null) {
-                        _res53 += _r53.results
-                        _label = 53
+                    // STAR 37
+                    val _r37 = _memo.results.pop()
+                    if (_r37 != null) {
+                        _res37 += _r37.results
+                        _label = 37
                         continue
                     } else {
-                        if (_index.element > _start_i53) {
-                            _memo.results.push(_KotlinParser_Item(_start_i53, _index.element, _memo.input, _res53.filterNotNull(), true))
-                        } else {
-                            _memo.results.push(null)
-                        }
+                        _memo.results.push(_KotlinParser_Item(_start_i37, _index.element, _memo.input, _res37.filterNotNull(), true))
                     }
 
-                    // AND shortcut 52
+                    // AND shortcut 36
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 52
+                        _label = 36
                         continue
                     }
 
-                    // CALLORVAR SEMICOLON
-                    var _r55: _KotlinParser_Item? = null
-                    _r55 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
-                    if (_r55 != null) _index.element = _r55.nextIndex
+                    // CALLORVAR typeConstraints
+                    var _r40: _KotlinParser_Item? = null
+                    _r40 = _MemoCall(_memo, "typeConstraints", _index.element, ::typeConstraints, null)
+                    if (_r40 != null) _index.element = _r40.nextIndex
 
-                    _label = 52
+                    // BIND tcs
+                    tcs = _memo.results.peek()
+
+                    _label = 36
                 }
-                // AND 52
-                52 -> {
-                    val _r52_2 = _memo.results.pop()
-                    val _r52_1 = _memo.results.pop()
+                // AND 36
+                36 -> {
+                    val _r36_2 = _memo.results.pop()
+                    val _r36_1 = _memo.results.pop()
 
-                    if (_r52_1 != null && _r52_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i52, _index.element, _memo.input, (_r52_1.results + _r52_2.results).filterNotNull(), true))
+                    if (_r36_1 != null && _r36_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i36, _index.element, _memo.input, (_r36_1.results + _r36_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i52
+                        _index.element = _start_i36
                     }
 
-                    // QUES 51
+                    // QUES 35
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
@@ -12193,27 +11996,85 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 56
-                    _start_i56 = _index.element
-                    _label = 56
-                }
-                // STAR 56
-                56 -> {
-                    // CALLORVAR NL
-                    var _r57: _KotlinParser_Item? = null
-                    _r57 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r57 != null) _index.element = _r57.nextIndex
+                    // AND 42
+                    _start_i42 = _index.element
 
-                    // STAR 56
-                    val _r56 = _memo.results.pop()
-                    if (_r56 != null) {
-                        _res56 += _r56.results
-                        _label = 56
+                    // STAR 43
+                    _start_i43 = _index.element
+                    _label = 43
+                }
+                // STAR 43
+                43 -> {
+                    // CALLORVAR NL
+                    var _r44: _KotlinParser_Item? = null
+                    _r44 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r44 != null) _index.element = _r44.nextIndex
+
+                    // STAR 43
+                    val _r43 = _memo.results.pop()
+                    if (_r43 != null) {
+                        _res43 += _r43.results
+                        _label = 43
                         continue
                     } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i56, _index.element, _memo.input, _res56.filterNotNull(), true))
+                        _memo.results.push(_KotlinParser_Item(_start_i43, _index.element, _memo.input, _res43.filterNotNull(), true))
                     }
 
+                    // AND shortcut 42
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 42
+                        continue
+                    }
+
+                    // OR 46
+                    _start_i46 = _index.element
+
+                    // CALLORVAR expressionBody
+                    var _r47: _KotlinParser_Item? = null
+                    _r47 = _MemoCall(_memo, "expressionBody", _index.element, ::expressionBody, null)
+                    if (_r47 != null) _index.element = _r47.nextIndex
+
+                    // OR shortcut 46
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i46
+                    } else {
+                        _label = 46
+                        continue
+                    }
+
+                    // CALLORVAR propertyDelegate
+                    var _r48: _KotlinParser_Item? = null
+                    _r48 = _MemoCall(_memo, "propertyDelegate", _index.element, ::propertyDelegate, null)
+                    if (_r48 != null) _index.element = _r48.nextIndex
+
+                    _label = 46
+                }
+                // OR 46
+                46 -> {
+                    // BIND b
+                    b = _memo.results.peek()
+
+                    _label = 42
+                }
+                // AND 42
+                42 -> {
+                    val _r42_2 = _memo.results.pop()
+                    val _r42_1 = _memo.results.pop()
+
+                    if (_r42_1 != null && _r42_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i42, _index.element, _memo.input, (_r42_1.results + _r42_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i42
+                    }
+
+                    // QUES 41
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
                     _label = 2
                 }
                 // AND 2
@@ -12235,24 +12096,78 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // OR 58
-                    _start_i58 = _index.element
+                    // AND 49
+                    _start_i49 = _index.element
 
-                    // AND 59
-                    _start_i59 = _index.element
+                    // CALLORVAR semi
+                    var _r51: _KotlinParser_Item? = null
+                    _r51 = _MemoCall(_memo, "semi", _index.element, ::semi, null)
+                    if (_r51 != null) _index.element = _r51.nextIndex
+
+                    // QUES 50
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    // AND shortcut 49
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 49
+                        continue
+                    }
+
+                    // OR 52
+                    _start_i52 = _index.element
+
+                    // AND 53
+                    _start_i53 = _index.element
 
                     // CALLORVAR getter
-                    var _r62: _KotlinParser_Item? = null
-                    _r62 = _MemoCall(_memo, "getter", _index.element, ::getter, null)
-                    if (_r62 != null) _index.element = _r62.nextIndex
+                    var _r56: _KotlinParser_Item? = null
+                    _r56 = _MemoCall(_memo, "getter", _index.element, ::getter, null)
+                    if (_r56 != null) _index.element = _r56.nextIndex
 
-                    // QUES 61
+                    // QUES 55
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
                     // BIND gttr
                     gttr = _memo.results.peek()
+
+                    // AND shortcut 53
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 53
+                        continue
+                    }
+
+                    // AND 58
+                    _start_i58 = _index.element
+
+                    // AND 59
+                    _start_i59 = _index.element
+
+                    // STAR 60
+                    _start_i60 = _index.element
+                    _label = 60
+                }
+                // STAR 60
+                60 -> {
+                    // CALLORVAR NL
+                    var _r61: _KotlinParser_Item? = null
+                    _r61 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r61 != null) _index.element = _r61.nextIndex
+
+                    // STAR 60
+                    val _r60 = _memo.results.pop()
+                    if (_r60 != null) {
+                        _res60 += _r60.results
+                        _label = 60
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i60, _index.element, _memo.input, _res60.filterNotNull(), true))
+                    }
 
                     // AND shortcut 59
                     if (_memo.results.peek() == null) {
@@ -12261,94 +12176,12 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 64
-                    _start_i64 = _index.element
-
-                    // AND 65
-                    _start_i65 = _index.element
-
-                    // STAR 66
-                    _start_i66 = _index.element
-                    _label = 66
-                }
-                // STAR 66
-                66 -> {
-                    // CALLORVAR NL
-                    var _r67: _KotlinParser_Item? = null
-                    _r67 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r67 != null) _index.element = _r67.nextIndex
-
-                    // STAR 66
-                    val _r66 = _memo.results.pop()
-                    if (_r66 != null) {
-                        _res66 += _r66.results
-                        _label = 66
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i66, _index.element, _memo.input, _res66.filterNotNull(), true))
-                    }
-
-                    // AND shortcut 65
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 65
-                        continue
-                    }
-
                     // CALLORVAR semi
-                    var _r69: _KotlinParser_Item? = null
-                    _r69 = _MemoCall(_memo, "semi", _index.element, ::semi, null)
-                    if (_r69 != null) _index.element = _r69.nextIndex
+                    var _r63: _KotlinParser_Item? = null
+                    _r63 = _MemoCall(_memo, "semi", _index.element, ::semi, null)
+                    if (_r63 != null) _index.element = _r63.nextIndex
 
-                    // QUES 68
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
-                    _label = 65
-                }
-                // AND 65
-                65 -> {
-                    val _r65_2 = _memo.results.pop()
-                    val _r65_1 = _memo.results.pop()
-
-                    if (_r65_1 != null && _r65_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i65, _index.element, _memo.input, (_r65_1.results + _r65_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i65
-                    }
-
-                    // AND shortcut 64
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 64
-                        continue
-                    }
-
-                    // CALLORVAR setter
-                    var _r71: _KotlinParser_Item? = null
-                    _r71 = _MemoCall(_memo, "setter", _index.element, ::setter, null)
-                    if (_r71 != null) _index.element = _r71.nextIndex
-
-                    // BIND sttr
-                    sttr = _memo.results.peek()
-
-                    _label = 64
-                }
-                // AND 64
-                64 -> {
-                    val _r64_2 = _memo.results.pop()
-                    val _r64_1 = _memo.results.pop()
-
-                    if (_r64_1 != null && _r64_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i64, _index.element, _memo.input, (_r64_1.results + _r64_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i64
-                    }
-
-                    // QUES 63
+                    // QUES 62
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
@@ -12367,30 +12200,112 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _index.element = _start_i59
                     }
 
-                    // OR shortcut 58
+                    // AND shortcut 58
                     if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i58
-                    } else {
+                        _memo.results.push(null)
                         _label = 58
                         continue
                     }
 
-                    // AND 72
-                    _start_i72 = _index.element
+                    // CALLORVAR setter
+                    var _r65: _KotlinParser_Item? = null
+                    _r65 = _MemoCall(_memo, "setter", _index.element, ::setter, null)
+                    if (_r65 != null) _index.element = _r65.nextIndex
+
+                    // BIND sttr
+                    sttr = _memo.results.peek()
+
+                    _label = 58
+                }
+                // AND 58
+                58 -> {
+                    val _r58_2 = _memo.results.pop()
+                    val _r58_1 = _memo.results.pop()
+
+                    if (_r58_1 != null && _r58_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i58, _index.element, _memo.input, (_r58_1.results + _r58_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i58
+                    }
+
+                    // QUES 57
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 53
+                }
+                // AND 53
+                53 -> {
+                    val _r53_2 = _memo.results.pop()
+                    val _r53_1 = _memo.results.pop()
+
+                    if (_r53_1 != null && _r53_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i53, _index.element, _memo.input, (_r53_1.results + _r53_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i53
+                    }
+
+                    // OR shortcut 52
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i52
+                    } else {
+                        _label = 52
+                        continue
+                    }
+
+                    // AND 66
+                    _start_i66 = _index.element
 
                     // CALLORVAR setter
-                    var _r75: _KotlinParser_Item? = null
-                    _r75 = _MemoCall(_memo, "setter", _index.element, ::setter, null)
-                    if (_r75 != null) _index.element = _r75.nextIndex
+                    var _r69: _KotlinParser_Item? = null
+                    _r69 = _MemoCall(_memo, "setter", _index.element, ::setter, null)
+                    if (_r69 != null) _index.element = _r69.nextIndex
 
-                    // QUES 74
+                    // QUES 68
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
                     // BIND sttr
                     sttr = _memo.results.peek()
+
+                    // AND shortcut 66
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 66
+                        continue
+                    }
+
+                    // AND 71
+                    _start_i71 = _index.element
+
+                    // AND 72
+                    _start_i72 = _index.element
+
+                    // STAR 73
+                    _start_i73 = _index.element
+                    _label = 73
+                }
+                // STAR 73
+                73 -> {
+                    // CALLORVAR NL
+                    var _r74: _KotlinParser_Item? = null
+                    _r74 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r74 != null) _index.element = _r74.nextIndex
+
+                    // STAR 73
+                    val _r73 = _memo.results.pop()
+                    if (_r73 != null) {
+                        _res73 += _r73.results
+                        _label = 73
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i73, _index.element, _memo.input, _res73.filterNotNull(), true))
+                    }
 
                     // AND shortcut 72
                     if (_memo.results.peek() == null) {
@@ -12399,94 +12314,12 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 77
-                    _start_i77 = _index.element
-
-                    // AND 78
-                    _start_i78 = _index.element
-
-                    // STAR 79
-                    _start_i79 = _index.element
-                    _label = 79
-                }
-                // STAR 79
-                79 -> {
-                    // CALLORVAR NL
-                    var _r80: _KotlinParser_Item? = null
-                    _r80 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r80 != null) _index.element = _r80.nextIndex
-
-                    // STAR 79
-                    val _r79 = _memo.results.pop()
-                    if (_r79 != null) {
-                        _res79 += _r79.results
-                        _label = 79
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i79, _index.element, _memo.input, _res79.filterNotNull(), true))
-                    }
-
-                    // AND shortcut 78
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 78
-                        continue
-                    }
-
                     // CALLORVAR semi
-                    var _r82: _KotlinParser_Item? = null
-                    _r82 = _MemoCall(_memo, "semi", _index.element, ::semi, null)
-                    if (_r82 != null) _index.element = _r82.nextIndex
+                    var _r76: _KotlinParser_Item? = null
+                    _r76 = _MemoCall(_memo, "semi", _index.element, ::semi, null)
+                    if (_r76 != null) _index.element = _r76.nextIndex
 
-                    // QUES 81
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
-                    _label = 78
-                }
-                // AND 78
-                78 -> {
-                    val _r78_2 = _memo.results.pop()
-                    val _r78_1 = _memo.results.pop()
-
-                    if (_r78_1 != null && _r78_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i78, _index.element, _memo.input, (_r78_1.results + _r78_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i78
-                    }
-
-                    // AND shortcut 77
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 77
-                        continue
-                    }
-
-                    // CALLORVAR getter
-                    var _r84: _KotlinParser_Item? = null
-                    _r84 = _MemoCall(_memo, "getter", _index.element, ::getter, null)
-                    if (_r84 != null) _index.element = _r84.nextIndex
-
-                    // BIND gttr
-                    gttr = _memo.results.peek()
-
-                    _label = 77
-                }
-                // AND 77
-                77 -> {
-                    val _r77_2 = _memo.results.pop()
-                    val _r77_1 = _memo.results.pop()
-
-                    if (_r77_1 != null && _r77_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i77, _index.element, _memo.input, (_r77_1.results + _r77_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i77
-                    }
-
-                    // QUES 76
+                    // QUES 75
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
@@ -12505,10 +12338,72 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _index.element = _start_i72
                     }
 
-                    _label = 58
+                    // AND shortcut 71
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 71
+                        continue
+                    }
+
+                    // CALLORVAR getter
+                    var _r78: _KotlinParser_Item? = null
+                    _r78 = _MemoCall(_memo, "getter", _index.element, ::getter, null)
+                    if (_r78 != null) _index.element = _r78.nextIndex
+
+                    // BIND gttr
+                    gttr = _memo.results.peek()
+
+                    _label = 71
                 }
-                // OR 58
-                58 -> {
+                // AND 71
+                71 -> {
+                    val _r71_2 = _memo.results.pop()
+                    val _r71_1 = _memo.results.pop()
+
+                    if (_r71_1 != null && _r71_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i71, _index.element, _memo.input, (_r71_1.results + _r71_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i71
+                    }
+
+                    // QUES 70
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 66
+                }
+                // AND 66
+                66 -> {
+                    val _r66_2 = _memo.results.pop()
+                    val _r66_1 = _memo.results.pop()
+
+                    if (_r66_1 != null && _r66_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i66, _index.element, _memo.input, (_r66_1.results + _r66_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i66
+                    }
+
+                    _label = 52
+                }
+                // OR 52
+                52 -> {
+                    _label = 49
+                }
+                // AND 49
+                49 -> {
+                    val _r49_2 = _memo.results.pop()
+                    val _r49_1 = _memo.results.pop()
+
+                    if (_r49_1 != null && _r49_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i49, _index.element, _memo.input, (_r49_1.results + _r49_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i49
+                    }
+
                     _label = 1
                 }
                 // AND 1
@@ -12528,6 +12423,656 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     if (_r0 != null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.r, tcs.l, b.nr, gttr.nr, sttr.nr) }, _r0), true))
+                    }
+
+                    break
+                }
+            }
+        }
+    }
+
+
+    fun localVariableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        var mods: _KotlinParser_Item? = null
+        var vov: _KotlinParser_Item? = null
+        var tps: _KotlinParser_Item? = null
+        var rt: _KotlinParser_Item? = null
+        var vds: _KotlinParser_Item? = null
+        var tcs: _KotlinParser_Item? = null
+        var b: _KotlinParser_Item? = null
+
+        // AND 1
+        var _start_i1 = _index.element
+
+        // AND 2
+        var _start_i2 = _index.element
+
+        // AND 3
+        var _start_i3 = _index.element
+
+        // AND 4
+        var _start_i4 = _index.element
+
+        // AND 5
+        var _start_i5 = _index.element
+
+        // AND 6
+        var _start_i6 = _index.element
+
+        // AND 7
+        var _start_i7 = _index.element
+
+        // AND 14
+        var _start_i14 = _index.element
+
+        // STAR 15
+        var _start_i15 = _index.element
+        val _inp15 = arrayListOf<Token?>()
+        val _res15 = arrayListOf<AST.AstNode?>()
+
+        // AND 21
+        var _start_i21 = _index.element
+
+        // AND 22
+        var _start_i22 = _index.element
+
+        // AND 23
+        var _start_i23 = _index.element
+
+        // STAR 24
+        var _start_i24 = _index.element
+        val _inp24 = arrayListOf<Token?>()
+        val _res24 = arrayListOf<AST.AstNode?>()
+
+        // STAR 27
+        var _start_i27 = _index.element
+        val _inp27 = arrayListOf<Token?>()
+        val _res27 = arrayListOf<AST.AstNode?>()
+
+        // STAR 30
+        var _start_i30 = _index.element
+        val _inp30 = arrayListOf<Token?>()
+        val _res30 = arrayListOf<AST.AstNode?>()
+
+        // AND 35
+        var _start_i35 = _index.element
+
+        // STAR 36
+        var _start_i36 = _index.element
+        val _inp36 = arrayListOf<Token?>()
+        val _res36 = arrayListOf<AST.AstNode?>()
+
+        // AND 41
+        var _start_i41 = _index.element
+
+        // STAR 42
+        var _start_i42 = _index.element
+        val _inp42 = arrayListOf<Token?>()
+        val _res42 = arrayListOf<AST.AstNode?>()
+
+        // OR 45
+        var _start_i45 = _index.element
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // AND 1
+                    _start_i1 = _index.element
+
+                    // AND 2
+                    _start_i2 = _index.element
+
+                    // AND 3
+                    _start_i3 = _index.element
+
+                    // AND 4
+                    _start_i4 = _index.element
+
+                    // AND 5
+                    _start_i5 = _index.element
+
+                    // AND 6
+                    _start_i6 = _index.element
+
+                    // AND 7
+                    _start_i7 = _index.element
+
+                    // CALLORVAR modifiers
+                    var _r10: _KotlinParser_Item? = null
+                    _r10 = _MemoCall(_memo, "modifiers", _index.element, ::modifiers, null)
+                    if (_r10 != null) _index.element = _r10.nextIndex
+
+                    // QUES 9
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    // BIND mods
+                    mods = _memo.results.peek()
+
+                    // AND shortcut 7
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 7
+                        continue
+                    }
+
+                    // CALLORVAR valOrVar
+                    var _r12: _KotlinParser_Item? = null
+                    _r12 = _MemoCall(_memo, "valOrVar", _index.element, ::valOrVar, null)
+                    if (_r12 != null) _index.element = _r12.nextIndex
+
+                    // BIND vov
+                    vov = _memo.results.peek()
+
+                    _label = 7
+                }
+                // AND 7
+                7 -> {
+                    val _r7_2 = _memo.results.pop()
+                    val _r7_1 = _memo.results.pop()
+
+                    if (_r7_1 != null && _r7_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i7, _index.element, _memo.input, (_r7_1.results + _r7_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i7
+                    }
+
+                    // AND shortcut 6
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 6
+                        continue
+                    }
+
+                    // AND 14
+                    _start_i14 = _index.element
+
+                    // STAR 15
+                    _start_i15 = _index.element
+                    _label = 15
+                }
+                // STAR 15
+                15 -> {
+                    // CALLORVAR NL
+                    var _r16: _KotlinParser_Item? = null
+                    _r16 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r16 != null) _index.element = _r16.nextIndex
+
+                    // STAR 15
+                    val _r15 = _memo.results.pop()
+                    if (_r15 != null) {
+                        _res15 += _r15.results
+                        _label = 15
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i15, _index.element, _memo.input, _res15.filterNotNull(), true))
+                    }
+
+                    // AND shortcut 14
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 14
+                        continue
+                    }
+
+                    // CALLORVAR typeParameters
+                    var _r18: _KotlinParser_Item? = null
+                    _r18 = _MemoCall(_memo, "typeParameters", _index.element, ::typeParameters, null)
+                    if (_r18 != null) _index.element = _r18.nextIndex
+
+                    // BIND tps
+                    tps = _memo.results.peek()
+
+                    _label = 14
+                }
+                // AND 14
+                14 -> {
+                    val _r14_2 = _memo.results.pop()
+                    val _r14_1 = _memo.results.pop()
+
+                    if (_r14_1 != null && _r14_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i14, _index.element, _memo.input, (_r14_1.results + _r14_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i14
+                    }
+
+                    // QUES 13
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 6
+                }
+                // AND 6
+                6 -> {
+                    val _r6_2 = _memo.results.pop()
+                    val _r6_1 = _memo.results.pop()
+
+                    if (_r6_1 != null && _r6_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i6, _index.element, _memo.input, (_r6_1.results + _r6_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i6
+                    }
+
+                    // AND shortcut 5
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 5
+                        continue
+                    }
+
+                    // AND 21
+                    _start_i21 = _index.element
+
+                    // AND 22
+                    _start_i22 = _index.element
+
+                    // AND 23
+                    _start_i23 = _index.element
+
+                    // STAR 24
+                    _start_i24 = _index.element
+                    _label = 24
+                }
+                // STAR 24
+                24 -> {
+                    // CALLORVAR NL
+                    var _r25: _KotlinParser_Item? = null
+                    _r25 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r25 != null) _index.element = _r25.nextIndex
+
+                    // STAR 24
+                    val _r24 = _memo.results.pop()
+                    if (_r24 != null) {
+                        _res24 += _r24.results
+                        _label = 24
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i24, _index.element, _memo.input, _res24.filterNotNull(), true))
+                    }
+
+                    // AND shortcut 23
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 23
+                        continue
+                    }
+
+                    // CALLORVAR receiverType
+                    var _r26: _KotlinParser_Item? = null
+                    _r26 = _MemoCall(_memo, "receiverType", _index.element, ::receiverType, null)
+                    if (_r26 != null) _index.element = _r26.nextIndex
+
+                    _label = 23
+                }
+                // AND 23
+                23 -> {
+                    val _r23_2 = _memo.results.pop()
+                    val _r23_1 = _memo.results.pop()
+
+                    if (_r23_1 != null && _r23_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i23, _index.element, _memo.input, (_r23_1.results + _r23_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i23
+                    }
+
+                    // AND shortcut 22
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 22
+                        continue
+                    }
+
+                    // STAR 27
+                    _start_i27 = _index.element
+                    _label = 27
+                }
+                // STAR 27
+                27 -> {
+                    // CALLORVAR NL
+                    var _r28: _KotlinParser_Item? = null
+                    _r28 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r28 != null) _index.element = _r28.nextIndex
+
+                    // STAR 27
+                    val _r27 = _memo.results.pop()
+                    if (_r27 != null) {
+                        _res27 += _r27.results
+                        _label = 27
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i27, _index.element, _memo.input, _res27.filterNotNull(), true))
+                    }
+
+                    _label = 22
+                }
+                // AND 22
+                22 -> {
+                    val _r22_2 = _memo.results.pop()
+                    val _r22_1 = _memo.results.pop()
+
+                    if (_r22_1 != null && _r22_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i22, _index.element, _memo.input, (_r22_1.results + _r22_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i22
+                    }
+
+                    // AND shortcut 21
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 21
+                        continue
+                    }
+
+                    // CALLORVAR DOT
+                    var _r29: _KotlinParser_Item? = null
+                    _r29 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
+                    if (_r29 != null) _index.element = _r29.nextIndex
+
+                    _label = 21
+                }
+                // AND 21
+                21 -> {
+                    val _r21_2 = _memo.results.pop()
+                    val _r21_1 = _memo.results.pop()
+
+                    if (_r21_1 != null && _r21_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i21, _index.element, _memo.input, (_r21_1.results + _r21_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i21
+                    }
+
+                    // QUES 20
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    // BIND rt
+                    rt = _memo.results.peek()
+
+                    _label = 5
+                }
+                // AND 5
+                5 -> {
+                    val _r5_2 = _memo.results.pop()
+                    val _r5_1 = _memo.results.pop()
+
+                    if (_r5_1 != null && _r5_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i5, _index.element, _memo.input, (_r5_1.results + _r5_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i5
+                    }
+
+                    // AND shortcut 4
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 4
+                        continue
+                    }
+
+                    // STAR 30
+                    _start_i30 = _index.element
+                    _label = 30
+                }
+                // STAR 30
+                30 -> {
+                    // CALLORVAR NL
+                    var _r31: _KotlinParser_Item? = null
+                    _r31 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r31 != null) _index.element = _r31.nextIndex
+
+                    // STAR 30
+                    val _r30 = _memo.results.pop()
+                    if (_r30 != null) {
+                        _res30 += _r30.results
+                        _label = 30
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i30, _index.element, _memo.input, _res30.filterNotNull(), true))
+                    }
+
+                    _label = 4
+                }
+                // AND 4
+                4 -> {
+                    val _r4_2 = _memo.results.pop()
+                    val _r4_1 = _memo.results.pop()
+
+                    if (_r4_1 != null && _r4_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i4, _index.element, _memo.input, (_r4_1.results + _r4_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i4
+                    }
+
+                    // AND shortcut 3
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 3
+                        continue
+                    }
+
+                    // CALLORVAR varDecls
+                    var _r33: _KotlinParser_Item? = null
+                    _r33 = _MemoCall(_memo, "varDecls", _index.element, ::varDecls, null)
+                    if (_r33 != null) _index.element = _r33.nextIndex
+
+                    // BIND vds
+                    vds = _memo.results.peek()
+
+                    _label = 3
+                }
+                // AND 3
+                3 -> {
+                    val _r3_2 = _memo.results.pop()
+                    val _r3_1 = _memo.results.pop()
+
+                    if (_r3_1 != null && _r3_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i3, _index.element, _memo.input, (_r3_1.results + _r3_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i3
+                    }
+
+                    // AND shortcut 2
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 2
+                        continue
+                    }
+
+                    // AND 35
+                    _start_i35 = _index.element
+
+                    // STAR 36
+                    _start_i36 = _index.element
+                    _label = 36
+                }
+                // STAR 36
+                36 -> {
+                    // CALLORVAR NL
+                    var _r37: _KotlinParser_Item? = null
+                    _r37 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r37 != null) _index.element = _r37.nextIndex
+
+                    // STAR 36
+                    val _r36 = _memo.results.pop()
+                    if (_r36 != null) {
+                        _res36 += _r36.results
+                        _label = 36
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i36, _index.element, _memo.input, _res36.filterNotNull(), true))
+                    }
+
+                    // AND shortcut 35
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 35
+                        continue
+                    }
+
+                    // CALLORVAR typeConstraints
+                    var _r39: _KotlinParser_Item? = null
+                    _r39 = _MemoCall(_memo, "typeConstraints", _index.element, ::typeConstraints, null)
+                    if (_r39 != null) _index.element = _r39.nextIndex
+
+                    // BIND tcs
+                    tcs = _memo.results.peek()
+
+                    _label = 35
+                }
+                // AND 35
+                35 -> {
+                    val _r35_2 = _memo.results.pop()
+                    val _r35_1 = _memo.results.pop()
+
+                    if (_r35_1 != null && _r35_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i35, _index.element, _memo.input, (_r35_1.results + _r35_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i35
+                    }
+
+                    // QUES 34
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 2
+                }
+                // AND 2
+                2 -> {
+                    val _r2_2 = _memo.results.pop()
+                    val _r2_1 = _memo.results.pop()
+
+                    if (_r2_1 != null && _r2_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i2, _index.element, _memo.input, (_r2_1.results + _r2_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i2
+                    }
+
+                    // AND shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 1
+                        continue
+                    }
+
+                    // AND 41
+                    _start_i41 = _index.element
+
+                    // STAR 42
+                    _start_i42 = _index.element
+                    _label = 42
+                }
+                // STAR 42
+                42 -> {
+                    // CALLORVAR NL
+                    var _r43: _KotlinParser_Item? = null
+                    _r43 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r43 != null) _index.element = _r43.nextIndex
+
+                    // STAR 42
+                    val _r42 = _memo.results.pop()
+                    if (_r42 != null) {
+                        _res42 += _r42.results
+                        _label = 42
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i42, _index.element, _memo.input, _res42.filterNotNull(), true))
+                    }
+
+                    // AND shortcut 41
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 41
+                        continue
+                    }
+
+                    // OR 45
+                    _start_i45 = _index.element
+
+                    // CALLORVAR expressionBody
+                    var _r46: _KotlinParser_Item? = null
+                    _r46 = _MemoCall(_memo, "expressionBody", _index.element, ::expressionBody, null)
+                    if (_r46 != null) _index.element = _r46.nextIndex
+
+                    // OR shortcut 45
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i45
+                    } else {
+                        _label = 45
+                        continue
+                    }
+
+                    // CALLORVAR propertyDelegate
+                    var _r47: _KotlinParser_Item? = null
+                    _r47 = _MemoCall(_memo, "propertyDelegate", _index.element, ::propertyDelegate, null)
+                    if (_r47 != null) _index.element = _r47.nextIndex
+
+                    _label = 45
+                }
+                // OR 45
+                45 -> {
+                    // BIND b
+                    b = _memo.results.peek()
+
+                    _label = 41
+                }
+                // AND 41
+                41 -> {
+                    val _r41_2 = _memo.results.pop()
+                    val _r41_1 = _memo.results.pop()
+
+                    if (_r41_1 != null && _r41_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i41, _index.element, _memo.input, (_r41_1.results + _r41_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i41
+                    }
+
+                    // QUES 40
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 1
+                }
+                // AND 1
+                1 -> {
+                    val _r1_2 = _memo.results.pop()
+                    val _r1_1 = _memo.results.pop()
+
+                    if (_r1_1 != null && _r1_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i1
+                    }
+
+                    // ACT 0
+                    val _r0 = _memo.results.peek()
+                    if (_r0 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.r, tcs.l, b.nr, null, null) }, _r0), true))
                     }
 
                     break
@@ -19610,6 +20155,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // OR 10
         var _start_i10 = _index.element
 
+        // OR 11
+        var _start_i11 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -19678,11 +20226,32 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     // OR 10
                     _start_i10 = _index.element
 
-                    // CALLORVAR declaration
-                    var _r11: _KotlinParser_Item? = null
-                    _r11 = _MemoCall(_memo, "declaration", _index.element, ::declaration, null)
-                    if (_r11 != null) _index.element = _r11.nextIndex
+                    // OR 11
+                    _start_i11 = _index.element
 
+                    // CALLORVAR localVariableDeclaration
+                    var _r12: _KotlinParser_Item? = null
+                    _r12 = _MemoCall(_memo, "localVariableDeclaration", _index.element, ::localVariableDeclaration, null)
+                    if (_r12 != null) _index.element = _r12.nextIndex
+
+                    // OR shortcut 11
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i11
+                    } else {
+                        _label = 11
+                        continue
+                    }
+
+                    // CALLORVAR declaration
+                    var _r13: _KotlinParser_Item? = null
+                    _r13 = _MemoCall(_memo, "declaration", _index.element, ::declaration, null)
+                    if (_r13 != null) _index.element = _r13.nextIndex
+
+                    _label = 11
+                }
+                // OR 11
+                11 -> {
                     // OR shortcut 10
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
@@ -19693,9 +20262,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR assignment
-                    var _r12: _KotlinParser_Item? = null
-                    _r12 = _MemoCall(_memo, "assignment", _index.element, ::assignment, null)
-                    if (_r12 != null) _index.element = _r12.nextIndex
+                    var _r14: _KotlinParser_Item? = null
+                    _r14 = _MemoCall(_memo, "assignment", _index.element, ::assignment, null)
+                    if (_r14 != null) _index.element = _r14.nextIndex
 
                     _label = 10
                 }
@@ -19711,9 +20280,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR loopStatement
-                    var _r13: _KotlinParser_Item? = null
-                    _r13 = _MemoCall(_memo, "loopStatement", _index.element, ::loopStatement, null)
-                    if (_r13 != null) _index.element = _r13.nextIndex
+                    var _r15: _KotlinParser_Item? = null
+                    _r15 = _MemoCall(_memo, "loopStatement", _index.element, ::loopStatement, null)
+                    if (_r15 != null) _index.element = _r15.nextIndex
 
                     _label = 9
                 }
@@ -19729,9 +20298,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR expression
-                    var _r14: _KotlinParser_Item? = null
-                    _r14 = _MemoCall(_memo, "expression", _index.element, ::expression, null)
-                    if (_r14 != null) _index.element = _r14.nextIndex
+                    var _r16: _KotlinParser_Item? = null
+                    _r16 = _MemoCall(_memo, "expression", _index.element, ::expression, null)
+                    if (_r16 != null) _index.element = _r16.nextIndex
 
                     _label = 8
                 }
@@ -27472,14 +28041,14 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         val _inp10 = arrayListOf<Token?>()
         val _res10 = arrayListOf<AST.AstNode?>()
 
-        // AND 13
-        var _start_i13 = _index.element
-
         // AND 14
         var _start_i14 = _index.element
 
         // AND 15
         var _start_i15 = _index.element
+
+        // AND 16
+        var _start_i16 = _index.element
 
         // STAR 18
         var _start_i18 = _index.element
@@ -27515,14 +28084,14 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         val _inp35 = arrayListOf<Token?>()
         val _res35 = arrayListOf<AST.AstNode?>()
 
-        // AND 38
-        var _start_i38 = _index.element
-
         // AND 39
         var _start_i39 = _index.element
 
         // AND 40
         var _start_i40 = _index.element
+
+        // AND 41
+        var _start_i41 = _index.element
 
         // STAR 43
         var _start_i43 = _index.element
@@ -27629,27 +28198,24 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 13
-                    _start_i13 = _index.element
-
                     // AND 14
                     _start_i14 = _index.element
 
                     // AND 15
                     _start_i15 = _index.element
 
+                    // AND 16
+                    _start_i16 = _index.element
+
                     // CALLORVAR simpleIdentifier
                     var _r17: _KotlinParser_Item? = null
                     _r17 = _MemoCall(_memo, "simpleIdentifier", _index.element, ::simpleIdentifier, null)
                     if (_r17 != null) _index.element = _r17.nextIndex
 
-                    // BIND name
-                    name = _memo.results.peek()
-
-                    // AND shortcut 15
+                    // AND shortcut 16
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 15
+                        _label = 16
                         continue
                     }
 
@@ -27674,6 +28240,32 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i18, _index.element, _memo.input, _res18.filterNotNull(), true))
                     }
 
+                    _label = 16
+                }
+                // AND 16
+                16 -> {
+                    val _r16_2 = _memo.results.pop()
+                    val _r16_1 = _memo.results.pop()
+
+                    if (_r16_1 != null && _r16_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i16, _index.element, _memo.input, (_r16_1.results + _r16_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i16
+                    }
+
+                    // AND shortcut 15
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 15
+                        continue
+                    }
+
+                    // CALLORVAR ASSIGNMENT
+                    var _r20: _KotlinParser_Item? = null
+                    _r20 = _MemoCall(_memo, "ASSIGNMENT", _index.element, ::ASSIGNMENT, null)
+                    if (_r20 != null) _index.element = _r20.nextIndex
+
                     _label = 15
                 }
                 // AND 15
@@ -27692,32 +28284,6 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
                         _label = 14
-                        continue
-                    }
-
-                    // CALLORVAR ASSIGNMENT
-                    var _r20: _KotlinParser_Item? = null
-                    _r20 = _MemoCall(_memo, "ASSIGNMENT", _index.element, ::ASSIGNMENT, null)
-                    if (_r20 != null) _index.element = _r20.nextIndex
-
-                    _label = 14
-                }
-                // AND 14
-                14 -> {
-                    val _r14_2 = _memo.results.pop()
-                    val _r14_1 = _memo.results.pop()
-
-                    if (_r14_1 != null && _r14_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i14, _index.element, _memo.input, (_r14_1.results + _r14_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i14
-                    }
-
-                    // AND shortcut 13
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 13
                         continue
                     }
 
@@ -27742,25 +28308,28 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i21, _index.element, _memo.input, _res21.filterNotNull(), true))
                     }
 
-                    _label = 13
+                    _label = 14
                 }
-                // AND 13
-                13 -> {
-                    val _r13_2 = _memo.results.pop()
-                    val _r13_1 = _memo.results.pop()
+                // AND 14
+                14 -> {
+                    val _r14_2 = _memo.results.pop()
+                    val _r14_1 = _memo.results.pop()
 
-                    if (_r13_1 != null && _r13_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i13, _index.element, _memo.input, (_r13_1.results + _r13_2.results).filterNotNull(), true))
+                    if (_r14_1 != null && _r14_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i14, _index.element, _memo.input, (_r14_1.results + _r14_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i13
+                        _index.element = _start_i14
                     }
 
-                    // QUES 12
+                    // QUES 13
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
+                    // BIND name
+                    name = _memo.results.peek()
+
                     _label = 5
                 }
                 // AND 5
@@ -27876,7 +28445,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     val _r1 = _memo.results.peek()
                     if (_r1 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({ AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = true) }, _r1), true))
+                        _memo.results.push(_KotlinParser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({ AST.ValueArgument(ann.l, name.nr?.toString(), expr.r, withSpread = true) }, _r1), true))
                     }
 
                     // OR shortcut 0
@@ -27970,27 +28539,24 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 38
-                    _start_i38 = _index.element
-
                     // AND 39
                     _start_i39 = _index.element
 
                     // AND 40
                     _start_i40 = _index.element
 
+                    // AND 41
+                    _start_i41 = _index.element
+
                     // CALLORVAR simpleIdentifier
                     var _r42: _KotlinParser_Item? = null
                     _r42 = _MemoCall(_memo, "simpleIdentifier", _index.element, ::simpleIdentifier, null)
                     if (_r42 != null) _index.element = _r42.nextIndex
 
-                    // BIND name
-                    name = _memo.results.peek()
-
-                    // AND shortcut 40
+                    // AND shortcut 41
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 40
+                        _label = 41
                         continue
                     }
 
@@ -28015,6 +28581,32 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i43, _index.element, _memo.input, _res43.filterNotNull(), true))
                     }
 
+                    _label = 41
+                }
+                // AND 41
+                41 -> {
+                    val _r41_2 = _memo.results.pop()
+                    val _r41_1 = _memo.results.pop()
+
+                    if (_r41_1 != null && _r41_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i41, _index.element, _memo.input, (_r41_1.results + _r41_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i41
+                    }
+
+                    // AND shortcut 40
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 40
+                        continue
+                    }
+
+                    // CALLORVAR ASSIGNMENT
+                    var _r45: _KotlinParser_Item? = null
+                    _r45 = _MemoCall(_memo, "ASSIGNMENT", _index.element, ::ASSIGNMENT, null)
+                    if (_r45 != null) _index.element = _r45.nextIndex
+
                     _label = 40
                 }
                 // AND 40
@@ -28033,32 +28625,6 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
                         _label = 39
-                        continue
-                    }
-
-                    // CALLORVAR ASSIGNMENT
-                    var _r45: _KotlinParser_Item? = null
-                    _r45 = _MemoCall(_memo, "ASSIGNMENT", _index.element, ::ASSIGNMENT, null)
-                    if (_r45 != null) _index.element = _r45.nextIndex
-
-                    _label = 39
-                }
-                // AND 39
-                39 -> {
-                    val _r39_2 = _memo.results.pop()
-                    val _r39_1 = _memo.results.pop()
-
-                    if (_r39_1 != null && _r39_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i39, _index.element, _memo.input, (_r39_1.results + _r39_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i39
-                    }
-
-                    // AND shortcut 38
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 38
                         continue
                     }
 
@@ -28083,25 +28649,28 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i46, _index.element, _memo.input, _res46.filterNotNull(), true))
                     }
 
-                    _label = 38
+                    _label = 39
                 }
-                // AND 38
-                38 -> {
-                    val _r38_2 = _memo.results.pop()
-                    val _r38_1 = _memo.results.pop()
+                // AND 39
+                39 -> {
+                    val _r39_2 = _memo.results.pop()
+                    val _r39_1 = _memo.results.pop()
 
-                    if (_r38_1 != null && _r38_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i38, _index.element, _memo.input, (_r38_1.results + _r38_2.results).filterNotNull(), true))
+                    if (_r39_1 != null && _r39_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i39, _index.element, _memo.input, (_r39_1.results + _r39_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i38
+                        _index.element = _start_i39
                     }
 
-                    // QUES 37
+                    // QUES 38
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
+                    // BIND name
+                    name = _memo.results.peek()
+
                     _label = 30
                 }
                 // AND 30
@@ -28149,7 +28718,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     val _r28 = _memo.results.peek()
                     if (_r28 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_r28.startIndex, _r28.nextIndex, _memo.input, _Thunk({ AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = false) }, _r28), true))
+                        _memo.results.push(_KotlinParser_Item(_r28.startIndex, _r28.nextIndex, _memo.input, _Thunk({ AST.ValueArgument(ann.l, name.nr?.toString(), expr.r, withSpread = false) }, _r28), true))
                     }
 
                     _label = 0
@@ -29393,14 +29962,14 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         val _inp7 = arrayListOf<Token?>()
         val _res7 = arrayListOf<AST.AstNode?>()
 
-        // AND 10
-        var _start_i10 = _index.element
-
         // AND 11
         var _start_i11 = _index.element
 
         // AND 12
         var _start_i12 = _index.element
+
+        // AND 13
+        var _start_i13 = _index.element
 
         // STAR 16
         var _start_i16 = _index.element
@@ -29490,14 +30059,14 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // AND 10
-                    _start_i10 = _index.element
-
                     // AND 11
                     _start_i11 = _index.element
 
                     // AND 12
                     _start_i12 = _index.element
+
+                    // AND 13
+                    _start_i13 = _index.element
 
                     // CALLORVAR lambdaParameters
                     var _r15: _KotlinParser_Item? = null
@@ -29509,13 +30078,10 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
-                    // BIND params
-                    params = _memo.results.peek()
-
-                    // AND shortcut 12
+                    // AND shortcut 13
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 12
+                        _label = 13
                         continue
                     }
 
@@ -29540,6 +30106,32 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i16, _index.element, _memo.input, _res16.filterNotNull(), true))
                     }
 
+                    _label = 13
+                }
+                // AND 13
+                13 -> {
+                    val _r13_2 = _memo.results.pop()
+                    val _r13_1 = _memo.results.pop()
+
+                    if (_r13_1 != null && _r13_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i13, _index.element, _memo.input, (_r13_1.results + _r13_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i13
+                    }
+
+                    // AND shortcut 12
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 12
+                        continue
+                    }
+
+                    // CALLORVAR ARROW
+                    var _r18: _KotlinParser_Item? = null
+                    _r18 = _MemoCall(_memo, "ARROW", _index.element, ::ARROW, null)
+                    if (_r18 != null) _index.element = _r18.nextIndex
+
                     _label = 12
                 }
                 // AND 12
@@ -29558,32 +30150,6 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
                         _label = 11
-                        continue
-                    }
-
-                    // CALLORVAR ARROW
-                    var _r18: _KotlinParser_Item? = null
-                    _r18 = _MemoCall(_memo, "ARROW", _index.element, ::ARROW, null)
-                    if (_r18 != null) _index.element = _r18.nextIndex
-
-                    _label = 11
-                }
-                // AND 11
-                11 -> {
-                    val _r11_2 = _memo.results.pop()
-                    val _r11_1 = _memo.results.pop()
-
-                    if (_r11_1 != null && _r11_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i11, _index.element, _memo.input, (_r11_1.results + _r11_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i11
-                    }
-
-                    // AND shortcut 10
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 10
                         continue
                     }
 
@@ -29608,25 +30174,28 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _memo.results.push(_KotlinParser_Item(_start_i19, _index.element, _memo.input, _res19.filterNotNull(), true))
                     }
 
-                    _label = 10
+                    _label = 11
                 }
-                // AND 10
-                10 -> {
-                    val _r10_2 = _memo.results.pop()
-                    val _r10_1 = _memo.results.pop()
+                // AND 11
+                11 -> {
+                    val _r11_2 = _memo.results.pop()
+                    val _r11_1 = _memo.results.pop()
 
-                    if (_r10_1 != null && _r10_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i10, _index.element, _memo.input, (_r10_1.results + _r10_2.results).filterNotNull(), true))
+                    if (_r11_1 != null && _r11_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i11, _index.element, _memo.input, (_r11_1.results + _r11_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i10
+                        _index.element = _start_i11
                     }
 
-                    // QUES 9
+                    // QUES 10
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
                         _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
+                    // BIND params
+                    params = _memo.results.peek()
+
                     _label = 4
                 }
                 // AND 4
@@ -31789,6 +32358,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         val _inp22 = arrayListOf<Token?>()
         val _res22 = arrayListOf<AST.AstNode?>()
 
+        // AND 28
+        var _start_i28 = _index.element
+
         // AND 29
         var _start_i29 = _index.element
 
@@ -31804,70 +32376,100 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // AND 33
         var _start_i33 = _index.element
 
-        // AND 34
+        // STAR 34
         var _start_i34 = _index.element
+        val _inp34 = arrayListOf<Token?>()
+        val _res34 = arrayListOf<AST.AstNode?>()
 
-        // AND 35
-        var _start_i35 = _index.element
-
-        // AND 36
-        var _start_i36 = _index.element
-
-        // AND 37
-        var _start_i37 = _index.element
-
-        // AND 38
+        // STAR 38
         var _start_i38 = _index.element
+        val _inp38 = arrayListOf<Token?>()
+        val _res38 = arrayListOf<AST.AstNode?>()
 
-        // AND 39
-        var _start_i39 = _index.element
-
-        // AND 40
-        var _start_i40 = _index.element
-
-        // AND 41
+        // STAR 41
         var _start_i41 = _index.element
+        val _inp41 = arrayListOf<Token?>()
+        val _res41 = arrayListOf<AST.AstNode?>()
 
-        // AND 42
-        var _start_i42 = _index.element
+        // AND 47
+        var _start_i47 = _index.element
 
-        // AND 43
-        var _start_i43 = _index.element
-
-        // STAR 45
-        var _start_i45 = _index.element
-        val _inp45 = arrayListOf<Token?>()
-        val _res45 = arrayListOf<AST.AstNode?>()
-
-        // STAR 48
+        // AND 48
         var _start_i48 = _index.element
-        val _inp48 = arrayListOf<Token?>()
-        val _res48 = arrayListOf<AST.AstNode?>()
 
-        // STAR 52
+        // AND 49
+        var _start_i49 = _index.element
+
+        // AND 50
+        var _start_i50 = _index.element
+
+        // AND 51
+        var _start_i51 = _index.element
+
+        // AND 52
         var _start_i52 = _index.element
-        val _inp52 = arrayListOf<Token?>()
-        val _res52 = arrayListOf<AST.AstNode?>()
 
-        // STAR 55
+        // AND 53
+        var _start_i53 = _index.element
+
+        // AND 54
+        var _start_i54 = _index.element
+
+        // AND 55
         var _start_i55 = _index.element
-        val _inp55 = arrayListOf<Token?>()
-        val _res55 = arrayListOf<AST.AstNode?>()
 
-        // STAR 60
+        // AND 56
+        var _start_i56 = _index.element
+
+        // AND 57
+        var _start_i57 = _index.element
+
+        // AND 58
+        var _start_i58 = _index.element
+
+        // AND 59
+        var _start_i59 = _index.element
+
+        // AND 60
         var _start_i60 = _index.element
-        val _inp60 = arrayListOf<Token?>()
-        val _res60 = arrayListOf<AST.AstNode?>()
 
-        // STAR 64
-        var _start_i64 = _index.element
-        val _inp64 = arrayListOf<Token?>()
-        val _res64 = arrayListOf<AST.AstNode?>()
+        // AND 61
+        var _start_i61 = _index.element
 
-        // STAR 67
-        var _start_i67 = _index.element
-        val _inp67 = arrayListOf<Token?>()
-        val _res67 = arrayListOf<AST.AstNode?>()
+        // STAR 63
+        var _start_i63 = _index.element
+        val _inp63 = arrayListOf<Token?>()
+        val _res63 = arrayListOf<AST.AstNode?>()
+
+        // STAR 66
+        var _start_i66 = _index.element
+        val _inp66 = arrayListOf<Token?>()
+        val _res66 = arrayListOf<AST.AstNode?>()
+
+        // STAR 70
+        var _start_i70 = _index.element
+        val _inp70 = arrayListOf<Token?>()
+        val _res70 = arrayListOf<AST.AstNode?>()
+
+        // STAR 73
+        var _start_i73 = _index.element
+        val _inp73 = arrayListOf<Token?>()
+        val _res73 = arrayListOf<AST.AstNode?>()
+
+        // STAR 78
+        var _start_i78 = _index.element
+        val _inp78 = arrayListOf<Token?>()
+        val _res78 = arrayListOf<AST.AstNode?>()
+
+        // STAR 82
+        var _start_i82 = _index.element
+        val _inp82 = arrayListOf<Token?>()
+        val _res82 = arrayListOf<AST.AstNode?>()
+
+        // STAR 85
+        var _start_i85 = _index.element
+        val _inp85 = arrayListOf<Token?>()
+        val _res85 = arrayListOf<AST.AstNode?>()
 
         var _label = -1
         while(true) {
@@ -32193,45 +32795,8 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR SEMICOLON
-                    var _r27: _KotlinParser_Item? = null
-                    _r27 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
-                    if (_r27 != null) _index.element = _r27.nextIndex
-
-                    // QUES 26
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
-                    _label = 2
-                }
-                // AND 2
-                2 -> {
-                    val _r2_2 = _memo.results.pop()
-                    val _r2_1 = _memo.results.pop()
-
-                    if (_r2_1 != null && _r2_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i2, _index.element, _memo.input, (_r2_1.results + _r2_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i2
-                    }
-
-                    // ACT 1
-                    val _r1 = _memo.results.peek()
-                    if (_r1 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({ AST.IfExpression(expr.r, thenExpr.r, null) }, _r1), true))
-                    }
-
-                    // OR shortcut 0
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i0
-                    } else {
-                        _label = 0
-                        continue
-                    }
+                    // AND 28
+                    _start_i28 = _index.element
 
                     // AND 29
                     _start_i29 = _index.element
@@ -32248,395 +32813,25 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     // AND 33
                     _start_i33 = _index.element
 
-                    // AND 34
+                    // STAR 34
                     _start_i34 = _index.element
-
-                    // AND 35
-                    _start_i35 = _index.element
-
-                    // AND 36
-                    _start_i36 = _index.element
-
-                    // AND 37
-                    _start_i37 = _index.element
-
-                    // AND 38
-                    _start_i38 = _index.element
-
-                    // AND 39
-                    _start_i39 = _index.element
-
-                    // AND 40
-                    _start_i40 = _index.element
-
-                    // AND 41
-                    _start_i41 = _index.element
-
-                    // AND 42
-                    _start_i42 = _index.element
-
-                    // AND 43
-                    _start_i43 = _index.element
-
-                    // CALLORVAR IF
-                    var _r44: _KotlinParser_Item? = null
-                    _r44 = _MemoCall(_memo, "IF", _index.element, ::IF, null)
-                    if (_r44 != null) _index.element = _r44.nextIndex
-
-                    // AND shortcut 43
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 43
-                        continue
-                    }
-
-                    // STAR 45
-                    _start_i45 = _index.element
-                    _label = 45
-                }
-                // STAR 45
-                45 -> {
-                    // CALLORVAR NL
-                    var _r46: _KotlinParser_Item? = null
-                    _r46 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r46 != null) _index.element = _r46.nextIndex
-
-                    // STAR 45
-                    val _r45 = _memo.results.pop()
-                    if (_r45 != null) {
-                        _res45 += _r45.results
-                        _label = 45
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i45, _index.element, _memo.input, _res45.filterNotNull(), true))
-                    }
-
-                    _label = 43
-                }
-                // AND 43
-                43 -> {
-                    val _r43_2 = _memo.results.pop()
-                    val _r43_1 = _memo.results.pop()
-
-                    if (_r43_1 != null && _r43_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i43, _index.element, _memo.input, (_r43_1.results + _r43_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i43
-                    }
-
-                    // AND shortcut 42
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 42
-                        continue
-                    }
-
-                    // CALLORVAR LPAREN
-                    var _r47: _KotlinParser_Item? = null
-                    _r47 = _MemoCall(_memo, "LPAREN", _index.element, ::LPAREN, null)
-                    if (_r47 != null) _index.element = _r47.nextIndex
-
-                    _label = 42
-                }
-                // AND 42
-                42 -> {
-                    val _r42_2 = _memo.results.pop()
-                    val _r42_1 = _memo.results.pop()
-
-                    if (_r42_1 != null && _r42_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i42, _index.element, _memo.input, (_r42_1.results + _r42_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i42
-                    }
-
-                    // AND shortcut 41
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 41
-                        continue
-                    }
-
-                    // STAR 48
-                    _start_i48 = _index.element
-                    _label = 48
-                }
-                // STAR 48
-                48 -> {
-                    // CALLORVAR NL
-                    var _r49: _KotlinParser_Item? = null
-                    _r49 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r49 != null) _index.element = _r49.nextIndex
-
-                    // STAR 48
-                    val _r48 = _memo.results.pop()
-                    if (_r48 != null) {
-                        _res48 += _r48.results
-                        _label = 48
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i48, _index.element, _memo.input, _res48.filterNotNull(), true))
-                    }
-
-                    _label = 41
-                }
-                // AND 41
-                41 -> {
-                    val _r41_2 = _memo.results.pop()
-                    val _r41_1 = _memo.results.pop()
-
-                    if (_r41_1 != null && _r41_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i41, _index.element, _memo.input, (_r41_1.results + _r41_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i41
-                    }
-
-                    // AND shortcut 40
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 40
-                        continue
-                    }
-
-                    // CALLORVAR expression
-                    var _r51: _KotlinParser_Item? = null
-                    _r51 = _MemoCall(_memo, "expression", _index.element, ::expression, null)
-                    if (_r51 != null) _index.element = _r51.nextIndex
-
-                    // BIND expr
-                    expr = _memo.results.peek()
-
-                    _label = 40
-                }
-                // AND 40
-                40 -> {
-                    val _r40_2 = _memo.results.pop()
-                    val _r40_1 = _memo.results.pop()
-
-                    if (_r40_1 != null && _r40_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i40, _index.element, _memo.input, (_r40_1.results + _r40_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i40
-                    }
-
-                    // AND shortcut 39
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 39
-                        continue
-                    }
-
-                    // STAR 52
-                    _start_i52 = _index.element
-                    _label = 52
-                }
-                // STAR 52
-                52 -> {
-                    // CALLORVAR NL
-                    var _r53: _KotlinParser_Item? = null
-                    _r53 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r53 != null) _index.element = _r53.nextIndex
-
-                    // STAR 52
-                    val _r52 = _memo.results.pop()
-                    if (_r52 != null) {
-                        _res52 += _r52.results
-                        _label = 52
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i52, _index.element, _memo.input, _res52.filterNotNull(), true))
-                    }
-
-                    _label = 39
-                }
-                // AND 39
-                39 -> {
-                    val _r39_2 = _memo.results.pop()
-                    val _r39_1 = _memo.results.pop()
-
-                    if (_r39_1 != null && _r39_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i39, _index.element, _memo.input, (_r39_1.results + _r39_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i39
-                    }
-
-                    // AND shortcut 38
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 38
-                        continue
-                    }
-
-                    // CALLORVAR RPAREN
-                    var _r54: _KotlinParser_Item? = null
-                    _r54 = _MemoCall(_memo, "RPAREN", _index.element, ::RPAREN, null)
-                    if (_r54 != null) _index.element = _r54.nextIndex
-
-                    _label = 38
-                }
-                // AND 38
-                38 -> {
-                    val _r38_2 = _memo.results.pop()
-                    val _r38_1 = _memo.results.pop()
-
-                    if (_r38_1 != null && _r38_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i38, _index.element, _memo.input, (_r38_1.results + _r38_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i38
-                    }
-
-                    // AND shortcut 37
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 37
-                        continue
-                    }
-
-                    // STAR 55
-                    _start_i55 = _index.element
-                    _label = 55
-                }
-                // STAR 55
-                55 -> {
-                    // CALLORVAR NL
-                    var _r56: _KotlinParser_Item? = null
-                    _r56 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r56 != null) _index.element = _r56.nextIndex
-
-                    // STAR 55
-                    val _r55 = _memo.results.pop()
-                    if (_r55 != null) {
-                        _res55 += _r55.results
-                        _label = 55
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i55, _index.element, _memo.input, _res55.filterNotNull(), true))
-                    }
-
-                    _label = 37
-                }
-                // AND 37
-                37 -> {
-                    val _r37_2 = _memo.results.pop()
-                    val _r37_1 = _memo.results.pop()
-
-                    if (_r37_1 != null && _r37_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i37, _index.element, _memo.input, (_r37_1.results + _r37_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i37
-                    }
-
-                    // AND shortcut 36
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 36
-                        continue
-                    }
-
-                    // CALLORVAR controlStructureBody
-                    var _r59: _KotlinParser_Item? = null
-                    _r59 = _MemoCall(_memo, "controlStructureBody", _index.element, ::controlStructureBody, null)
-                    if (_r59 != null) _index.element = _r59.nextIndex
-
-                    // QUES 58
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
-                    // BIND thenExpr
-                    thenExpr = _memo.results.peek()
-
-                    _label = 36
-                }
-                // AND 36
-                36 -> {
-                    val _r36_2 = _memo.results.pop()
-                    val _r36_1 = _memo.results.pop()
-
-                    if (_r36_1 != null && _r36_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i36, _index.element, _memo.input, (_r36_1.results + _r36_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i36
-                    }
-
-                    // AND shortcut 35
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 35
-                        continue
-                    }
-
-                    // STAR 60
-                    _start_i60 = _index.element
-                    _label = 60
-                }
-                // STAR 60
-                60 -> {
-                    // CALLORVAR NL
-                    var _r61: _KotlinParser_Item? = null
-                    _r61 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r61 != null) _index.element = _r61.nextIndex
-
-                    // STAR 60
-                    val _r60 = _memo.results.pop()
-                    if (_r60 != null) {
-                        _res60 += _r60.results
-                        _label = 60
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i60, _index.element, _memo.input, _res60.filterNotNull(), true))
-                    }
-
-                    _label = 35
-                }
-                // AND 35
-                35 -> {
-                    val _r35_2 = _memo.results.pop()
-                    val _r35_1 = _memo.results.pop()
-
-                    if (_r35_1 != null && _r35_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i35, _index.element, _memo.input, (_r35_1.results + _r35_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i35
-                    }
-
-                    // AND shortcut 34
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 34
-                        continue
-                    }
-
-                    // CALLORVAR SEMICOLON
-                    var _r63: _KotlinParser_Item? = null
-                    _r63 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
-                    if (_r63 != null) _index.element = _r63.nextIndex
-
-                    // QUES 62
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
-                    }
                     _label = 34
                 }
-                // AND 34
+                // STAR 34
                 34 -> {
-                    val _r34_2 = _memo.results.pop()
-                    val _r34_1 = _memo.results.pop()
+                    // CALLORVAR NL
+                    var _r35: _KotlinParser_Item? = null
+                    _r35 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r35 != null) _index.element = _r35.nextIndex
 
-                    if (_r34_1 != null && _r34_2 != null) {
-                        _memo.results.push(_KotlinParser_Item(_start_i34, _index.element, _memo.input, (_r34_1.results + _r34_2.results).filterNotNull(), true))
+                    // STAR 34
+                    val _r34 = _memo.results.pop()
+                    if (_r34 != null) {
+                        _res34 += _r34.results
+                        _label = 34
+                        continue
                     } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i34
+                        _memo.results.push(_KotlinParser_Item(_start_i34, _index.element, _memo.input, _res34.filterNotNull(), true))
                     }
 
                     // AND shortcut 33
@@ -32646,27 +32841,16 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 64
-                    _start_i64 = _index.element
-                    _label = 64
-                }
-                // STAR 64
-                64 -> {
-                    // CALLORVAR NL
-                    var _r65: _KotlinParser_Item? = null
-                    _r65 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r65 != null) _index.element = _r65.nextIndex
+                    // CALLORVAR SEMICOLON
+                    var _r37: _KotlinParser_Item? = null
+                    _r37 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
+                    if (_r37 != null) _index.element = _r37.nextIndex
 
-                    // STAR 64
-                    val _r64 = _memo.results.pop()
-                    if (_r64 != null) {
-                        _res64 += _r64.results
-                        _label = 64
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i64, _index.element, _memo.input, _res64.filterNotNull(), true))
+                    // QUES 36
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
                     }
-
                     _label = 33
                 }
                 // AND 33
@@ -32688,10 +32872,26 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR ELSE
-                    var _r66: _KotlinParser_Item? = null
-                    _r66 = _MemoCall(_memo, "ELSE", _index.element, ::ELSE, null)
-                    if (_r66 != null) _index.element = _r66.nextIndex
+                    // STAR 38
+                    _start_i38 = _index.element
+                    _label = 38
+                }
+                // STAR 38
+                38 -> {
+                    // CALLORVAR NL
+                    var _r39: _KotlinParser_Item? = null
+                    _r39 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r39 != null) _index.element = _r39.nextIndex
+
+                    // STAR 38
+                    val _r38 = _memo.results.pop()
+                    if (_r38 != null) {
+                        _res38 += _r38.results
+                        _label = 38
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i38, _index.element, _memo.input, _res38.filterNotNull(), true))
+                    }
 
                     _label = 32
                 }
@@ -32714,26 +32914,10 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // STAR 67
-                    _start_i67 = _index.element
-                    _label = 67
-                }
-                // STAR 67
-                67 -> {
-                    // CALLORVAR NL
-                    var _r68: _KotlinParser_Item? = null
-                    _r68 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
-                    if (_r68 != null) _index.element = _r68.nextIndex
-
-                    // STAR 67
-                    val _r67 = _memo.results.pop()
-                    if (_r67 != null) {
-                        _res67 += _r67.results
-                        _label = 67
-                        continue
-                    } else {
-                        _memo.results.push(_KotlinParser_Item(_start_i67, _index.element, _memo.input, _res67.filterNotNull(), true))
-                    }
+                    // CALLORVAR ELSE
+                    var _r40: _KotlinParser_Item? = null
+                    _r40 = _MemoCall(_memo, "ELSE", _index.element, ::ELSE, null)
+                    if (_r40 != null) _index.element = _r40.nextIndex
 
                     _label = 31
                 }
@@ -32756,16 +32940,27 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR SEMICOLON
-                    var _r70: _KotlinParser_Item? = null
-                    _r70 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
-                    if (_r70 != null) _index.element = _r70.nextIndex
+                    // STAR 41
+                    _start_i41 = _index.element
+                    _label = 41
+                }
+                // STAR 41
+                41 -> {
+                    // CALLORVAR NL
+                    var _r42: _KotlinParser_Item? = null
+                    _r42 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r42 != null) _index.element = _r42.nextIndex
 
-                    // QUES 69
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    // STAR 41
+                    val _r41 = _memo.results.pop()
+                    if (_r41 != null) {
+                        _res41 += _r41.results
+                        _label = 41
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i41, _index.element, _memo.input, _res41.filterNotNull(), true))
                     }
+
                     _label = 30
                 }
                 // AND 30
@@ -32787,14 +32982,16 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         continue
                     }
 
-                    // CALLORVAR controlStructureBody
-                    var _r72: _KotlinParser_Item? = null
-                    _r72 = _MemoCall(_memo, "controlStructureBody", _index.element, ::controlStructureBody, null)
-                    if (_r72 != null) _index.element = _r72.nextIndex
+                    // CALLORVAR SEMICOLON
+                    var _r44: _KotlinParser_Item? = null
+                    _r44 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
+                    if (_r44 != null) _index.element = _r44.nextIndex
 
-                    // BIND elseExpr
-                    elseExpr = _memo.results.peek()
-
+                    // QUES 43
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
                     _label = 29
                 }
                 // AND 29
@@ -32809,11 +33006,651 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                         _index.element = _start_i29
                     }
 
-                    // ACT 28
-                    val _r28 = _memo.results.peek()
-                    if (_r28 != null) {
+                    // AND shortcut 28
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 28
+                        continue
+                    }
+
+                    // CALLORVAR controlStructureBody
+                    var _r45: _KotlinParser_Item? = null
+                    _r45 = _MemoCall(_memo, "controlStructureBody", _index.element, ::controlStructureBody, null)
+                    if (_r45 != null) _index.element = _r45.nextIndex
+
+                    _label = 28
+                }
+                // AND 28
+                28 -> {
+                    val _r28_2 = _memo.results.pop()
+                    val _r28_1 = _memo.results.pop()
+
+                    if (_r28_1 != null && _r28_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i28, _index.element, _memo.input, (_r28_1.results + _r28_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i28
+                    }
+
+                    // QUES 27
+                    if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinParser_Item(_r28.startIndex, _r28.nextIndex, _memo.input, _Thunk({ AST.IfExpression(expr.r, thenExpr.nr, elseExpr.r) }, _r28), true))
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    // BIND elseExpr
+                    elseExpr = _memo.results.peek()
+
+                    _label = 2
+                }
+                // AND 2
+                2 -> {
+                    val _r2_2 = _memo.results.pop()
+                    val _r2_1 = _memo.results.pop()
+
+                    if (_r2_1 != null && _r2_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i2, _index.element, _memo.input, (_r2_1.results + _r2_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i2
+                    }
+
+                    // ACT 1
+                    val _r1 = _memo.results.peek()
+                    if (_r1 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_r1.startIndex, _r1.nextIndex, _memo.input, _Thunk({ AST.IfExpression(expr.r, thenExpr.r, elseExpr.r) }, _r1), true))
+                    }
+
+                    // OR shortcut 0
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i0
+                    } else {
+                        _label = 0
+                        continue
+                    }
+
+                    // AND 47
+                    _start_i47 = _index.element
+
+                    // AND 48
+                    _start_i48 = _index.element
+
+                    // AND 49
+                    _start_i49 = _index.element
+
+                    // AND 50
+                    _start_i50 = _index.element
+
+                    // AND 51
+                    _start_i51 = _index.element
+
+                    // AND 52
+                    _start_i52 = _index.element
+
+                    // AND 53
+                    _start_i53 = _index.element
+
+                    // AND 54
+                    _start_i54 = _index.element
+
+                    // AND 55
+                    _start_i55 = _index.element
+
+                    // AND 56
+                    _start_i56 = _index.element
+
+                    // AND 57
+                    _start_i57 = _index.element
+
+                    // AND 58
+                    _start_i58 = _index.element
+
+                    // AND 59
+                    _start_i59 = _index.element
+
+                    // AND 60
+                    _start_i60 = _index.element
+
+                    // AND 61
+                    _start_i61 = _index.element
+
+                    // CALLORVAR IF
+                    var _r62: _KotlinParser_Item? = null
+                    _r62 = _MemoCall(_memo, "IF", _index.element, ::IF, null)
+                    if (_r62 != null) _index.element = _r62.nextIndex
+
+                    // AND shortcut 61
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 61
+                        continue
+                    }
+
+                    // STAR 63
+                    _start_i63 = _index.element
+                    _label = 63
+                }
+                // STAR 63
+                63 -> {
+                    // CALLORVAR NL
+                    var _r64: _KotlinParser_Item? = null
+                    _r64 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r64 != null) _index.element = _r64.nextIndex
+
+                    // STAR 63
+                    val _r63 = _memo.results.pop()
+                    if (_r63 != null) {
+                        _res63 += _r63.results
+                        _label = 63
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i63, _index.element, _memo.input, _res63.filterNotNull(), true))
+                    }
+
+                    _label = 61
+                }
+                // AND 61
+                61 -> {
+                    val _r61_2 = _memo.results.pop()
+                    val _r61_1 = _memo.results.pop()
+
+                    if (_r61_1 != null && _r61_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i61, _index.element, _memo.input, (_r61_1.results + _r61_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i61
+                    }
+
+                    // AND shortcut 60
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 60
+                        continue
+                    }
+
+                    // CALLORVAR LPAREN
+                    var _r65: _KotlinParser_Item? = null
+                    _r65 = _MemoCall(_memo, "LPAREN", _index.element, ::LPAREN, null)
+                    if (_r65 != null) _index.element = _r65.nextIndex
+
+                    _label = 60
+                }
+                // AND 60
+                60 -> {
+                    val _r60_2 = _memo.results.pop()
+                    val _r60_1 = _memo.results.pop()
+
+                    if (_r60_1 != null && _r60_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i60, _index.element, _memo.input, (_r60_1.results + _r60_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i60
+                    }
+
+                    // AND shortcut 59
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 59
+                        continue
+                    }
+
+                    // STAR 66
+                    _start_i66 = _index.element
+                    _label = 66
+                }
+                // STAR 66
+                66 -> {
+                    // CALLORVAR NL
+                    var _r67: _KotlinParser_Item? = null
+                    _r67 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r67 != null) _index.element = _r67.nextIndex
+
+                    // STAR 66
+                    val _r66 = _memo.results.pop()
+                    if (_r66 != null) {
+                        _res66 += _r66.results
+                        _label = 66
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i66, _index.element, _memo.input, _res66.filterNotNull(), true))
+                    }
+
+                    _label = 59
+                }
+                // AND 59
+                59 -> {
+                    val _r59_2 = _memo.results.pop()
+                    val _r59_1 = _memo.results.pop()
+
+                    if (_r59_1 != null && _r59_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i59, _index.element, _memo.input, (_r59_1.results + _r59_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i59
+                    }
+
+                    // AND shortcut 58
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 58
+                        continue
+                    }
+
+                    // CALLORVAR expression
+                    var _r69: _KotlinParser_Item? = null
+                    _r69 = _MemoCall(_memo, "expression", _index.element, ::expression, null)
+                    if (_r69 != null) _index.element = _r69.nextIndex
+
+                    // BIND expr
+                    expr = _memo.results.peek()
+
+                    _label = 58
+                }
+                // AND 58
+                58 -> {
+                    val _r58_2 = _memo.results.pop()
+                    val _r58_1 = _memo.results.pop()
+
+                    if (_r58_1 != null && _r58_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i58, _index.element, _memo.input, (_r58_1.results + _r58_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i58
+                    }
+
+                    // AND shortcut 57
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 57
+                        continue
+                    }
+
+                    // STAR 70
+                    _start_i70 = _index.element
+                    _label = 70
+                }
+                // STAR 70
+                70 -> {
+                    // CALLORVAR NL
+                    var _r71: _KotlinParser_Item? = null
+                    _r71 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r71 != null) _index.element = _r71.nextIndex
+
+                    // STAR 70
+                    val _r70 = _memo.results.pop()
+                    if (_r70 != null) {
+                        _res70 += _r70.results
+                        _label = 70
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i70, _index.element, _memo.input, _res70.filterNotNull(), true))
+                    }
+
+                    _label = 57
+                }
+                // AND 57
+                57 -> {
+                    val _r57_2 = _memo.results.pop()
+                    val _r57_1 = _memo.results.pop()
+
+                    if (_r57_1 != null && _r57_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i57, _index.element, _memo.input, (_r57_1.results + _r57_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i57
+                    }
+
+                    // AND shortcut 56
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 56
+                        continue
+                    }
+
+                    // CALLORVAR RPAREN
+                    var _r72: _KotlinParser_Item? = null
+                    _r72 = _MemoCall(_memo, "RPAREN", _index.element, ::RPAREN, null)
+                    if (_r72 != null) _index.element = _r72.nextIndex
+
+                    _label = 56
+                }
+                // AND 56
+                56 -> {
+                    val _r56_2 = _memo.results.pop()
+                    val _r56_1 = _memo.results.pop()
+
+                    if (_r56_1 != null && _r56_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i56, _index.element, _memo.input, (_r56_1.results + _r56_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i56
+                    }
+
+                    // AND shortcut 55
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 55
+                        continue
+                    }
+
+                    // STAR 73
+                    _start_i73 = _index.element
+                    _label = 73
+                }
+                // STAR 73
+                73 -> {
+                    // CALLORVAR NL
+                    var _r74: _KotlinParser_Item? = null
+                    _r74 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r74 != null) _index.element = _r74.nextIndex
+
+                    // STAR 73
+                    val _r73 = _memo.results.pop()
+                    if (_r73 != null) {
+                        _res73 += _r73.results
+                        _label = 73
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i73, _index.element, _memo.input, _res73.filterNotNull(), true))
+                    }
+
+                    _label = 55
+                }
+                // AND 55
+                55 -> {
+                    val _r55_2 = _memo.results.pop()
+                    val _r55_1 = _memo.results.pop()
+
+                    if (_r55_1 != null && _r55_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i55, _index.element, _memo.input, (_r55_1.results + _r55_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i55
+                    }
+
+                    // AND shortcut 54
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 54
+                        continue
+                    }
+
+                    // CALLORVAR controlStructureBody
+                    var _r77: _KotlinParser_Item? = null
+                    _r77 = _MemoCall(_memo, "controlStructureBody", _index.element, ::controlStructureBody, null)
+                    if (_r77 != null) _index.element = _r77.nextIndex
+
+                    // QUES 76
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    // BIND thenExpr
+                    thenExpr = _memo.results.peek()
+
+                    _label = 54
+                }
+                // AND 54
+                54 -> {
+                    val _r54_2 = _memo.results.pop()
+                    val _r54_1 = _memo.results.pop()
+
+                    if (_r54_1 != null && _r54_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i54, _index.element, _memo.input, (_r54_1.results + _r54_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i54
+                    }
+
+                    // AND shortcut 53
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 53
+                        continue
+                    }
+
+                    // STAR 78
+                    _start_i78 = _index.element
+                    _label = 78
+                }
+                // STAR 78
+                78 -> {
+                    // CALLORVAR NL
+                    var _r79: _KotlinParser_Item? = null
+                    _r79 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r79 != null) _index.element = _r79.nextIndex
+
+                    // STAR 78
+                    val _r78 = _memo.results.pop()
+                    if (_r78 != null) {
+                        _res78 += _r78.results
+                        _label = 78
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i78, _index.element, _memo.input, _res78.filterNotNull(), true))
+                    }
+
+                    _label = 53
+                }
+                // AND 53
+                53 -> {
+                    val _r53_2 = _memo.results.pop()
+                    val _r53_1 = _memo.results.pop()
+
+                    if (_r53_1 != null && _r53_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i53, _index.element, _memo.input, (_r53_1.results + _r53_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i53
+                    }
+
+                    // AND shortcut 52
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 52
+                        continue
+                    }
+
+                    // CALLORVAR SEMICOLON
+                    var _r81: _KotlinParser_Item? = null
+                    _r81 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
+                    if (_r81 != null) _index.element = _r81.nextIndex
+
+                    // QUES 80
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 52
+                }
+                // AND 52
+                52 -> {
+                    val _r52_2 = _memo.results.pop()
+                    val _r52_1 = _memo.results.pop()
+
+                    if (_r52_1 != null && _r52_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i52, _index.element, _memo.input, (_r52_1.results + _r52_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i52
+                    }
+
+                    // AND shortcut 51
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 51
+                        continue
+                    }
+
+                    // STAR 82
+                    _start_i82 = _index.element
+                    _label = 82
+                }
+                // STAR 82
+                82 -> {
+                    // CALLORVAR NL
+                    var _r83: _KotlinParser_Item? = null
+                    _r83 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r83 != null) _index.element = _r83.nextIndex
+
+                    // STAR 82
+                    val _r82 = _memo.results.pop()
+                    if (_r82 != null) {
+                        _res82 += _r82.results
+                        _label = 82
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i82, _index.element, _memo.input, _res82.filterNotNull(), true))
+                    }
+
+                    _label = 51
+                }
+                // AND 51
+                51 -> {
+                    val _r51_2 = _memo.results.pop()
+                    val _r51_1 = _memo.results.pop()
+
+                    if (_r51_1 != null && _r51_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i51, _index.element, _memo.input, (_r51_1.results + _r51_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i51
+                    }
+
+                    // AND shortcut 50
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 50
+                        continue
+                    }
+
+                    // CALLORVAR ELSE
+                    var _r84: _KotlinParser_Item? = null
+                    _r84 = _MemoCall(_memo, "ELSE", _index.element, ::ELSE, null)
+                    if (_r84 != null) _index.element = _r84.nextIndex
+
+                    _label = 50
+                }
+                // AND 50
+                50 -> {
+                    val _r50_2 = _memo.results.pop()
+                    val _r50_1 = _memo.results.pop()
+
+                    if (_r50_1 != null && _r50_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i50, _index.element, _memo.input, (_r50_1.results + _r50_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i50
+                    }
+
+                    // AND shortcut 49
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 49
+                        continue
+                    }
+
+                    // STAR 85
+                    _start_i85 = _index.element
+                    _label = 85
+                }
+                // STAR 85
+                85 -> {
+                    // CALLORVAR NL
+                    var _r86: _KotlinParser_Item? = null
+                    _r86 = _MemoCall(_memo, "NL", _index.element, ::NL, null)
+                    if (_r86 != null) _index.element = _r86.nextIndex
+
+                    // STAR 85
+                    val _r85 = _memo.results.pop()
+                    if (_r85 != null) {
+                        _res85 += _r85.results
+                        _label = 85
+                        continue
+                    } else {
+                        _memo.results.push(_KotlinParser_Item(_start_i85, _index.element, _memo.input, _res85.filterNotNull(), true))
+                    }
+
+                    _label = 49
+                }
+                // AND 49
+                49 -> {
+                    val _r49_2 = _memo.results.pop()
+                    val _r49_1 = _memo.results.pop()
+
+                    if (_r49_1 != null && _r49_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i49, _index.element, _memo.input, (_r49_1.results + _r49_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i49
+                    }
+
+                    // AND shortcut 48
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 48
+                        continue
+                    }
+
+                    // CALLORVAR SEMICOLON
+                    var _r88: _KotlinParser_Item? = null
+                    _r88 = _MemoCall(_memo, "SEMICOLON", _index.element, ::SEMICOLON, null)
+                    if (_r88 != null) _index.element = _r88.nextIndex
+
+                    // QUES 87
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_index.element, _memo.input))
+                    }
+                    _label = 48
+                }
+                // AND 48
+                48 -> {
+                    val _r48_2 = _memo.results.pop()
+                    val _r48_1 = _memo.results.pop()
+
+                    if (_r48_1 != null && _r48_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i48, _index.element, _memo.input, (_r48_1.results + _r48_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i48
+                    }
+
+                    // AND shortcut 47
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 47
+                        continue
+                    }
+
+                    // CALLORVAR controlStructureBody
+                    var _r90: _KotlinParser_Item? = null
+                    _r90 = _MemoCall(_memo, "controlStructureBody", _index.element, ::controlStructureBody, null)
+                    if (_r90 != null) _index.element = _r90.nextIndex
+
+                    // BIND elseExpr
+                    elseExpr = _memo.results.peek()
+
+                    _label = 47
+                }
+                // AND 47
+                47 -> {
+                    val _r47_2 = _memo.results.pop()
+                    val _r47_1 = _memo.results.pop()
+
+                    if (_r47_1 != null && _r47_2 != null) {
+                        _memo.results.push(_KotlinParser_Item(_start_i47, _index.element, _memo.input, (_r47_1.results + _r47_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i47
+                    }
+
+                    // ACT 46
+                    val _r46 = _memo.results.peek()
+                    if (_r46 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_KotlinParser_Item(_r46.startIndex, _r46.nextIndex, _memo.input, _Thunk({ AST.IfExpression(expr.r, thenExpr.nr, elseExpr.r) }, _r46), true))
                     }
 
                     _label = 0

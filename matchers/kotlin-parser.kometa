@@ -60,7 +60,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     classParameters = LPAREN NL* (classParameter (NL* COMMA NL* classParameter)* (NL* COMMA)?)?:cps NL* RPAREN -> { cps.l };
 
-    classParameter = modifiers:mods (valOrVar:vov)? NL* simpleIdentifier:name COLON NL* type:t (NL* ASSIGNMENT NL* expression:expr)?
+    classParameter = modifiers?:mods valOrVar?:vov NL* simpleIdentifier:name COLON NL* type:t (NL* ASSIGNMENT NL* expression:expr)?
                    -> { AST.ClassParameter(mods.l, name.s, t.r, expr.nr, vov.nr) };
 
     valOrVar = VAR -> { AST.VAR };
@@ -117,10 +117,15 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     multiVariableDeclaration = LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN -> { AST.MultiVariableDeclaration(it.l) };
 
     propertyDeclaration = modifiers?:mods valOrVar:vov (NL* typeParameters:tps)?
-                          (NL* receiverType:rt NL* DOT)? NL* varDecls:vds (NL* typeConstraints:tcs)?
+                          (NL* receiverType NL* DOT)?:rt NL* varDecls:vds (NL* typeConstraints:tcs)?
                           (NL* (expressionBody | propertyDelegate):b)?
-                          (NL+ SEMICOLON)? NL* (getter?:gttr (NL* semi? setter:sttr)? | setter?:sttr (NL* semi? getter:gttr)?)
+                          (semi? (getter?:gttr (NL* semi? setter:sttr)? | setter?:sttr (NL* semi? getter:gttr)?))
                         -> { AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.r, tcs.l, b.nr, gttr.nr, sttr.nr) };
+
+    localVariableDeclaration = modifiers?:mods valOrVar:vov (NL* typeParameters:tps)?
+                               (NL* receiverType NL* DOT)?:rt NL* varDecls:vds (NL* typeConstraints:tcs)?
+                               (NL* (expressionBody | propertyDelegate):b)?
+                             -> { AST.PropertyDeclaration(mods.l, vov.r, tps.l, rt.nr, vds.r, tcs.l, b.nr, null, null) };
 
     varDecls = multiVariableDeclaration | variableDeclaration;
 
@@ -199,7 +204,8 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     statements = (statement (semis statement)*)? semis? -> { it.l };
 
-    statement = (label | annotation)*:p ( declaration | assignment | loopStatement | expression):expr -> { AST.Statement(p.l, expr.r) };
+    statement = (label | annotation)*:p ( localVariableDeclaration | declaration | assignment | loopStatement | expression):expr
+              -> { AST.Statement(p.l, expr.r) };
 
     label = simpleIdentifier:name AT NL* -> { AST.Label(name.s) };
 
@@ -292,8 +298,8 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     valueArguments = LPAREN NL* (valueArgument (NL* COMMA NL* valueArgument)* (NL* COMMA)? NL*)? RPAREN -> { it.l };
 
-    valueArgument = annotation*:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? MULT NL* expression:expr -> { AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = true) };
-    valueArgument = annotation*:ann NL* (simpleIdentifier:name NL* ASSIGNMENT NL*)? expression:expr -> { AST.ValueArgument(ann.l, name.nr, expr.r, withSpread = false) };
+    valueArgument = annotation*:ann NL* (simpleIdentifier NL* ASSIGNMENT NL*)?:name MULT NL* expression:expr -> { AST.ValueArgument(ann.l, name.nr?.toString(), expr.r, withSpread = true) };
+    valueArgument = annotation*:ann NL* (simpleIdentifier NL* ASSIGNMENT NL*)?:name expression:expr -> { AST.ValueArgument(ann.l, name.nr?.toString(), expr.r, withSpread = false) };
 
     primaryExpression = parenthesizedExpression | literalConstant | stringLiteral | callableReference | functionLiteral | objectLiteral
                       | collectionLiteral | thisExpression | superExpression | ifExpression | whenExpression | tryExpression | jumpExpression;
@@ -305,7 +311,7 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     literalConstant = BooleanLiteral | IntegerLiteral | CharacterLiteral | RealLiteral | NullLiteral | LongLiteral | UnsignedLiteral;
 
-    lambdaLiteral = LCURL NL* (lambdaParameters?:params NL* ARROW NL*)? statements:stmts NL* RCURL -> { AST.LambdaLiteral(params.l, stmts.l) };
+    lambdaLiteral = LCURL NL* (lambdaParameters? NL* ARROW NL*)?:params statements:stmts NL* RCURL -> { AST.LambdaLiteral(params.l, stmts.l) };
 
     lambdaParameters = lambdaParameter (NL* COMMA NL* lambdaParameter)* (NL* COMMA)? -> { it.l };
 
@@ -324,7 +330,8 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     superExpression = SUPER (LANGLE NL* type:t NL* RANGLE)? (AT simpleIdentifier:name)? -> { AST.Super(t.nr, name.ns) };
 
-    ifExpression = IF NL* LPAREN NL* expression:expr NL* RPAREN NL* controlStructureBody:thenExpr SEMICOLON? -> { AST.IfExpression(expr.r, thenExpr.r, null) };
+    ifExpression = IF NL* LPAREN NL* expression:expr NL* RPAREN NL* controlStructureBody:thenExpr (NL* SEMICOLON? NL* ELSE NL* SEMICOLON? controlStructureBody)?:elseExpr
+                 -> { AST.IfExpression(expr.r, thenExpr.r, elseExpr.r) };
     ifExpression = IF NL* LPAREN NL* expression:expr NL* RPAREN NL* controlStructureBody?:thenExpr NL* SEMICOLON? NL* ELSE NL* SEMICOLON? controlStructureBody:elseExpr
                  -> { AST.IfExpression(expr.r, thenExpr.nr, elseExpr.r) };
 

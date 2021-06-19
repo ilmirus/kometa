@@ -1,0 +1,27 @@
+import kometa.kotlin.Token;
+import kometa.kotlin.AST;
+import kometa.Matcher;
+import kometa.kotlin_parser.KotlinParser;
+import kometa.gl.GL_Sema;
+import kometa.gl.GL_AST;
+
+// TODO: This is incomplete
+kometa GL_Plugin<Token, AST.AstNode>: KotlinParser {
+    override postfixUnaryExpression = SHADERVERTEX NL* LPAREN NL* RPAREN NL* shaderBlock:sb
+                                    -> { GL_Sema.checkShaderVertexAndCreateStringLiteral(sb.l.cast()) };
+    override postfixUnaryExpression = SHADERFRAGMENT NL* LPAREN NL* RPAREN NL* shaderBlock:sb
+                                    -> { GL_Sema.checkShaderFragmentAndCreateStringLiteral(sb.l.cast()) };
+    override postfixUnaryExpression = primaryExpression:expr postfixUnarySuffix*:s -> { AST.PostfixUnaryExpression(expr.r, s.l) };
+
+    SHADERVERTEX = .:t ?(t is Token.Identifier && t.name == "shaderVertex");
+    SHADERFRAGMENT = .:t ?(t is Token.Identifier && t.name == "shaderFragment");
+
+    shaderBlock = LCURL semis? shaderStatement (semis? shaderStatement)* RCURL -> { it.l };
+
+    shaderStatement = shaderVariableDeclaration | shaderAssignment | shaderExpression;
+
+    shaderVariableDeclaration = annotations?:ann valOrVar:vov NL* simpleIdentifier:name (NL* COLON NL* shaderType)?:t (NL* ASSIGNMENT NL* shaderExpression)?:expr
+                              -> { GL_AST.VariableDeclaration(ann.l, vov.r, name.s, t.nr, expr.nr) };
+
+    
+}

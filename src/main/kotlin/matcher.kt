@@ -1,5 +1,6 @@
 package kometa
 
+import kometa.kotlin.Token
 import kometa.util.*
 import java.io.File
 import kotlin.Exception
@@ -117,10 +118,12 @@ abstract class Matcher<TInput, TResult>(
         args: Iterable<MatchItem<TInput, TResult>>?
     ): MatchItem<TInput, TResult>? {
         if (trace) {
-            val input = memo.input.joinToString("")
-            val end = input.indexOf("\n", index)
-            val toPrint = input.substring(index, if (end < index) input.length else end)
-            val indent = (0 until Exception().stackTrace.size).joinToString("") { " " }
+            val input = memo.input as List<Token>
+            val rest = input.drop(index)
+            var end = rest.indexOf(Token.NL)
+            if (end < 0) end = rest.size
+            val toPrint = rest.subList(0, end).joinToString(separator = " ") { it.toString() }
+            val indent = (97 until Exception().stackTrace.size).joinToString("") { " " }
             File("out/dump.txt").appendText("$indent$ruleName, $index: $toPrint\n")
         }
 

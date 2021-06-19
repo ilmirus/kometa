@@ -14365,9 +14365,9 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
                 }
                 // STAR 2
                 2 -> {
-                    // CALLORVAR identifierStart
+                    // CALLORVAR identifierPart
                     var _r3: _KotlinLexer_Item? = null
-                    _r3 = _MemoCall(_memo, "identifierStart", _index.element, ::identifierStart, null)
+                    _r3 = _MemoCall(_memo, "identifierPart", _index.element, ::identifierPart, null)
                     if (_r3 != null) _index.element = _r3.nextIndex
 
                     // STAR 2

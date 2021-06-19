@@ -149,14 +149,17 @@ class KotlinGen {
             }
             is AST.CallSuffix -> {
                 dumpTypeArguments(astNode.typeArguments)
-                if (astNode.valueArguments.isNotEmpty()) {
+                if (astNode.valueArguments.isNotEmpty() || astNode.annotatedLambda == null) {
                     buffer.append("(")
                 }
                 dumpValueArguments(astNode.valueArguments)
-                if (astNode.valueArguments.isNotEmpty()) {
+                if (astNode.valueArguments.isNotEmpty() || astNode.annotatedLambda == null) {
                     buffer.append(")")
                 }
-                astNode.annotatedLambda?.let { dump(it) }
+                astNode.annotatedLambda?.let {
+                    buffer.append(" ")
+                    dump(it)
+                }
             }
             is AST.CallableReference -> {
                 astNode.receiverType?.let { dump(it) }
@@ -174,6 +177,7 @@ class KotlinGen {
             }
             is AST.ClassBody -> {
                 buffer.append("{")
+                buffer.appendLine()
                 indent++
                 for (member in astNode.members) {
                     indent()
@@ -273,7 +277,7 @@ class KotlinGen {
                     buffer.append(" ")
                 }
                 buffer.append(astNode.name)
-                buffer.append(":")
+                buffer.append(": ")
                 dump(astNode.type)
                 astNode.initial?.let {
                     buffer.append(" = ")
@@ -358,7 +362,7 @@ class KotlinGen {
                 when (val type = astNode.type) {
                     is AST.FunctionType -> dump(type)
                     is AST.UserType -> dump(type)
-                }
+                }!!
                 buffer.append(" by ")
                 dump(astNode.expression)
             }
@@ -460,16 +464,20 @@ class KotlinGen {
                     indent++
                     for (stmt in astNode.statements) {
                         indent()
+                        expressionPriorityStack.push(0)
                         dump(stmt)
+                        expressionPriorityStack.pop()
+                        buffer.appendLine()
                     }
                     indent--
                     indent()
                     buffer.appendLine("}")
-                    indent()
                 } else {
                     buffer.append(" ")
                     for (stmt in astNode.statements) {
+                        expressionPriorityStack.push(0)
                         dump(stmt)
+                        expressionPriorityStack.pop()
                     }
                     buffer.append(" }")
                 }
@@ -623,7 +631,7 @@ class KotlinGen {
                 dump(astNode.block)
             }
             is AST.ExpressionBody -> {
-                buffer.append(" = ")
+                buffer.append("= ")
                 expressionPriorityStack.push(0)
                 dump(astNode.expression)
                 expressionPriorityStack.pop()
@@ -686,7 +694,6 @@ class KotlinGen {
                     buffer.append(" as ")
                     buffer.append(it)
                 }
-                buffer.appendLine()
             }
             is AST.IndexingSuffix -> {
                 buffer.append("[")
@@ -727,18 +734,15 @@ class KotlinGen {
                 if (astNode.fileAnnotations.isNotEmpty()) {
                     buffer.appendLine()
                 }
-                var appendLine = false
                 astNode.packageHeader?.let {
                     dump(it)
                     buffer.appendLine()
-                    appendLine = true
                 }
                 for (header in astNode.importList) {
                     dump(header)
                     buffer.appendLine()
-                    appendLine = true
                 }
-                if (appendLine) {
+                if (astNode.importList.isNotEmpty()) {
                     buffer.appendLine()
                 }
                 for (declaration in astNode.topLevelObject) {
@@ -867,7 +871,7 @@ class KotlinGen {
                 when (val type = astNode.type) {
                     AST.DYNAMIC -> buffer.append("dynamic")
                     is AST.UserType -> dump(type)
-                }
+                }!!
                 buffer.append("?")
             }
             is AST.ObjectDeclaration -> {
@@ -899,6 +903,7 @@ class KotlinGen {
             is AST.PackageHeader -> {
                 buffer.append("package ")
                 buffer.append(astNode.fqName)
+                buffer.appendLine()
             }
             AST.DECR -> buffer.append("--")
             AST.EXCL_EXCL -> buffer.append("!!")
@@ -938,11 +943,12 @@ class KotlinGen {
                     dump(it)
                     indent--
                 }
-                buffer.appendLine()
             }
             is AST.PropertyDelegate -> {
                 buffer.append("by ")
+                expressionPriorityStack.push(0)
                 dump(astNode.expression)
+                expressionPriorityStack.pop()
             }
             AST.REIFIED -> buffer.append("reified")
             is AST.Setter -> {
@@ -998,7 +1004,8 @@ class KotlinGen {
                     is AST.NullableType -> dump(type)
                     AST.MULT -> buffer.append("*")
                     is AST.TypeProjectionWithType -> dump(type)
-                }
+                    is AST.UserType -> dump(type)
+                }!!
             }
             AST.DYNAMIC -> buffer.append("dynamic")
             is AST.UserType -> {
@@ -1190,6 +1197,7 @@ class KotlinGen {
             is AST.ObjectDeclaration -> dump(declaration)
             is AST.TypeAlias -> dump(declaration)
             is AST.FunctionDeclaration -> dump(declaration)
+            is AST.PropertyDeclaration -> dump(declaration)
         }
     }
 
@@ -1230,6 +1238,7 @@ class KotlinGen {
     }
 
     private fun dumpTypeConstraints(typeConstraints: List<AST.TypeConstraint>) {
+        if (typeConstraints.isEmpty()) return
         buffer.append("where ")
         for (constraint in typeConstraints.dropLast(1)) {
             dump(constraint)
@@ -1300,6 +1309,7 @@ class KotlinGen {
             is AST.ObjectDeclaration -> dump(member)
             is AST.TypeAlias -> dump(member)
             is AST.FunctionDeclaration -> dump(member)
+            is AST.PropertyDeclaration -> dump(member)
         }
     }
 
@@ -1318,10 +1328,14 @@ class KotlinGen {
     private fun dumpValueArguments(valueArguments: List<AST.ValueArgument>) {
         if (valueArguments.isNotEmpty()) {
             for (valueArgument in valueArguments.dropLast(1)) {
+                expressionPriorityStack.push(0)
                 dump(valueArgument)
                 buffer.append(", ")
+                expressionPriorityStack.pop()
             }
+            expressionPriorityStack.push(0)
             dump(valueArguments.last())
+            expressionPriorityStack.pop()
         }
     }
 

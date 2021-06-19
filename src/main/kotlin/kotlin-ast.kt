@@ -4,7 +4,7 @@ import kometa.util.cast
 import kometa.util.reduce2
 
 object AST {
-    sealed class AstNode
+    abstract class AstNode
 
     class KotlinFile(
         val fileAnnotations: List<Annotation>,
@@ -321,13 +321,13 @@ object AST {
         val modifiers: List<Modifier>,
         val vov: ValOrVar,
         val typeParameters: List<TypeParameter>,
-        val receiverType: ReceiverType?,
+        val receiverType: Type?,
         val variableDeclaration: VariableDeclaration,
         val typeConstraints: List<TypeConstraint>,
         val body: ExpressionBodyOrPropertyDelegate?,
         val getter: Getter?,
         val setter: Setter?
-    ) : AstNode() {
+    ) : AstNode(), Declaration {
         constructor(
             modifiers: List<AstNode>,
             vov: AstNode,
@@ -342,7 +342,7 @@ object AST {
             modifiers.cast<List<Modifier>>(),
             vov.cast<ValOrVar>(),
             typeParameters.cast<List<TypeParameter>>(),
-            receiverType.cast<ReceiverType?>(),
+            receiverType.cast<Type?>(),
             variableDeclarations.cast<VariableDeclaration>(),
             typeConstraints.cast<List<TypeConstraint>>(),
             body.cast<ExpressionBodyOrPropertyDelegate?>(),
@@ -423,10 +423,11 @@ object AST {
     object DYNAMIC : TypeReference()
 
     class ReceiverType(val modifiers: List<TypeModifier>, val type: ReceiverTypeWithoutModifiers) : Type() {
-        constructor(modifiers: List<AstNode>, type: AstNode) : this(
-            modifiers.cast<List<TypeModifier>>(),
-            type.cast<ReceiverTypeWithoutModifiers>()
-        )
+        companion object {
+            operator fun invoke(modifiers: List<AstNode>, type: AstNode): Type =
+                if (modifiers.isEmpty()) type.cast()
+                else ReceiverType(modifiers.cast(), type.cast())
+        }
     }
 
     sealed interface TypeModifier
@@ -463,7 +464,7 @@ object AST {
     }
 
     class FunctionType(
-        val receiverType: ReceiverType?, val parameters: List<Type>, val returnType: Type
+        val receiverType: Type?, val parameters: List<Type>, val returnType: Type
     ) : AstNode(), UserTypeOrFunctionType, DelegationSpecifier {
         constructor(
             receiverType: AstNode?, parameters: List<AstNode>, returnType: AstNode
@@ -483,8 +484,8 @@ object AST {
 
     sealed class Assignment : AstNode(), Labellable
 
-    class DirectAssignment(val lhs: DirectlyAssignableExpression, val rhs: Expression) : Assignment() {
-        constructor(lhs: AstNode, rhs: AstNode) : this(lhs.cast<DirectlyAssignableExpression>(), rhs.cast())
+    class DirectAssignment(val lhs: Expression, val rhs: Expression) : Assignment() {
+        constructor(lhs: AstNode, rhs: AstNode) : this(lhs.cast<Expression>(), rhs.cast())
     }
 
     class AugmentedAssignment(val lhs: AssignableExpression, val op: AssignmentAndOperator, val rhs: Expression) :
@@ -727,8 +728,8 @@ object AST {
         val withSpread: Boolean
     ) : AstNode() {
         constructor(
-            annotations: List<AstNode>, name: AstNode?, expression: AstNode, withSpread: Boolean
-        ) : this(annotations.cast<List<Annotation>>(), name.cast<String?>(), expression.cast(), withSpread)
+            annotations: List<AstNode>, name: String?, expression: AstNode, withSpread: Boolean
+        ) : this(annotations.cast<List<Annotation>>(), name, expression.cast(), withSpread)
     }
 
     class CollectionLiteral(val expressions: List<Expression>) : Expression() {
