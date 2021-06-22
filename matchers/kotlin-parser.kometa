@@ -32,7 +32,9 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
     typeAlias = modifiers?:mod TYPE_ALIAS NL* simpleIdentifier:name (NL* typeParameters:tp)? NL* ASSIGNMENT NL* type:t
               -> { AST.TypeAlias(mod.l, name.s, tp.l, t.r) };
 
-    declaration = classDeclaration | objectDeclaration | functionDeclaration | propertyDeclaration | typeAlias;
+    declaration = userDefinedDeclaration | classDeclaration | objectDeclaration | functionDeclaration | propertyDeclaration | typeAlias;
+
+    userDefinedDeclaration = _ABSURD;
 
     // SECTION: classes
 
@@ -231,7 +233,9 @@ kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
 
     // SECTION: expressions
 
-    expression = disjunction;
+    expression = userDefinedExpression | disjunction;
+
+    userDefinedExpression = _ABSURD;
 
     disjunction = conjunction (NL* DISJ NL* conjunction)* -> { AST.Disjunction(it.l) };
 

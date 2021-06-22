@@ -1108,6 +1108,7 @@ class KotlinGen {
                     dump(it)
                 }
             }
+            else -> error("$astNode is not a kotlin AST node")
         }
 
         if (surroundWithParens) {
@@ -1198,6 +1199,7 @@ class KotlinGen {
             is AST.TypeAlias -> dump(declaration)
             is AST.FunctionDeclaration -> dump(declaration)
             is AST.PropertyDeclaration -> dump(declaration)
+            AST.DropDeclaration -> buffer.appendLine("// Moved to another color")
         }
     }
 

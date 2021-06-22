@@ -149,7 +149,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
 
     private fun generateGrammar(buffer: StringBuffer) {
         with(buffer) {
-            writeLine("class $gName(handleLeftRecursion: Boolean = true) : $gBase(handleLeftRecursion) {")
+            writeLine("open class $gName(handleLeftRecursion: Boolean = true) : $gBase(handleLeftRecursion) {")
             indented {
                 writeLine("init {")
                 indented {
@@ -219,7 +219,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
     fun generateRule(buffer: StringBuffer, ruleName: String, body: AST.AstNode) {
         with(buffer) {
             appendLine()
-            writeLine("""${if (ruleName in overrides) "override " else ""}fun $ruleName(_memo: _${gName}_Memo, __index: Int, _args: _${gName}_Args?) {""")
+            writeLine("""${if (ruleName in overrides) "override " else "open "}fun $ruleName(_memo: _${gName}_Memo, __index: Int, _args: _${gName}_Args?) {""")
             indented {
                 writeLine("val _index = Ref.IntRef()")
                 writeLine("_index.element = __index")
@@ -411,11 +411,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
             writeLine("// FAIL $n")
 
             writeLine("${results(matchArgs)}.push(null)")
-
-            if (node.message.isNotEmpty()) {
-                writeLine("_memo.clearErrors()")
-                writeLine("_memo.addError(${node.message})")
-            }
+            writeLine("error(${node.message})")
 
             appendLine()
         }

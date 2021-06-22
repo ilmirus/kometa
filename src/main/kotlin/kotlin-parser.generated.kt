@@ -20,7 +20,7 @@ typealias _KotlinParser_Memo = MatchState<Token, AST.AstNode>
 typealias _KotlinParser_Rule = Production<Token, AST.AstNode>
 typealias _KotlinParser_Base = Matcher<Token, AST.AstNode>
 
-class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.AstNode>(handleLeftRecursion) {
+open class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.AstNode>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "ABSTRACT",
@@ -161,14 +161,15 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
             "WHEN",
             "WHERE",
             "WHILE",
-            "expression",
             "quest",
             "reificationModifier",
             "stringLiteral",
+            "userDefinedDeclaration",
+            "userDefinedExpression",
         )
     }
 
-    fun kotlinFile(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun kotlinFile(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -480,7 +481,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun script(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun script(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -807,7 +808,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun shebangLine(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun shebangLine(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -894,7 +895,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ShebangLine(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ShebangLine(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -934,7 +935,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun fileAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun fileAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1602,7 +1603,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun packageHeader(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun packageHeader(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1706,7 +1707,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ImportList(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ImportList(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1762,7 +1763,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ImportHeader(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ImportHeader(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2204,7 +2205,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun topLevelObject(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun topLevelObject(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2276,7 +2277,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeAlias(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeAlias(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2705,7 +2706,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun declaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun declaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2724,6 +2725,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         // OR 3
         var _start_i3 = _index.element
 
+        // OR 4
+        var _start_i4 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -2740,11 +2744,32 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     // OR 3
                     _start_i3 = _index.element
 
-                    // CALLORVAR classDeclaration
-                    var _r4: _KotlinParser_Item? = null
-                    _r4 = _MemoCall(_memo, "classDeclaration", _index.element, ::classDeclaration, null)
-                    if (_r4 != null) _index.element = _r4.nextIndex
+                    // OR 4
+                    _start_i4 = _index.element
 
+                    // CALLORVAR userDefinedDeclaration
+                    var _r5: _KotlinParser_Item? = null
+                    _r5 = _MemoCall(_memo, "userDefinedDeclaration", _index.element, ::userDefinedDeclaration, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
+
+                    // OR shortcut 4
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i4
+                    } else {
+                        _label = 4
+                        continue
+                    }
+
+                    // CALLORVAR classDeclaration
+                    var _r6: _KotlinParser_Item? = null
+                    _r6 = _MemoCall(_memo, "classDeclaration", _index.element, ::classDeclaration, null)
+                    if (_r6 != null) _index.element = _r6.nextIndex
+
+                    _label = 4
+                }
+                // OR 4
+                4 -> {
                     // OR shortcut 3
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
@@ -2755,9 +2780,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR objectDeclaration
-                    var _r5: _KotlinParser_Item? = null
-                    _r5 = _MemoCall(_memo, "objectDeclaration", _index.element, ::objectDeclaration, null)
-                    if (_r5 != null) _index.element = _r5.nextIndex
+                    var _r7: _KotlinParser_Item? = null
+                    _r7 = _MemoCall(_memo, "objectDeclaration", _index.element, ::objectDeclaration, null)
+                    if (_r7 != null) _index.element = _r7.nextIndex
 
                     _label = 3
                 }
@@ -2773,9 +2798,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR functionDeclaration
-                    var _r6: _KotlinParser_Item? = null
-                    _r6 = _MemoCall(_memo, "functionDeclaration", _index.element, ::functionDeclaration, null)
-                    if (_r6 != null) _index.element = _r6.nextIndex
+                    var _r8: _KotlinParser_Item? = null
+                    _r8 = _MemoCall(_memo, "functionDeclaration", _index.element, ::functionDeclaration, null)
+                    if (_r8 != null) _index.element = _r8.nextIndex
 
                     _label = 2
                 }
@@ -2791,9 +2816,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR propertyDeclaration
-                    var _r7: _KotlinParser_Item? = null
-                    _r7 = _MemoCall(_memo, "propertyDeclaration", _index.element, ::propertyDeclaration, null)
-                    if (_r7 != null) _index.element = _r7.nextIndex
+                    var _r9: _KotlinParser_Item? = null
+                    _r9 = _MemoCall(_memo, "propertyDeclaration", _index.element, ::propertyDeclaration, null)
+                    if (_r9 != null) _index.element = _r9.nextIndex
 
                     _label = 1
                 }
@@ -2809,9 +2834,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
                     }
 
                     // CALLORVAR typeAlias
-                    var _r8: _KotlinParser_Item? = null
-                    _r8 = _MemoCall(_memo, "typeAlias", _index.element, ::typeAlias, null)
-                    if (_r8 != null) _index.element = _r8.nextIndex
+                    var _r10: _KotlinParser_Item? = null
+                    _r10 = _MemoCall(_memo, "typeAlias", _index.element, ::typeAlias, null)
+                    if (_r10 != null) _index.element = _r10.nextIndex
 
                     _label = 0
                 }
@@ -2824,7 +2849,30 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun userDefinedDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // CALLORVAR _ABSURD
+                    var _r0: _KotlinParser_Item? = null
+                    _r0 = _MemoCall(_memo, "_ABSURD", _index.element, ::_ABSURD, null)
+                    if (_r0 != null) _index.element = _r0.nextIndex
+
+                    break
+                }
+            }
+        }
+    }
+
+
+    open fun classDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3752,7 +3800,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classHeader(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classHeader(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4248,7 +4296,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun primaryConstructor(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun primaryConstructor(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4414,7 +4462,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4619,7 +4667,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5110,7 +5158,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5580,7 +5628,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun valOrVar(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun valOrVar(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5641,7 +5689,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun annotatedDelegationSpecifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun annotatedDelegationSpecifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5862,7 +5910,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun delegationSpecifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun delegationSpecifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5957,7 +6005,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun constructorInvocation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun constructorInvocation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6028,7 +6076,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun annotatedDelegationSpecifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun annotatedDelegationSpecifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6173,7 +6221,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun explicitDelegation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun explicitDelegation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6589,7 +6637,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7070,7 +7118,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7378,7 +7426,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeConstraints(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeConstraints(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7684,7 +7732,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeConstraint(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeConstraint(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7950,7 +7998,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classMemberDeclarations(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classMemberDeclarations(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8038,7 +8086,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classMemberDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classMemberDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8133,7 +8181,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun anonymousInitializer(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun anonymousInitializer(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8253,7 +8301,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun companionObject(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun companionObject(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8777,7 +8825,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionValueParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionValueParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -9263,7 +9311,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionValueParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionValueParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -9519,7 +9567,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10409,7 +10457,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10456,7 +10504,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun blockBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun blockBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10486,7 +10534,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun expressionBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun expressionBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10606,7 +10654,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun variableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun variableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10930,7 +10978,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun multiVariableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun multiVariableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -11411,7 +11459,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun propertyDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun propertyDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12432,7 +12480,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun localVariableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun localVariableDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13082,7 +13130,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun varDecls(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun varDecls(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13129,7 +13177,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun propertyDelegate(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun propertyDelegate(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13249,7 +13297,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun getter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun getter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13764,7 +13812,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun setter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun setter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14458,7 +14506,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parametersWithOptionalType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parametersWithOptionalType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14944,7 +14992,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionValueParameterWithOptionalType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionValueParameterWithOptionalType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -15200,7 +15248,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parameterWithOptionalType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parameterWithOptionalType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -15414,7 +15462,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -15623,7 +15671,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun objectDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun objectDeclaration(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -16057,7 +16105,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun secondaryConstructor(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun secondaryConstructor(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -16491,7 +16539,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun constructorDelegationCall(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun constructorDelegationCall(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -16730,7 +16778,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun enumClassBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun enumClassBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -17119,7 +17167,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun enumEntries(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun enumEntries(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -17430,7 +17478,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun enumEntry(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun enumEntry(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -17747,7 +17795,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun type(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun type(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -17847,7 +17895,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun receiverType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun receiverType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -17971,7 +18019,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeReference(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeReference(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18025,7 +18073,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun nullableType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun nullableType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18194,7 +18242,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun quest(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun quest(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18217,7 +18265,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun userType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun userType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18438,7 +18486,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun simpleUserType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun simpleUserType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18567,7 +18615,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeProjection(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeProjection(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18674,7 +18722,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeProjectionModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeProjectionModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18729,7 +18777,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeProjectionModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeProjectionModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -18841,7 +18889,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -19229,7 +19277,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionTypeParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionTypeParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -19763,7 +19811,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parenthesizedType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parenthesizedType(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -19968,7 +20016,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun statements(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun statements(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -20125,7 +20173,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun statement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun statement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -20337,7 +20385,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun label(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun label(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -20457,7 +20505,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun controlStructureBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun controlStructureBody(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -20504,7 +20552,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun block(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun block(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -20709,7 +20757,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun loopStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun loopStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -20780,7 +20828,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun forStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun forStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -21183,7 +21231,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun whileStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun whileStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -21480,7 +21528,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun doWhileStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun doWhileStatement(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -21843,7 +21891,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun assignment(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun assignment(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -22157,7 +22205,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun semi(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun semi(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -22281,7 +22329,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun semis(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun semis(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -22377,7 +22425,54 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun expression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun expression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        // OR 0
+        var _start_i0 = _index.element
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // OR 0
+                    _start_i0 = _index.element
+
+                    // CALLORVAR userDefinedExpression
+                    var _r1: _KotlinParser_Item? = null
+                    _r1 = _MemoCall(_memo, "userDefinedExpression", _index.element, ::userDefinedExpression, null)
+                    if (_r1 != null) _index.element = _r1.nextIndex
+
+                    // OR shortcut 0
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i0
+                    } else {
+                        _label = 0
+                        continue
+                    }
+
+                    // CALLORVAR disjunction
+                    var _r2: _KotlinParser_Item? = null
+                    _r2 = _MemoCall(_memo, "disjunction", _index.element, ::disjunction, null)
+                    if (_r2 != null) _index.element = _r2.nextIndex
+
+                    _label = 0
+                }
+                // OR 0
+                0 -> {
+                    break
+                }
+            }
+        }
+    }
+
+
+    open fun userDefinedExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -22388,9 +22483,9 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
         while(true) {
             when(_label) {
                 -1 -> {
-                    // CALLORVAR disjunction
+                    // CALLORVAR _ABSURD
                     var _r0: _KotlinParser_Item? = null
-                    _r0 = _MemoCall(_memo, "disjunction", _index.element, ::disjunction, null)
+                    _r0 = _MemoCall(_memo, "_ABSURD", _index.element, ::_ABSURD, null)
                     if (_r0 != null) _index.element = _r0.nextIndex
 
                     break
@@ -22400,7 +22495,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun disjunction(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun disjunction(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -22621,7 +22716,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun conjunction(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun conjunction(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -22842,7 +22937,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun equality(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun equality(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23010,7 +23105,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun comparison(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun comparison(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23178,7 +23273,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun genericCallLikeComparison(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun genericCallLikeComparison(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23270,7 +23365,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun infixOperation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun infixOperation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23386,7 +23481,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun inCheck(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun inCheck(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23510,7 +23605,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun isCheck(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun isCheck(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23634,7 +23729,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun elvisExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun elvisExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -23855,7 +23950,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun infixFunctionCall(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun infixFunctionCall(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24023,7 +24118,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun rangeExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun rangeExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24191,7 +24286,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun additiveExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun additiveExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24359,7 +24454,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun multiplicativeExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun multiplicativeExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24527,7 +24622,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun asExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun asExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24748,7 +24843,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun prefixUnaryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun prefixUnaryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24840,7 +24935,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun unaryPrefix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun unaryPrefix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -24964,7 +25059,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun postfixUnaryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun postfixUnaryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25056,7 +25151,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun postfixUnarySuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun postfixUnarySuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25127,7 +25222,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeArgumentsPostfix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeArgumentsPostfix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25157,7 +25252,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun directlyAssignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun directlyAssignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25283,7 +25378,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parenthesizedDirectlyAssignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parenthesizedDirectlyAssignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25488,7 +25583,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun assignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun assignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25535,7 +25630,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parenthesizedAssignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parenthesizedAssignableExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25740,7 +25835,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun assignableSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun assignableSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -25811,7 +25906,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun indexingSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun indexingSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -26292,7 +26387,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun navigationSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun navigationSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -26658,7 +26753,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun callSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun callSuffix(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -26849,7 +26944,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun annotatedLambda(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun annotatedLambda(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -27035,7 +27130,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeArguments(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeArguments(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -27516,7 +27611,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun valueArguments(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun valueArguments(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -28002,7 +28097,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun valueArgument(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun valueArgument(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -28732,7 +28827,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun primaryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun primaryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -29074,7 +29169,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parenthesizedExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parenthesizedExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -29279,7 +29374,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun collectionLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun collectionLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -29765,7 +29860,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun literalConstant(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun literalConstant(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -29932,7 +30027,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun lambdaLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun lambdaLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -30321,7 +30416,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun lambdaParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun lambdaParameters(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -30632,7 +30727,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun lambdaParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun lambdaParameter(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -30846,7 +30941,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun anonymousFunction(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun anonymousFunction(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -31512,7 +31607,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -31559,7 +31654,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun objectLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun objectLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -31916,7 +32011,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun thisExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun thisExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -31982,7 +32077,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun superExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun superExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -32297,7 +32392,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ifExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ifExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -33664,7 +33759,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun whenSubject(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun whenSubject(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -34137,7 +34232,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun whenExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun whenExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -34595,7 +34690,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun whenEntry(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun whenEntry(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -35363,7 +35458,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun whenCondition(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun whenCondition(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -35434,7 +35529,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun tryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun tryExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -35969,7 +36064,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun catchBlock(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun catchBlock(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -36457,7 +36552,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun finallyBlock(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun finallyBlock(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -36577,7 +36672,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun jumpExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun jumpExpression(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -36973,7 +37068,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun callableReference(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun callableReference(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37290,7 +37385,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun assignmentAndOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun assignmentAndOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37444,7 +37539,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun equalityOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun equalityOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37567,7 +37662,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun comparisonOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun comparisonOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37690,7 +37785,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun inOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun inOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37751,7 +37846,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun isOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun isOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37812,7 +37907,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun additiveOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun additiveOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37873,7 +37968,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun multiplicativeOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun multiplicativeOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -37965,7 +38060,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun asOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun asOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38026,7 +38121,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun prefixUnaryOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun prefixUnaryOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38180,7 +38275,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun postfixUnaryOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun postfixUnaryOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38272,7 +38367,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun memberAccessOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun memberAccessOperator(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38470,7 +38565,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun modifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun modifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38549,7 +38644,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parameterModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parameterModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38628,7 +38723,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun modifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun modifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38872,7 +38967,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -38927,7 +39022,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39034,7 +39129,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun classModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun classModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39219,7 +39314,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun memberModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun memberModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39280,7 +39375,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun visibilityModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun visibilityModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39403,7 +39498,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun varianceModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun varianceModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39464,7 +39559,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeParameterModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeParameterModifiers(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39512,7 +39607,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun typeParameterModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun typeParameterModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39708,7 +39803,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun functionModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun functionModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39893,7 +39988,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun propertyModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun propertyModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -39923,7 +40018,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun inheritanceModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun inheritanceModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40015,7 +40110,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun parameterModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun parameterModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40107,7 +40202,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun reificationModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun reificationModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40130,7 +40225,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun platformModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun platformModifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40191,7 +40286,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun annotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun annotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40303,7 +40398,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun singleAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun singleAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40493,7 +40588,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun multiAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun multiAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -40861,7 +40956,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun annotationUseSiteTarget(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun annotationUseSiteTarget(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -42192,7 +42287,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun unescapedAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun unescapedAnnotation(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -42239,7 +42334,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun simpleIdentifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun simpleIdentifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -43743,7 +43838,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun identifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun identifier(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -43911,7 +44006,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun stringLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun stringLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -43958,7 +44053,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun BooleanLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun BooleanLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44019,7 +44114,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun NullLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun NullLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44049,7 +44144,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun IntegerLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun IntegerLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44096,7 +44191,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CharacterLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CharacterLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44143,7 +44238,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RealLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RealLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44190,7 +44285,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FloatLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FloatLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44237,7 +44332,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DoubleLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DoubleLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44284,7 +44379,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LongLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LongLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44331,7 +44426,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun UnsignedLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun UnsignedLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44378,7 +44473,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun UnsignedLongLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun UnsignedLongLiteral(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44425,7 +44520,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ThisAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ThisAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44472,7 +44567,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun BreakAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun BreakAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44519,7 +44614,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ReturnAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ReturnAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44566,7 +44661,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ContinueAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ContinueAt(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44613,7 +44708,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EOF(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EOF(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44644,7 +44739,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun NL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun NL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44665,7 +44760,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RESERVED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RESERVED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44686,7 +44781,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RANGE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RANGE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44707,7 +44802,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DOT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DOT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44728,7 +44823,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun COMMA(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun COMMA(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44749,7 +44844,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LPAREN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LPAREN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44770,7 +44865,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RPAREN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RPAREN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44791,7 +44886,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LSQUARE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LSQUARE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44812,7 +44907,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RSQUARE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RSQUARE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44833,7 +44928,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LCURL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LCURL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44854,7 +44949,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RCURL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RCURL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44875,7 +44970,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INCR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INCR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44896,7 +44991,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ADD_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ADD_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44917,7 +45012,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ADD(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ADD(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44938,7 +45033,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DECR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DECR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44959,7 +45054,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ARROW(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ARROW(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -44980,7 +45075,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SUB_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SUB_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45001,7 +45096,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SUB(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SUB(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45022,7 +45117,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun MULT_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun MULT_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45043,7 +45138,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun MULT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun MULT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45064,7 +45159,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DIV_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DIV_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45085,7 +45180,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DIV(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DIV(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45106,7 +45201,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun MOD_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun MOD_ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45127,7 +45222,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun MOD(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun MOD(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45148,7 +45243,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CONJ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CONJ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45169,7 +45264,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DISJ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DISJ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45190,7 +45285,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EXCL_EQEQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EXCL_EQEQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45211,7 +45306,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EXCL_EQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EXCL_EQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45232,7 +45327,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EXCL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EXCL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45253,7 +45348,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SEMICOLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SEMICOLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45274,7 +45369,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun COLONCOLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun COLONCOLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45295,7 +45390,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun COLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun COLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45316,7 +45411,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun HASH(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun HASH(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45337,7 +45432,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun AT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun AT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45358,7 +45453,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun Q_COLONCOLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun Q_COLONCOLON(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45379,7 +45474,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ELVIS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ELVIS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45400,7 +45495,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun QUEST(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun QUEST(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45421,7 +45516,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45442,7 +45537,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LANGLE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LANGLE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45463,7 +45558,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun GE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun GE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45484,7 +45579,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RANGLE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RANGLE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45505,7 +45600,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun AS_SAFE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun AS_SAFE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45526,7 +45621,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EQEQEQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EQEQEQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45547,7 +45642,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EQEQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EQEQ(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45568,7 +45663,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DOUBLE_ARROW(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DOUBLE_ARROW(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45589,7 +45684,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ASSIGNMENT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45610,7 +45705,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FILE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FILE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45631,7 +45726,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun PACKAGE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun PACKAGE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45652,7 +45747,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun IMPORT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun IMPORT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45673,7 +45768,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CLASS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CLASS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45694,7 +45789,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INTERFACE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INTERFACE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45715,7 +45810,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FUN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FUN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45736,7 +45831,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun OBJECT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun OBJECT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45757,7 +45852,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun VAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun VAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45778,7 +45873,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun VAR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun VAR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45799,7 +45894,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun TYPE_ALIAS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun TYPE_ALIAS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45820,7 +45915,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CONSTRUCTOR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CONSTRUCTOR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45841,7 +45936,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun BY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun BY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45862,7 +45957,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun COMPANION(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun COMPANION(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45883,7 +45978,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INIT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INIT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45904,7 +45999,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun THIS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun THIS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45925,7 +46020,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SUPER(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SUPER(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45946,7 +46041,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun TYPEOF(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun TYPEOF(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45967,7 +46062,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun WHERE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun WHERE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -45988,7 +46083,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun IF(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun IF(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46009,7 +46104,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ELSE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ELSE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46030,7 +46125,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun WHEN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun WHEN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46051,7 +46146,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun TRY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun TRY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46072,7 +46167,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CATCH(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CATCH(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46093,7 +46188,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FINALLY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FINALLY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46114,7 +46209,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FOR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FOR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46135,7 +46230,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DO(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DO(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46156,7 +46251,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun WHILE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun WHILE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46177,7 +46272,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun THROW(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun THROW(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46198,7 +46293,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RETURN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RETURN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46219,7 +46314,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CONTINUE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CONTINUE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46240,7 +46335,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun BREAK(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun BREAK(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46261,7 +46356,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun AS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun AS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46282,7 +46377,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun IS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun IS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46303,7 +46398,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun IN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun IN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46324,7 +46419,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun NOT_IS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun NOT_IS(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46345,7 +46440,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun NOT_IN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun NOT_IN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46366,7 +46461,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun OUT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun OUT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46387,7 +46482,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FIELD(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FIELD(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46408,7 +46503,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun PROPERTY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun PROPERTY(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46429,7 +46524,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun GET(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun GET(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46450,7 +46545,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SET(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SET(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46471,7 +46566,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun RECEIVER(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun RECEIVER(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46492,7 +46587,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun PARAM(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun PARAM(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46513,7 +46608,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SETPARAM(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SETPARAM(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46534,7 +46629,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DELEGATE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DELEGATE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46555,7 +46650,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DYNAMIC(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DYNAMIC(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46576,7 +46671,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun PUBLIC(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun PUBLIC(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46597,7 +46692,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun PRIVATE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun PRIVATE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46618,7 +46713,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun PROTECTED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun PROTECTED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46639,7 +46734,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INTERNAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INTERNAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46660,7 +46755,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ENUM(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ENUM(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46681,7 +46776,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SEALED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SEALED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46702,7 +46797,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ANNOTATION_(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ANNOTATION_(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46723,7 +46818,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun DATA(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun DATA(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46744,7 +46839,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INNER(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INNER(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46765,7 +46860,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun TAILREC(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun TAILREC(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46786,7 +46881,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun OPERATOR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun OPERATOR(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46807,7 +46902,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INLINE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INLINE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46828,7 +46923,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun INFIX(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun INFIX(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46849,7 +46944,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EXTERNAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EXTERNAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46870,7 +46965,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun SUSPEND(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun SUSPEND(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46891,7 +46986,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun OVERRIDE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun OVERRIDE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46912,7 +47007,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ABSTRACT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ABSTRACT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46933,7 +47028,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FINAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FINAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46954,7 +47049,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun OPEN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun OPEN(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46975,7 +47070,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CONST(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CONST(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -46996,7 +47091,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun LATEINIT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun LATEINIT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47017,7 +47112,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun VARARG(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun VARARG(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47038,7 +47133,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun NOINLINE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun NOINLINE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47059,7 +47154,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun CROSSINLINE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun CROSSINLINE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47080,7 +47175,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun REIFIED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun REIFIED(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47101,7 +47196,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun TRUE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun TRUE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47122,7 +47217,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun FALSE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun FALSE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47143,7 +47238,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun NULL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun NULL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47164,7 +47259,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun VALUE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun VALUE(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47185,7 +47280,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EXPECT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EXPECT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47206,7 +47301,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun ACTUAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun ACTUAL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47227,7 +47322,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun EXCL_EXCL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun EXCL_EXCL(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -47248,7 +47343,7 @@ class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.Ast
     }
 
 
-    fun QUEST_DOT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
+    open fun QUEST_DOT(_memo: _KotlinParser_Memo, __index: Int, _args: _KotlinParser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 

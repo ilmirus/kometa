@@ -19,7 +19,7 @@ typealias _Parser_Memo = MatchState<Char, AST.AstNode>
 typealias _Parser_Rule = Production<Char, AST.AstNode>
 typealias _Parser_Base = Matcher<Char, AST.AstNode>
 
-class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(handleLeftRecursion) {
+open class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "AND_PRE",
@@ -35,7 +35,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
         )
     }
 
-    fun KOMetaFile(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun KOMetaFile(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -207,7 +207,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ImportsList(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ImportsList(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -267,7 +267,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Import(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Import(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -483,7 +483,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Grammar(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Grammar(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1008,7 +1008,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Rule(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Rule(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1225,7 +1225,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Disjunction(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Disjunction(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1340,7 +1340,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ActionExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ActionExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1510,7 +1510,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun FailExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun FailExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1582,7 +1582,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun SequenceExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun SequenceExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1637,7 +1637,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ConditionExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ConditionExp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1831,7 +1831,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun BoundTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun BoundTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2024,7 +2024,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun PrefixedTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun PrefixedTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2095,7 +2095,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun LookTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun LookTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2162,7 +2162,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun NotTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun NotTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2229,7 +2229,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun PostfixedTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun PostfixedTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2348,7 +2348,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun MinMaxTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun MinMaxTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2573,7 +2573,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun StarTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun StarTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2640,7 +2640,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun PlusTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun PlusTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2707,7 +2707,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun QuesTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun QuesTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2848,7 +2848,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Term(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Term(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -2991,7 +2991,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ParenTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ParenTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3090,7 +3090,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun AnyTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun AnyTerm(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3120,7 +3120,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun RuleCall(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun RuleCall(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3260,7 +3260,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ParameterList(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ParameterList(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3375,7 +3375,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Parameter(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Parameter(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3398,7 +3398,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun CallOrVar(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun CallOrVar(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3507,7 +3507,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Literal(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Literal(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -3808,7 +3808,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Regexp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Regexp(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4038,7 +4038,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun InputClass(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun InputClass(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4287,7 +4287,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ClassRange(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ClassRange(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4580,7 +4580,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun KotlinCode(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun KotlinCode(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -4647,7 +4647,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun KotlinCodeItem(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun KotlinCodeItem(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5498,7 +5498,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Identifier(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Identifier(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5565,7 +5565,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Ident(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Ident(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5653,7 +5653,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun IdentBegin(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun IdentBegin(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5688,7 +5688,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun IdentBody(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun IdentBody(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5723,7 +5723,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun QualifiedId(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun QualifiedId(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -5843,7 +5843,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun GenericId(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun GenericId(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6217,7 +6217,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Number(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Number(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6295,7 +6295,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun KEYWORD(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun KEYWORD(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6414,7 +6414,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun USING(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun USING(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6467,7 +6467,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun KOMETA(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun KOMETA(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6520,7 +6520,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun EQUALS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun EQUALS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6595,7 +6595,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun OVERRIDE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun OVERRIDE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6648,7 +6648,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun NEW(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun NEW(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6701,7 +6701,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun LR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun LR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6754,7 +6754,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun SEMI(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun SEMI(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6829,7 +6829,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun BANG(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun BANG(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6882,7 +6882,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun OR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun OR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6935,7 +6935,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun ACTION(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun ACTION(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -6988,7 +6988,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun COLON(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun COLON(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7041,7 +7041,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun COMMA(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun COMMA(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7094,7 +7094,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun DOT(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun DOT(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7115,7 +7115,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun PERIOD(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun PERIOD(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7170,7 +7170,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun LEFT_BRACE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun LEFT_BRACE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7223,7 +7223,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun RIGHT_BRACE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun RIGHT_BRACE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7276,7 +7276,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun OPEN(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun OPEN(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7329,7 +7329,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun CLOSE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun CLOSE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7382,7 +7382,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun LESS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun LESS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7435,7 +7435,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun GREATER(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun GREATER(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7488,7 +7488,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun QUES(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun QUES(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7509,7 +7509,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun AND_PRE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun AND_PRE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7530,7 +7530,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun NOT_PRE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun NOT_PRE(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7551,7 +7551,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun STAR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun STAR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7604,7 +7604,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun PLUS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun PLUS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7657,7 +7657,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun SP(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun SP(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7749,7 +7749,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun WS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun WS(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7792,7 +7792,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun Comment(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun Comment(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8105,7 +8105,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun EOL(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun EOL(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8195,7 +8195,7 @@ class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(h
     }
 
 
-    fun EOF(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+    open fun EOF(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 

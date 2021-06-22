@@ -563,6 +563,10 @@ abstract class Matcher<TInput, TResult>(
         return null
     }
 
+    protected fun _ABSURD(_memo: MatchState<TInput, TResult>, __index: Int, _args: Iterable<MatchItem<TInput, TResult>>?) {
+        _memo.results.push(null)
+    }
+
     protected val MatchItem<TInput, TResult>?.r: TResult
         get() = nr!!
 
@@ -585,7 +589,7 @@ abstract class Matcher<TInput, TResult>(
         get() = this.il.joinToString("")
 
     protected val MatchItem<TInput, TResult>?.ns: String?
-        get() = this?.i?.toString()
+        get() = this?.inputs?.filterNotNull()?.joinToString("")
 
     companion object {
         private val NOT_FOUND = Any()

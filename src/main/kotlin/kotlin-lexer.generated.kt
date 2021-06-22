@@ -19,7 +19,7 @@ typealias _KotlinLexer_Memo = MatchState<Char, Token>
 typealias _KotlinLexer_Rule = Production<Char, Token>
 typealias _KotlinLexer_Base = Matcher<Char, Token>
 
-class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(handleLeftRecursion) {
+open class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "EOF",
@@ -34,7 +34,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
         )
     }
 
-    fun tokens(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun tokens(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -149,7 +149,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun token(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun token(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -7955,7 +7955,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun floatLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun floatLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8054,7 +8054,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun doubleLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun doubleLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8109,7 +8109,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun doubleLiteralStart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun doubleLiteralStart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -8408,7 +8408,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun doubleLiteralPart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun doubleLiteralPart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -9795,7 +9795,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun longLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun longLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -9870,7 +9870,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun unsignedLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun unsignedLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -9945,7 +9945,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun unsignedLongLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun unsignedLongLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10020,7 +10020,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun integerLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun integerLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -10091,7 +10091,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun decLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun decLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -11584,7 +11584,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun decDigit(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun decDigit(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -11629,7 +11629,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun decDigitNoZero(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun decDigitNoZero(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -11650,7 +11650,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun hexLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun hexLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -11830,7 +11830,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun hexDigit(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun hexDigit(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -11897,7 +11897,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun binLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun binLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12077,7 +12077,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun binDigit(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun binDigit(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12120,7 +12120,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun characterLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun characterLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12225,7 +12225,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun escapeSeq(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun escapeSeq(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12454,7 +12454,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun uniEscapeChar(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun uniEscapeChar(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12603,7 +12603,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun multiLineStringLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun multiLineStringLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12779,7 +12779,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun stringExpression(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun stringExpression(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12873,7 +12873,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun strRef(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun strRef(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -12926,7 +12926,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun multiLineStrText(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun multiLineStrText(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13053,7 +13053,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun multiLineStringQuote(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun multiLineStringQuote(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13096,7 +13096,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun stringLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun stringLiteral(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13272,7 +13272,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun strText(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun strText(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13399,7 +13399,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun strEscapedChar(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun strEscapedChar(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -13474,7 +13474,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun kotlinCode(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun kotlinCode(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14325,7 +14325,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun identifier(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun identifier(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14401,7 +14401,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun identifierStart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun identifierStart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14436,7 +14436,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun identifierPart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun identifierPart(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14471,7 +14471,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun WS(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun WS(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14581,7 +14581,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun comment(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun comment(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14628,7 +14628,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun lineComment(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun lineComment(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14742,7 +14742,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun delimetedComment(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun delimetedComment(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14868,7 +14868,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun NL(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun NL(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -14941,7 +14941,7 @@ class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(ha
     }
 
 
-    fun EOF(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+    open fun EOF(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 

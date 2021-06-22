@@ -7,21 +7,73 @@ import kometa.gl.GL_AST;
 
 // TODO: This is incomplete
 kometa GL_Plugin<Token, AST.AstNode>: KotlinParser {
-    override postfixUnaryExpression = SHADERVERTEX NL* LPAREN NL* RPAREN NL* shaderBlock:sb
-                                    -> { GL_Sema.checkShaderVertexAndCreateStringLiteral(sb.l.cast()) };
-    override postfixUnaryExpression = SHADERFRAGMENT NL* LPAREN NL* RPAREN NL* shaderBlock:sb
-                                    -> { GL_Sema.checkShaderFragmentAndCreateStringLiteral(sb.l.cast()) };
-    override postfixUnaryExpression = primaryExpression:expr postfixUnarySuffix*:s -> { AST.PostfixUnaryExpression(expr.r, s.l) };
 
-    SHADERVERTEX = .:t ?(t is Token.Identifier && t.name == "shaderVertex");
-    SHADERFRAGMENT = .:t ?(t is Token.Identifier && t.name == "shaderFragment");
+    override userDefinedDeclaration = CONTEXT NL* LPAREN NL* GL_CONTEXT NL* RPAREN NL*
+                                      (shaderVariableDeclaration | shaderFunctionDeclaration):decl
+                                    -> { GL_Sema.addDeclaration(decl.r); AST.DropDeclaration };
 
-    shaderBlock = LCURL semis? shaderStatement (semis? shaderStatement)* RCURL -> { it.l };
+    shaderFunctionDeclaration = annotation*:anns FUN NL* simpleIdentifier:name NL* LPAREN (shaderParam (NL* COMMA NL* shaderParam)* (NL* COMMA)?)?:params NL* RPAREN
+                                NL* COLON NL* simpleIdentifier:type NL* shaderFunctionBody:body
+                              -> { GL_AST.FunctionDeclaration(anns.l, name.s, type.s, params.l, body.r) };
 
-    shaderStatement = shaderVariableDeclaration | shaderAssignment | shaderExpression;
+    shaderParam = simpleIdentifier:name NL* COLON NL* simpleIdentifier:type -> { GL_AST.ValueParameter(name.s, type.s) };
 
-    shaderVariableDeclaration = annotations?:ann valOrVar:vov NL* simpleIdentifier:name (NL* COLON NL* shaderType)?:t (NL* ASSIGNMENT NL* shaderExpression)?:expr
-                              -> { GL_AST.VariableDeclaration(ann.l, vov.r, name.s, t.nr, expr.nr) };
+    shaderFunctionBody = shaderBlock;
 
-    
+    CONTEXT = .:t ?((t.i as? Token.Identifier)?.s == "context");
+    GL_CONTEXT = .:t ?((t.i as? Token.Identifier)?.s == "GL_Context");
+
+    override userDefinedExpression = SHADERVERTEX NL* (shaderBlock:sb | !"failed to parse shaderBlock")
+                                   -> { GL_Sema.checkShaderVertexAndCreateStringLiteral(sb.r.cast()) };
+    override userDefinedExpression = SHADERFRAGMENT NL* (shaderBlock:sb | !"failed to parse shaderBlock")
+                                   -> { GL_Sema.checkShaderFragmentAndCreateStringLiteral(sb.r.cast()) };
+
+    SHADERVERTEX = .:t ?((t.i as? Token.Identifier)?.s == "shaderVertex");
+    SHADERFRAGMENT = .:t ?((t.i as? Token.Identifier)?.s == "shaderFragment");
+
+    shaderBlock = LCURL NL* (shaderStatement (semis shaderStatement)*)? semis? NL* RCURL -> { GL_AST.Block(it.l) };
+
+    shaderStatement = shaderVariableDeclaration | shaderAssignment | shaderExpression | shaderReturnStatement;
+
+    shaderReturnStatement = RETURN shaderExpression:expr -> { GL_AST.ReturnStatement(expr.r) };
+
+    shaderVariableDeclaration = annotation*:ann valOrVar:vov NL* simpleIdentifier:name (NL* COLON NL* simpleIdentifier:t)? (NL* ASSIGNMENT NL* shaderExpression)?:expr
+                              -> { GL_AST.VariableDeclaration(ann.l, vov.r, name.s, t.ns, expr.nr) };
+
+    shaderAssignment = simpleIdentifier:name NL* ASSIGNMENT NL* shaderExpression:expr
+                     -> { GL_AST.Assignment(name.s, expr.r) };
+
+    shaderExpression = shaderEqualityExpression;
+
+    shaderEqualityExpression = shaderComparisonExpression (NL* equalityOperator NL* shaderComparisonExpression)*
+                             -> { GL_AST.Equality(it.l) };
+
+    shaderComparisonExpression = shaderAdditiveExpression (NL* comparisonOperator NL* shaderAdditiveExpression)*
+                               -> { GL_AST.Comparison(it.l) };
+
+    shaderAdditiveExpression = shaderMultiplicativeExpression (NL* additiveOperator NL* shaderMultiplicativeExpression)*
+                             -> { GL_AST.Additive(it.l) };
+
+    shaderMultiplicativeExpression = shaderPrimaryExpression (NL* multiplicativeOperator NL* shaderPrimaryExpression)*
+                                   -> { GL_AST.Multiplicative(it.l) };
+
+    shaderPrimaryExpression = shaderCallExpression | shaderDotAccessExpression | shaderIfExpression | shaderFloatLiteral | shaderParenthesizedExpression;
+    shaderPrimaryExpression = simpleIdentifier -> { GL_AST.NameExpression(it.s) };
+
+    shaderCallExpression = simpleIdentifier:name NL* LPAREN (shaderExpression (NL* COMMA shaderExpression) (NL* COMMA)?)*:params NL* RPAREN
+                         -> { GL_AST.CallExpression(name.s, params.l) };
+
+    shaderDotAccessExpression = simpleIdentifier:name shaderDotAccessExpressionSuffix+:access
+                              -> { GL_AST.DotAccessExpression(name.s, access.l) };
+
+    shaderDotAccessExpressionSuffix = NL* DOT NL* simpleIdentifier:s -> { GL_AST.NameExpression(s.s) };
+
+    shaderIfExpression = IF NL* LPAREN NL* shaderExpression:expr NL* RPAREN NL* shaderControlStructureBody:thenExpr NL* ELSE NL* shaderControlStructureBody:elseExpr
+                       -> { GL_AST.IfExpression(expr.r, thenExpr.r, elseExpr.r) };
+
+    shaderControlStructureBody = shaderBlock | shaderExpression;
+
+    shaderFloatLiteral = .:t ?(t.i is Token.DoubleLiteral) -> { GL_AST.FloatLiteral(t.i.cast<Token.DoubleLiteral>().s) };
+
+    shaderParenthesizedExpression = LPAREN NL* expression NL* RPAREN -> { it.r };
 }

@@ -23,6 +23,8 @@ object AST {
 
     sealed interface Declaration : ClassMemberDeclaration, Labellable
 
+    object DropDeclaration: AstNode(), Declaration
+
     class PackageHeader(val fqName: String) : AstNode()
 
     class ImportHeader(val fqName: String, val star: Boolean = false, val alias: String? = null) : AstNode()

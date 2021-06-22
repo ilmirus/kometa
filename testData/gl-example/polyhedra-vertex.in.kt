@@ -1,43 +1,43 @@
 import gl.*
 
 context(GL_Context)
-@uniform uProjectionMatrix: mat4
+@uniform val uProjectionMatrix: mat4
 
 context(GL_Context)
-@uniform uModelMatrix: mat4
+@uniform val uModelMatrix: mat4
 
 context(GL_Context)
-@uniform uTargetFraction: float
+@uniform val uTargetFraction: float
 
 context(GL_Context)
-@uniform uPrevFraction: float
+@uniform val uPrevFraction: float
 
 context(GL_Context)
-@uniform uExpand: float
+@uniform val uExpand: float
 
 context(GL_Context)
-@uniform uCullMode: float
+@uniform val uCullMode: float
 
 context(GL_Context)
-@uniform uCameraPosition: vec3
+@uniform val uCameraPosition: vec3
 
 context(GL_Context)
-@uniform uNormalMatrix: mat3
+@uniform val uNormalMatrix: mat3
 
 context(GL_Context)
-@attribute aVertexPosition: vec3
+@attribute val aVertexPosition: vec3
 
 context(GL_Context)
-@attribute aPrevVertexPosition: vec3
+@attribute val aPrevVertexPosition: vec3
 
 context(GL_Context)
-@attribute aVertexNormal: vec3
+@attribute val aVertexNormal: vec3
 
 context(GL_Context)
-@attribute aPrevVertexNormal: vec3
+@attribute val aPrevVertexNormal: vec3
 
 context(GL_Context)
-@varying vColorMul: float
+@varying val vColorMul: float
 
 context(GL_Context)
 fun fInterpolatedPosition(): vec3 {
@@ -61,13 +61,13 @@ fun fFaceDirection(position: vec4, normal: vec3): float {
 
 context(GL_Context)
 fun fNormal(): vec3 {
-    return (uNormalMatrix * fInterpolatedNormal())
+    return uNormalMatrix * fInterpolatedNormal()
 }
 
 fun main() {
     val sh = shaderVertex {
         val position = fPosition()
-        gl_Position = (uProjectionMatrix * position)
+        gl_Position = uProjectionMatrix * position
         vColorMul =
             if (uCullMode == 0.0) 1.0
             else if (fFaceDirection(position, fNormal()) * uCullMode >= 0.0) 1.0

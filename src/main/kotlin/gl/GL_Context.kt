@@ -19,6 +19,8 @@ interface vec4 : genType, vec {
     val y: float
     val z: float
     val w: float
+
+    val xyz: vec3
 }
 
 interface mat
@@ -350,6 +352,8 @@ interface GL_Context {
     fun shadow2D(a: sampler2DShadow, b: vec3): vec4
     fun shadow1DProj(a: sampler1DShadow, b: vec4): vec4
     fun shadow2DProj(a: sampler2DShadow, b: vec4): vec4
+
+    fun vec4(a: vec3, b: float): vec4
 }
 
 interface GL_VertexContext : GL_Context {

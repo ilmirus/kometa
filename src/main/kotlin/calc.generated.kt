@@ -18,7 +18,7 @@ typealias _Calc_Memo = MatchState<Char, Int>
 typealias _Calc_Rule = Production<Char, Int>
 typealias _Calc_Base = Matcher<Char, Int>
 
-class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftRecursion) {
+open class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "DecimalDigit",
@@ -27,7 +27,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
         )
     }
 
-    fun Expression(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Expression(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -50,7 +50,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Additive(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Additive(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -121,7 +121,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Add(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Add(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -160,7 +160,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Sub(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Sub(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -199,7 +199,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Multiplicative(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Multiplicative(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -279,7 +279,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Multiply(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Multiply(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -318,7 +318,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Divide(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Divide(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -357,7 +357,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun BinaryOp(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun BinaryOp(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -614,7 +614,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Number(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Number(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -736,7 +736,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun Digits(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun Digits(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -897,7 +897,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun DecimalDigit(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun DecimalDigit(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -930,7 +930,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun KW(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun KW(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
@@ -1036,7 +1036,7 @@ class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftR
     }
 
 
-    fun WS(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+    open fun WS(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()
         _index.element = __index
 
