@@ -8,7 +8,7 @@ import kometa.*
 import kometa.util.*
 import kotlin.jvm.internal.Ref
 
-import kometa.Matcher
+import kometa.CharMatcher
 import kometa.ast.AST
 
 typealias _Parser_Inputs = Iterable<Char>
@@ -19,7 +19,7 @@ typealias _Parser_Memo = MatchState<Char, AST.AstNode>
 typealias _Parser_Rule = Production<Char, AST.AstNode>
 typealias _Parser_Base = Matcher<Char, AST.AstNode>
 
-open class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(handleLeftRecursion) {
+open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "AND_PRE",

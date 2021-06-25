@@ -8,7 +8,7 @@ import kometa.*
 import kometa.util.*
 import kotlin.jvm.internal.Ref
 
-import kometa.Matcher
+import kometa.CharMatcher
 
 typealias _Calc_Inputs = Iterable<Char>
 typealias _Calc_Results = Iterable<Int>
@@ -18,7 +18,7 @@ typealias _Calc_Memo = MatchState<Char, Int>
 typealias _Calc_Rule = Production<Char, Int>
 typealias _Calc_Base = Matcher<Char, Int>
 
-open class Calc(handleLeftRecursion: Boolean = true) : Matcher<Char, Int>(handleLeftRecursion) {
+open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "DecimalDigit",

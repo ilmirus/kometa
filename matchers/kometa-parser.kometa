@@ -1,13 +1,13 @@
 import kometa.Matcher;
 import kometa.ast.AST;
 
-kometa Parser<Char, AST.AstNode> : Matcher<Char, AST.AstNode> {
+kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
 
     KOMetaFile = SP ImportsList?:il Grammar:g SP EOF -> { AST.GrammarFile(il.nr, g.r) };
 
     ImportsList = Import+:i -> { AST.ImportList(i!!.results.filterNotNull()) };
 
-    Import = USING (Ident (DOT Ident)*):name SP SEMI -> { AST.Import(name!!) };
+    Import = USING (Ident (DOT Ident)*):name SP (SEMI | !"expected ';' in import") -> { AST.Import(name!!) };
 
     Grammar = KOMETA Identifier:name
             LESS GenericId:tinput SP COMMA GenericId:tresult SP GREATER

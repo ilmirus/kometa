@@ -2,8 +2,10 @@ import kometa.Production
 import kometa.kotlin.Token
 import kometa.kotlin_lexer.KotlinLexer
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.lang.IllegalStateException
 
 class KotlinLexerTest {
     private fun tokenize(filename: String): List<Token> {
@@ -32,5 +34,15 @@ class KotlinLexerTest {
     @Test
     fun helloWorld() {
         checkTestData("hello-world")
+    }
+
+    @Test
+    fun unclosedStringLiteral1() {
+        try {
+            tokenize("unclosed-string-literal-1")
+            throw AssertionError()
+        } catch (e: IllegalStateException) {
+            assertTrue("unclosed string literal" in e.message!!)
+        }
     }
 }

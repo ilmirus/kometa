@@ -1,6 +1,6 @@
-import kometa.Matcher;
+import kometa.CharMatcher;
 
-kometa Calc<Char, Int> : Matcher<Char, Int> {
+kometa Calc<Char, Int> : CharMatcher<Int> {
     Expression = Additive;
 
     Additive = Add | Sub | Multiplicative;

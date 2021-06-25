@@ -18,7 +18,7 @@ fun generateParser(input: String, overwrite: Boolean) {
     val slashIndex = input.lastIndexOf("/")
     val name = input.substring(slashIndex + 1).removeSuffix(".kometa")
     val output =
-        if (overwrite) "src/main/kotlin/$name.generated.kt"
+        if (overwrite) "src/main/kotlin/generated/$name.generated.kt"
         else "out/$name.generated.kt"
 
     val parser = kometa.kometa_parser.Parser()

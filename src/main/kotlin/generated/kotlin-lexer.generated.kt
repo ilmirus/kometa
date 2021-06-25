@@ -9,7 +9,7 @@ import kometa.util.*
 import kotlin.jvm.internal.Ref
 
 import kometa.kotlin.Token
-import kometa.Matcher
+import kometa.CharMatcher
 
 typealias _KotlinLexer_Inputs = Iterable<Char>
 typealias _KotlinLexer_Results = Iterable<Token>
@@ -19,7 +19,7 @@ typealias _KotlinLexer_Memo = MatchState<Char, Token>
 typealias _KotlinLexer_Rule = Production<Char, Token>
 typealias _KotlinLexer_Base = Matcher<Char, Token>
 
-open class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Token>(handleLeftRecursion) {
+open class KotlinLexer(handleLeftRecursion: Boolean = true) : CharMatcher<Token>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "EOF",
@@ -12630,6 +12630,9 @@ open class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Toke
         // OR 6
         var _start_i6 = _index.element
 
+        // OR 11
+        var _start_i11 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -12755,9 +12758,29 @@ open class KotlinLexer(handleLeftRecursion: Boolean = true) : Matcher<Char, Toke
                         continue
                     }
 
+                    // OR 11
+                    _start_i11 = _index.element
+
                     // LITERAL "\"\"\""
                     _ParseLiteralString(_memo, _index, "\"\"\"")
 
+                    // OR shortcut 11
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i11
+                    } else {
+                        _label = 11
+                        continue
+                    }
+
+                    // FAIL 13
+                    _memo.results.push(null)
+                    error("unclosed string literal" + ":\n" + formatErrorString(_memo, _index.element))
+
+                    _label = 11
+                }
+                // OR 11
+                11 -> {
                     _label = 0
                 }
                 // AND 0

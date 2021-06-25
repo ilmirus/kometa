@@ -1,7 +1,7 @@
 import kometa.kotlin.Token;
-import kometa.Matcher;
+import kometa.CharMatcher;
 
-kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
+kometa KotlinLexer<Char, Token>: CharMatcher<Token> {
     tokens = (token WS)* EOF -> { it.l };
 
     token = "#!" (~NL .)*:s -> { Token.ShebangLine(s.s) };
@@ -200,7 +200,7 @@ kometa KotlinLexer<Char, Token>: Matcher<Char, Token> {
 
     uniEscapeChar = "\\u" hexDigit hexDigit hexDigit hexDigit;
 
-    multiLineStringLiteral = "\"\"\"" (stringExpression | strRef | multiLineStrText | multiLineStringQuote)* "\"\"\"";
+    multiLineStringLiteral = "\"\"\"" (stringExpression | strRef | multiLineStrText | multiLineStringQuote)* ("\"\"\"" | !"unclosed string literal");
 
     stringExpression = '$' &'{' kotlinCode;
 

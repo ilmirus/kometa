@@ -1,8 +1,8 @@
 import kometa.kotlin.AST;
 import kometa.kotlin.Token;
-import kometa.Matcher;
+import kometa.kotlin.TokenMatcher;
 
-kometa KotlinParser<Token, AST.AstNode>: Matcher<Token, AST.AstNode> {
+kometa KotlinParser<Token, AST.AstNode>: TokenMatcher<AST.AstNode> {
 
     // SECTION: general
 

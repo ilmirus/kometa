@@ -10,7 +10,7 @@ import kotlin.jvm.internal.Ref
 
 import kometa.kotlin.AST
 import kometa.kotlin.Token
-import kometa.Matcher
+import kometa.kotlin.TokenMatcher
 
 typealias _KotlinParser_Inputs = Iterable<Token>
 typealias _KotlinParser_Results = Iterable<AST.AstNode>
@@ -20,7 +20,7 @@ typealias _KotlinParser_Memo = MatchState<Token, AST.AstNode>
 typealias _KotlinParser_Rule = Production<Token, AST.AstNode>
 typealias _KotlinParser_Base = Matcher<Token, AST.AstNode>
 
-open class KotlinParser(handleLeftRecursion: Boolean = true) : Matcher<Token, AST.AstNode>(handleLeftRecursion) {
+open class KotlinParser(handleLeftRecursion: Boolean = true) : TokenMatcher<AST.AstNode>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "ABSTRACT",

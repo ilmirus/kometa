@@ -15,7 +15,7 @@ class KometaTest {
     fun bootstrapGenerated() {
         generateParser("matchers/kometa-parser.kometa", false)
         val generated = File("out/kometa-parser.generated.kt").readText()
-        val present = File("src/main/kotlin/kometa-parser.generated.kt").readText()
+        val present = File("src/main/kotlin/generated/kometa-parser.generated.kt").readText()
         assertEquals(generated, present)
     }
 
@@ -23,7 +23,7 @@ class KometaTest {
     fun calcGenerated() {
         generateParser("matchers/calc.kometa", false)
         val generated = File("out/calc.generated.kt").readText()
-        val present = File("src/main/kotlin/calc.generated.kt").readText()
+        val present = File("src/main/kotlin/generated/calc.generated.kt").readText()
         assertEquals(generated, present)
     }
 }

@@ -19,7 +19,7 @@ typealias _Parser_Memo = MatchState<Char, AST.AstNode>
 typealias _Parser_Rule = Production<Char, AST.AstNode>
 typealias _Parser_Base = Matcher<Char, AST.AstNode>
 
-open class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNode>(handleLeftRecursion) {
+open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode>(handleLeftRecursion) {
     init {
         terminals = setOf(
             "AND_PRE",
@@ -296,6 +296,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNo
         // AND 9
         var _start_i9 = _index.element
 
+        // OR 13
+        var _start_i13 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -450,11 +453,31 @@ open class Parser(handleLeftRecursion: Boolean = true) : Matcher<Char, AST.AstNo
                         continue
                     }
 
-                    // CALLORVAR SEMI
-                    var _r13: _Parser_Item? = null
-                    _r13 = _MemoCall(_memo, "SEMI", _index.element, ::SEMI, null)
-                    if (_r13 != null) _index.element = _r13.nextIndex
+                    // OR 13
+                    _start_i13 = _index.element
 
+                    // CALLORVAR SEMI
+                    var _r14: _Parser_Item? = null
+                    _r14 = _MemoCall(_memo, "SEMI", _index.element, ::SEMI, null)
+                    if (_r14 != null) _index.element = _r14.nextIndex
+
+                    // OR shortcut 13
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i13
+                    } else {
+                        _label = 13
+                        continue
+                    }
+
+                    // FAIL 15
+                    _memo.results.push(null)
+                    error("expected ';' in import" + ":\n" + formatErrorString(_memo, _index.element))
+
+                    _label = 13
+                }
+                // OR 13
+                13 -> {
                     _label = 1
                 }
                 // AND 1

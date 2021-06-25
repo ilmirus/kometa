@@ -7,7 +7,7 @@ val bootstrapAst by lazy {
     AST.GrammarFile(
         AST.ImportList(
             listOf(
-                AST.Idfr("kometa.Matcher".i),
+                AST.Idfr("kometa.CharMatcher".i),
                 AST.Idfr("kometa.ast.AST".i)
             )
         ),
@@ -15,7 +15,7 @@ val bootstrapAst by lazy {
             "Parser".i,
             "Char".i,
             "AST.AstNode".i,
-            "Matcher<Char, AST.AstNode>".i,
+            "CharMatcher<AST.AstNode>".i,
             rules = listOf(
                 AST.Rule(
                     name = "KOMetaFile",

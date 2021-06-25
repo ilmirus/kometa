@@ -563,6 +563,8 @@ abstract class Matcher<TInput, TResult>(
         return null
     }
 
+    protected abstract fun formatErrorString(memo: MatchState<TInput, TResult>, index: Int): String
+
     protected fun _ABSURD(_memo: MatchState<TInput, TResult>, __index: Int, _args: Iterable<MatchItem<TInput, TResult>>?) {
         _memo.results.push(null)
     }

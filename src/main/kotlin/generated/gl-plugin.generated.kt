@@ -1808,7 +1808,7 @@ open class GL_Plugin(handleLeftRecursion: Boolean = true) : KotlinParser(handleL
 
                     // FAIL 10
                     _memo.results.push(null)
-                    error("failed to parse shaderBlock")
+                    error("failed to parse shaderBlock" + ":\n" + formatErrorString(_memo, _index.element))
 
                     _label = 7
                 }
@@ -1926,7 +1926,7 @@ open class GL_Plugin(handleLeftRecursion: Boolean = true) : KotlinParser(handleL
 
                     // FAIL 20
                     _memo.results.push(null)
-                    error("failed to parse shaderBlock")
+                    error("failed to parse shaderBlock" + ":\n" + formatErrorString(_memo, _index.element))
 
                     _label = 17
                 }

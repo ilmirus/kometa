@@ -411,7 +411,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
             writeLine("// FAIL $n")
 
             writeLine("${results(matchArgs)}.push(null)")
-            writeLine("error(${node.message})")
+            writeLine("""error(${node.message} + ":\n" + formatErrorString(_memo, _index.element))""")
 
             appendLine()
         }
