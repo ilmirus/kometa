@@ -59,4 +59,10 @@ class KotlinParserTest {
     fun testGlExampleBefore() {
         checkTestData("gl-example-before")
     }
+
+    @Test
+    fun temp() {
+        val ast = parse("temp")
+        println(ast)
+    }
 }

@@ -564,7 +564,7 @@ object AST {
         }
     }
 
-    class GenericCallLikeComparison(val infixOperation: InfixOperation, val suffixes: List<CallSuffix>) : Expression() {
+    class GenericCallLikeComparison(val infixOperation: Expression, val suffixes: List<CallSuffix>) : Expression() {
         companion object {
             operator fun invoke(infixOperation: AstNode, suffixes: List<AstNode>): Expression =
                 if (suffixes.isEmpty()) infixOperation.cast()

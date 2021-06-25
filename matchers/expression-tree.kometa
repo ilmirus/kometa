@@ -1,0 +1,13 @@
+import kometa.kotlin.Token;
+import kometa.kotlin.AST;
+import kometa.expressionTree.ETBuilder;
+
+kometa GL_Plugin<Token, AST.AstNode>: KotlinParser {
+    override userDefinedExpression = SHADERVERTEX NL* (block:sb | !"failed to parse shaderBlock")
+                                   -> { ETBuilder.build(sb.r.cast()) };
+    override userDefinedExpression = SHADERFRAGMENT NL* (shaderBlock:sb | !"failed to parse shaderBlock")
+                                   -> { ETBuilder.build(sb.r.cast()) };
+
+    SHADERVERTEX = .:t ?((t.i as? Token.Identifier)?.s == "shaderVertex");
+    SHADERFRAGMENT = .:t ?((t.i as? Token.Identifier)?.s == "shaderFragment");
+}

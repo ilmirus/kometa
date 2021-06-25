@@ -1,0 +1,64 @@
+package kometa.expressionTree.examples
+
+import gl.*
+import kometa.expressionTree.*
+import kometa.kotlin.AST
+
+val globals = glExpressionTree {
+    @uniform val uProjectionMatrix: mat4
+
+    @uniform val uModelMatrix: mat4
+
+    @uniform val uTargetFraction: float
+
+    @uniform val uPrevFraction: float
+
+    @uniform val uExpand: float
+
+    @uniform val uCullMode: float
+
+    @uniform val uCameraPosition: vec3
+
+    @uniform val uNormalMatrix: mat3
+
+    @attribute val aVertexPosition: vec3
+
+    @attribute val aPrevVertexPosition: vec3
+
+    @attribute val aVertexNormal: vec3
+
+    @attribute val aPrevVertexNormal: vec3
+
+    @varying val vColorMul: float
+
+    fun fInterpolatedPosition(): vec3 {
+        return aVertexPosition * uTargetFraction + aPrevVertexPosition * uPrevFraction
+    }
+
+    fun fInterpolatedNormal(): vec3 {
+        return aVertexNormal * uTargetFraction + aPrevVertexNormal * uPrevFraction
+    }
+
+    fun fPosition(): vec4 {
+        return uModelMatrix * vec4(fInterpolatedPosition() + fInterpolatedNormal() * uExpand, 1.0)
+    }
+
+    fun fFaceDirection(position: vec4, normal: vec3): float {
+        return dot(position.xyz - uCameraPosition, normal)
+    }
+
+    fun fNormal(): vec3 {
+        return uNormalMatrix * fInterpolatedNormal()
+    }
+}
+
+fun main() {
+    val sh = shaderVertex {
+        val position = fPosition()
+        gl_Position = uProjectionMatrix * position
+        vColorMul =
+            if (uCullMode == 0.0) 1.0
+            else if (fFaceDirection(position, fNormal()) * uCullMode >= 0.0) 1.0
+            else 0.0
+    }
+}
