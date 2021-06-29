@@ -7,7 +7,7 @@ kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
 
     ImportsList = Import+:i -> { AST.ImportList(i!!.results.filterNotNull()) };
 
-    Import = USING (Ident (DOT Ident)*):name SP (SEMI | !"expected ';' in import") -> { AST.Import(name!!) };
+    Import = USING (Ident (DOT Ident)* (DOT '*')?):name SP (SEMI | !"expected ';' in import") -> { AST.Import(name!!) };
 
     Grammar = KOMETA Identifier:name
             LESS GenericId:tinput SP COMMA GenericId:tresult SP GREATER

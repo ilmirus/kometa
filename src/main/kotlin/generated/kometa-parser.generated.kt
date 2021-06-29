@@ -288,16 +288,22 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // AND 6
         var _start_i6 = _index.element
 
-        // STAR 8
-        var _start_i8 = _index.element
-        val _inp8 = arrayListOf<Char?>()
-        val _res8 = arrayListOf<AST.AstNode?>()
+        // AND 7
+        var _start_i7 = _index.element
 
-        // AND 9
+        // STAR 9
         var _start_i9 = _index.element
+        val _inp9 = arrayListOf<Char?>()
+        val _res9 = arrayListOf<AST.AstNode?>()
 
-        // OR 13
-        var _start_i13 = _index.element
+        // AND 10
+        var _start_i10 = _index.element
+
+        // AND 14
+        var _start_i14 = _index.element
+
+        // OR 18
+        var _start_i18 = _index.element
 
         var _label = -1
         while(true) {
@@ -327,10 +333,84 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // AND 6
                     _start_i6 = _index.element
 
+                    // AND 7
+                    _start_i7 = _index.element
+
                     // CALLORVAR Ident
-                    var _r7: _Parser_Item? = null
-                    _r7 = _MemoCall(_memo, "Ident", _index.element, ::Ident, null)
-                    if (_r7 != null) _index.element = _r7.nextIndex
+                    var _r8: _Parser_Item? = null
+                    _r8 = _MemoCall(_memo, "Ident", _index.element, ::Ident, null)
+                    if (_r8 != null) _index.element = _r8.nextIndex
+
+                    // AND shortcut 7
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 7
+                        continue
+                    }
+
+                    // STAR 9
+                    _start_i9 = _index.element
+                    _label = 9
+                }
+                // STAR 9
+                9 -> {
+                    // AND 10
+                    _start_i10 = _index.element
+
+                    // CALLORVAR DOT
+                    var _r11: _Parser_Item? = null
+                    _r11 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
+                    if (_r11 != null) _index.element = _r11.nextIndex
+
+                    // AND shortcut 10
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 10
+                        continue
+                    }
+
+                    // CALLORVAR Ident
+                    var _r12: _Parser_Item? = null
+                    _r12 = _MemoCall(_memo, "Ident", _index.element, ::Ident, null)
+                    if (_r12 != null) _index.element = _r12.nextIndex
+
+                    _label = 10
+                }
+                // AND 10
+                10 -> {
+                    val _r10_2 = _memo.results.pop()
+                    val _r10_1 = _memo.results.pop()
+
+                    if (_r10_1 != null && _r10_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i10, _index.element, _memo.input, (_r10_1.results + _r10_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i10
+                    }
+
+                    // STAR 9
+                    val _r9 = _memo.results.pop()
+                    if (_r9 != null) {
+                        _res9 += _r9.results
+                        _label = 9
+                        continue
+                    } else {
+                        _memo.results.push(_Parser_Item(_start_i9, _index.element, _memo.input, _res9.filterNotNull(), true))
+                    }
+
+                    _label = 7
+                }
+                // AND 7
+                7 -> {
+                    val _r7_2 = _memo.results.pop()
+                    val _r7_1 = _memo.results.pop()
+
+                    if (_r7_1 != null && _r7_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i7, _index.element, _memo.input, (_r7_1.results + _r7_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i7
+                    }
 
                     // AND shortcut 6
                     if (_memo.results.peek() == null) {
@@ -339,56 +419,43 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                         continue
                     }
 
-                    // STAR 8
-                    _start_i8 = _index.element
-                    _label = 8
-                }
-                // STAR 8
-                8 -> {
-                    // AND 9
-                    _start_i9 = _index.element
+                    // AND 14
+                    _start_i14 = _index.element
 
                     // CALLORVAR DOT
-                    var _r10: _Parser_Item? = null
-                    _r10 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
-                    if (_r10 != null) _index.element = _r10.nextIndex
+                    var _r15: _Parser_Item? = null
+                    _r15 = _MemoCall(_memo, "DOT", _index.element, ::DOT, null)
+                    if (_r15 != null) _index.element = _r15.nextIndex
 
-                    // AND shortcut 9
+                    // AND shortcut 14
                     if (_memo.results.peek() == null) {
                         _memo.results.push(null)
-                        _label = 9
+                        _label = 14
                         continue
                     }
 
-                    // CALLORVAR Ident
-                    var _r11: _Parser_Item? = null
-                    _r11 = _MemoCall(_memo, "Ident", _index.element, ::Ident, null)
-                    if (_r11 != null) _index.element = _r11.nextIndex
+                    // LITERAL '*'
+                    _ParseLiteralChar(_memo, _index, '*')
 
-                    _label = 9
+                    _label = 14
                 }
-                // AND 9
-                9 -> {
-                    val _r9_2 = _memo.results.pop()
-                    val _r9_1 = _memo.results.pop()
+                // AND 14
+                14 -> {
+                    val _r14_2 = _memo.results.pop()
+                    val _r14_1 = _memo.results.pop()
 
-                    if (_r9_1 != null && _r9_2 != null) {
-                        _memo.results.push(_Parser_Item(_start_i9, _index.element, _memo.input, (_r9_1.results + _r9_2.results).filterNotNull(), true))
+                    if (_r14_1 != null && _r14_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i14, _index.element, _memo.input, (_r14_1.results + _r14_2.results).filterNotNull(), true))
                     } else {
                         _memo.results.push(null)
-                        _index.element = _start_i9
+                        _index.element = _start_i14
                     }
 
-                    // STAR 8
-                    val _r8 = _memo.results.pop()
-                    if (_r8 != null) {
-                        _res8 += _r8.results
-                        _label = 8
-                        continue
-                    } else {
-                        _memo.results.push(_Parser_Item(_start_i8, _index.element, _memo.input, _res8.filterNotNull(), true))
+                    // QUES 13
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _memo.results.push(_Parser_Item(_index.element, _memo.input))
                     }
-
                     _label = 6
                 }
                 // AND 6
@@ -428,9 +495,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     }
 
                     // CALLORVAR SP
-                    var _r12: _Parser_Item? = null
-                    _r12 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r12 != null) _index.element = _r12.nextIndex
+                    var _r17: _Parser_Item? = null
+                    _r17 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r17 != null) _index.element = _r17.nextIndex
 
                     _label = 2
                 }
@@ -453,31 +520,31 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                         continue
                     }
 
-                    // OR 13
-                    _start_i13 = _index.element
+                    // OR 18
+                    _start_i18 = _index.element
 
                     // CALLORVAR SEMI
-                    var _r14: _Parser_Item? = null
-                    _r14 = _MemoCall(_memo, "SEMI", _index.element, ::SEMI, null)
-                    if (_r14 != null) _index.element = _r14.nextIndex
+                    var _r19: _Parser_Item? = null
+                    _r19 = _MemoCall(_memo, "SEMI", _index.element, ::SEMI, null)
+                    if (_r19 != null) _index.element = _r19.nextIndex
 
-                    // OR shortcut 13
+                    // OR shortcut 18
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
-                        _index.element = _start_i13
+                        _index.element = _start_i18
                     } else {
-                        _label = 13
+                        _label = 18
                         continue
                     }
 
-                    // FAIL 15
+                    // FAIL 20
                     _memo.results.push(null)
                     error("expected ';' in import" + ":\n" + formatErrorString(_memo, _index.element))
 
-                    _label = 13
+                    _label = 18
                 }
-                // OR 13
-                13 -> {
+                // OR 18
+                18 -> {
                     _label = 1
                 }
                 // AND 1

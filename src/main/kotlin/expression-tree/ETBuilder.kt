@@ -4,1087 +4,630 @@ import kometa.kotlin.AST
 import kometa.util.cast
 
 object ETBuilder {
-    fun build(node: AST.AstNode): AST.Expression = when (node) {
-        is AST.Block -> {
-            // AST.Block(listOf(statement1, statement2,...))
-            Call("AST.Block", listOf(node.statements.map { build(it) }.callListOf()))
-        }
-        is AST.Statement -> {
-            // AST.Statement(listOf(label,...), expression)
-            Call(
+    private fun List<Any>.buildList(): AST.Expression = map { build(it.cast()) }.callListOf()
+
+    private fun Any?.buildNullable(): AST.Expression = this?.let { build(it.cast()) } ?: AST.NULL
+
+    fun build(node: AST.AstNode): AST.Expression =
+        when (node) {
+            is AST.Block -> Call("AST.Block", listOf(node.statements.buildList()))
+            is AST.Statement -> Call(
                 "AST.Statement",
-                listOf(node.label.map { build(it.cast()) }.callListOf(), build(node.expression.cast()))
+                listOf(node.label.buildList(), build(node.expression.cast()))
             )
-        }
-        is AST.SingleAnnotation -> {
-            // AST.SingleAnnotation(target, unescapedAnnotation)
-            Call(
+            is AST.SingleAnnotation -> Call(
                 "AST.SingleAnnotation",
-                listOf(node.target?.let { build(it.cast()) } ?: AST.NULL, build(node.unescapedAnnotation.cast()))
+                listOf(node.target.buildNullable(), build(node.unescapedAnnotation.cast()))
             )
-        }
-        is AST.ConstructorInvocation -> {
-            // AST.ConstructorInvocation(userType, listOf(valueArguments))
-            Call(
+            is AST.ConstructorInvocation -> Call(
                 "AST.ConstructorInvocation",
-                listOf(build(node.userType), node.valueArguments.map { build(it) }.callListOf())
+                listOf(build(node.userType), node.valueArguments.buildList())
             )
-        }
-        is AST.UserType -> {
-            // AST.UserType(listOf(simpleUserTypes))
-            Call(
+            is AST.UserType -> Call(
                 "AST.UserType",
-                listOf(node.simpleTypes.map { build(it) }.callListOf())
+                listOf(node.simpleTypes.buildList())
             )
-        }
-        is AST.SimpleUserType -> {
-            // AST.SimpleUserType(name, listOf(typeArgument))
-            Call(
+            is AST.SimpleUserType -> Call(
                 "AST.SimpleUserType",
-                listOf(AST.StringLiteral(node.name), node.typeArguments.map { build(it.cast()) }.callListOf())
+                listOf(node.name.asLiteral(), node.typeArguments.buildList())
             )
-        }
-        is AST.TypeProjectionWithType -> {
-            // AST.TypeProjectionWithType(listOf(modifiers), type)
-            Call(
+            is AST.TypeProjectionWithType -> Call(
                 "AST.TypeProjectionWithType",
-                listOf(node.modifiers.map { build(it.cast()) }.callListOf(), build(node.type))
+                listOf(node.modifiers.buildList(), build(node.type))
             )
-        }
-        AST.ADD -> Call("AST.ADD")
-        AST.SUB -> Call("AST.SUB")
-        is AST.AnnotatedDelegationSpecifier -> {
-            // AST.AnnotatedDelegationSpecifier(listOf(annotations), list(delegationSpecifier))
-            Call(
+            AST.ADD -> Call("AST.ADD")
+            AST.SUB -> Call("AST.SUB")
+            is AST.AnnotatedDelegationSpecifier -> Call(
                 "AST.AnnotatedDelegationSpecifier",
                 listOf(
-                    node.annotations.map { build(it.cast()) }.callListOf(),
-                    node.delegationSpecifiers.map { build(it.cast()) }.callListOf()
+                    node.annotations.buildList(),
+                    node.delegationSpecifiers.buildList()
                 )
             )
-        }
-        is AST.AnnotatedLambda -> {
-            // AST.AnnotatedLambda(listOf(annotations), label?, lambdaLiteral)
-            Call(
+            is AST.AnnotatedLambda -> Call(
                 "AST.AnnotatedLambda",
                 listOf(
-                    node.annotations.map { build(it.cast()) }.callListOf(),
-                    node.label?.let { build(it) } ?: AST.NULL,
+                    node.annotations.buildList(),
+                    node.label.buildNullable(),
                     build(node.lambdaLiteral)
                 )
             )
+            AST.DELEGATE -> Call("AST.DELEGATE")
+            AST.FIELD -> Call("AST.FIELD")
+            AST.GET -> Call("AST.GET")
+            AST.PARAM -> Call("AST.PARAM")
+            AST.PROPERTY -> Call("AST.PROPERTY")
+            AST.RECEIVER -> Call("AST.RECEIVER")
+            AST.SET -> Call("AST.SET")
+            AST.SETPARAM -> Call("AST.SETPARAM")
+            is AST.AnonymousInitializer -> Call("AST.AnonymousInitializer", listOf(build(node.block)))
+            AST.AS -> Call("AST.AS")
+            AST.AS_SAFE -> Call("AST.AS_SAFE")
+            is AST.AugmentedAssignment -> Call(
+                "AST.AugmentedAssignment",
+                listOf(build(node.lhs.cast()), build(node.op), build(node.rhs))
+            )
+            is AST.DirectAssignment -> Call("AST.DirectAssignment", listOf(build(node.lhs), build(node.rhs)))
+            AST.ADD_ASSIGNMENT -> Call("AST.ADD_ASSIGNMENT")
+            AST.DIV_ASSIGNMENT -> Call("AST.DIV_ASSIGNMENT")
+            AST.MOD_ASSIGNMENT -> Call("AST.MOD_ASSIGNMENT")
+            AST.MULT_ASSIGNMENT -> Call("AST.MULT_ASSIGNMENT")
+            AST.SUB_ASSIGNMENT -> Call("AST.SUB_ASSIGNMENT")
+            is AST.CallSuffix -> Call(
+                "AST.CallSuffix",
+                listOf(
+                    node.typeArguments.buildList(),
+                    node.valueArguments.buildList(),
+                    node.annotatedLambda.buildNullable()
+                )
+            )
+            is AST.CallableReference -> Call(
+                "AST.CallableReference",
+                listOf(node.receiverType.buildNullable(), node.name.asLiteral())
+            )
+            is AST.CatchBlock -> Call(
+                "AST.CatchBlock",
+                listOf(node.annotations.buildList(), node.name.asLiteral(), build(node.type), build(node.block))
+            )
+            is AST.ClassBody -> Call("AST.ClassBody", listOf(node.members.buildList()))
+            is AST.EnumClassBody -> Call(
+                "AST.EnumClassBody",
+                listOf(node.entries.buildList(), node.members.buildList())
+            )
+            is AST.Class -> Call(
+                "AST.Class", listOf(
+                    node.modifiers.buildList(),
+                    node.name.asLiteral(),
+                    node.typeParameters.buildList(),
+                    node.primaryConstructor.buildNullable(),
+                    node.annotatedDelegationSpecifiers.buildList(),
+                    node.typeConstraints.buildList(),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.FunInterface -> Call(
+                "AST.FunInterface", listOf(
+                    node.modifiers.buildList(), node.name.asLiteral(),
+                    node.typeParameters.buildList(), node.typeConstraints.buildList(), node.body.buildNullable()
+                )
+            )
+            is AST.Interface -> Call(
+                "AST.Interface", listOf(
+                    node.modifiers.buildList(), node.name.asLiteral(),
+                    node.typeParameters.buildList(), node.typeConstraints.buildList(), node.body.buildNullable()
+                )
+            )
+            is AST.ClassParameter -> Call(
+                "AST.ClassParameter",
+                listOf(
+                    node.modifiers.buildList(),
+                    node.name.asLiteral(),
+                    build(node.type),
+                    node.initial.buildNullable(),
+                    node.vov.buildNullable()
+                )
+            )
+            is AST.CompanionObject -> Call(
+                "AST.CompanionObject",
+                listOf(
+                    node.modifiers.buildList(),
+                    node.name?.let { it.asLiteral() } ?: AST.NULL,
+                    node.annotatedDelegationSpecifiers.buildList(),
+                    node.body.buildNullable()
+                )
+            )
+            AST.GE -> Call("AST.GE")
+            AST.GREATER -> Call("AST.GREATER")
+            AST.LE -> Call("AST.LE")
+            AST.LESS -> Call("AST.LESS")
+            is AST.Constructor -> Call(
+                "AST.Constructor",
+                listOf(
+                    node.modifiers.buildList(),
+                    node.classParameters.buildList(),
+                    node.constructorDelegationCall.buildNullable(),
+                    node.body.buildNullable(),
+                    if (node.primary) AST.TRUE else AST.FALSE
+                )
+            )
+            is AST.SuperCall -> Call("AST.SuperCall", listOf(node.arguments.buildList()))
+            is AST.ThisCall -> Call("AST.ThisCall", listOf(node.arguments.buildList()))
+            is AST.EXCL -> Call("AST.EXCL")
+            is AST.EnumEntry -> Call(
+                "AST.EnumEntry", listOf(
+                    node.modifiers.buildList(),
+                    node.name.asLiteral(), node.arguments.buildList(), node.body.buildNullable()
+                )
+            )
+            AST.EQEQ -> Call("AST.EQEQ")
+            AST.EQEQEQ -> Call("AST.EQEQEQ")
+            AST.EXCL_EQ -> Call("AST.EXCL_EQ")
+            AST.EXCL_EQEQ -> Call("AST.EXCL_EQEQ")
+            is AST.ExplicitDelegation -> Call(
+                "AST.ExplicitDelegation", listOf(
+                    build(node.type.cast()), build(node.expression)
+                )
+            )
+            is AST.Additive -> Call(
+                "AST.Additive", listOf(
+                    build(node.lhs), build(node.op), build(node.rhs)
+                )
+            )
+            is AST.AsExpression -> Call(
+                "AST.AsExpression", listOf(
+                    build(node.lhs), build(node.op), build(node.rhs)
+                )
+            )
+            is AST.CollectionLiteral -> Call(
+                "AST.CollectionLiteral", listOf(
+                    node.expressions.buildList()
+                )
+            )
+            is AST.Comparison -> Call(
+                "AST.Comparison", listOf(
+                    build(node.lhs), build(node.op), build(node.rhs)
+                )
+            )
+            is AST.Conjunction -> Call(
+                "AST.Conjunction", listOf(
+                    node.subs.buildList()
+                )
+            )
+            is AST.DirectlyAssignableExpression -> Call(
+                "AST.DirectlyAssignableExpression", listOf(
+                    build(node.expression), build(node.suffix.cast())
+                )
+            )
+            is AST.Disjunction -> Call(
+                "AST.Disjunction", listOf(
+                    node.subs.buildList()
+                )
+            )
+            is AST.ElvisExpression -> Call(
+                "AST.ElvisExpression", listOf(
+                    build(node.lhs), build(node.rhs)
+                )
+            )
+            is AST.Equality -> Call(
+                "AST.Equality", listOf(
+                    build(node.lhs), build(node.op), build(node.rhs)
+                )
+            )
+            is AST.AnonymousFunction -> Call(
+                "AST.AnonymousFunction", listOf(
+                    node.receiverType.buildNullable(),
+                    node.valueParameters.buildList(),
+                    node.returnType.buildNullable(),
+                    node.typeConstraints.buildList(),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.LambdaLiteral -> Call(
+                "AST.LambdaLiteral", listOf(
+                    node.parameters.buildList(), node.statements.buildList()
+                )
+            )
+            is AST.GenericCallLikeComparison -> Call(
+                "AST.GenericCallLikeComparison", listOf(
+                    build(node.infixOperation), node.suffixes.buildList()
+                )
+            )
+            is AST.IfExpression -> Call(
+                "AST.IfExpression", listOf(
+                    build(node.expression), node.thenExpression.buildNullable(), node.elseExpression.buildNullable()
+                )
+            )
+            is AST.InfixFunctionCall -> Call(
+                "AST.InfixFunctionCall", listOf(
+                    build(node.lhs), node.functionName.asLiteral(), build(node.rhs)
+                )
+            )
+            AST.BREAK -> Call("AST.BREAK")
+            is AST.BreakAt -> Call(
+                "AST.BreakAt", listOf(
+                    node.label.asLiteral()
+                )
+            )
+            AST.CONTINUE -> Call("AST.CONTINUE")
+            is AST.ContinueAt -> Call(
+                "AST.ContinueAt", listOf(
+                    node.label.asLiteral()
+                )
+            )
+            is AST.Return -> Call(
+                "AST.Return", listOf(
+                    node.expression.buildNullable()
+                )
+            )
+            is AST.ReturnAt -> Call(
+                "AST.ReturnAt", listOf(
+                    node.label.asLiteral()
+                )
+            )
+            is AST.Throw -> Call(
+                "AST.Throw", listOf(
+                    build(node.expression)
+                )
+            )
+            AST.FALSE -> Call("AST.FALSE")
+            AST.TRUE -> Call("AST.TRUE")
+            is AST.CharacterLiteral -> Call(
+                "AST.CharacterLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.DoubleLiteral -> Call(
+                "AST.DoubleLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.FloatLiteral -> Call(
+                "AST.FloatLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.IntegerLiteral -> Call(
+                "AST.IntegerLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.LongLiteral -> Call(
+                "AST.LongLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            AST.NULL -> Call("AST.NULL")
+            is AST.StringLiteral -> Call(
+                "AST.StringLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.UnsignedLiteral -> Call(
+                "AST.UnsignedLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.UnsignedLongLiteral -> Call(
+                "AST.UnsignedLongLiteral", listOf(
+                    node.s.asLiteral()
+                )
+            )
+            is AST.Multiplicative -> Call(
+                "AST.Multiplicative", listOf(
+                    build(node.lhs), build(node.op), build(node.rhs)
+                )
+            )
+            is AST.NameExpression -> Call(
+                "AST.NameExpression", listOf(
+                    node.name.asLiteral()
+                )
+            )
+            is AST.PostfixUnaryExpression -> Call(
+                "AST.PostfixUnaryExpression", listOf(
+                    build(node.expression), node.postfixUnarySuffixes.buildList()
+                )
+            )
+            is AST.PrefixUnaryExpression -> Call(
+                "AST.PrefixUnaryExpression", listOf(
+                    node.unaryPrefixes.buildList(), build(node.expression)
+                )
+            )
+            is AST.RangeExpression -> Call(
+                "AST.RangeExpression", listOf(
+                    build(node.lhs), build(node.rhs)
+                )
+            )
+            is AST.Super -> Call("AST.Super", listOf(
+                node.type.buildNullable(), node.name?.let { it.asLiteral() } ?: AST.NULL
+            ))
+            AST.THIS -> Call("AST.THIS")
+            is AST.ThisAt -> Call(
+                "AST.ThisAt", listOf(
+                    node.name.asLiteral()
+                )
+            )
+            is AST.TryExpression -> Call(
+                "AST.TryExpression", listOf(
+                    build(node.block), node.catchBlocks.buildList(), node.finallyBlock.buildNullable()
+                )
+            )
+            is AST.WhenExpression -> Call(
+                "AST.WhenExpression", listOf(
+                    node.subject.buildNullable(), node.entries.buildList()
+                )
+            )
+            is AST.BlockBody -> Call(
+                "AST.BlockBody", listOf(
+                    build(node.block)
+                )
+            )
+            is AST.ExpressionBody -> Call(
+                "AST.ExpressionBody", listOf(
+                    build(node.expression)
+                )
+            )
+            is AST.FunctionDeclaration -> Call(
+                "AST.FunctionDeclaration", listOf(
+                    node.modifiers.buildList(),
+                    node.typeParameters.buildList(),
+                    node.receiverType.buildNullable(),
+                    node.name.asLiteral(),
+                    node.parameters.buildList(),
+                    node.returnType.buildNullable(),
+                    node.typeConstraints.buildList(),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.FunctionType -> Call(
+                "AST.FunctionType", listOf(
+                    node.receiverType.buildNullable(),
+                    node.parameters.buildList(),
+                    build(node.returnType)
+                )
+            )
+            is AST.Getter -> Call(
+                "AST.Getter", listOf(
+                    node.modifiers.buildList(),
+                    node.type.buildNullable(),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.ImportHeader -> error("ImportHeader should not be present in expression tree")
+            is AST.IndexingSuffix -> Call(
+                "AST.IndexingSuffix", listOf(
+                    node.expressions.buildList()
+                )
+            )
+            is AST.InfixOperation -> Call(
+                "AST.InfixOperation", listOf(
+                    build(node.lhs), node.suffixes.buildList()
+                )
+            )
+            AST.IS -> Call("AST.IS")
+            AST.NOT_IS -> Call("AST.NOT_IS")
+            is AST.InCheckSuffix -> Call(
+                "AST.InCheckSuffix", listOf(
+                    build(node.op.cast()), build(node.expression)
+                )
+            )
+            AST.IN -> Call("AST.IN")
+            AST.NOT_IN -> Call("AST.NOT_IN")
+            is AST.IsCheckSuffix -> Call(
+                "AST.IsCheckSuffix", listOf(
+                    build(node.op.cast()), build(node.type)
+                )
+            )
+            is AST.KotlinFile -> error("KotlinFile should not be present in expression tree")
+            is AST.Label -> Call(
+                "AST.Label", listOf(
+                    node.name.asLiteral()
+                )
+            )
+            is AST.LambdaParameter -> Call(
+                "AST.LambdaParameter", listOf(
+                    build(node.variableDeclaration), node.type.buildNullable()
+                )
+            )
+            is AST.DoWhileStatement -> Call(
+                "AST.DoWhileStatement", listOf(
+                    node.body.buildNullable(), build(node.expression)
+                )
+            )
+            is AST.ForStatement -> Call(
+                "AST.ForStatement", listOf(
+                    node.annotations.buildList(),
+                    build(node.variableDeclaration),
+                    build(node.expression),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.WhileStatement -> Call(
+                "AST.WhileStatement", listOf(
+                    build(node.expression), node.body.buildNullable()
+                )
+            )
+            AST.COLONCOLON -> Call("AST.COLONCOLON")
+            AST.DOT -> Call("AST.DOT")
+            AST.QUEST_DOT -> Call("AST.QUEST_DOT")
+            AST.ANNOTATION_ -> Call("AST.ANNOTATION_")
+            AST.DATA -> Call("AST.DATA")
+            AST.ENUM -> Call("AST.ENUM")
+            AST.INNER -> Call("AST.INNER")
+            AST.SEALED -> Call("AST.SEALED")
+            AST.VALUE -> Call("AST.VALUE")
+            AST.EXTERNAL -> Call("AST.EXTERNAL")
+            AST.INFIX -> Call("AST.INFIX")
+            AST.INLINE -> Call("AST.INLINE")
+            AST.OPERATOR -> Call("AST.OPERATOR")
+            AST.SUSPEND -> Call("AST.SUSPEND")
+            AST.TAILREC -> Call("AST.TAILREC")
+            AST.ABSTRACT -> Call("AST.ABSTRACT")
+            AST.FINAL -> Call("AST.FINAL")
+            AST.OPEN -> Call("AST.OPEN")
+            AST.LATEINIT -> Call("AST.LATEINIT")
+            AST.OVERRIDE -> Call("AST.OVERRIDE")
+            is AST.MultiAnnotation -> Call(
+                "AST.MultiAnnotation", listOf(
+                    node.target.buildNullable(), node.unescapedAnnotations.buildList()
+                )
+            )
+            AST.CROSSINLINE -> Call("AST.CROSSINLINE")
+            AST.NOINLINE -> Call("AST.NOINLINE")
+            AST.VARARG -> Call("AST.VARARG")
+            AST.ACTUAL -> Call("AST.ACTUAL")
+            AST.EXPECT -> Call("AST.EXPECT")
+            AST.CONST -> Call("AST.CONST")
+            AST.INTERNAL -> Call("AST.INTERNAL")
+            AST.PRIVATE -> Call("AST.PRIVATE")
+            AST.PROTECTED -> Call("AST.PROTECTED")
+            AST.PUBLIC -> Call("AST.PUBLIC")
+            AST.DIV -> Call("AST.DIV")
+            AST.MOD -> Call("AST.MOD")
+            AST.MULT -> Call("AST.MULT")
+            AST.NOT_IN -> Call("AST.NOT_IN")
+            is AST.Name -> error("Name should not be present in built AST")
+            is AST.NameAndType -> error("NameAndType should not be present in built AST")
+            is AST.ClassNavigationSuffix -> Call(
+                "AST.ClassNavigationSuffix", listOf(
+                    build(node.op)
+                )
+            )
+            is AST.ExpressionNavigationSuffix -> Call(
+                "AST.ExpressionNavigationSuffix", listOf(
+                    build(node.op), build(node.expression)
+                )
+            )
+            is AST.IdentifierNavigationSuffix -> Call(
+                "AST.IdentifierNavigationSuffix", listOf(
+                    build(node.op), node.name.asLiteral()
+                )
+            )
+            is AST.NullableType -> Call(
+                "AST.NullableType", listOf(
+                    build(node.type.cast())
+                )
+            )
+            AST.DYNAMIC -> Call("AST.DYNAMIC")
+            is AST.ObjectDeclaration -> Call(
+                "AST.ObjectDeclaration", listOf(
+                    node.modifiers.buildList(),
+                    node.name.asLiteral(),
+                    node.annotatedDelegationSpecifiers.buildList(),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.ObjectLiteral -> Call(
+                "AST.ObjectLiteral", listOf(
+                    node.annotatedDelegationSpecifiers.buildList(), node.body.buildNullable()
+                )
+            )
+            is AST.PackageHeader -> error("PackageHeader should not be present in expression tree")
+            AST.DECR -> Call("AST.DECR")
+            AST.EXCL_EXCL -> Call("AST.EXCL_EXCL")
+            AST.INCR -> Call("AST.INCR")
+            is AST.PropertyDeclaration -> Call(
+                "AST.PropertyDeclaration", listOf(
+                    node.modifiers.buildList(),
+                    build(node.vov),
+                    node.typeParameters.buildList(),
+                    node.receiverType.buildNullable(),
+                    build(node.variableDeclaration),
+                    node.typeConstraints.buildList(),
+                    node.body.buildNullable(),
+                    node.getter.buildNullable(),
+                    node.setter.buildNullable()
+                )
+            )
+            is AST.PropertyDelegate -> Call(
+                "AST.PropertyDelegate", listOf(
+                    build(node.expression)
+                )
+            )
+            AST.REIFIED -> Call("AST.REIFIED")
+            is AST.Setter -> Call(
+                "AST.Setter", listOf(
+                    node.modifiers.buildList(),
+                    node.parameter.buildNullable(),
+                    node.type.buildNullable(),
+                    node.body.buildNullable()
+                )
+            )
+            is AST.FunctionTypeWithModifiers -> Call(
+                "AST.FunctionTypeWithModifiers", listOf(
+                    node.modifiers.buildList(),
+                    build(node.type)
+                )
+            )
+            is AST.ReceiverType -> Call(
+                "AST.ReceiverType", listOf(
+                    node.modifiers.buildList(),
+                    build(node.type.cast())
+                )
+            )
+            AST.SUSPEND -> Call("AST.SUSPEND")
+            AST.MULT -> Call("AST.MULT")
+            AST.DYNAMIC -> Call("AST.DYNAMIC")
+            is AST.TypeAlias -> error("TypeAlias should not be present in expression tree")
+            is AST.TypeArgumentsPostfix -> Call(
+                "AST.TypeArgumentsPostfix", listOf(
+                    node.typeArguments.buildList()
+                )
+            )
+            is AST.TypeConstraint -> Call(
+                "AST.TypeConstraint", listOf(
+                    node.annotations.buildList(), node.name.asLiteral(), build(node.type)
+                )
+            )
+            is AST.TypeParameter -> Call(
+                "AST.TypeParameter", listOf(
+                    node.modifiers.buildList(), node.name.asLiteral(), node.type.buildNullable()
+                )
+            )
+            AST.VAL -> Call("AST.VAL")
+            AST.VAR -> Call("AST.VAR")
+            is AST.ValueArgument -> Call("AST.ValueArgument", listOf(
+                node.annotations.buildList(),
+                node.name?.let { it.asLiteral() } ?: AST.NULL,
+                build(node.expression),
+                if (node.withSpread) AST.TRUE else AST.FALSE
+            ))
+            is AST.ValueParameter -> Call(
+                "AST.ValueParameter", listOf(
+                    node.modifiers.buildList(),
+                    node.name.asLiteral(),
+                    build(node.type),
+                    node.initial.buildNullable()
+                )
+            )
+            AST.IN -> Call("AST.IN")
+            AST.OUT -> Call("AST.OUT")
+            is AST.WhenEntry -> Call(
+                "AST.WhenEntry", listOf(
+                    node.conditions?.buildList() ?: AST.NULL, build(node.body.cast())
+                )
+            )
+            is AST.WhenSubject -> Call(
+                "AST.WhenSubject", listOf(
+                    node.annotations.buildList(),
+                    node.variableDeclaration.buildNullable(),
+                    build(node.expression)
+                )
+            )
+            AST.FILE -> Call("AST.FILE")
+            is AST.MultiVariableDeclaration -> Call(
+                "AST.MultiVariableDeclaration", listOf(
+                    node.decls.buildList()
+                )
+            )
+            is AST.SingleVariableDeclaration -> Call(
+                "AST.SingleVariableDeclaration", listOf(
+                    node.annotations.buildList(),
+                    node.name.asLiteral(),
+                    node.type.buildNullable()
+                )
+            )
+            else -> error("$node is not supported yet")
         }
-        AST.DELEGATE -> Call("AST.DELEGATE")
-        AST.FIELD -> Call("AST.FIELD")
-        AST.GET -> Call("AST.GET")
-        AST.PARAM -> Call("AST.PARAM")
-        AST.PROPERTY -> Call("AST.PROPERTY")
-        AST.RECEIVER -> Call("AST.RECEIVER")
-        AST.SET -> Call("AST.SET")
-        AST.SETPARAM -> Call("AST.SETPARAM")
-        is AST.AnonymousInitializer -> {
-            // AST.AnonymousInitializer(block)
-            Call("AST.AnonymousInitializer", listOf(build(node.block)))
-        }
-        AST.AS -> Call("AST.AS")
-        AST.AS_SAFE -> Call("AST.AS_SAFE")
-        /*
-            is AST.AugmentedAssignment -> {
-                dumpAssignableExpression(astNode.lhs)
-                buffer.append(" ")
-                dumpAssignmentAndOperator(astNode.op)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            is AST.DirectAssignment -> {
-                dump(astNode.lhs)
-                buffer.append(" = ")
-                dump(astNode.rhs)
-            }
-            AST.ADD_ASSIGNMENT -> buffer.append("+=")
-            AST.DIV_ASSIGNMENT -> buffer.append("/=")
-            AST.MOD_ASSIGNMENT -> buffer.append("%=")
-            AST.MULT_ASSIGNMENT -> buffer.append("*=")
-            AST.SUB_ASSIGNMENT -> buffer.append("-=")
-            is AST.Block -> {
-                // TODO: generate one-liner is statement.size == 1
-                buffer.appendLine("{")
-                expressionPriorityStack.push(0)
-                indent++
-                for (statement in astNode.statements) {
-                    indent()
-                    dump(statement)
-                    buffer.appendLine()
-                }
-                indent--
-                indent()
-                expressionPriorityStack.pop()
-                buffer.appendLine("}")
-            }
-            is AST.CallSuffix -> {
-                dumpTypeArguments(astNode.typeArguments)
-                if (astNode.valueArguments.isNotEmpty() || astNode.annotatedLambda == null) {
-                    buffer.append("(")
-                }
-                dumpValueArguments(astNode.valueArguments)
-                if (astNode.valueArguments.isNotEmpty() || astNode.annotatedLambda == null) {
-                    buffer.append(")")
-                }
-                astNode.annotatedLambda?.let {
-                    buffer.append(" ")
-                    dump(it)
-                }
-            }
-            is AST.CallableReference -> {
-                astNode.receiverType?.let { dump(it) }
-                buffer.append("::")
-                buffer.append(astNode.name)
-            }
-            is AST.CatchBlock -> {
-                buffer.append("catch(")
-                dumpModifiers(astNode.annotations)
-                buffer.append(astNode.name)
-                buffer.append(": ")
-                dump(astNode.type)
-                buffer.append(") ")
-                dump(astNode.block)
-            }
-            is AST.ClassBody -> {
-                buffer.append("{")
-                buffer.appendLine()
-                indent++
-                for (member in astNode.members) {
-                    indent()
-                    dumpClassMemberDeclaration(member)
-                    buffer.appendLine()
-                }
-                indent--
-                buffer.appendLine("}")
-            }
-            is AST.EnumClassBody -> {
-                buffer.append("{")
-                indent++
-                if (astNode.entries.isNotEmpty()) {
-                    for (entry in astNode.entries.dropLast(1)) {
-                        indent()
-                        dump(entry)
-                        buffer.appendLine(",")
-                    }
-                    indent()
-                    dump(astNode.entries.last())
-                    buffer.appendLine(";")
-                    buffer.appendLine()
-                }
-
-                for (member in astNode.members) {
-                    indent()
-                    dumpClassMemberDeclaration(member)
-                    buffer.appendLine()
-                }
-                indent--
-                buffer.appendLine("}")
-            }
-            is AST.Class -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("class ")
-                buffer.append(astNode.name)
-                dumpTypeParameters(astNode.typeParameters)
-                astNode.primaryConstructor?.let { dump(it) }
-                if (astNode.annotatedDelegationSpecifiers.isNotEmpty()) {
-                    buffer.append(": ")
-                    for (spec in astNode.annotatedDelegationSpecifiers.dropLast(1)) {
-                        dump(spec)
-                        buffer.append(", ")
-                    }
-                    dump(astNode.annotatedDelegationSpecifiers.last())
-                }
-                buffer.append(" ")
-                dumpTypeConstraints(astNode.typeConstraints)
-                if (astNode.typeConstraints.isNotEmpty() && astNode.body != null) {
-                    buffer.append(" ")
-                }
-                astNode.body?.let { dump(it) }
-            }
-            is AST.FunInterface -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("fun interface ")
-                buffer.append(astNode.name)
-                dumpTypeParameters(astNode.typeParameters)
-                buffer.append(" ")
-                if (astNode.typeConstraints.isNotEmpty()) {
-                    buffer.append("where ")
-                    for (constraint in astNode.typeConstraints.dropLast(1)) {
-                        dump(constraint)
-                        buffer.append(", ")
-                    }
-                    dump(astNode.typeConstraints.last())
-                    if (astNode.body != null) {
-                        buffer.append(" ")
-                    }
-                }
-                astNode.body?.let { dump(it) }
-            }
-            is AST.Interface -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("interface ")
-                buffer.append(astNode.name)
-                dumpTypeParameters(astNode.typeParameters)
-                buffer.append(" ")
-                if (astNode.typeConstraints.isNotEmpty()) {
-                    buffer.append("where ")
-                    for (constraint in astNode.typeConstraints.dropLast(1)) {
-                        dump(constraint)
-                        buffer.append(", ")
-                    }
-                    dump(astNode.typeConstraints.last())
-                    if (astNode.body != null) {
-                        buffer.append(" ")
-                    }
-                }
-                astNode.body?.let { dump(it) }
-            }
-            is AST.ClassHeader -> error("ClassHeader should not be present in resulting AST")
-            is AST.ClassParameter -> {
-                dumpModifiers(astNode.modifiers)
-                astNode.vov?.let {
-                    dump(it)
-                    buffer.append(" ")
-                }
-                buffer.append(astNode.name)
-                buffer.append(": ")
-                dump(astNode.type)
-                astNode.initial?.let {
-                    buffer.append(" = ")
-                    dump(it)
-                }
-            }
-            is AST.CompanionObject -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("companion object")
-                astNode.name?.let {
-                    buffer.append(it)
-                    buffer.append(" ")
-                }
-                if (astNode.annotatedDelegationSpecifiers.isNotEmpty()) {
-                    buffer.append(" : ")
-                    dumpAnnotatedDelegatedSpecifiers(astNode.annotatedDelegationSpecifiers)
-                }
-                astNode.body?.let {
-                    buffer.append(" ")
-                    dump(it)
-                }
-            }
-            AST.GE -> buffer.append(">=")
-            AST.GREATER -> buffer.append(">")
-            AST.LE -> buffer.append("<=")
-            AST.LESS -> buffer.append("<")
-            is AST.Constructor -> {
-                dumpModifiers(astNode.modifiers)
-                if (!astNode.primary || astNode.modifiers.isNotEmpty()) {
-                    buffer.append("constructor")
-                }
-                buffer.append("(")
-                if (astNode.classParameters.isNotEmpty()) {
-                    for (classParameter in astNode.classParameters.dropLast(1)) {
-                        dump(classParameter)
-                        buffer.append(", ")
-                    }
-                    dump(astNode.classParameters.last())
-                }
-                buffer.append(")")
-                astNode.constructorDelegationCall?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-                astNode.body?.let {
-                    buffer.append(" ")
-                    dump(it)
-                }
-            }
-            is AST.SuperCall -> {
-                buffer.append("super(")
-                dumpValueArguments(astNode.arguments)
-                buffer.append(")")
-            }
-            is AST.ThisCall -> {
-                buffer.append("this(")
-                dumpValueArguments(astNode.arguments)
-                buffer.append(")")
-            }
-            is AST.ConstructorInvocation -> {
-                dump(astNode.userType)
-                buffer.append("(")
-                dumpValueArguments(astNode.valueArguments)
-                buffer.append(")")
-            }
-            AST.EXCL -> buffer.append("!")
-            is AST.EnumEntry -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append(astNode.name)
-                buffer.append("(")
-                dumpValueArguments(astNode.arguments)
-                buffer.append(")")
-                astNode.body?.let {
-                    dump(it)
-                }
-            }
-            AST.EQEQ -> buffer.append("==")
-            AST.EQEQEQ -> buffer.append("===")
-            AST.EXCL_EQ -> buffer.append("!=")
-            AST.EXCL_EQEQ -> buffer.append("!==")
-            is AST.ExplicitDelegation -> {
-                when (val type = astNode.type) {
-                    is AST.FunctionType -> dump(type)
-                    is AST.UserType -> dump(type)
-                }!!
-                buffer.append(" by ")
-                dump(astNode.expression)
-            }
-            is AST.Additive -> {
-                dump(astNode.lhs)
-                buffer.append(" ")
-                dump(astNode.op)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            is AST.AsExpression -> {
-                dump(astNode.lhs)
-                buffer.append(" ")
-                dump(astNode.op)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            is AST.CollectionLiteral -> {
-                buffer.append("[")
-                expressionPriorityStack.push(0)
-                if (astNode.expressions.isNotEmpty()) {
-                    for (expr in astNode.expressions.dropLast(1)) {
-                        dump(expr)
-                        buffer.append(", ")
-                    }
-                    dump(astNode.expressions.last())
-                }
-                expressionPriorityStack.pop()
-            }
-            is AST.Comparison -> {
-                dump(astNode.lhs)
-                buffer.append(" ")
-                dump(astNode.op)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            is AST.Conjunction -> {
-                for (expr in astNode.subs.dropLast(1)) {
-                    dump(expr)
-                    buffer.append(" && ")
-                }
-                dump(astNode.subs.last())
-            }
-            is AST.DirectlyAssignableExpression -> {
-                dump(astNode.expression)
-                dumpAssignableSuffix(astNode.suffix)
-            }
-            is AST.Disjunction -> {
-                for (expr in astNode.subs.dropLast(1)) {
-                    dump(expr)
-                    buffer.append(" || ")
-                }
-                dump(astNode.subs.last())
-            }
-            is AST.ElvisExpression -> {
-                dump(astNode.lhs)
-                buffer.append(" ?: ")
-                dump(astNode.rhs)
-            }
-            is AST.Equality -> {
-                dump(astNode.lhs)
-                buffer.append(" ")
-                dump(astNode.op)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            is AST.AnonymousFunction -> {
-                buffer.append("fun ")
-                astNode.receiverType?.let {
-                    dump(it)
-                    buffer.append(".")
-                }
-                dumpValueParameters(astNode.valueParameters)
-                astNode.returnType?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-                dumpTypeConstraints(astNode.typeConstraints)
-                astNode.body?.let {
-                    expressionPriorityStack.push(0)
-                    buffer.append(" ")
-                    dump(it)
-                    expressionPriorityStack.pop()
-                }
-            }
-            is AST.LambdaLiteral -> {
-                buffer.append("{")
-                if (astNode.parameters.isNotEmpty()) {
-                    buffer.append(" ")
-                    for (param in astNode.parameters.dropLast(1)) {
-                        dump(param)
-                        buffer.append(", ")
-                    }
-                    dump(astNode.parameters.last())
-                    buffer.append(" ->")
-                }
-                if (astNode.statements.size > 1) {
-                    buffer.appendLine()
-                    indent++
-                    for (stmt in astNode.statements) {
-                        indent()
-                        expressionPriorityStack.push(0)
-                        dump(stmt)
-                        expressionPriorityStack.pop()
-                        buffer.appendLine()
-                    }
-                    indent--
-                    indent()
-                    buffer.appendLine("}")
-                } else {
-                    buffer.append(" ")
-                    for (stmt in astNode.statements) {
-                        expressionPriorityStack.push(0)
-                        dump(stmt)
-                        expressionPriorityStack.pop()
-                    }
-                    buffer.append(" }")
-                }
-            }
-            is AST.GenericCallLikeComparison -> {
-                dump(astNode.infixOperation)
-                for (suffix in astNode.suffixes) {
-                    dump(suffix)
-                }
-            }
-            is AST.IfExpression -> {
-                buffer.append("if (")
-                dump(astNode.expression)
-                buffer.append(") ")
-                astNode.thenExpression?.let {
-                    dumpControlStructureBody(it)
-                    if (astNode.elseExpression != null) {
-                        buffer.append(" ")
-                    }
-                }
-                astNode.elseExpression?.let {
-                    buffer.append("else ")
-                    dumpControlStructureBody(it)
-                }
-            }
-            is AST.InfixFunctionCall -> {
-                dump(astNode.lhs)
-                buffer.append(" ")
-                buffer.append(astNode.functionName)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            AST.BREAK -> buffer.append("break")
-            is AST.BreakAt -> {
-                buffer.append("break@")
-                buffer.append(astNode.label)
-            }
-            AST.CONTINUE -> buffer.append("continue")
-            is AST.ContinueAt -> {
-                buffer.append("continue@")
-                buffer.append(astNode.label)
-            }
-            is AST.Return -> {
-                buffer.append("return")
-                astNode.expression?.let {
-                    buffer.append(" ")
-                    expressionPriorityStack.push(0)
-                    dump(it)
-                    expressionPriorityStack.pop()
-                }
-            }
-            is AST.ReturnAt -> {
-                buffer.append("return@")
-                buffer.append(astNode.label)
-                astNode.expression?.let {
-                    buffer.append(" ")
-                    expressionPriorityStack.push(0)
-                    dump(it)
-                    expressionPriorityStack.pop()
-                }
-            }
-            is AST.Throw -> {
-                buffer.append("throw ")
-                expressionPriorityStack.push(0)
-                dump(astNode.expression)
-                expressionPriorityStack.pop()
-            }
-            AST.FALSE -> buffer.append("false")
-            AST.TRUE -> buffer.append("true")
-            is AST.CharacterLiteral -> buffer.append(astNode.s)
-            is AST.DoubleLiteral -> buffer.append(astNode.s)
-            is AST.FloatLiteral -> buffer.append(astNode.s)
-            is AST.IntegerLiteral -> buffer.append(astNode.s)
-            is AST.LongLiteral -> buffer.append(astNode.s)
-            AST.NULL -> buffer.append("null")
-            is AST.StringLiteral -> buffer.append(astNode.s)
-            is AST.UnsignedLiteral -> buffer.append(astNode.s)
-            is AST.UnsignedLongLiteral -> buffer.append(astNode.s)
-            is AST.Multiplicative -> {
-                dump(astNode.lhs)
-                buffer.append(" ")
-                dump(astNode.op)
-                buffer.append(" ")
-                dump(astNode.rhs)
-            }
-            is AST.NameExpression -> buffer.append(astNode.name)
-            is AST.PostfixUnaryExpression -> {
-                dump(astNode.expression)
-                for (suffix in astNode.postfixUnarySuffixes) {
-                    dumpPostfixUnarySuffix(suffix)
-                }
-            }
-            is AST.PrefixUnaryExpression -> {
-                for (prefix in astNode.unaryPrefixes) {
-                    dumpUnaryPrefix(prefix)
-                }
-                dump(astNode.expression)
-            }
-            is AST.RangeExpression -> {
-                dump(astNode.lhs)
-                buffer.append("..")
-                dump(astNode.rhs)
-            }
-            is AST.Super -> {
-                buffer.append("super")
-                astNode.type?.let {
-                    buffer.append("<")
-                    dump(it)
-                    buffer.append(">")
-                }
-                astNode.name?.let {
-                    buffer.append("@")
-                    buffer.append(it)
-                }
-            }
-            AST.THIS -> buffer.append("this")
-            is AST.ThisAt -> {
-                buffer.append("this@")
-                buffer.append(astNode.name)
-            }
-            is AST.TryExpression -> {
-                buffer.append("try ")
-                dump(astNode.block)
-                for (catchBlock in astNode.catchBlocks) {
-                    indent()
-                    dump(catchBlock)
-                }
-                astNode.finallyBlock?.let {
-                    indent()
-                    dump(it)
-                }
-            }
-            is AST.WhenExpression -> {
-                buffer.append("when")
-                expressionPriorityStack.push(0)
-                astNode.subject?.let {
-                    dump(it)
-                }
-                buffer.append(" {")
-                indent++
-                for (entry in astNode.entries) {
-                    dump(entry)
-                }
-                indent--
-                indent()
-                buffer.appendLine("}")
-                expressionPriorityStack.pop()
-            }
-            is AST.BlockBody -> {
-                buffer.append(" ")
-                dump(astNode.block)
-            }
-            is AST.ExpressionBody -> {
-                buffer.append("= ")
-                expressionPriorityStack.push(0)
-                dump(astNode.expression)
-                expressionPriorityStack.pop()
-            }
-            is AST.FunctionDeclaration -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("fun ")
-                dumpTypeParameters(astNode.typeParameters)
-                if (astNode.typeParameters.isNotEmpty()) {
-                    buffer.append(" ")
-                }
-                astNode.receiverType?.let {
-                    dump(it)
-                    buffer.append(".")
-                }
-                buffer.append(astNode.name)
-                dumpValueParameters(astNode.parameters)
-                astNode.returnType?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-                astNode.body?.let {
-                    dump(it)
-                }
-            }
-            is AST.FunctionType -> {
-                astNode.receiverType?.let {
-                    dump(it)
-                    buffer.append(".")
-                }
-                buffer.append("(")
-                for (type in astNode.parameters.dropLast(1)) {
-                    dump(type)
-                    buffer.append(", ")
-                }
-                dump(astNode.parameters.last())
-                buffer.append(") -> ")
-                dump(astNode.returnType)
-            }
-            is AST.Getter -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("get")
-                astNode.body?.let { body ->
-                    buffer.append("()")
-                    astNode.type?.let {
-                        buffer.append(": ")
-                        dump(it)
-                    }
-                    buffer.append(" ")
-                    dump(body)
-                }
-            }
-            is AST.ImportHeader -> {
-                buffer.append("import ")
-                buffer.append(astNode.fqName)
-                if (astNode.star) {
-                    buffer.append(".*")
-                }
-                astNode.alias?.let {
-                    buffer.append(" as ")
-                    buffer.append(it)
-                }
-            }
-            is AST.IndexingSuffix -> {
-                buffer.append("[")
-                for (expr in astNode.expressions.dropLast(1)) {
-                    dump(expr)
-                    buffer.append(", ")
-                }
-                dump(astNode.expressions.last())
-                buffer.append("]")
-            }
-            is AST.InfixOperation -> {
-                dump(astNode.lhs)
-                for (suffix in astNode.suffixes) {
-                    buffer.append(" ")
-                    dump(suffix)
-                }
-            }
-            AST.IS -> buffer.append("is")
-            AST.NOT_IS -> buffer.append("!is")
-            is AST.InCheckSuffix -> {
-                when (astNode.op) {
-                    AST.IN -> buffer.append("in")
-                    AST.NOT_IN -> buffer.append("!in")
-                }
-                buffer.append(" ")
-                dump(astNode.expression)
-            }
-            is AST.IsCheckSuffix -> {
-                dump(astNode.op)
-                buffer.append(" ")
-                dump(astNode.type)
-            }
-            is AST.KotlinFile -> {
-                for (annotation in astNode.fileAnnotations) {
-                    dump(annotation)
-                    buffer.appendLine()
-                }
-                if (astNode.fileAnnotations.isNotEmpty()) {
-                    buffer.appendLine()
-                }
-                astNode.packageHeader?.let {
-                    dump(it)
-                    buffer.appendLine()
-                }
-                for (header in astNode.importList) {
-                    dump(header)
-                    buffer.appendLine()
-                }
-                if (astNode.importList.isNotEmpty()) {
-                    buffer.appendLine()
-                }
-                for (declaration in astNode.topLevelObject) {
-                    dumpDeclaration(declaration)
-                    buffer.appendLine()
-                }
-            }
-            is AST.Label -> {
-                buffer.append(astNode.name)
-                buffer.append("@")
-            }
-            is AST.LambdaParameter -> {
-                dump(astNode.variableDeclaration)
-                astNode.type?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-            }
-            is AST.DoWhileStatement -> {
-                expressionPriorityStack.push(0)
-                buffer.append("do")
-                astNode.body?.let {
-                    buffer.append(" ")
-                    dumpControlStructureBody(it)
-                }
-                if (astNode.body is AST.Block) {
-                    indent()
-                }
-                buffer.append("while(")
-                dump(astNode.expression)
-                buffer.append(")")
-                expressionPriorityStack.pop()
-            }
-            is AST.ForStatement -> {
-                expressionPriorityStack.push(0)
-                buffer.append("for (")
-                dumpModifiers(astNode.annotations)
-                dump(astNode.variableDeclaration)
-                buffer.append(" in ")
-                dump(astNode.expression)
-                buffer.append(") ")
-                astNode.body?.let {
-                    dumpControlStructureBody(it)
-                }
-                expressionPriorityStack.pop()
-            }
-            is AST.WhileStatement -> {
-                expressionPriorityStack.push(0)
-                buffer.append("while (")
-                dump(astNode.expression)
-                buffer.append(") ")
-                astNode.body?.let {
-                    dumpControlStructureBody(it)
-                }
-                expressionPriorityStack.pop()
-            }
-            AST.COLONCOLON -> buffer.append("::")
-            AST.DOT -> buffer.append(".")
-            AST.QUEST_DOT -> buffer.append("?.")
-            AST.ANNOTATION_ -> buffer.append("annotation")
-            AST.DATA -> buffer.append("data")
-            AST.ENUM -> buffer.append("enum")
-            AST.INNER -> buffer.append("inner")
-            AST.SEALED -> buffer.append("sealed")
-            AST.VALUE -> buffer.append("value")
-            AST.EXTERNAL -> buffer.append("external")
-            AST.INFIX -> buffer.append("infix")
-            AST.INLINE -> buffer.append("inline")
-            AST.OPERATOR -> buffer.append("operator")
-            AST.SUSPEND -> buffer.append("suspend")
-            AST.TAILREC -> buffer.append("tailrec")
-            AST.ABSTRACT -> buffer.append("abstract")
-            AST.FINAL -> buffer.append("final")
-            AST.OPEN -> buffer.append("open")
-            AST.LATEINIT -> buffer.append("lateinit")
-            AST.OVERRIDE -> buffer.append("override")
-            is AST.MultiAnnotation -> {
-                buffer.append("@")
-                astNode.target?.let {
-                    dump(it)
-                    buffer.append(":")
-                }
-                buffer.append("[")
-                for (unescapedAnnotation in astNode.unescapedAnnotations.dropLast(1)) {
-                    dumpUnescapedAnnotation(unescapedAnnotation)
-                    buffer.append(", ")
-                }
-                dumpUnescapedAnnotation(astNode.unescapedAnnotations.last())
-                buffer.append("]")
-            }
-            is AST.SingleAnnotation -> {
-                buffer.append("@")
-                dumpUnescapedAnnotation(astNode.unescapedAnnotation)
-            }
-            AST.CROSSINLINE -> buffer.append("crossinline")
-            AST.NOINLINE -> buffer.append("noinline")
-            AST.VARARG -> buffer.append("vararg")
-            AST.ACTUAL -> buffer.append("actual")
-            AST.EXPECT -> buffer.append("expect")
-            AST.CONST -> buffer.append("const")
-            AST.INTERNAL -> buffer.append("internal")
-            AST.PRIVATE -> buffer.append("private")
-            AST.PROTECTED -> buffer.append("protected")
-            AST.PUBLIC -> buffer.append("public")
-            AST.DIV -> buffer.append("/")
-            AST.MOD -> buffer.append("%")
-            AST.MULT -> buffer.append("*")
-            AST.NOT_IN -> buffer.append("!in")
-            is AST.Name -> error("AST.Name should not be present in resulting AST")
-            is AST.NameAndType -> error("AST.NameAndType should not be present in resulting AST")
-            is AST.ClassNavigationSuffix -> {
-                dump(astNode.op)
-                buffer.append("class")
-            }
-            is AST.ExpressionNavigationSuffix -> {
-                dump(astNode.op)
-                buffer.append("(")
-                dump(astNode.expression)
-                buffer.append(")")
-            }
-            is AST.IdentifierNavigationSuffix -> {
-                dump(astNode.op)
-                buffer.append(astNode.name)
-            }
-            is AST.NullableType -> {
-                when (val type = astNode.type) {
-                    AST.DYNAMIC -> buffer.append("dynamic")
-                    is AST.UserType -> dump(type)
-                }!!
-                buffer.append("?")
-            }
-            is AST.ObjectDeclaration -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("object ")
-                buffer.append(astNode.name)
-                if (astNode.annotatedDelegationSpecifiers.isNotEmpty()) {
-                    buffer.append(" : ")
-                    dumpAnnotatedDelegatedSpecifiers(astNode.annotatedDelegationSpecifiers)
-                }
-                astNode.body?.let {
-                    buffer.append(" ")
-                    dump(it)
-                }
-            }
-            is AST.ObjectLiteral -> {
-                expressionPriorityStack.push(0)
-                buffer.append("object")
-                if (astNode.annotatedDelegationSpecifiers.isNotEmpty()) {
-                    buffer.append(" : ")
-                    dumpAnnotatedDelegatedSpecifiers(astNode.annotatedDelegationSpecifiers)
-                }
-                astNode.body?.let {
-                    buffer.append(" ")
-                    dump(it)
-                }
-                expressionPriorityStack.pop()
-            }
-            is AST.PackageHeader -> {
-                buffer.append("package ")
-                buffer.append(astNode.fqName)
-                buffer.appendLine()
-            }
-            AST.DECR -> buffer.append("--")
-            AST.EXCL_EXCL -> buffer.append("!!")
-            AST.INCR -> buffer.append("++")
-            is AST.PropertyDeclaration -> {
-                dumpModifiers(astNode.modifiers)
-                dump(astNode.vov)
-                buffer.append(" ")
-                dumpTypeParameters(astNode.typeParameters)
-                astNode.receiverType?.let {
-                    dump(it)
-                    buffer.append(".")
-                }
-                dump(astNode.variableDeclaration)
-                buffer.append(" ")
-                dumpTypeConstraints(astNode.typeConstraints)
-                if (astNode.typeConstraints.isNotEmpty()) {
-                    buffer.append(" ")
-                }
-                astNode.body?.let {
-                    when (it) {
-                        is AST.ExpressionBody -> dump(it)
-                        is AST.PropertyDelegate -> dump(it)
-                    }
-                }
-                astNode.getter?.let {
-                    buffer.appendLine()
-                    indent++
-                    indent()
-                    dump(it)
-                    indent--
-                }
-                astNode.setter?.let {
-                    buffer.appendLine()
-                    indent++
-                    indent()
-                    dump(it)
-                    indent--
-                }
-            }
-            is AST.PropertyDelegate -> {
-                buffer.append("by ")
-                expressionPriorityStack.push(0)
-                dump(astNode.expression)
-                expressionPriorityStack.pop()
-            }
-            AST.REIFIED -> buffer.append("reified")
-            is AST.Setter -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("set")
-                astNode.parameter?.let {
-                    buffer.append("(")
-                    dump(it)
-                    buffer.append(")")
-                }
-                astNode.type?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-                astNode.body?.let {
-                    buffer.append(" ")
-                    dump(it)
-                }
-            }
-            is AST.SimpleUserType -> {
-                buffer.append(astNode.name)
-                dumpTypeArguments(astNode.typeArguments)
-            }
-            is AST.Statement -> {
-                for (modifier in astNode.label) {
-                    when(modifier) {
-                        is AST.MultiAnnotation -> {
-                            dump(modifier)
-                            buffer.append(" ")
-                        }
-                        is AST.SingleAnnotation -> {
-                            dump(modifier)
-                            buffer.append(" ")
-                        }
-                        is AST.Label -> dump(modifier)
-                    }
-                }
-
-                dump(astNode.expression as AST.AstNode)
-            }
-            is AST.FunctionTypeWithModifiers -> error("AST.FunctionTypeWithModifiers should not be present in final AST")
-            is AST.ReceiverType -> {
-                for (modifier in astNode.modifiers) {
-                    when(modifier) {
-                        is AST.MultiAnnotation -> dump(modifier)
-                        is AST.SingleAnnotation -> dump(modifier)
-                        AST.SUSPEND -> buffer.append("suspend")
-                    }
-                    buffer.append(" ")
-                }
-
-                when (val type = astNode.type) {
-                    is AST.NullableType -> dump(type)
-                    AST.MULT -> buffer.append("*")
-                    is AST.TypeProjectionWithType -> dump(type)
-                    is AST.UserType -> dump(type)
-                }!!
-            }
-            AST.DYNAMIC -> buffer.append("dynamic")
-            is AST.UserType -> {
-                for (simple in astNode.simpleTypes.dropLast(1)) {
-                    dump(simple)
-                    buffer.append(".")
-                }
-                dump(astNode.simpleTypes.last())
-            }
-            is AST.TypeAlias -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append("typealias ")
-                buffer.append(astNode.alias)
-                dumpTypeParameters(astNode.typeParameters)
-                buffer.append(" = ")
-                dump(astNode.originalType)
-            }
-            is AST.TypeArgumentsPostfix -> dumpTypeArguments(astNode.typeArguments)
-            is AST.TypeConstraint -> {
-                dumpModifiers(astNode.annotations)
-                buffer.append(astNode.name)
-                buffer.append(": ")
-                dump(astNode.type)
-            }
-            is AST.TypeParameter -> {
-                dumpTypeParameterModifiers(astNode.modifiers)
-                buffer.append(astNode.name)
-                astNode.type?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-            }
-            is AST.TypeProjectionWithType -> {
-                dumpTypeParameterModifiers(astNode.modifiers)
-                dump(astNode.type)
-            }
-            AST.VAL -> buffer.append("val")
-            AST.VAR -> buffer.append("var")
-            is AST.ValueArgument -> {
-                dumpModifiers(astNode.annotations)
-                astNode.name?.let {
-                    buffer.append(it)
-                    buffer.append(" = ")
-                }
-                if (astNode.withSpread) {
-                    buffer.append("*")
-                }
-                dump(astNode.expression)
-            }
-            is AST.ValueParameter -> {
-                dumpModifiers(astNode.modifiers)
-                buffer.append(astNode.name)
-                buffer.append(": ")
-                dump(astNode.type)
-                astNode.initial?.let {
-                    buffer.append(" = ")
-                    dump(it)
-                }
-            }
-            AST.IN -> buffer.append("in")
-            AST.OUT -> buffer.append("out")
-            is AST.WhenEntry -> {
-                astNode.conditions?.let {
-                    if (it.isNotEmpty()) {
-                        for (condition in it.dropLast(1)) {
-                            dumpWhenCondition(condition)
-                            buffer.append(", ")
-                        }
-                        dumpWhenCondition(it.last())
-                    }
-                } ?: buffer.append("else")
-                buffer.append(" -> ")
-                dumpControlStructureBody(astNode.body)
-            }
-            is AST.WhenSubject -> {
-                buffer.append("(")
-                astNode.variableDeclaration?.let {
-                    dumpModifiers(astNode.annotations)
-                    dump(it)
-                    buffer.append(" = ")
-                }
-                dump(astNode.expression)
-                buffer.append(")")
-            }
-            AST.FILE -> buffer.append("file")
-            is AST.MultiVariableDeclaration -> {
-                buffer.append("(")
-                for (varDecl in astNode.decls.dropLast(1)) {
-                    dump(varDecl)
-                    buffer.append(", ")
-                }
-                dump(astNode.decls.last())
-                buffer.append(")")
-            }
-            is AST.SingleVariableDeclaration -> {
-                dumpModifiers(astNode.annotations)
-                buffer.append(astNode.name)
-                astNode.type?.let {
-                    buffer.append(": ")
-                    dump(it)
-                }
-            }
-         */
-        else -> error("$node is not supported yet")
-    }
 
     private fun Call(name: String, arguments: List<AST.Expression>? = null): AST.Expression {
         val split = name.split(".")
@@ -1102,9 +645,9 @@ object ETBuilder {
         return AST.PostfixUnaryExpression(AST.NameExpression(receiver), args)
     }
 
+    private fun String.asLiteral() = AST.StringLiteral("\"$this\"")
+
     private fun List<AST.Expression>.callListOf(): AST.Expression = Call("listOf", this)
 
     private fun AST.Expression.asValueArgument(): AST.ValueArgument = AST.ValueArgument(emptyList(), null, this, false)
-
-    private fun String.asUserType(): AST.UserType = AST.UserType(split('.').map { AST.SimpleUserType(it, emptyList()) })
 }

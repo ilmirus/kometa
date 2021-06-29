@@ -53,7 +53,7 @@ val globals = glExpressionTree {
 }
 
 fun main() {
-    val sh = shaderVertex {
+    val sh = glExpressionTree {
         val position = fPosition()
         gl_Position = uProjectionMatrix * position
         vColorMul =
