@@ -6514,6 +6514,12 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // AND 0
         var _start_i0 = _index.element
 
+        // AND 1
+        var _start_i1 = _index.element
+
+        // NOT 3
+        var _start_i3 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -6521,8 +6527,44 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // AND 0
                     _start_i0 = _index.element
 
+                    // AND 1
+                    _start_i1 = _index.element
+
                     // LITERAL "import"
                     _ParseLiteralString(_memo, _index, "import")
+
+                    // AND shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 1
+                        continue
+                    }
+
+                    // NOT 3
+                    _start_i3 = _index.element
+
+                    // CALLORVAR IdentBody
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "IdentBody", _index.element, ::IdentBody, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
+
+                    // NOT 3
+                    val _r3 = _memo.results.pop()
+                    _memo.results.push(if (_r3 == null) _Parser_Item(_start_i3, _memo.input) else null)
+                    _index.element = _start_i3
+                    _label = 1
+                }
+                // AND 1
+                1 -> {
+                    val _r1_2 = _memo.results.pop()
+                    val _r1_1 = _memo.results.pop()
+
+                    if (_r1_1 != null && _r1_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i1
+                    }
 
                     // AND shortcut 0
                     if (_memo.results.peek() == null) {
@@ -6532,9 +6574,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     }
 
                     // CALLORVAR SP
-                    var _r2: _Parser_Item? = null
-                    _r2 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r2 != null) _index.element = _r2.nextIndex
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 0
                 }
@@ -6567,6 +6609,12 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // AND 0
         var _start_i0 = _index.element
 
+        // AND 1
+        var _start_i1 = _index.element
+
+        // NOT 3
+        var _start_i3 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -6574,8 +6622,44 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // AND 0
                     _start_i0 = _index.element
 
+                    // AND 1
+                    _start_i1 = _index.element
+
                     // LITERAL "kometa"
                     _ParseLiteralString(_memo, _index, "kometa")
+
+                    // AND shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 1
+                        continue
+                    }
+
+                    // NOT 3
+                    _start_i3 = _index.element
+
+                    // CALLORVAR IdentBody
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "IdentBody", _index.element, ::IdentBody, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
+
+                    // NOT 3
+                    val _r3 = _memo.results.pop()
+                    _memo.results.push(if (_r3 == null) _Parser_Item(_start_i3, _memo.input) else null)
+                    _index.element = _start_i3
+                    _label = 1
+                }
+                // AND 1
+                1 -> {
+                    val _r1_2 = _memo.results.pop()
+                    val _r1_1 = _memo.results.pop()
+
+                    if (_r1_1 != null && _r1_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i1
+                    }
 
                     // AND shortcut 0
                     if (_memo.results.peek() == null) {
@@ -6585,9 +6669,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     }
 
                     // CALLORVAR SP
-                    var _r2: _Parser_Item? = null
-                    _r2 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r2 != null) _index.element = _r2.nextIndex
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 0
                 }
@@ -6695,6 +6779,12 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // AND 0
         var _start_i0 = _index.element
 
+        // AND 1
+        var _start_i1 = _index.element
+
+        // NOT 3
+        var _start_i3 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -6702,8 +6792,44 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // AND 0
                     _start_i0 = _index.element
 
+                    // AND 1
+                    _start_i1 = _index.element
+
                     // LITERAL "override"
                     _ParseLiteralString(_memo, _index, "override")
+
+                    // AND shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 1
+                        continue
+                    }
+
+                    // NOT 3
+                    _start_i3 = _index.element
+
+                    // CALLORVAR IdentBody
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "IdentBody", _index.element, ::IdentBody, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
+
+                    // NOT 3
+                    val _r3 = _memo.results.pop()
+                    _memo.results.push(if (_r3 == null) _Parser_Item(_start_i3, _memo.input) else null)
+                    _index.element = _start_i3
+                    _label = 1
+                }
+                // AND 1
+                1 -> {
+                    val _r1_2 = _memo.results.pop()
+                    val _r1_1 = _memo.results.pop()
+
+                    if (_r1_1 != null && _r1_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i1
+                    }
 
                     // AND shortcut 0
                     if (_memo.results.peek() == null) {
@@ -6713,9 +6839,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     }
 
                     // CALLORVAR SP
-                    var _r2: _Parser_Item? = null
-                    _r2 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r2 != null) _index.element = _r2.nextIndex
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 0
                 }
@@ -6748,6 +6874,12 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // AND 0
         var _start_i0 = _index.element
 
+        // AND 1
+        var _start_i1 = _index.element
+
+        // NOT 3
+        var _start_i3 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -6755,8 +6887,44 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // AND 0
                     _start_i0 = _index.element
 
+                    // AND 1
+                    _start_i1 = _index.element
+
                     // LITERAL "new"
                     _ParseLiteralString(_memo, _index, "new")
+
+                    // AND shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 1
+                        continue
+                    }
+
+                    // NOT 3
+                    _start_i3 = _index.element
+
+                    // CALLORVAR IdentBody
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "IdentBody", _index.element, ::IdentBody, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
+
+                    // NOT 3
+                    val _r3 = _memo.results.pop()
+                    _memo.results.push(if (_r3 == null) _Parser_Item(_start_i3, _memo.input) else null)
+                    _index.element = _start_i3
+                    _label = 1
+                }
+                // AND 1
+                1 -> {
+                    val _r1_2 = _memo.results.pop()
+                    val _r1_1 = _memo.results.pop()
+
+                    if (_r1_1 != null && _r1_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i1
+                    }
 
                     // AND shortcut 0
                     if (_memo.results.peek() == null) {
@@ -6766,9 +6934,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     }
 
                     // CALLORVAR SP
-                    var _r2: _Parser_Item? = null
-                    _r2 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r2 != null) _index.element = _r2.nextIndex
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 0
                 }
@@ -6801,6 +6969,12 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // AND 0
         var _start_i0 = _index.element
 
+        // AND 1
+        var _start_i1 = _index.element
+
+        // NOT 3
+        var _start_i3 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -6808,8 +6982,44 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // AND 0
                     _start_i0 = _index.element
 
+                    // AND 1
+                    _start_i1 = _index.element
+
                     // LITERAL "lr"
                     _ParseLiteralString(_memo, _index, "lr")
+
+                    // AND shortcut 1
+                    if (_memo.results.peek() == null) {
+                        _memo.results.push(null)
+                        _label = 1
+                        continue
+                    }
+
+                    // NOT 3
+                    _start_i3 = _index.element
+
+                    // CALLORVAR IdentBody
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "IdentBody", _index.element, ::IdentBody, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
+
+                    // NOT 3
+                    val _r3 = _memo.results.pop()
+                    _memo.results.push(if (_r3 == null) _Parser_Item(_start_i3, _memo.input) else null)
+                    _index.element = _start_i3
+                    _label = 1
+                }
+                // AND 1
+                1 -> {
+                    val _r1_2 = _memo.results.pop()
+                    val _r1_1 = _memo.results.pop()
+
+                    if (_r1_1 != null && _r1_2 != null) {
+                        _memo.results.push(_Parser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
+                    } else {
+                        _memo.results.push(null)
+                        _index.element = _start_i1
+                    }
 
                     // AND shortcut 0
                     if (_memo.results.peek() == null) {
@@ -6819,9 +7029,9 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     }
 
                     // CALLORVAR SP
-                    var _r2: _Parser_Item? = null
-                    _r2 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r2 != null) _index.element = _r2.nextIndex
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 0
                 }

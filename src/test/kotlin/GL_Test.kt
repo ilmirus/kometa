@@ -26,8 +26,8 @@ class GL_Test {
     private fun parse(filename: String): AST.KotlinFile {
         val parser = GL_Plugin()
         val tokens = tokenize(filename)
-        trace = true
-        File("out/dump.txt").delete()
+//        trace = true
+//        File("out/dump.txt").delete()
         val match = parser.getMatch(tokens, Production("kotlinFile", parser::kotlinFile))
 
         if (!match.success) {

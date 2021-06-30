@@ -637,7 +637,7 @@ object ETBuilder {
         dotAccesses.mapTo(args) { AST.IdentifierNavigationSuffix(AST.DOT, it) }
         if (arguments != null) {
             args += AST.CallSuffix(
-                emptyList<AST.TypeProjection>(),
+                emptyList(),
                 arguments.map { it.asValueArgument() },
                 null
             )

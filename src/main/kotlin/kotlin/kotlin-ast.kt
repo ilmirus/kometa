@@ -25,11 +25,9 @@ object AST {
 
     object DropDeclaration : AstNode(), Declaration
 
-    class PackageHeader private constructor(val fqName: String) : AstNode()
+    class PackageHeader(val fqName: String) : AstNode()
 
-    class ImportHeader private constructor(
-        val fqName: String, val star: Boolean = false, val alias: String? = null
-    ) : AstNode()
+    class ImportHeader(val fqName: String, val star: Boolean = false, val alias: String? = null) : AstNode()
 
     class TypeAlias private constructor(
         val modifiers: List<Modifier>,
@@ -119,7 +117,7 @@ object AST {
         )
     }
 
-    class ClassHeader private constructor(
+    class ClassHeader(
         val name: String,
         val typeParameters: List<AstNode>,
         val primaryConstructor: AstNode?,

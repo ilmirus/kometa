@@ -1,0 +1,5 @@
+import kometa.CharMatcher;
+
+kometa Test<Char, Int>: CharMatcher<Int> {
+    importList = _ABSURD;
+}

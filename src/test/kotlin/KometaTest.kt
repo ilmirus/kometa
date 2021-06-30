@@ -1,3 +1,7 @@
+import kometa.Production
+import kometa.ast.AST
+import kometa.kometa_parser.Parser
+import kometa.util.cast
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -25,5 +29,18 @@ class KometaTest {
         val generated = File("out/calc.generated.kt").readText()
         val present = File("src/main/kotlin/generated/calc.generated.kt").readText()
         assertEquals(generated, present)
+    }
+
+    private fun parse(filename: String): AST.GrammarFile {
+        val parser = Parser()
+        val input = File("testData/kometa/$filename.kometa").readText()
+        val match = parser.getMatch(input.toList(), Production("KOmetaFile", parser::KOMetaFile))
+        if (!match.success) error(match.error!!)
+        return match.result().cast()
+    }
+
+    @Test
+    fun testRuleStartingWithKeyword() {
+        parse("ruleStartingWithKeyword")
     }
 }

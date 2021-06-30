@@ -122,12 +122,12 @@ kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
 
     KEYWORD = USING | KOMETA | OVERRIDE | NEW | LR;
 
-    USING = "import" SP;
-    KOMETA = "kometa" SP;
+    USING = "import" ~IdentBody SP;
+    KOMETA = "kometa" ~IdentBody SP;
     EQUALS = ('=' | "::=") SP;
-    OVERRIDE = "override" SP;
-    NEW = "new" SP;
-    LR = "lr" SP;
+    OVERRIDE = "override" ~IdentBody SP;
+    NEW = "new" ~IdentBody SP;
+    LR = "lr" ~IdentBody SP;
     SEMI = (';' | ',') SP;
     BANG = '!' SP;
     OR = '|' SP;
