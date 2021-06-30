@@ -18,7 +18,7 @@ typealias _Calc_Memo = MatchState<Char, Int>
 typealias _Calc_Rule = Production<Char, Int>
 typealias _Calc_Base = Matcher<Char, Int>
 
-open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLeftRecursion) {
+open class Calc : CharMatcher<Int>() {
     init {
         terminals = setOf(
             "DecimalDigit",
@@ -135,8 +135,9 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
                     // CALL BinaryOp
                     val _start_i1 = _index.element
                     var _r1: _Calc_Item? = null
+                    val _arg1_0 = '+'
 
-                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Additive", ::Additive))!!, _Calc_Item(Production("Multiplicative", ::Multiplicative))!!)
+                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Multiplicative", ::Multiplicative))!!, _Calc_Item(_arg1_0)!!, _Calc_Item(Production("Additive", ::Additive))!!)
                     if (_args != null) {
                         _actual_args1 += _args.drop(_arg_index.element)
                     }
@@ -174,8 +175,9 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
                     // CALL BinaryOp
                     val _start_i1 = _index.element
                     var _r1: _Calc_Item? = null
+                    val _arg1_0 = '-'
 
-                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Additive", ::Additive))!!, _Calc_Item(Production("Multiplicative", ::Multiplicative))!!)
+                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Multiplicative", ::Multiplicative))!!, _Calc_Item(_arg1_0)!!, _Calc_Item(Production("Additive", ::Additive))!!)
                     if (_args != null) {
                         _actual_args1 += _args.drop(_arg_index.element)
                     }
@@ -293,8 +295,9 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
                     // CALL BinaryOp
                     val _start_i1 = _index.element
                     var _r1: _Calc_Item? = null
+                    val _arg1_0 = "*"
 
-                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Multiplicative", ::Multiplicative))!!, _Calc_Item(Production("Number", ::Number))!!, _Calc_Item(Production("DecimalDigit", ::DecimalDigit))!!)
+                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Number", ::Number))!!, _Calc_Item(_arg1_0.toList())!!, _Calc_Item(Production("Multiplicative", ::Multiplicative))!!, _Calc_Item(Production("DecimalDigit", ::DecimalDigit))!!)
                     if (_args != null) {
                         _actual_args1 += _args.drop(_arg_index.element)
                     }
@@ -332,8 +335,9 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
                     // CALL BinaryOp
                     val _start_i1 = _index.element
                     var _r1: _Calc_Item? = null
+                    val _arg1_0 = "/"
 
-                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Multiplicative", ::Multiplicative))!!, _Calc_Item(Production("Number", ::Number))!!, _Calc_Item(Production("DecimalDigit", ::DecimalDigit))!!)
+                    var _actual_args1: _Calc_Args = mutableListOf(_Calc_Item(Production("Number", ::Number))!!, _Calc_Item(_arg1_0.toList())!!, _Calc_Item(Production("Multiplicative", ::Multiplicative))!!, _Calc_Item(Production("DecimalDigit", ::DecimalDigit))!!)
                     if (_args != null) {
                         _actual_args1 += _args.drop(_arg_index.element)
                     }
@@ -509,14 +513,19 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
                     // AND 15
                     _start_i15 = _index.element
 
-                    // CALLORVAR first
+                    // CALL first
+                    val _start_i17 = _index.element
                     var _r17: _Calc_Item? = null
-                    if (first?.production != null) {
-                        _r17 = _MemoCall(_memo, first.production!!.methodName, _index.element, first.production!!.op, if (_args != null) _args.drop(_arg_index.element) else null)
-                    } else {
-                        _r17 = _ParseLiteralObj(_memo, _index, first?.inputs)
+
+                    var _actual_args17: _Calc_Args = mutableListOf(type!!)
+                    if (_args != null) {
+                        _actual_args17 += _args.drop(_arg_index.element)
                     }
-                    if (_r17 != null) _index.element = _r17.nextIndex
+                    _r17 = _MemoCall(_memo, first?.productionName!!, _index.element, first?.production?.op!!, _actual_args17)
+
+                    if (_r17 != null) {
+                        _index.element = _r17.nextIndex
+                    }
 
                     // BIND a
                     a = _memo.results.peek()
@@ -563,19 +572,14 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
                         continue
                     }
 
-                    // CALL second
-                    val _start_i20 = _index.element
+                    // CALLORVAR second
                     var _r20: _Calc_Item? = null
-
-                    var _actual_args20: _Calc_Args = mutableListOf(type!!)
-                    if (_args != null) {
-                        _actual_args20 += _args.drop(_arg_index.element)
+                    if (second?.production != null) {
+                        _r20 = _MemoCall(_memo, second.production!!.methodName, _index.element, second.production!!.op, if (_args != null) _args.drop(_arg_index.element) else null)
+                    } else {
+                        _r20 = _ParseLiteralObj(_memo, _index, second?.inputs)
                     }
-                    _r20 = _MemoCall(_memo, second?.productionName!!, _index.element, second?.production?.op!!, _actual_args20)
-
-                    if (_r20 != null) {
-                        _index.element = _r20.nextIndex
-                    }
+                    if (_r20 != null) _index.element = _r20.nextIndex
 
                     // BIND b
                     b = _memo.results.peek()
@@ -744,29 +748,20 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
         val _arg_input_index = Ref.IntRef()
 
         var type: _Calc_Item? = null
-        var a: _Calc_Item? = null
-        var b: _Calc_Item? = null
 
-        // OR 0
+        // ARGS 0
         var _start_i0 = _index.element
 
-        // ARGS 1
-        var _start_i1 = _index.element
-
-        // AND 5
-        var _start_i5 = _index.element
-
-        // ARGS 10
-        var _start_i10 = _index.element
+        // PLUS 4
+        var _start_i4 = _index.element
+        val _inp4 = arrayListOf<Char?>()
+        val _res4 = arrayListOf<Int?>()
 
         var _label = -1
         while(true) {
             when(_label) {
                 -1 -> {
-                    // OR 0
-                    _start_i0 = _index.element
-
-                    // ARGS 1
+                    // ARGS 0
                     _arg_index.element = 0
                     _arg_input_index.element = 0
                         // ANY
@@ -777,119 +772,52 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
 
                     if (_memo.argResults.pop() == null) {
                         _memo.results.push(null)
-                        _label = 1
-                        continue
-                    }
-
-                    // AND 5
-                    _start_i5 = _index.element
-
-                    // CALL Digits
-                    val _start_i7 = _index.element
-                    var _r7: _Calc_Item? = null
-
-                    var _actual_args7: _Calc_Args = mutableListOf(type!!)
-                    if (_args != null) {
-                        _actual_args7 += _args.drop(_arg_index.element)
-                    }
-                    _r7 = _MemoCall(_memo, "Digits", _index.element, ::Digits, _actual_args7)
-
-                    if (_r7 != null) {
-                        _index.element = _r7.nextIndex
-                    }
-
-                    // BIND a
-                    a = _memo.results.peek()
-
-                    // AND shortcut 5
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 5
-                        continue
-                    }
-
-                    // CALLORVAR type
-                    var _r9: _Calc_Item? = null
-                    if (type?.production != null) {
-                        _r9 = _MemoCall(_memo, type.production!!.methodName, _index.element, type.production!!.op, if (_args != null) _args.drop(_arg_index.element) else null)
-                    } else {
-                        _r9 = _ParseLiteralObj(_memo, _index, type?.inputs)
-                    }
-                    if (_r9 != null) _index.element = _r9.nextIndex
-
-                    // BIND b
-                    b = _memo.results.peek()
-
-                    _label = 5
-                }
-                // AND 5
-                5 -> {
-                    val _r5_2 = _memo.results.pop()
-                    val _r5_1 = _memo.results.pop()
-
-                    if (_r5_1 != null && _r5_2 != null) {
-                        _memo.results.push(_Calc_Item(_start_i5, _index.element, _memo.input, (_r5_1.results + _r5_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i5
-                    }
-
-                    // ACT 4
-                    val _r4 = _memo.results.peek()
-                    if (_r4 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_Calc_Item(_r4.startIndex, _r4.nextIndex, _memo.input, _Thunk({ a?.asResult()!!*10 + b?.asResult()!! }, _r4), true))
-                    }
-
-                    _label = 1
-                }
-                // ARGS 1
-                1 -> {
-                    _arg_input_index.element = _arg_index.element
-
-                    // OR shortcut 0
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i0
-                    } else {
                         _label = 0
                         continue
                     }
 
-                    // ARGS 10
-                    _arg_index.element = 0
-                    _arg_input_index.element = 0
-                        // ANY
-                        _ParseAnyArgs(_memo, _arg_index, _arg_input_index, _args)
-
-                        // BIND type
-                        type = _memo.argResults.peek()
-
-                    if (_memo.argResults.pop() == null) {
-                        _memo.results.push(null)
-                        _label = 10
-                        continue
-                    }
-
-                    // CALLORVAR type
-                    var _r13: _Calc_Item? = null
-                    if (type?.production != null) {
-                        _r13 = _MemoCall(_memo, type.production!!.methodName, _index.element, type.production!!.op, if (_args != null) _args.drop(_arg_index.element) else null)
-                    } else {
-                        _r13 = _ParseLiteralObj(_memo, _index, type?.inputs)
-                    }
-                    if (_r13 != null) _index.element = _r13.nextIndex
-
-                    _label = 10
+                    // PLUS 4
+                    _start_i4 = _index.element
+                    _label = 4
                 }
-                // ARGS 10
-                10 -> {
-                    _arg_input_index.element = _arg_index.element
+                // PLUS 4
+                4 -> {
+                    // CALLORVAR type
+                    var _r5: _Calc_Item? = null
+                    if (type?.production != null) {
+                        _r5 = _MemoCall(_memo, type.production!!.methodName, _index.element, type.production!!.op, if (_args != null) _args.drop(_arg_index.element) else null)
+                    } else {
+                        _r5 = _ParseLiteralObj(_memo, _index, type?.inputs)
+                    }
+                    if (_r5 != null) _index.element = _r5.nextIndex
+
+                    // PLUS 4
+                    val _r4 = _memo.results.pop()
+                    if (_r4 != null) {
+                        _res4 += _r4.results
+                        _label = 4
+                        continue
+                    } else {
+                        if (_index.element > _start_i4) {
+                            _memo.results.push(_Calc_Item(_start_i4, _index.element, _memo.input, _res4.filterNotNull(), true))
+                        } else {
+                            _memo.results.push(null)
+                        }
+                    }
+
+                    // ACT 3
+                    val _r3 = _memo.results.peek()
+                    if (_r3 != null) {
+                        _memo.results.pop()
+                        _memo.results.push(_Calc_Item(_r3.startIndex, _r3.nextIndex, _memo.input, _Thunk({ it!!.inputs.joinToString().toInt() }, _r3), true))
+                    }
 
                     _label = 0
                 }
-                // OR 0
+                // ARGS 0
                 0 -> {
+                    _arg_input_index.element = _arg_index.element
+
                     break
                 }
             }
@@ -904,24 +832,12 @@ open class Calc(handleLeftRecursion: Boolean = true) : CharMatcher<Int>(handleLe
         val _arg_index = Ref.IntRef()
         val _arg_input_index = Ref.IntRef()
 
-        var c: _Calc_Item? = null
-
         var _label = -1
         while(true) {
             when(_label) {
                 -1 -> {
                     // INPUT CLASS
                     _ParseInputClass(_memo, _index, listOf('\u0030', '\u0031', '\u0032', '\u0033', '\u0034', '\u0035', '\u0036', '\u0037', '\u0038', '\u0039'))
-
-                    // BIND c
-                    c = _memo.results.peek()
-
-                    // ACT 0
-                    val _r0 = _memo.results.peek()
-                    if (_r0 != null) {
-                        _memo.results.pop()
-                        _memo.results.push(_Calc_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ c?.asResult()!!.toInt() }, _r0), true))
-                    }
 
                     break
                 }

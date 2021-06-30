@@ -20,7 +20,7 @@ typealias _GLET_Plugin_Memo = MatchState<Token, AST.AstNode>
 typealias _GLET_Plugin_Rule = Production<Token, AST.AstNode>
 typealias _GLET_Plugin_Base = Matcher<Token, AST.AstNode>
 
-open class GLET_Plugin(handleLeftRecursion: Boolean = true) : KotlinParser(handleLeftRecursion) {
+open class GLET_Plugin : KotlinParser() {
     init {
         terminals = setOf(
             "GLEXPRESSIONTREE",

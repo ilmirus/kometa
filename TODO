@@ -1,6 +1,4 @@
 * Infer types of variables (nullable or list)
-* Rework callable references (calc.kometa uses callable references, which look like variables. This is OK to C#, but not for Kotlin)
-* die keyword to simplify debugging
-* investigate why importHeader is parsed with import keyword
 * investigate why property declaration of `val a by b` eats up following NL, failing statements parsing.
 * Finish GL plugin
+* add TOP rule to simplify calling parsers

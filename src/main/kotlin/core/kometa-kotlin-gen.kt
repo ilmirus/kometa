@@ -149,7 +149,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
 
     private fun generateGrammar(buffer: StringBuffer) {
         with(buffer) {
-            writeLine("open class $gName(handleLeftRecursion: Boolean = true) : $gBase(handleLeftRecursion) {")
+            writeLine("open class $gName : $gBase() {")
             indented {
                 writeLine("init {")
                 indented {
@@ -837,8 +837,8 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
                 actualParams += if (vars.contains(pstr)) pstr else "$tItem(Production(\"$pstr\", ::$pstr))"
             } else {
                 pstr = pstr.trimBraces()
-                if (pstr.isBlank()) {
-                    actualParams += "$tItem(_arg${n}_$i)"
+                if (!pstr.isBlank()) {
+                    actualParams += if (pstr.startsWith('"')) "$tItem(_arg${n}_$i.toList())" else "$tItem(_arg${n}_$i)"
                     buffer.writeLine("val _arg${n}_$i = $pstr")
                 }
                 i++
@@ -898,7 +898,7 @@ class KotlinGen(val grammarFile: AST.GrammarFile, val namespace: String, val add
             }
         }
 
-        callNode.params += newParams
+        callNode.params = newParams
     }
 
     private fun generateBindPost(

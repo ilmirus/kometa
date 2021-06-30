@@ -20,7 +20,7 @@ typealias _KotlinParser_Memo = MatchState<Token, AST.AstNode>
 typealias _KotlinParser_Rule = Production<Token, AST.AstNode>
 typealias _KotlinParser_Base = Matcher<Token, AST.AstNode>
 
-open class KotlinParser(handleLeftRecursion: Boolean = true) : TokenMatcher<AST.AstNode>(handleLeftRecursion) {
+open class KotlinParser : TokenMatcher<AST.AstNode>() {
     init {
         terminals = setOf(
             "ABSTRACT",

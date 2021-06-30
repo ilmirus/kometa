@@ -19,7 +19,7 @@ typealias _Parser_Memo = MatchState<Char, AST.AstNode>
 typealias _Parser_Rule = Production<Char, AST.AstNode>
 typealias _Parser_Base = Matcher<Char, AST.AstNode>
 
-open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode>(handleLeftRecursion) {
+open class Parser : CharMatcher<AST.AstNode>() {
     init {
         terminals = setOf(
             "AND_PRE",

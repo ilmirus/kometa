@@ -133,8 +133,10 @@ class MatchState<TInput, TResult>(
      *
      * @return found memo or null if no memo found.
      */
-    fun getMemo(expansion: Expansion, index: Int): MatchItem<TInput, TResult>? =
-        memoTable[expansion.name]?.get(expansion.num)?.get(index)
+    fun getMemo(expansion: Expansion, index: Int): Pair<MatchItem<TInput, TResult>?, Boolean> {
+        val map = memoTable[expansion.name]?.get(expansion.num) ?: return null to false
+        return map[index] to map.containsKey(index)
+    }
 
 
     /**

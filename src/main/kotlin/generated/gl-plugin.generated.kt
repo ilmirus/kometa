@@ -23,7 +23,7 @@ typealias _GL_Plugin_Memo = MatchState<Token, AST.AstNode>
 typealias _GL_Plugin_Rule = Production<Token, AST.AstNode>
 typealias _GL_Plugin_Base = Matcher<Token, AST.AstNode>
 
-open class GL_Plugin(handleLeftRecursion: Boolean = true) : KotlinParser(handleLeftRecursion) {
+open class GL_Plugin : KotlinParser() {
     init {
         terminals = setOf(
             "CONTEXT",

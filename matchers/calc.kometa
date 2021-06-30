@@ -5,28 +5,27 @@ kometa Calc<Char, Int> : CharMatcher<Int> {
 
     Additive = Add | Sub | Multiplicative;
 
-    Add = BinaryOp(Additive, '+', Multiplicative)
+    Add = BinaryOp(Multiplicative, '+', Additive)
        -> { it.results.filterNotNull().reduce { a, b -> a + b } };
-    Sub = BinaryOp(Additive, '-', Multiplicative)
+    Sub = BinaryOp(Multiplicative, '-', Additive)
        -> { it.results.filterNotNull().reduce { a, b -> a - b } };
 
     Multiplicative = Multiply | Divide;
     Multiplicative = Number(DecimalDigit);
 
-    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit)
+    Multiply = BinaryOp(Number, "*", Multiplicative, DecimalDigit)
             -> { it.results.filterNotNull().reduce { a, b -> a * b }!! };
-    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit)
+    Divide = BinaryOp(Number, "/", Multiplicative, DecimalDigit)
           -> { it.results.filterNotNull().reduce { a, b -> a / b } };
 
-    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b
+    BinaryOp :first :op :second .?:type = first(type):a KW(op) second:b
                                        -> { arrayListOf<Int>(a?.asResult()!!, b?.asResult()!!) };
 
     Number :type = Digits(type):n WS* -> { n?.asResult()!! };
 
-    Digits :type = Digits(type):a type:b -> { a?.asResult()!!*10 + b?.asResult()!! };
-    Digits :type = type;
+    Digits :type = type+ -> { it!!.inputs.joinToString().toInt() };
 
-    DecimalDigit = ['0'-'9']:c -> { c?.asResult()!!.toInt() };
+    DecimalDigit = ['0'-'9'];
     KW :str = str WS*;
     WS = ' ' | '\n' | '\r' | '\t';
 }

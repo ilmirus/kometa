@@ -17,13 +17,7 @@ typealias MatcherRule<TInput, TResult> = (MatchState<TInput, TResult>, Iterable<
  * @param TInput The type of inputs to the grammar.
  * @param TResult The type of results of grammar rules.
  */
-abstract class Matcher<TInput, TResult>(
-    /**
-     * Whether or not the matcher should detect and process left-recursive rules correctly.
-     * Setting this to false will make matching run faster, but go into an infinite loop if there is a left-recursive rule in your grammar.
-     */
-    val handleLeftRecursion: Boolean = true
-) {
+abstract class Matcher<TInput, TResult> {
     /**
      * A utility delegate for filtering a sequence to return only non-null items.
      */
@@ -118,13 +112,11 @@ abstract class Matcher<TInput, TResult>(
         args: Iterable<MatchItem<TInput, TResult>>?
     ): MatchItem<TInput, TResult>? {
         if (trace) {
-            val input = memo.input as List<Token>
-            val rest = input.drop(index)
-            var end = rest.indexOf(Token.NL)
-            if (end < 0) end = rest.size
-            val toPrint = rest.subList(0, end).joinToString(separator = " ") { it.toString() }
-            val indent = (97 until Exception().stackTrace.size).joinToString("") { " " }
-            File("out/dump.txt").appendText("$indent$ruleName, $index: $toPrint\n")
+            val input = memo.input.joinToString("")
+            val end = input.indexOf("\n", index)
+            val toPrint = input.substring(index, if (end < index) input.length else end)
+            val indent = (0..memo.callStack.size).joinToString("") { " " }
+            File("out/dump.txt").appendText("$indent$ruleName${args?.let { it.joinToString { it.toString() } } ?: ""}, $index: $toPrint\n")
         }
 
         var result: MatchItem<TInput, TResult>? = null
@@ -135,13 +127,14 @@ abstract class Matcher<TInput, TResult>(
         )
 
         // if we have a memo record, use that
-        memo.getMemo(expansion, index)?.let {
-            memo.results.push(it)
-            return it
+        val (tmp, found) = memo.getMemo(expansion, index)
+        if (found) {
+            memo.results.push(tmp)
+            return tmp
         }
 
         // if we are not handling left recursion, just call the production directly.
-        if (!handleLeftRecursion || ruleName in terminals) {
+        if (ruleName in terminals) {
             production(memo, index, args)
 
             result = memo.results.peek()
@@ -157,18 +150,7 @@ abstract class Matcher<TInput, TResult>(
         // check for left-recursion
         var record = memo.getLRRecord(expansion, index)
         if (record != null) {
-            record.lrDetected = true
-
-            val involved = memo.callStack
-                .takeWhile { it.currentExpansion.name != expansion.name }
-                .map { it.currentExpansion.name }
-
-            record.involvedRules = record.involvedRules?.union(involved)?.toMutableSet() ?: hashSetOf()
-
-            result = memo.getMemo(record.currentExpansion, index)
-                ?: throw MatcherException(index, "Problem with expansion " + record.currentExpansion)
-
-            memo.results.push(result)
+            throw MatcherException(index, "Problem with expansion " + record.currentExpansion + ": left recursion")
         } else {
             // no lr information
             record = LRRecord(
@@ -565,7 +547,11 @@ abstract class Matcher<TInput, TResult>(
 
     protected abstract fun formatErrorString(memo: MatchState<TInput, TResult>, index: Int): String
 
-    protected fun _ABSURD(_memo: MatchState<TInput, TResult>, __index: Int, _args: Iterable<MatchItem<TInput, TResult>>?) {
+    protected fun _ABSURD(
+        _memo: MatchState<TInput, TResult>,
+        __index: Int,
+        _args: Iterable<MatchItem<TInput, TResult>>?
+    ) {
         _memo.results.push(null)
     }
 

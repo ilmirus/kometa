@@ -19,7 +19,7 @@ typealias _Parser_Memo = MatchState<Char, AST.AstNode>
 typealias _Parser_Rule = Production<Char, AST.AstNode>
 typealias _Parser_Base = Matcher<Char, AST.AstNode>
 
-open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode>(handleLeftRecursion) {
+open class Parser : CharMatcher<AST.AstNode>() {
     init {
         terminals = setOf(
             "AND_PRE",
@@ -6401,9 +6401,6 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
         // OR 2
         var _start_i2 = _index.element
 
-        // OR 3
-        var _start_i3 = _index.element
-
         var _label = -1
         while(true) {
             when(_label) {
@@ -6417,32 +6414,11 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                     // OR 2
                     _start_i2 = _index.element
 
-                    // OR 3
-                    _start_i3 = _index.element
-
                     // CALLORVAR USING
-                    var _r4: _Parser_Item? = null
-                    _r4 = _MemoCall(_memo, "USING", _index.element, ::USING, null)
-                    if (_r4 != null) _index.element = _r4.nextIndex
+                    var _r3: _Parser_Item? = null
+                    _r3 = _MemoCall(_memo, "USING", _index.element, ::USING, null)
+                    if (_r3 != null) _index.element = _r3.nextIndex
 
-                    // OR shortcut 3
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i3
-                    } else {
-                        _label = 3
-                        continue
-                    }
-
-                    // CALLORVAR KOMETA
-                    var _r5: _Parser_Item? = null
-                    _r5 = _MemoCall(_memo, "KOMETA", _index.element, ::KOMETA, null)
-                    if (_r5 != null) _index.element = _r5.nextIndex
-
-                    _label = 3
-                }
-                // OR 3
-                3 -> {
                     // OR shortcut 2
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
@@ -6452,10 +6428,10 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                         continue
                     }
 
-                    // CALLORVAR OVERRIDE
-                    var _r6: _Parser_Item? = null
-                    _r6 = _MemoCall(_memo, "OVERRIDE", _index.element, ::OVERRIDE, null)
-                    if (_r6 != null) _index.element = _r6.nextIndex
+                    // CALLORVAR KOMETA
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "KOMETA", _index.element, ::KOMETA, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
 
                     _label = 2
                 }
@@ -6470,10 +6446,10 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                         continue
                     }
 
-                    // CALLORVAR NEW
-                    var _r7: _Parser_Item? = null
-                    _r7 = _MemoCall(_memo, "NEW", _index.element, ::NEW, null)
-                    if (_r7 != null) _index.element = _r7.nextIndex
+                    // CALLORVAR OVERRIDE
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "OVERRIDE", _index.element, ::OVERRIDE, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 1
                 }
@@ -6488,10 +6464,10 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
                         continue
                     }
 
-                    // CALLORVAR LR
-                    var _r8: _Parser_Item? = null
-                    _r8 = _MemoCall(_memo, "LR", _index.element, ::LR, null)
-                    if (_r8 != null) _index.element = _r8.nextIndex
+                    // CALLORVAR NEW
+                    var _r6: _Parser_Item? = null
+                    _r6 = _MemoCall(_memo, "NEW", _index.element, ::NEW, null)
+                    if (_r6 != null) _index.element = _r6.nextIndex
 
                     _label = 0
                 }
@@ -6892,101 +6868,6 @@ open class Parser(handleLeftRecursion: Boolean = true) : CharMatcher<AST.AstNode
 
                     // LITERAL "new"
                     _ParseLiteralString(_memo, _index, "new")
-
-                    // AND shortcut 1
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 1
-                        continue
-                    }
-
-                    // NOT 3
-                    _start_i3 = _index.element
-
-                    // CALLORVAR IdentBody
-                    var _r4: _Parser_Item? = null
-                    _r4 = _MemoCall(_memo, "IdentBody", _index.element, ::IdentBody, null)
-                    if (_r4 != null) _index.element = _r4.nextIndex
-
-                    // NOT 3
-                    val _r3 = _memo.results.pop()
-                    _memo.results.push(if (_r3 == null) _Parser_Item(_start_i3, _memo.input) else null)
-                    _index.element = _start_i3
-                    _label = 1
-                }
-                // AND 1
-                1 -> {
-                    val _r1_2 = _memo.results.pop()
-                    val _r1_1 = _memo.results.pop()
-
-                    if (_r1_1 != null && _r1_2 != null) {
-                        _memo.results.push(_Parser_Item(_start_i1, _index.element, _memo.input, (_r1_1.results + _r1_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i1
-                    }
-
-                    // AND shortcut 0
-                    if (_memo.results.peek() == null) {
-                        _memo.results.push(null)
-                        _label = 0
-                        continue
-                    }
-
-                    // CALLORVAR SP
-                    var _r5: _Parser_Item? = null
-                    _r5 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r5 != null) _index.element = _r5.nextIndex
-
-                    _label = 0
-                }
-                // AND 0
-                0 -> {
-                    val _r0_2 = _memo.results.pop()
-                    val _r0_1 = _memo.results.pop()
-
-                    if (_r0_1 != null && _r0_2 != null) {
-                        _memo.results.push(_Parser_Item(_start_i0, _index.element, _memo.input, (_r0_1.results + _r0_2.results).filterNotNull(), true))
-                    } else {
-                        _memo.results.push(null)
-                        _index.element = _start_i0
-                    }
-
-                    break
-                }
-            }
-        }
-    }
-
-
-    open fun LR(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
-        val _index = Ref.IntRef()
-        _index.element = __index
-
-        val _arg_index = Ref.IntRef()
-        val _arg_input_index = Ref.IntRef()
-
-        // AND 0
-        var _start_i0 = _index.element
-
-        // AND 1
-        var _start_i1 = _index.element
-
-        // NOT 3
-        var _start_i3 = _index.element
-
-        var _label = -1
-        while(true) {
-            when(_label) {
-                -1 -> {
-                    // AND 0
-                    _start_i0 = _index.element
-
-                    // AND 1
-                    _start_i1 = _index.element
-
-                    // LITERAL "lr"
-                    _ParseLiteralString(_memo, _index, "lr")
 
                     // AND shortcut 1
                     if (_memo.results.peek() == null) {

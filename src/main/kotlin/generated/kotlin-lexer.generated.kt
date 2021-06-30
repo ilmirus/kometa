@@ -19,7 +19,7 @@ typealias _KotlinLexer_Memo = MatchState<Char, Token>
 typealias _KotlinLexer_Rule = Production<Char, Token>
 typealias _KotlinLexer_Base = Matcher<Char, Token>
 
-open class KotlinLexer(handleLeftRecursion: Boolean = true) : CharMatcher<Token>(handleLeftRecursion) {
+open class KotlinLexer : CharMatcher<Token>() {
     init {
         terminals = setOf(
             "EOF",

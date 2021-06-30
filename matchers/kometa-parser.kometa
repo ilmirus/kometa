@@ -120,14 +120,13 @@ kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
 
     Number = ['0'-'9']+ SP;
 
-    KEYWORD = USING | KOMETA | OVERRIDE | NEW | LR;
+    KEYWORD = USING | KOMETA | OVERRIDE | NEW;
 
     USING = "import" ~IdentBody SP;
     KOMETA = "kometa" ~IdentBody SP;
     EQUALS = ('=' | "::=") SP;
     OVERRIDE = "override" ~IdentBody SP;
     NEW = "new" ~IdentBody SP;
-    LR = "lr" ~IdentBody SP;
     SEMI = (';' | ',') SP;
     BANG = '!' SP;
     OR = '|' SP;
