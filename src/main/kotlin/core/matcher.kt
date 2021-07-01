@@ -1,6 +1,5 @@
 package kometa
 
-import kometa.kotlin.Token
 import kometa.util.*
 import java.io.File
 import kotlin.Exception
@@ -174,56 +173,33 @@ abstract class Matcher<TInput, TResult> {
         }
 
         // check for left-recursion
-        var record = memo.getLRRecord(expansion, index)
-        if (record != null) {
-            throw MatcherException(index, "Problem with expansion " + record.currentExpansion + ": left recursion")
+        var currentExpansion = memo.getExpansion(expansion, index)
+        if (currentExpansion != null) {
+            throw MatcherException(index, "Problem with expansion $currentExpansion: left recursion")
         } else {
             // no lr information
-            record = LRRecord(
-                lrDetected = false,
-                numExpansions = 1,
-                currentExpansion = Expansion(expansion.name, 1),
-                currentNextIndex = -1
-            )
+            currentExpansion = Expansion(expansion.name, 1)
 
-            memo.memoize(record.currentExpansion, index, null)
-            memo.startLRRecord(expansion, index, record)
-            memo.callStack.push(record)
+            memo.memoize(currentExpansion, index, null)
+            memo.startExpansion(expansion, index, currentExpansion)
+            memo.callStack.push(currentExpansion)
 
             while (true) {
                 production(memo, index, args)
                 result = memo.results.pop()
 
-                // do we need to keep trying the expansions?
-                if (record.lrDetected && result != null && result.nextIndex > record.currentNextIndex) {
-                    record.numExpansions++
-                    record.currentExpansion = Expansion(expansion.name, record.numExpansions)
-                    record.currentNextIndex = result.nextIndex
-                    memo.memoize(record.currentExpansion, index, result)
+                // we are done trying to expand
+                memo.forgetExpansion(expansion, index)
+                memo.results.push(result)
 
-                    record.currentResult = result
-                } else {
-                    // we are done trying to expand
-                    if (record.lrDetected) {
-                        result = record.currentResult
-                    }
+                // if we are not involved in any left-recursion expansions above us, memoize
+                memo.callStack.pop()
 
-                    memo.forgetLRRecord(expansion, index)
-                    memo.results.push(result)
-
-                    // if we are not involved in any left-recursion expansions above us, memoize
-                    memo.callStack.pop()
-
-                    val foundLR = memo.callStack.any { it.involvedRules?.contains(expansion.name) == true }
-                    if (!foundLR) {
-                        memo.memoize(expansion, index, result)
-                    }
-
-                    if (result == null) {
-                        memo.addError(index, "expected " + expansion.name)
-                    }
-                    break
+                memo.memoize(expansion, index, result)
+                if (result == null) {
+                    memo.addError(index, "expected " + expansion.name)
                 }
+                break
             }
         }
         return result

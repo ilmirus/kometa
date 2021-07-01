@@ -1035,7 +1035,7 @@ val bootstrapAst by lazy {
                                 ),
                                 "nl".i
                             ),
-                            expression = "{ _memo.positions += nl!!.nextIndex; nl?.asResult() ?: AST.Code(MatchItem(listOf('\\n'))) }".i
+                            expression = "{ nl?.asResult() ?: AST.Code(MatchItem(listOf('\\n'))) }".i
                         )
                     )
                 ),

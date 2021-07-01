@@ -154,6 +154,6 @@ kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
     Comment = "//" (~EOL .)* EOL;
     Comment = "/*" (~"*/" (EOL | .))* "*/";
 
-    EOL = ('\r' '\n'? | '\n'):nl -> { _memo.positions += nl!!.nextIndex; nl?.asResult() ?: AST.Code(MatchItem(listOf('\n'))) };
+    EOL = ('\r' '\n'? | '\n'):nl -> { nl?.asResult() ?: AST.Code(MatchItem(listOf('\n'))) };
     EOF = ~.;
 }

@@ -1,4 +1,3 @@
 * Infer types of variables (nullable or list)
 * investigate why property declaration of `val a by b` eats up following NL, failing statements parsing.
 * Finish GL plugin
-* add TOP rule to simplify calling parsers

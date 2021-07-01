@@ -8390,7 +8390,7 @@ open class Parser : CharMatcher<AST.AstNode>() {
                     val _r0 = _memo.results.peek()
                     if (_r0 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_Parser_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ _memo.positions += nl!!.nextIndex; nl?.asResult() ?: AST.Code(MatchItem(listOf('\n'))) }, _r0), true))
+                        _memo.results.push(_Parser_Item(_r0.startIndex, _r0.nextIndex, _memo.input, _Thunk({ nl?.asResult() ?: AST.Code(MatchItem(listOf('\n'))) }, _r0), true))
                     }
 
                     break

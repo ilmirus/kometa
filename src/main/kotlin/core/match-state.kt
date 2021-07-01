@@ -12,16 +12,11 @@ class MatchState<TInput, TResult>(
      */
     val input: Iterable<TInput>
 ) {
-    /**
-     * Used to pass properties specific to derived matcher classes.
-     */
-    val properties: Map<String, Any?> = hashMapOf()
-
-    // rulename -> expansion -> index -> item
+    // rulename -> expansion
     private val memoTable: MutableMap<String, Expansions<TInput, TResult>> = hashMapOf()
 
-    // rulename -> index -> lrrecord
-    private val currentRecursions: MutableMap<String, MutableMap<Int, LRRecord<MatchItem<TInput, TResult>>>> =
+    // rulename -> index -> expansion
+    private val currentRecursions: MutableMap<String, MutableMap<Int, Expansion>> =
         hashMapOf()
 
     /**
@@ -37,7 +32,7 @@ class MatchState<TInput, TResult>(
     /**
      * The call stack used while matching.
      */
-    val callStack: MutableList<LRRecord<MatchItem<TInput, TResult>>> = arrayListOf()
+    val callStack: MutableList<Expansion> = arrayListOf()
 
     /**
      * Used by calling code to store special positions, e.g. line numbers.
@@ -116,16 +111,6 @@ class MatchState<TInput, TResult>(
     }
 
     /**
-     * Forget a memoized result.
-     *
-     * @param expansion The production expansion.
-     * @param index The input position.
-     */
-    fun forgetMemo(expansion: Expansion, index: Int) {
-        memoTable[expansion.name]?.get(expansion.num)?.remove(index)
-    }
-
-    /**
      * Find the memo of a given rule call.
      *
      * @param expansion The production expansion.
@@ -147,7 +132,7 @@ class MatchState<TInput, TResult>(
      * @param record The new left-recursion record.
      */
 
-    fun startLRRecord(expansion: Expansion, index: Int, record: LRRecord<MatchItem<TInput, TResult>>){
+    fun startExpansion(expansion: Expansion, index: Int, record: Expansion){
         currentRecursions.getOrPut(expansion.name) { hashMapOf() }[index] = record
     }
 
@@ -157,7 +142,7 @@ class MatchState<TInput, TResult>(
      * @param expansion The production expansion.
      * @param index The input position.
      */
-    fun forgetLRRecord(expansion: Expansion, index: Int) {
+    fun forgetExpansion(expansion: Expansion, index: Int) {
         currentRecursions[expansion.name]?.remove(index)
     }
 
@@ -169,7 +154,7 @@ class MatchState<TInput, TResult>(
      *
      * @return The left-recursion record or null of not found.
      */
-    fun getLRRecord(expansion: Expansion, index: Int): LRRecord<MatchItem<TInput, TResult>>? =
+    fun getExpansion(expansion: Expansion, index: Int): Expansion? =
         currentRecursions[expansion.name]?.get(index)
 
     // TODO: Do not use functions, use raw strings
@@ -196,72 +181,6 @@ class MatchState<TInput, TResult>(
         addError(pos) { message }
     }
 
-    /**
-     * Clears all errors for a given position.
-     */
-    fun clearErrors() {
-        errorMsgs.clear()
-        lastErrorPos = -1
-    }
-
-    private var sortedPositions: IntArray = IntArray(0)
-
-    /**
-     * Gets the "line" as defined by the Positions array.  This assumes that the positions
-     * mark the beginning of the "lines".
-     *
-     * @param index The index in question in the input.
-     *
-     * @return The 1-based line number in which the index is found.
-     * @return The offset of the index from the beginning of the line.
-     * @return The sequence of tokens in the line.
-     */
-    fun getLine(index: Int): Triple<Int, Int, Iterable<TInput>> {
-        if (sortedPositions.isEmpty() || sortedPositions.size != positions.size) {
-            positions.add(0)
-            sortedPositions = positions.sorted().toIntArray()
-        }
-
-        var srch = sortedPositions.binarySearch(index)
-        val srchOffset = if (sortedPositions[0] == 0) 1 else 2
-
-        val start: Int
-        val next: Int
-        val lineNum: Int
-        val lineOffset: Int
-
-        if (srch >= 0) {
-            // we are on the the beginning of the line
-            start = sortedPositions[srch]
-            next = if (srch + 1 < sortedPositions.size) sortedPositions[srch + 1] else Int.MAX_VALUE
-
-            lineNum = srch + srchOffset
-            lineOffset = 0
-        } else {
-            // srch is the index of the next largest position
-            srch = srch.inv()
-            when {
-                srch == 0 -> {
-                    start = 0
-                    next = sortedPositions[srch]
-                }
-                srch < sortedPositions.size -> {
-                    start = sortedPositions[srch - 1]
-                    next = sortedPositions[srch]
-                }
-                else -> {
-                    start = sortedPositions.last()
-                    next = Int.MAX_VALUE
-                }
-            }
-
-            lineNum = srch + (srchOffset - 1)
-            lineOffset = index - start
-        }
-
-        return Triple(lineNum, lineOffset, input.drop(start).take(next - start))
-    }
-
     companion object {
         private val EXPECTED: Regex = Regex("expected\\s+(.*)", RegexOption.IGNORE_CASE)
     }
@@ -283,34 +202,4 @@ data class Expansion(
      * The current expansion number.
      */
     var num: Int
-)
-
-/**
- * A record of the current state of left-recursion handling for a rule.
- */
-class LRRecord<TItem>(
-    /**
-     * Whether or not left-recursion has been detected for this production.
-     */
-    var lrDetected: Boolean,
-    /**
-     * How many expansions we have generated.
-     */
-    var numExpansions: Int,
-    /**
-     * The current expansion.
-     */
-    var currentExpansion: Expansion,
-    /**
-     * The farthest extent of the match.
-     */
-    var currentNextIndex: Int,
-    /**
-     * The result of the last expansion.
-     */
-    var currentResult: TItem? = null,
-    /**
-     * Rules that are involved in expanding this left-recursion.
-     */
-    var involvedRules: MutableSet<String>? = null
 )
