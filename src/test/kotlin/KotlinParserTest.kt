@@ -11,29 +11,14 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class KotlinParserTest {
-    private fun tokenize(filename: String): List<Token> {
-        val lexer = KotlinLexer()
-        val match = lexer.getMatch(
-            File("testData/kotlin-parser/$filename.in.kt").readText().toList(),
-            Production("tokens", lexer::tokens)
-        )
-        if (!match.success) {
-            error(match.error!!)
-        }
-        return match.results.filterNotNull()
-    }
+    private fun tokenize(filename: String): List<Token> =
+        KotlinLexer().tokenize(File("testData/kotlin-parser/$filename.in.kt").readText().toList())
 
     private fun parse(filename: String): AST.KotlinFile {
-        val parser = KotlinParser()
         val tokens = tokenize(filename)
 //        trace = true
 //        File("out/dump.txt").delete()
-        val match = parser.getMatch(tokens, Production("kotlinFile", parser::kotlinFile))
-
-        if (!match.success) {
-            error(match.error!!)
-        }
-        return match.result() as AST.KotlinFile
+        return KotlinParser().parse(tokens) as AST.KotlinFile
     }
 
     private fun generateCode(kotlinFile: AST.KotlinFile): String = KotlinGen().generateCode(kotlinFile)

@@ -3,7 +3,7 @@ package kometa.kotlin
 import kometa.MatchState
 import kometa.Matcher
 
-open class TokenMatcher<TResult>: Matcher<Token, TResult>() {
+abstract class TokenMatcher<TResult>: Matcher<Token, TResult>() {
     override fun formatErrorString(memo: MatchState<Token, TResult>, index: Int): String {
         val input = memo.input as List<Token>
         val rest = input.drop(index)

@@ -2,6 +2,8 @@ import kometa.kotlin.Token;
 import kometa.CharMatcher;
 
 kometa KotlinLexer<Char, Token>: CharMatcher<Token> {
+    override TOP = tokens;
+
     tokens = (token WS)* EOF -> { it.l };
 
     token = "#!" (~NL .)*:s -> { Token.ShebangLine(s.s) };

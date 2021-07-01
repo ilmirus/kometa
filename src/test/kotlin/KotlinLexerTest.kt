@@ -8,17 +8,8 @@ import java.io.File
 import java.lang.IllegalStateException
 
 class KotlinLexerTest {
-    private fun tokenize(filename: String): List<Token> {
-        val lexer = KotlinLexer()
-        val match = lexer.getMatch(
-            File("testData/kotlin-lexer/$filename.in.kt").readText().toList(),
-            Production("tokens", lexer::tokens)
-        )
-        if (!match.success) {
-            error(match.error!!)
-        }
-        return match.results.filterNotNull()
-    }
+    private fun tokenize(filename: String): List<Token> =
+        KotlinLexer().tokenize(File("testData/kotlin-lexer/$filename.in.kt").readText().toList())
 
     private fun checkTestData(filename: String) {
         val expected = File("testData/kotlin-lexer/$filename.out.kt").readText().replace("\r\n", "\n")

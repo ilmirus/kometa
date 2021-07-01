@@ -3,6 +3,7 @@ import kometa.kotlin.Token;
 import kometa.kotlin.TokenMatcher;
 
 kometa KotlinParser<Token, AST.AstNode>: TokenMatcher<AST.AstNode> {
+    override TOP = kotlinFile;
 
     // SECTION: general
 

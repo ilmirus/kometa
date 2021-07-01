@@ -2,6 +2,7 @@ import kometa.Matcher;
 import kometa.ast.AST;
 
 kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
+    override TOP = KOMetaFile;
 
     KOMetaFile = SP ImportsList?:il Grammar:g SP EOF -> { AST.GrammarFile(il.nr, g.r) };
 

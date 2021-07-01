@@ -23,9 +23,33 @@ open class Calc : CharMatcher<Int>() {
         terminals = setOf(
             "DecimalDigit",
             "Expression",
+            "TOP",
             "WS",
         )
     }
+
+    override fun TOP(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // CALLORVAR Expression
+                    var _r0: _Calc_Item? = null
+                    _r0 = _MemoCall(_memo, "Expression", _index.element, ::Expression, null)
+                    if (_r0 != null) _index.element = _r0.nextIndex
+
+                    break
+                }
+            }
+        }
+    }
+
 
     open fun Expression(_memo: _Calc_Memo, __index: Int, _args: _Calc_Args?) {
         val _index = Ref.IntRef()

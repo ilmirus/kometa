@@ -1,6 +1,6 @@
 package kometa
 
-open class CharMatcher<TResult> : Matcher<Char, TResult>() {
+abstract class CharMatcher<TResult> : Matcher<Char, TResult>() {
     override fun formatErrorString(memo: MatchState<Char, TResult>, index: Int): String {
         val input = memo.input.joinToString("")
         var endIndex = input.indexOf("\n", index)

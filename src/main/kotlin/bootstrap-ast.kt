@@ -53,6 +53,14 @@ val bootstrapAst by lazy {
                     )
                 ),
                 AST.Rule(
+                    name = "TOP".i,
+                    body = AST.Args(
+                        params = null,
+                        body = "KOMetaFile".callorvar
+                    ),
+                    override = "override"
+                ),
+                AST.Rule(
                     name = "Import",
                     body = AST.Args(
                         params = null,

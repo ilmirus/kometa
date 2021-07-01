@@ -31,9 +31,33 @@ open class Parser : CharMatcher<AST.AstNode>() {
             "NOT_PRE",
             "Parameter",
             "QUES",
+            "TOP",
             "WS",
         )
     }
+
+    override fun TOP(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // CALLORVAR KOMetaFile
+                    var _r0: _Parser_Item? = null
+                    _r0 = _MemoCall(_memo, "KOMetaFile", _index.element, ::KOMetaFile, null)
+                    if (_r0 != null) _index.element = _r0.nextIndex
+
+                    break
+                }
+            }
+        }
+    }
+
 
     open fun KOMetaFile(_memo: _Parser_Memo, __index: Int, _args: _Parser_Args?) {
         val _index = Ref.IntRef()

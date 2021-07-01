@@ -24,6 +24,7 @@ open class KotlinLexer : CharMatcher<Token>() {
         terminals = setOf(
             "EOF",
             "NL",
+            "TOP",
             "binDigit",
             "decDigitNoZero",
             "identifierPart",
@@ -33,6 +34,29 @@ open class KotlinLexer : CharMatcher<Token>() {
             "strText",
         )
     }
+
+    override fun TOP(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
+        val _index = Ref.IntRef()
+        _index.element = __index
+
+        val _arg_index = Ref.IntRef()
+        val _arg_input_index = Ref.IntRef()
+
+        var _label = -1
+        while(true) {
+            when(_label) {
+                -1 -> {
+                    // CALLORVAR tokens
+                    var _r0: _KotlinLexer_Item? = null
+                    _r0 = _MemoCall(_memo, "tokens", _index.element, ::tokens, null)
+                    if (_r0 != null) _index.element = _r0.nextIndex
+
+                    break
+                }
+            }
+        }
+    }
+
 
     open fun tokens(_memo: _KotlinLexer_Memo, __index: Int, _args: _KotlinLexer_Args?) {
         val _index = Ref.IntRef()

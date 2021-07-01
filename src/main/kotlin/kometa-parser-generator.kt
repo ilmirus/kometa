@@ -21,17 +21,7 @@ fun generateParser(input: String, overwrite: Boolean) {
         if (overwrite) "src/main/kotlin/generated/$name.generated.kt"
         else "out/$name.generated.kt"
 
-    val parser = kometa.kometa_parser.Parser()
-    val match = parser.getMatch(
-        File(input).readText().toList(),
-        Production("KOMetaFile", parser::KOMetaFile)
-    )
-
-    if (!match.success) {
-        error(match.error!!)
-    }
-
-    val ast = match.result() as AST.GrammarFile
+    val ast = kometa.kometa_parser.Parser().parse(File(input).readText().toList()) as AST.GrammarFile
 
     val codegen = KotlinGen(ast, "kometa.${name.replace('-', '_')}", false)
     File(output).delete()

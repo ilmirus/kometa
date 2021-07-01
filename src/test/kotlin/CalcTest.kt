@@ -12,8 +12,6 @@ class CalcTest {
         val parser = Calc()
 //        File("out/dump.txt").delete()
 //        trace = true
-        val match = parser.getMatch("2 * 7".toList(), Production("Expression", parser::Expression))
-        assertTrue(match.success)
-        assertEquals(14, match.result())
+        assertEquals(14, parser.parse("2 * 7".toList()))
     }
 }

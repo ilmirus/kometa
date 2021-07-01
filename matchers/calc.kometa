@@ -1,6 +1,8 @@
 import kometa.CharMatcher;
 
 kometa Calc<Char, Int> : CharMatcher<Int> {
+    override TOP = Expression;
+
     Expression = Additive;
 
     Additive = Add | Sub | Multiplicative;

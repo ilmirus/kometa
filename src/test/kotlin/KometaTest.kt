@@ -32,11 +32,8 @@ class KometaTest {
     }
 
     private fun parse(filename: String): AST.GrammarFile {
-        val parser = Parser()
         val input = File("testData/kometa/$filename.kometa").readText()
-        val match = parser.getMatch(input.toList(), Production("KOmetaFile", parser::KOMetaFile))
-        if (!match.success) error(match.error!!)
-        return match.result().cast()
+        return Parser().parse(input.toList()).cast()
     }
 
     @Test

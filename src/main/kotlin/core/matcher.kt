@@ -36,6 +36,32 @@ abstract class Matcher<TInput, TResult> {
     protected var terminals: Set<String> = emptySet()
 
     /**
+     * Match [input] into a single result.
+     *
+     * @param input The input to be matched.
+     *
+     * @return Single result.
+     */
+    fun parse(input: Iterable<TInput>): TResult {
+        val match = getMatch(input, Production("TOP", this::TOP))
+        if (!match.success) error(match.error!!)
+        return match.result()
+    }
+
+    /**
+     * Match [input] into a sequence of results.
+     *
+     * @param input The input to be matched.
+     *
+     * @return Sequence of results.
+     */
+    fun tokenize(input: Iterable<TInput>): List<TResult> {
+        val match = getMatch(input, Production("TOP", this::TOP))
+        if (!match.success) error(match.error!!)
+        return match.results.filterNotNull()
+    }
+
+    /**
      * Try to match the input.
      *
      * @param input The input to be matched.
@@ -554,6 +580,12 @@ abstract class Matcher<TInput, TResult> {
     ) {
         _memo.results.push(null)
     }
+
+    protected abstract fun TOP(
+        _memo: MatchState<TInput, TResult>,
+        __index: Int,
+        _args: Iterable<MatchItem<TInput, TResult>>?
+    )
 
     protected val MatchItem<TInput, TResult>?.r: TResult
         get() = nr!!
