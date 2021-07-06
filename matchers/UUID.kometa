@@ -1,0 +1,18 @@
+import kometa.CharMatcher;
+
+kometa UuidParser<Char, String> : CharMatcher<String> {
+      override TOP           = UUID -> { it.s };
+      UUID                   = time_low "-" time_mid "-"
+                               time_high_and_version "-"
+                               clock_seq_and_reserved
+                               clock_seq_low "-" node EOF;
+      time_low               = hexOctet{4};
+      time_mid               = hexOctet{2};
+      time_high_and_version  = hexOctet{2};
+      clock_seq_and_reserved = hexOctet;
+      clock_seq_low          = hexOctet;
+      node                   = hexOctet{6};
+      hexOctet               = hexDigit{2};
+      hexDigit               = ['0'-'9'] | ['a'-'h'] | ['A'-'H'];
+      EOF                    = ~.;
+}
