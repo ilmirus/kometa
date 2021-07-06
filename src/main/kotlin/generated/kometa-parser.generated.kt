@@ -563,7 +563,7 @@ open class Parser : CharMatcher<AST.AstNode>() {
 
                     // FAIL 20
                     _memo.results.push(null)
-                    error("expected ';' in import" + ":\n" + formatErrorString(_memo, _index.element))
+                    error("expected ';' or new line in import" + ":\n" + formatErrorString(_memo, _index.element))
 
                     _label = 18
                 }
@@ -1149,6 +1149,9 @@ open class Parser : CharMatcher<AST.AstNode>() {
         // AND 5
         var _start_i5 = _index.element
 
+        // OR 17
+        var _start_i17 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -1306,11 +1309,31 @@ open class Parser : CharMatcher<AST.AstNode>() {
                         continue
                     }
 
-                    // CALLORVAR SEMI
-                    var _r17: _Parser_Item? = null
-                    _r17 = _MemoCall(_memo, "SEMI", _index.element, ::SEMI, null)
-                    if (_r17 != null) _index.element = _r17.nextIndex
+                    // OR 17
+                    _start_i17 = _index.element
 
+                    // CALLORVAR SEMI
+                    var _r18: _Parser_Item? = null
+                    _r18 = _MemoCall(_memo, "SEMI", _index.element, ::SEMI, null)
+                    if (_r18 != null) _index.element = _r18.nextIndex
+
+                    // OR shortcut 17
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i17
+                    } else {
+                        _label = 17
+                        continue
+                    }
+
+                    // FAIL 19
+                    _memo.results.push(null)
+                    error("expected ';' or new line at the end of rule" + ":\n" + formatErrorString(_memo, _index.element))
+
+                    _label = 17
+                }
+                // OR 17
+                17 -> {
                     _label = 1
                 }
                 // AND 1
@@ -6972,6 +6995,9 @@ open class Parser : CharMatcher<AST.AstNode>() {
         // OR 1
         var _start_i1 = _index.element
 
+        // OR 2
+        var _start_i2 = _index.element
+
         var _label = -1
         while(true) {
             when(_label) {
@@ -6982,9 +7008,28 @@ open class Parser : CharMatcher<AST.AstNode>() {
                     // OR 1
                     _start_i1 = _index.element
 
+                    // OR 2
+                    _start_i2 = _index.element
+
                     // LITERAL ';'
                     _ParseLiteralChar(_memo, _index, ';')
 
+                    // OR shortcut 2
+                    if (_memo.results.peek() == null) {
+                        _memo.results.pop()
+                        _index.element = _start_i2
+                    } else {
+                        _label = 2
+                        continue
+                    }
+
+                    // LITERAL ','
+                    _ParseLiteralChar(_memo, _index, ',')
+
+                    _label = 2
+                }
+                // OR 2
+                2 -> {
                     // OR shortcut 1
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
@@ -6994,8 +7039,10 @@ open class Parser : CharMatcher<AST.AstNode>() {
                         continue
                     }
 
-                    // LITERAL ','
-                    _ParseLiteralChar(_memo, _index, ',')
+                    // CALLORVAR EOL
+                    var _r5: _Parser_Item? = null
+                    _r5 = _MemoCall(_memo, "EOL", _index.element, ::EOL, null)
+                    if (_r5 != null) _index.element = _r5.nextIndex
 
                     _label = 1
                 }
@@ -7009,9 +7056,9 @@ open class Parser : CharMatcher<AST.AstNode>() {
                     }
 
                     // CALLORVAR SP
-                    var _r4: _Parser_Item? = null
-                    _r4 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r4 != null) _index.element = _r4.nextIndex
+                    var _r6: _Parser_Item? = null
+                    _r6 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r6 != null) _index.element = _r6.nextIndex
 
                     _label = 0
                 }

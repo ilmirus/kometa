@@ -16,7 +16,7 @@ kometa Parser<Char, AST.AstNode> : CharMatcher<AST.AstNode> {
             LEFT_BRACE Rule*:rules RIGHT_BRACE
         -> { AST.Grammar(name!!, tinput!!, tresult!!, baseclass, rules!!.results.filterIsInstance<AST.Rule>()) };
 
-    Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body SEMI
+    Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body (SEMI | !"expected ';' at the end of rule")
         -> { AST.Rule(name!!, if (parms != null && parms.inputs.any()) AST.Args(parms.asResult(), body?.asResult()!!) else body?.asResult()!!, ovr?.inputs?.joinToString("") ?: "") };
 
     Disjunction = ActionExp ( OR ActionExp )*
