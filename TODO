@@ -1,3 +1,8 @@
 * Infer types of variables (nullable or list)
 * investigate why property declaration of `val a by b` eats up following NL, failing statements parsing.
 * Finish GL plugin
+* Add 'super(methodName)' production, which calls 'super.methodName'
+* Add 'foreign' production, which binds another parser to a name, also, I need to figure out how to call them, since their input types can be different
+  for instance, KOMeta and Kotlin parsers use Char and Token respectively
+* Add 'INIT' production, in which one can list all properties of generated class (useful for scopes)
+

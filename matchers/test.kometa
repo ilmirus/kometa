@@ -1,0 +1,5 @@
+import java.util.List;
+
+kometa test<Char, Any> : Matcher<Char, Any> {
+    Digits :type = type;
+}

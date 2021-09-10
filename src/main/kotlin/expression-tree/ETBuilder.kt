@@ -1,14 +1,19 @@
 package kometa.expressionTree
 
-import kometa.kotlin.AST
+import kometa.kotlin.Visitor
+import kometa.kotlin.ast.Node
 import kometa.util.cast
 
+class KetBuilder : Visitor() {
+
+}
+
 object ETBuilder {
-    private fun List<Any>.buildList(): AST.Expression = map { build(it.cast()) }.callListOf()
+    private fun List<Any>.buildList(): Node.Expr = map { build(it.cast()) }.callListOf()
 
     private fun Any?.buildNullable(): AST.Expression = this?.let { build(it.cast()) } ?: AST.NULL
 
-    fun build(node: AST.AstNode): AST.Expression =
+    fun build(node: Node): AST.Expression =
         when (node) {
             is AST.Block -> Call("AST.Block", listOf(node.statements.buildList()))
             is AST.Statement -> Call(
