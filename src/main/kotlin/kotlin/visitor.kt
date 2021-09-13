@@ -25,13 +25,13 @@ abstract class Visitor {
     ) = visitNode(constructor)
     open fun visitInitDecl(init: Node.Decl.Init) = visitDecl(init)
 
-    open fun visitFunc(func: Node.Decl.Func) = visitDecl(func)
-    open fun visitFuncParam(param: Node.Decl.Func.Param) = visitNode(param)
-    open fun visitFuncBody(body: Node.Decl.Func.Body) = visitNode(body)
-    open fun visitFuncBlockBody(body: Node.Decl.Func.Body.Block) =
-        visitFuncBody(body)
-    open fun visitFuncExprBody(body: Node.Decl.Func.Body.Expr) =
-        visitFuncBody(body)
+    open fun visitFunc(func: Node.Decl.Function) = visitDecl(func)
+    open fun visitFunctionParam(param: Node.Decl.Function.Param) = visitNode(param)
+    open fun visitFunctionBody(body: Node.Decl.Function.Body) = visitNode(body)
+    open fun visitFunctionBlockBody(body: Node.Decl.Function.Body.Block) =
+        visitFunctionBody(body)
+    open fun visitFunctionExprBody(body: Node.Decl.Function.Body.Expr) =
+        visitFunctionBody(body)
 
     open fun visitProperty(property: Node.Decl.Property) =
         visitDecl(property)
@@ -115,5 +115,29 @@ abstract class Visitor {
     open fun visitWhenInCond(cond: Node.Expr.When.Cond.In) = visitWhenCond(cond)
     open fun visitWhenIsCond(cond: Node.Expr.When.Cond.Is) = visitWhenCond(cond)
     open fun visitObjectExpr(obj: Node.Expr.Object) = visitExpr(obj)
-    open fun
+    open fun visitThrowExpr(expr: Node.Expr.Throw) = visitExpr(expr)
+    open fun visitReturnExpr(expr: Node.Expr.Return) = visitExpr(expr)
+    open fun visitContinueExpr(expr: Node.Expr.Continue) = visitExpr(expr)
+    open fun visitBreakExpr(expr: Node.Expr.Break) = visitExpr(expr)
+    open fun visitCollectionLiteralExpr(lit: Node.Expr.CollectionLiteral) =
+        visitExpr(lit)
+    open fun visitNameExpr(name: Node.Expr.Name) = visitExpr(name)
+    open fun visitLabelledExpr(expr: Node.Expr.Labelled) = visitExpr(expr)
+    open fun visitAnnotatedExpr(expr: Node.Expr.Annotated) = visitExpr(expr)
+    open fun visitCallExpr(call: Node.Expr.Call) = visitExpr(call)
+    open fun visitTrailingLambda(lambda: Node.Expr.Call.TrailLambda) =
+        visitNode(lambda)
+    open fun visitArrayAccess(expr: Node.Expr.ArrayAccess) = visitExpr(expr)
+    open fun visitAnonymousFunction(func: Node.Expr.AnonymousFunction) =
+        visitExpr(func)
+    open fun visitPropertyExpression(expr: Node.Expr.Property) = visitExpr(expr)
+
+    open fun visitBlock(block: Node.Block) = visitNode(block)
+    open fun visitModifier(mod: Node.Modifier) = visitNode(mod)
+    open fun visitAnnotationSet(anns: Node.Modifier.AnnotationSet) =
+        visitModifier(anns)
+    open fun visitAnnotation(ann: Node.Modifier.AnnotationSet.Annotation) =
+        visitNode(ann)
+    open fun visitIdentifierLikeModifier(mod: Node.Modifier.IdentifierLike) =
+        visitModifier(mod)
 }

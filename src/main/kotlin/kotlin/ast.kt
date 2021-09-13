@@ -183,7 +183,7 @@ sealed class Node {
             data class PrimaryConstructor(
                 override val locus: Locus,
                 override val mods: List<Modifier>,
-                val params: List<Func.Param>
+                val params: List<Function.Param>
             ) : Node(), WithModifiers {
                 override fun accept(v: Visitor) {
                     v.visitPrimaryConstructor(this)
@@ -236,7 +236,7 @@ sealed class Node {
             }
         }
 
-        data class Func(
+        data class Function(
             override val locus: Locus,
             override val mods: List<Modifier>,
             val typeParams: List<TypeParam>,
@@ -259,7 +259,7 @@ sealed class Node {
                 val default: Expr?
             ) : Node(), WithModifiers {
                 override fun accept(v: Visitor) {
-                    v.visitFuncParam(this)
+                    v.visitFunctionParam(this)
                 }
 
                 override fun acceptChildren(v: Visitor) {
@@ -277,7 +277,7 @@ sealed class Node {
                         get() = block.locus
 
                     override fun accept(v: Visitor) {
-                        v.visitFuncBlockBody(this)
+                        v.visitFunctionBlockBody(this)
                     }
 
                     override fun acceptChildren(v: Visitor) {
@@ -290,7 +290,7 @@ sealed class Node {
                         get() = expr.locus
 
                     override fun accept(v: Visitor) {
-                        v.visitFuncExprBody(this)
+                        v.visitFunctionExprBody(this)
                     }
 
                     override fun acceptChildren(v: Visitor) {
@@ -357,7 +357,7 @@ sealed class Node {
                 override val locus: Locus,
                 override val mods: List<Modifier>,
                 val type: Type?,
-                val body: Func.Body?
+                val body: Function.Body?
             ) : Node(), WithModifiers {
                 override fun accept(v: Visitor) {
                     v.visitPropertyGetter(this)
@@ -378,7 +378,7 @@ sealed class Node {
                 val paramMods: List<Modifier>,
                 val paramName: String?,
                 val paramType: Type?,
-                val body: Func.Body?
+                val body: Function.Body?
             ) : Node(), WithModifiers {
                 override fun accept(v: Visitor) {
                     v.visitPropertySetter(this)
@@ -445,7 +445,7 @@ sealed class Node {
         data class Constructor(
             override val locus: Locus,
             override val mods: List<Modifier>,
-            val params: List<Func.Param>,
+            val params: List<Function.Param>,
             val delegationCall: DelegationCall?,
             val block: Block?
         ) : Decl(), WithModifiers {
@@ -976,7 +976,7 @@ sealed class Node {
                         get() = type.locus
 
                     override fun accept(v: Visitor) {
-                        v.visitDoubleColonTypeRecv()
+                        v.visitDoubleColonTypeRecv(this)
                     }
 
                     override fun acceptChildren(v: Visitor) {
@@ -1166,44 +1166,112 @@ sealed class Node {
             val expr: Expr
         ) : Expr() {
             override fun accept(v: Visitor) {
-
+                v.visitThrowExpr(this)
             }
 
             override fun acceptChildren(v: Visitor) {
-                TODO("Not yet implemented")
+                expr.accept(v)
             }
         }
 
         data class Return(
+            override val locus: Locus,
             val label: String?,
             val expr: Expr?
-        ) : Expr()
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitReturnExpr(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                expr?.accept(v)
+            }
+        }
 
         data class Continue(
+            override val locus: Locus,
             val label: String?
-        ) : Expr()
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitContinueExpr(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                // no children
+            }
+        }
 
         data class Break(
+            override val locus: Locus,
             val label: String?
-        ) : Expr()
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitBreakExpr(this)
+            }
 
-        data class CollLit(
+            override fun acceptChildren(v: Visitor) {
+                // no children
+            }
+        }
+
+        data class CollectionLiteral(
+            override val locus: Locus,
             val exprs: List<Expr>
-        ) : Expr()
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitCollectionLiteralExpr(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                for (expr in exprs) {
+                    expr.accept(v)
+                }
+            }
+        }
 
         data class Name(
+            override val locus: Locus,
             val name: String
-        ) : Expr()
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitNameExpr(this)
+            }
 
-        data class Labeled(
+            override fun acceptChildren(v: Visitor) {
+                // no children
+            }
+        }
+
+        data class Labelled(
+            override val locus: Locus,
             val label: String,
             val expr: Expr
-        ) : Expr()
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitLabelledExpr(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                expr.accept(v)
+            }
+        }
 
         data class Annotated(
+            override val locus: Locus,
             override val anns: List<Modifier.AnnotationSet>,
             val expr: Expr
-        ) : Expr(), WithAnnotations
+        ) : Expr(), WithAnnotations {
+            override fun accept(v: Visitor) {
+                v.visitAnnotatedExpr(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                for (ann in anns) {
+                    ann.accept(v)
+                }
+                expr.accept(v)
+            }
+        }
 
         data class Call(
             val expr: Expr,
@@ -1212,35 +1280,107 @@ sealed class Node {
             val lambda: TrailLambda?
         ) : Expr() {
             data class TrailLambda(
+                override val locus: Locus,
                 override val anns: List<Modifier.AnnotationSet>,
                 val label: String?,
-                val func: Brace
-            ) : Node(), WithAnnotations
+                val func: Lambda
+            ) : Node(), WithAnnotations {
+                override fun accept(v: Visitor) {
+                    v.visitTrailingLambda(this)
+                }
+
+                override fun acceptChildren(v: Visitor) {
+                    for (ann in anns) {
+                        ann.accept(v)
+                    }
+                    func.accept(v)
+                }
+            }
+
+            override val locus: Locus
+                get() = expr.locus
+
+            override fun accept(v: Visitor) {
+                v.visitCallExpr(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                for (typeArg in typeArgs) {
+                    typeArg?.accept(v)
+                }
+                for (arg in args) {
+                    arg.accept(v)
+                }
+                lambda?.accept(v)
+            }
         }
 
         data class ArrayAccess(
             val expr: Expr,
             val indices: List<Expr>
-        ) : Expr()
+        ) : Expr() {
+            override val locus: Locus
+                get() = expr.locus
 
-        data class AnonFunc(
-            val func: Decl.Func
-        ) : Expr()
+            override fun accept(v: Visitor) {
+                v.visitArrayAccess(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                for (index in indices) {
+                    index.accept(v)
+                }
+            }
+        }
+
+        data class AnonymousFunction(
+            override val locus: Locus,
+            val function: Decl.Function
+        ) : Expr() {
+            override fun accept(v: Visitor) {
+                v.visitAnonymousFunction(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                function.accept(v)
+            }
+        }
 
         // This is only present for when expressions and labeled expressions
         data class Property(
             val decl: Decl.Property
-        ) : Expr()
+        ) : Expr() {
+            override val locus: Locus
+                get() = decl.locus
+
+            override fun accept(v: Visitor) {
+                v.visitPropertyExpression(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                decl.accept(v)
+            }
+        }
     }
 
-    data class Block(val stmts: List<Stmt>) : Node()
-    sealed class Stmt : Node() {
-        data class Decl(val decl: Node.Decl) : Stmt()
-        data class Expr(val expr: Node.Expr) : Stmt()
+    data class Block(
+        override val locus: Locus,
+        val stmts: List<Expr>
+    ) : Node() {
+        override fun accept(v: Visitor) {
+            v.visitBlock(this)
+        }
+
+        override fun acceptChildren(v: Visitor) {
+            for (stmt in stmts) {
+                stmt.accept(v)
+            }
+        }
     }
 
     sealed class Modifier : Node() {
         data class AnnotationSet(
+            override val locus: Locus,
             val target: Target?,
             val anns: List<Annotation>
         ) : Modifier() {
@@ -1249,13 +1389,49 @@ sealed class Node {
             }
 
             data class Annotation(
+                override val locus: Locus,
                 val names: List<String>,
                 val typeArgs: List<Type>,
                 val args: List<ValueArg>
-            ) : Node()
+            ) : Node() {
+                override fun accept(v: Visitor) {
+                    v.visitAnnotation(this)
+                }
+
+                override fun acceptChildren(v: Visitor) {
+                    for (typeArg in typeArgs) {
+                        typeArg.accept(v)
+                    }
+                    for (arg in args) {
+                        arg.accept(v)
+                    }
+                }
+            }
+
+            override fun accept(v: Visitor) {
+                v.visitAnnotationSet(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                for (ann in anns) {
+                    ann.accept(v)
+                }
+            }
         }
 
-        data class Lit(val keyword: Keyword) : Modifier()
+        data class IdentifierLike(
+            override val locus: Locus,
+            val keyword: Keyword
+        ) : Modifier() {
+            override fun accept(v: Visitor) {
+                v.visitIdentifierLikeModifier(this)
+            }
+
+            override fun acceptChildren(v: Visitor) {
+                // no children
+            }
+        }
+
         enum class Keyword {
             ABSTRACT, FINAL, OPEN, ANNOTATION, SEALED, DATA, OVERRIDE, LATEINIT, INNER,
             PRIVATE, PROTECTED, PUBLIC, INTERNAL,
@@ -1263,18 +1439,6 @@ sealed class Node {
             TAILREC, OPERATOR, INFIX, INLINE, EXTERNAL, SUSPEND, CONST,
             ACTUAL, EXPECT
         }
-    }
-
-    sealed class Extra : Node() {
-        data class BlankLines(
-            val count: Int
-        ) : Extra()
-
-        data class Comment(
-            val text: String,
-            val startsLine: Boolean,
-            val endsLine: Boolean
-        ) : Extra()
     }
 
     abstract fun accept(v: Visitor)

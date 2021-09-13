@@ -118,7 +118,7 @@ open class Writer(
                 }
                 is Node.Decl.Init ->
                     append("init ").also { children(block) }
-                is Node.Decl.Func -> {
+                is Node.Decl.Function -> {
                     childMods().append("fun")
                     if (name != null || typeParams.isNotEmpty() || receiverType != null) append(' ')
                     bracketedChildren(typeParams, " ")
@@ -130,16 +130,16 @@ open class Writer(
                     childTypeConstraints(typeConstraints)
                     if (body != null) append(' ').also { children(body) }
                 }
-                is Node.Decl.Func.Param -> {
+                is Node.Decl.Func.Function.Param -> {
                     if (mods.isNotEmpty()) childMods(newlines = false).append(' ')
                     if (isVal == true) append("val ") else if (isVal == false) append("var ")
                     appendName(name)
                     if (type != null) append(": ").also { children(type) }
                     if (default != null) append(" = ").also { children(default) }
                 }
-                is Node.Decl.Func.Body.Block ->
+                is Node.Decl.Func.Body.Function.Body.Block ->
                     children(block)
-                is Node.Decl.Func.Body.Expr ->
+                is Node.Decl.Func.Body.Function.Body.Expr ->
                     append("= ").also { children(expr) }
                 is Node.Decl.Property -> {
                     childMods().append(if (readOnly) "val " else "var ")
@@ -379,7 +379,7 @@ open class Writer(
                     children(exprs, ", ", "[", "]")
                 is Node.Expr.Name ->
                     appendName(name)
-                is Node.Expr.Labeled ->
+                is Node.Expr.Labelled ->
                     appendName(label).append("@ ").also { children(expr) }
                 is Node.Expr.Annotated ->
                     childAnnsBeforeExpr(expr).also { children(expr) }
@@ -398,8 +398,8 @@ open class Writer(
                     children(expr)
                     children(indices, ", ", "[", "]")
                 }
-                is Node.Expr.AnonFunc ->
-                    children(func)
+                is Node.Expr.AnonymousFunction ->
+                    children(function)
                 is Node.Expr.Property ->
                     children(decl)
                 is Node.Block -> {
