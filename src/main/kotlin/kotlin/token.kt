@@ -1,291 +1,295 @@
 package kometa.kotlin
 
+import kometa.kotlin.ast.Locus
+
 sealed class Token {
-    class ShebangLine(val s: String): Token()
-    class LongLiteral(val s: String): Token()
-    class UnsignedLiteral(val s: String): Token()
-    class UnsignedLongLiteral(val s: String): Token()
-    class IntegerLiteral(val s: String): Token()
-    class FloatLiteral(val s: String): Token()
-    class DoubleLiteral(val s: String): Token()
-    class CharacterLiteral(val s: String): Token()
-    class StringLiteral(val s: String): Token()
+    abstract val locus: Locus
+
+    class ShebangLine(override val locus: Locus, val s: String): Token()
+    class LongLiteral(override val locus: Locus, val s: String): Token()
+    class UnsignedLiteral(override val locus: Locus, val s: String): Token()
+    class UnsignedLongLiteral(override val locus: Locus, val s: String): Token()
+    class IntegerLiteral(override val locus: Locus, val s: String): Token()
+    class FloatLiteral(override val locus: Locus, val s: String): Token()
+    class DoubleLiteral(override val locus: Locus, val s: String): Token()
+    class CharacterLiteral(override val locus: Locus, val s: String): Token()
+    class StringLiteral(override val locus: Locus, val s: String): Token()
     sealed class BooleanLiteral: Token()
 
-    object TRUE: BooleanLiteral()
-    object FALSE: BooleanLiteral()
+    class True(override val locus: Locus): BooleanLiteral()
+    class False(override val locus: Locus): BooleanLiteral()
 
-    class ReturnAt(val s: String): Token()
-    class ContinueAt(val s: String): Token()
-    class BreakAt(val s: String): Token()
-    class ThisAt(val s: String): Token()
+    class ReturnAt(override val locus: Locus, val s: String): Token()
+    class ContinueAt(override val locus: Locus, val s: String): Token()
+    class BreakAt(override val locus: Locus, val s: String): Token()
+    class ThisAt(override val locus: Locus, val s: String): Token()
 
-    class Identifier(val s: String): Token()
+    class Identifier(override val locus: Locus, val s: String): Token()
 
-    object NL: Token()
-    object RESERVED: Token()
-    object RANGE: Token()
-    object DOT: Token()
-    object COMMA: Token()
-    object LPAREN: Token()
-    object RPAREN: Token()
-    object LSQUARE: Token()
-    object RSQUARE: Token()
-    object LCURL: Token()
-    object RCURL: Token()
-    object INCR: Token()
-    object ADD_ASSIGNMENT: Token()
-    object ADD: Token()
-    object DECR: Token()
-    object ARROW: Token()
-    object SUB_ASSIGNMENT: Token()
-    object SUB: Token()
-    object MULT_ASSIGNMENT: Token()
-    object MULT: Token()
-    object DIV_ASSIGNMENT: Token()
-    object DIV: Token()
-    object MOD_ASSIGNMENT: Token()
-    object MOD: Token()
-    object CONJ: Token()
-    object DISJ: Token()
-    object EXCL_EQEQ: Token()
-    object EXCL_EQ: Token()
-    object EXCL: Token()
-    object EXCL_EXCL: Token()
-    object QUEST_DOT: Token()
-    object SEMICOLON: Token()
-    object COLONCOLON: Token()
-    object COLON: Token()
-    object HASH: Token()
-    object AT: Token()
-    object Q_COLONCOLON: Token()
-    object ELVIS: Token()
-    object QUEST: Token()
-    object LE: Token()
-    object LANGLE: Token()
-    object GE: Token()
-    object RANGLE: Token()
-    object AS_SAFE: Token()
-    object EQEQEQ: Token()
-    object EQEQ: Token()
-    object DOUBLE_ARROW: Token()
-    object ASSIGNMENT: Token()
+    class NewLine(override val locus: Locus): Token()
+    class Reserved(override val locus: Locus): Token()
+    class Range(override val locus: Locus): Token()
+    class Dot(override val locus: Locus): Token()
+    class Comma(override val locus: Locus): Token()
+    class LeftParen(override val locus: Locus): Token()
+    class RightParen(override val locus: Locus): Token()
+    class LeftSquare(override val locus: Locus): Token()
+    class RightSquare(override val locus: Locus): Token()
+    class LeftBrace(override val locus: Locus): Token()
+    class RightBrace(override val locus: Locus): Token()
+    class Increment(override val locus: Locus): Token()
+    class AddAssign(override val locus: Locus): Token()
+    class Add(override val locus: Locus): Token()
+    class Decrement(override val locus: Locus): Token()
+    class Arrow(override val locus: Locus): Token()
+    class SubAssign(override val locus: Locus): Token()
+    class Sub(override val locus: Locus): Token()
+    class MulAssign(override val locus: Locus): Token()
+    class Mul(override val locus: Locus): Token()
+    class Div(override val locus: Locus): Token()
+    class DivAssign(override val locus: Locus): Token()
+    class ModAssign(override val locus: Locus): Token()
+    class Mod(override val locus: Locus): Token()
+    class And(override val locus: Locus): Token()
+    class Or(override val locus: Locus): Token()
+    class NotRefEqual(override val locus: Locus): Token()
+    class NotEqual(override val locus: Locus): Token()
+    class Not(override val locus: Locus): Token()
+    class DefNotNull(override val locus: Locus): Token()
+    class SafeCall(override val locus: Locus): Token()
+    class Semicolon(override val locus: Locus): Token()
+    class CallRef(override val locus: Locus): Token()
+    class Colon(override val locus: Locus): Token()
+    class Hash(override val locus: Locus): Token()
+    class At(override val locus: Locus): Token()
+    class SafeCallRef(override val locus: Locus): Token()
+    class Elvis(override val locus: Locus): Token()
+    class Query(override val locus: Locus): Token()
+    class LessEqual(override val locus: Locus): Token()
+    class Less(override val locus: Locus): Token()
+    class GreaterEqual(override val locus: Locus): Token()
+    class Greater(override val locus: Locus): Token()
+    class AsSafe(override val locus: Locus): Token()
+    class RefEqual(override val locus: Locus): Token()
+    class Equal(override val locus: Locus): Token()
+    class DoubleArrow(override val locus: Locus): Token()
+    class Assign(override val locus: Locus): Token()
 
-    object FILE: Token()
-    object PACKAGE: Token()
-    object IMPORT: Token()
-    object CLASS: Token()
-    object INTERFACE: Token()
-    object FUN: Token()
-    object OBJECT: Token()
-    object VAL: Token()
-    object VAR: Token()
-    object TYPE_ALIAS: Token()
-    object CONSTRUCTOR: Token()
-    object BY: Token()
-    object COMPANION: Token()
-    object INIT: Token()
-    object THIS: Token()
-    object SUPER: Token()
-    object TYPEOF: Token()
-    object WHERE: Token()
-    object IF: Token()
-    object ELSE: Token()
-    object WHEN: Token()
-    object TRY: Token()
-    object CATCH: Token()
-    object FINALLY: Token()
-    object FOR: Token()
-    object DO: Token()
-    object WHILE: Token()
-    object THROW: Token()
-    object RETURN: Token()
-    object CONTINUE: Token()
-    object BREAK: Token()
-    object AS: Token()
-    object IS: Token()
-    object IN: Token()
-    object NOT_IS: Token()
-    object NOT_IN: Token()
-    object OUT: Token()
-    object FIELD: Token()
-    object PROPERTY: Token()
-    object GET: Token()
-    object SET: Token()
-    object RECEIVER: Token()
-    object PARAM: Token()
-    object SETPARAM: Token()
-    object DELEGATE: Token()
-    object DYNAMIC: Token()
-    object PUBLIC: Token()
-    object PRIVATE: Token()
-    object PROTECTED: Token()
-    object INTERNAL: Token()
-    object ENUM: Token()
-    object SEALED: Token()
-    object ANNOTATION: Token()
-    object DATA: Token()
-    object INNER: Token()
-    object TAILREC: Token()
-    object OPERATOR: Token()
-    object INLINE: Token()
-    object INFIX: Token()
-    object EXTERNAL: Token()
-    object SUSPEND: Token()
-    object OVERRIDE: Token()
-    object ABSTRACT: Token()
-    object FINAL: Token()
-    object OPEN: Token()
-    object CONST: Token()
-    object LATEINIT: Token()
-    object VARARG: Token()
-    object NOINLINE: Token()
-    object CROSSINLINE: Token()
-    object REIFIED: Token()
-    object NULL: Token()
-    object VALUE: Token()
-    object EXPECT: Token()
-    object ACTUAL: Token()
+    class File(override val locus: Locus): Token()
+    class Package(override val locus: Locus): Token()
+    class Import(override val locus: Locus): Token()
+    class Class(override val locus: Locus): Token()
+    class Interface(override val locus: Locus): Token()
+    class Fun(override val locus: Locus): Token()
+    class Object(override val locus: Locus): Token()
+    class Val(override val locus: Locus): Token()
+    class Var(override val locus: Locus): Token()
+    class Typealias(override val locus: Locus): Token()
+    class Constructor(override val locus: Locus): Token()
+    class By(override val locus: Locus): Token()
+    class Companion(override val locus: Locus): Token()
+    class Init(override val locus: Locus): Token()
+    class This(override val locus: Locus): Token()
+    class Super(override val locus: Locus): Token()
+    class Typeof(override val locus: Locus): Token()
+    class Where(override val locus: Locus): Token()
+    class If(override val locus: Locus): Token()
+    class Else(override val locus: Locus): Token()
+    class When(override val locus: Locus): Token()
+    class Try(override val locus: Locus): Token()
+    class Catch(override val locus: Locus): Token()
+    class Finally(override val locus: Locus): Token()
+    class For(override val locus: Locus): Token()
+    class Do(override val locus: Locus): Token()
+    class While(override val locus: Locus): Token()
+    class Throw(override val locus: Locus): Token()
+    class Return(override val locus: Locus): Token()
+    class Continue(override val locus: Locus): Token()
+    class Break(override val locus: Locus): Token()
+    class As(override val locus: Locus): Token()
+    class Is(override val locus: Locus): Token()
+    class In(override val locus: Locus): Token()
+    class NotIs(override val locus: Locus): Token()
+    class NotIn(override val locus: Locus): Token()
+    class Out(override val locus: Locus): Token()
+    class Field(override val locus: Locus): Token()
+    class Property(override val locus: Locus): Token()
+    class Get(override val locus: Locus): Token()
+    class Set(override val locus: Locus): Token()
+    class Receiver(override val locus: Locus): Token()
+    class Param(override val locus: Locus): Token()
+    class Setparam(override val locus: Locus): Token()
+    class Delegate(override val locus: Locus): Token()
+    class Dynamic(override val locus: Locus): Token()
+    class Public(override val locus: Locus): Token()
+    class Private(override val locus: Locus): Token()
+    class Protected(override val locus: Locus): Token()
+    class Internal(override val locus: Locus): Token()
+    class Enum(override val locus: Locus): Token()
+    class Sealed(override val locus: Locus): Token()
+    class Annotation(override val locus: Locus): Token()
+    class Data(override val locus: Locus): Token()
+    class Inner(override val locus: Locus): Token()
+    class Tailrec(override val locus: Locus): Token()
+    class Operator(override val locus: Locus): Token()
+    class Inline(override val locus: Locus): Token()
+    class Infix(override val locus: Locus): Token()
+    class External(override val locus: Locus): Token()
+    class Suspend(override val locus: Locus): Token()
+    class Override(override val locus: Locus): Token()
+    class Abstract(override val locus: Locus): Token()
+    class Final(override val locus: Locus): Token()
+    class Open(override val locus: Locus): Token()
+    class Const(override val locus: Locus): Token()
+    class Lateinit(override val locus: Locus): Token()
+    class Vararg(override val locus: Locus): Token()
+    class Noinline(override val locus: Locus): Token()
+    class Crossinline(override val locus: Locus): Token()
+    class Reified(override val locus: Locus): Token()
+    class Null(override val locus: Locus): Token()
+    class Value(override val locus: Locus): Token()
+    class Expect(override val locus: Locus): Token()
+    class Actual(override val locus: Locus): Token()
 
     override fun toString(): String = when (this) {
-        ABSTRACT -> "abstract"
-        ADD -> "+"
-        ADD_ASSIGNMENT -> "+="
-        ANNOTATION -> "annotation"
-        ARROW -> "->"
-        AS -> "as"
-        ASSIGNMENT -> "="
-        AS_SAFE -> "as?"
-        AT -> "@"
-        BREAK -> "break"
-        BY -> "by"
-        TRUE -> "true"
-        FALSE -> "false"
-        NULL -> "null"
+        is Abstract -> "abstract"
+        is Add -> "+"
+        is AddAssign -> "+="
+        is Annotation -> "annotation"
+        is Arrow -> "->"
+        is As -> "as"
+        is Assign -> "="
+        is AsSafe -> "as?"
+        is At -> "@"
+        is Break -> "break"
+        is By -> "by"
+        is True -> "true"
+        is False -> "false"
+        is Null -> "null"
         is BreakAt -> "break@$s"
-        CATCH -> "catch"
-        CLASS -> "class"
-        COLON -> ":"
-        COLONCOLON -> "::"
-        COMMA -> ","
-        COMPANION -> "companion"
-        CONJ -> "&&"
-        CONST -> "const"
-        CONSTRUCTOR -> "constructor"
-        CONTINUE -> "continue"
-        CROSSINLINE -> "crossinline"
+        is Catch -> "catch"
+        is Class -> "class"
+        is Colon -> ":"
+        is CallRef -> "::"
+        is Comma -> ","
+        is Companion -> "companion"
+        is And -> "&&"
+        is Const -> "const"
+        is Constructor -> "constructor"
+        is Continue -> "continue"
+        is Crossinline -> "crossinline"
         is CharacterLiteral -> s
         is ContinueAt -> "continue@$s"
         is ThisAt -> "this@$s"
-        DATA -> "data"
-        DECR -> "--"
-        DELEGATE -> "delegate"
-        DISJ -> "||"
-        DIV -> "/"
-        DIV_ASSIGNMENT -> "/="
-        DO -> "do"
-        DOT -> "."
-        DOUBLE_ARROW -> "=>"
-        DYNAMIC -> "dynamic"
+        is Data -> "data"
+        is Decrement -> "--"
+        is Delegate -> "delegate"
+        is Or -> "||"
+        is Div -> "/"
+        is DivAssign -> "/="
+        is Do -> "do"
+        is Dot -> "."
+        is DoubleArrow -> "=>"
+        is Dynamic -> "dynamic"
         is DoubleLiteral -> s
-        ELSE -> "else"
-        ELVIS -> "?:"
-        ENUM -> "enum"
-        EQEQ -> "=="
-        EQEQEQ -> "==="
-        EXCL -> "!"
-        EXCL_EQ -> "!="
-        EXCL_EQEQ -> "!=="
-        EXTERNAL -> "external"
-        FIELD -> "field"
-        FILE -> "file"
-        FINAL -> "final"
-        FINALLY -> "finally"
-        FOR -> "for"
-        FUN -> "fun"
+        is Else -> "else"
+        is Elvis -> "?:"
+        is Enum -> "enum"
+        is Equal -> "=="
+        is RefEqual -> "==="
+        is Not -> "!"
+        is NotEqual -> "!="
+        is NotRefEqual -> "!=="
+        is External -> "external"
+        is Field -> "field"
+        is File -> "file"
+        is Final -> "final"
+        is Finally -> "finally"
+        is For -> "for"
+        is Fun -> "fun"
         is FloatLiteral -> s
-        GE -> ">="
-        GET -> "get"
-        HASH -> "#"
-        IF -> "if"
-        IMPORT -> "import"
-        IN -> "in"
-        INCR -> "++"
-        INFIX -> "infix"
-        INIT -> "init"
-        INLINE -> "inline"
-        INNER -> "inner"
-        INTERFACE -> "interface"
-        INTERNAL -> "internal"
-        IS -> "is"
+        is GreaterEqual -> ">="
+        is Get -> "get"
+        is Hash -> "#"
+        is If -> "if"
+        is Import -> "import"
+        is In -> "in"
+        is Increment -> "++"
+        is Infix -> "infix"
+        is Init -> "init"
+        is Inline -> "inline"
+        is Inner -> "inner"
+        is Interface -> "interface"
+        is Internal -> "internal"
+        is Is -> "is"
         is Identifier -> s
-        LANGLE -> "<"
-        LATEINIT -> "lateinit"
-        LCURL -> "{"
-        LE -> "<="
-        LPAREN -> "("
-        LSQUARE -> "["
+        is Less -> "<"
+        is Lateinit -> "lateinit"
+        is LeftBrace -> "{"
+        is LessEqual -> "<="
+        is LeftParen -> "("
+        is LeftSquare -> "["
         is LongLiteral -> s
         is IntegerLiteral -> s
         is UnsignedLiteral -> s
         is UnsignedLongLiteral -> s
-        MOD -> "%"
-        MOD_ASSIGNMENT -> "%="
-        MULT -> "*"
-        MULT_ASSIGNMENT -> "*="
-        NL -> "\n"
-        NOINLINE -> "noinline"
-        NOT_IN -> "!in"
-        NOT_IS -> "!is"
-        OBJECT -> "object"
-        OPEN -> "open"
-        OPERATOR -> "operator"
-        OUT -> "out"
-        OVERRIDE -> "override"
-        PACKAGE -> "package"
-        PARAM -> "param"
-        PRIVATE -> "private"
-        PROPERTY -> "property"
-        PROTECTED -> "protected"
-        PUBLIC -> "public"
-        QUEST -> "?"
-        Q_COLONCOLON -> "?::"
-        RANGE -> ".."
-        RANGLE -> ">"
-        RCURL -> "}"
-        RECEIVER -> "receiver"
-        REIFIED -> "reified"
-        RESERVED -> "..."
-        RETURN -> "return"
-        RPAREN -> ")"
-        RSQUARE -> "]"
+        is Mod -> "%"
+        is ModAssign -> "%="
+        is Mul -> "*"
+        is MulAssign -> "*="
+        is NewLine -> "\n"
+        is Noinline -> "noinline"
+        is NotIn -> "!in"
+        is NotIs -> "!is"
+        is Object -> "object"
+        is Open -> "open"
+        is Operator -> "operator"
+        is Out -> "out"
+        is Override -> "override"
+        is Package -> "package"
+        is Param -> "param"
+        is Private -> "private"
+        is Property -> "property"
+        is Protected -> "protected"
+        is Public -> "public"
+        is Query -> "?"
+        is SafeCallRef -> "?::"
+        is Range -> ".."
+        is Greater -> ">"
+        is RightBrace -> "}"
+        is Receiver -> "receiver"
+        is Reified -> "reified"
+        is Reserved -> "..."
+        is Return -> "return"
+        is RightParen-> ")"
+        is RightSquare -> "]"
         is ReturnAt -> "return@$s"
-        SEALED -> "sealed"
-        SEMICOLON -> ";"
-        SET -> "set"
-        SETPARAM -> "setparam"
-        SUB -> "-"
-        SUB_ASSIGNMENT -> "-="
-        SUPER -> "super"
-        SUSPEND -> "suspend"
+        is Sealed -> "sealed"
+        is Semicolon -> ";"
+        is Set -> "set"
+        is Setparam -> "setparam"
+        is Sub -> "-"
+        is SubAssign -> "-="
+        is Super -> "super"
+        is Suspend -> "suspend"
         is ShebangLine -> "#!$s"
         is StringLiteral -> s
-        TAILREC -> "tailrec"
-        THIS -> "this"
-        THROW -> "throw"
-        TRY -> "try"
-        TYPEOF -> "typeof"
-        TYPE_ALIAS -> "typealias"
-        VAL -> "val"
-        VAR -> "var"
-        VARARG -> "vararg"
-        WHEN -> "when"
-        WHERE -> "where"
-        WHILE -> "while"
-        EXCL_EXCL -> "!!"
-        QUEST_DOT -> "?."
-        VALUE -> "value"
-        EXPECT -> "expect"
-        ACTUAL -> "actual"
+        is Tailrec -> "tailrec"
+        is This -> "this"
+        is Throw -> "throw"
+        is Try -> "try"
+        is Typeof -> "typeof"
+        is Typealias -> "typealias"
+        is Val -> "val"
+        is Var -> "var"
+        is Vararg -> "vararg"
+        is When -> "when"
+        is Where -> "where"
+        is While -> "while"
+        is DefNotNull -> "!!"
+        is SafeCall -> "?."
+        is Value -> "value"
+        is Expect -> "expect"
+        is Actual -> "actual"
     }
 }
