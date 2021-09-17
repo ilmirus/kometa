@@ -17,13 +17,13 @@ sealed class Node {
     var tag: Any? = null
 
     interface WithAnnotations {
-        val anns: List<Modifier.AnnotationSet>
+        val anns: List<Modifier.Annotation>
     }
 
     interface WithModifiers : WithAnnotations {
         val mods: List<Modifier>
-        override val anns: List<Modifier.AnnotationSet>
-            get() = mods.mapNotNull { it as? Modifier.AnnotationSet }
+        override val anns: List<Modifier.Annotation>
+            get() = mods.mapNotNull { it as? Modifier.Annotation }
     }
 
     interface Entry : WithAnnotations {
@@ -33,7 +33,7 @@ sealed class Node {
 
     data class File(
         override val locus: Locus,
-        override val anns: List<Modifier.AnnotationSet>,
+        override val anns: List<Modifier.Annotation>,
         override val pkg: Package?,
         override val imports: List<Import>,
         val decls: List<Decl>
@@ -58,7 +58,7 @@ sealed class Node {
 
     data class Script(
         override val locus: Locus,
-        override val anns: List<Modifier.AnnotationSet>,
+        override val anns: List<Modifier.Annotation>,
         override val pkg: Package?,
         override val imports: List<Import>,
         val exprs: List<Expr>
@@ -117,7 +117,7 @@ sealed class Node {
             val name: String,
             val typeParams: List<TypeParam>,
             val primaryConstructor: PrimaryConstructor?,
-            val parentAnns: List<Modifier.AnnotationSet>,
+            val parentAnns: List<Modifier.Annotation>,
             val parents: List<Parent>,
             val typeConstraints: List<TypeConstraint>,
             // TODO: Can include primary constructor
@@ -515,7 +515,7 @@ sealed class Node {
 
     data class TypeConstraint(
         override val locus: Locus,
-        override val anns: List<Modifier.AnnotationSet>,
+        override val anns: List<Modifier.Annotation>,
         val name: String,
         val type: Type
     ) : Node(), WithAnnotations {
@@ -698,7 +698,7 @@ sealed class Node {
         ) : Expr() {
             data class Catch(
                 override val locus: Locus,
-                override val anns: List<Modifier.AnnotationSet>,
+                override val anns: List<Modifier.Annotation>,
                 val varName: String,
                 val varType: TypeRef.Simple,
                 val block: Block
@@ -731,7 +731,7 @@ sealed class Node {
 
         data class For(
             override val locus: Locus,
-            override val anns: List<Modifier.AnnotationSet>,
+            override val anns: List<Modifier.Annotation>,
             // More than one means destructure, null means underscore
             val vars: List<Decl.Property.Var?>,
             val inExpr: Expr,
@@ -1239,7 +1239,7 @@ sealed class Node {
 
         data class Annotated(
             override val locus: Locus,
-            override val anns: List<Modifier.AnnotationSet>,
+            override val anns: List<Modifier.Annotation>,
             val expr: Expr
         ) : Expr(), WithAnnotations {
             override fun accept(v: Visitor) {
@@ -1263,7 +1263,7 @@ sealed class Node {
         ) : Expr() {
             data class TrailLambda(
                 override val locus: Locus,
-                override val anns: List<Modifier.AnnotationSet>,
+                override val anns: List<Modifier.Annotation>,
                 val label: String?,
                 val func: Lambda
             ) : Node(), WithAnnotations {
@@ -1356,42 +1356,27 @@ sealed class Node {
     }
 
     sealed class Modifier : Node() {
-        data class AnnotationSet(
+        data class Annotation(
             override val locus: Locus,
+            val name: FqName,
             val target: Target?,
-            val anns: List<Annotation>
+            val typeArgs: List<Type>,
+            val args: List<ValueArg>
         ) : Modifier() {
             enum class Target {
                 FIELD, FILE, PROPERTY, GET, SET, RECEIVER, PARAM, SETPARAM, DELEGATE
             }
 
-            data class Annotation(
-                override val locus: Locus,
-                val names: List<String>,
-                val typeArgs: List<Type>,
-                val args: List<ValueArg>
-            ) : Node() {
-                override fun accept(v: Visitor) {
-                    v.visitAnnotation(this)
-                }
-
-                override fun acceptChildren(v: Visitor) {
-                    for (typeArg in typeArgs) {
-                        typeArg.accept(v)
-                    }
-                    for (arg in args) {
-                        arg.accept(v)
-                    }
-                }
-            }
-
             override fun accept(v: Visitor) {
-                v.visitAnnotationSet(this)
+                v.visitAnnotation(this)
             }
 
             override fun acceptChildren(v: Visitor) {
-                for (ann in anns) {
-                    ann.accept(v)
+                for (typeArg in typeArgs) {
+                    typeArg.accept(v)
+                }
+                for (arg in args) {
+                    arg.accept(v)
                 }
             }
         }
