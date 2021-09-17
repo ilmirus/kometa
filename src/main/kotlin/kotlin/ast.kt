@@ -7,15 +7,10 @@ data class FqName(val names: List<String>) {
 }
 
 data class Locus(
-    val row: Int,
-    val column: Int
-) {
-    override fun toString(): String = "$row:$column"
-
-    companion object {
-        val FILE_START: Locus = Locus(1, 1)
-    }
-}
+    val fileName: String,
+    val startOffset: Int,
+    val endOffset: Int
+)
 
 sealed class Node {
     abstract val locus: Locus
@@ -37,14 +32,12 @@ sealed class Node {
     }
 
     data class File(
+        override val locus: Locus,
         override val anns: List<Modifier.AnnotationSet>,
         override val pkg: Package?,
         override val imports: List<Import>,
         val decls: List<Decl>
     ) : Node(), Entry {
-        override val locus: Locus
-            get() = Locus.FILE_START
-
         override fun accept(v: Visitor) {
             v.visitFile(this)
         }
@@ -64,14 +57,12 @@ sealed class Node {
     }
 
     data class Script(
+        override val locus: Locus,
         override val anns: List<Modifier.AnnotationSet>,
         override val pkg: Package?,
         override val imports: List<Import>,
         val exprs: List<Expr>
     ) : Node(), Entry {
-        override val locus: Locus
-            get() = Locus.FILE_START
-
         override fun accept(v: Visitor) {
             v.visitScript(this)
         }
@@ -138,14 +129,12 @@ sealed class Node {
 
             sealed class Parent : Node() {
                 data class ConstructorCall(
+                    override val locus: Locus,
                     val type: TypeRef.Simple,
                     val typeArgs: List<Type>,
                     val args: List<ValueArg>,
                     val lambda: Expr.Call.TrailLambda?
                 ) : Parent() {
-                    override val locus: Locus
-                        get() = type.locus
-
                     override fun accept(v: Visitor) {
                         v.visitClassParentConstructorCall(this)
                     }
@@ -163,12 +152,10 @@ sealed class Node {
                 }
 
                 data class InterfaceType(
+                    override val locus: Locus,
                     val type: TypeRef.Simple,
                     val delegated: Expr?
                 ) : Parent() {
-                    override val locus: Locus
-                        get() = type.locus
-
                     override fun accept(v: Visitor) {
                         v.visitClassParentInterfaceType(this)
                     }
@@ -223,10 +210,10 @@ sealed class Node {
             }
         }
 
-        data class Init(val block: Block) : Decl() {
-            override val locus: Locus
-                get() = block.locus
-
+        data class Init(
+            override val locus: Locus,
+            val block: Block
+        ) : Decl() {
             override fun accept(v: Visitor) {
                 v.visitInitDecl(this)
             }
@@ -596,6 +583,7 @@ sealed class Node {
         }
 
         data class Simple(
+            override val locus: Locus,
             val pieces: List<Piece>
         ) : TypeRef() {
             data class Piece(
@@ -615,9 +603,6 @@ sealed class Node {
                 }
             }
 
-            override val locus: Locus
-                get() = pieces.first().locus
-
             override fun accept(v: Visitor) {
                 v.visitSimpleType(this)
             }
@@ -629,10 +614,10 @@ sealed class Node {
             }
         }
 
-        data class Nullable(val type: TypeRef) : TypeRef() {
-            override val locus: Locus
-                get() = type.locus
-
+        data class Nullable(
+            override val locus: Locus,
+            val type: TypeRef
+        ) : TypeRef() {
             override fun accept(v: Visitor) {
                 v.visitNullableType(this)
             }
@@ -799,6 +784,7 @@ sealed class Node {
         }
 
         data class BinaryOp(
+            override val locus: Locus,
             val lhs: Expr,
             val oper: Oper,
             val rhs: Expr
@@ -840,9 +826,6 @@ sealed class Node {
                 OR("||"), AND("&&"), ELVIS("?:"), RANGE(".."),
                 DOT("."), DOT_SAFE("?.")
             }
-
-            override val locus: Locus
-                get() = lhs.locus
 
             override fun accept(v: Visitor) {
                 v.visitBinaryOp(this)
@@ -889,6 +872,7 @@ sealed class Node {
         }
 
         data class TypeOp(
+            override val locus: Locus,
             val lhs: Expr,
             val oper: Oper,
             val rhs: Type
@@ -909,9 +893,6 @@ sealed class Node {
             enum class Token(val str: String) {
                 AS("as"), AS_SAFE("as?"), COL(":"), IS("is"), NOT_IS("!is")
             }
-
-            override val locus: Locus
-                get() = lhs.locus
 
             override fun accept(v: Visitor) {
                 v.visitTypeOp(this)
@@ -1274,6 +1255,7 @@ sealed class Node {
         }
 
         data class Call(
+            override val locus: Locus,
             val expr: Expr,
             val typeArgs: List<Type?>,
             val args: List<ValueArg>,
@@ -1297,9 +1279,6 @@ sealed class Node {
                 }
             }
 
-            override val locus: Locus
-                get() = expr.locus
-
             override fun accept(v: Visitor) {
                 v.visitCallExpr(this)
             }
@@ -1316,12 +1295,10 @@ sealed class Node {
         }
 
         data class ArrayAccess(
+            override val locus: Locus,
             val expr: Expr,
             val indices: List<Expr>
         ) : Expr() {
-            override val locus: Locus
-                get() = expr.locus
-
             override fun accept(v: Visitor) {
                 v.visitArrayAccess(this)
             }
