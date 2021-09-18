@@ -1,7 +1,7 @@
 package kometa.expressionTree
 
 import kometa.kotlin.Visitor
-import kometa.kotlin.ast.Node
+import kometa.kotlin.ast.Element
 import kometa.util.cast
 
 class KetBuilder : Visitor() {
@@ -9,52 +9,52 @@ class KetBuilder : Visitor() {
 }
 
 object ETBuilder {
-    private fun List<Any>.buildList(): Node.Expr = map { build(it.cast()) }.callListOf()
+    private fun List<Any>.buildList(): Element.Expr = map { build(it.cast()) }.callListOf()
 
     private fun Any?.buildNullable(): AST.Expression = this?.let { build(it.cast()) } ?: AST.NULL
 
-    fun build(node: Node): AST.Expression =
-        when (node) {
-            is AST.Block -> Call("AST.Block", listOf(node.statements.buildList()))
+    fun build(element: Element): AST.Expression =
+        when (element) {
+            is AST.Block -> Call("AST.Block", listOf(element.statements.buildList()))
             is AST.Statement -> Call(
                 "AST.Statement",
-                listOf(node.label.buildList(), build(node.expression.cast()))
+                listOf(element.label.buildList(), build(element.expression.cast()))
             )
             is AST.SingleAnnotation -> Call(
                 "AST.SingleAnnotation",
-                listOf(node.target.buildNullable(), build(node.unescapedAnnotation.cast()))
+                listOf(element.target.buildNullable(), build(element.unescapedAnnotation.cast()))
             )
             is AST.ConstructorInvocation -> Call(
                 "AST.ConstructorInvocation",
-                listOf(build(node.userType), node.valueArguments.buildList())
+                listOf(build(element.userType), element.valueArguments.buildList())
             )
             is AST.UserType -> Call(
                 "AST.UserType",
-                listOf(node.simpleTypes.buildList())
+                listOf(element.simpleTypes.buildList())
             )
             is AST.SimpleUserType -> Call(
                 "AST.SimpleUserType",
-                listOf(node.name.asLiteral(), node.typeArguments.buildList())
+                listOf(element.name.asLiteral(), element.typeArguments.buildList())
             )
             is AST.TypeProjectionWithType -> Call(
                 "AST.TypeProjectionWithType",
-                listOf(node.modifiers.buildList(), build(node.type))
+                listOf(element.modifiers.buildList(), build(element.type))
             )
             AST.ADD -> Call("AST.ADD")
             AST.SUB -> Call("AST.SUB")
             is AST.AnnotatedDelegationSpecifier -> Call(
                 "AST.AnnotatedDelegationSpecifier",
                 listOf(
-                    node.annotations.buildList(),
-                    node.delegationSpecifiers.buildList()
+                    element.annotations.buildList(),
+                    element.delegationSpecifiers.buildList()
                 )
             )
             is AST.AnnotatedLambda -> Call(
                 "AST.AnnotatedLambda",
                 listOf(
-                    node.annotations.buildList(),
-                    node.label.buildNullable(),
-                    build(node.lambdaLiteral)
+                    element.annotations.buildList(),
+                    element.label.buildNullable(),
+                    build(element.lambdaLiteral)
                 )
             )
             AST.DELEGATE -> Call("AST.DELEGATE")
@@ -65,14 +65,14 @@ object ETBuilder {
             AST.RECEIVER -> Call("AST.RECEIVER")
             AST.SET -> Call("AST.SET")
             AST.SETPARAM -> Call("AST.SETPARAM")
-            is AST.AnonymousInitializer -> Call("AST.AnonymousInitializer", listOf(build(node.block)))
+            is AST.AnonymousInitializer -> Call("AST.AnonymousInitializer", listOf(build(element.block)))
             AST.AS -> Call("AST.AS")
             AST.AS_SAFE -> Call("AST.AS_SAFE")
             is AST.AugmentedAssignment -> Call(
                 "AST.AugmentedAssignment",
-                listOf(build(node.lhs.cast()), build(node.op), build(node.rhs))
+                listOf(build(element.lhs.cast()), build(element.op), build(element.rhs))
             )
-            is AST.DirectAssignment -> Call("AST.DirectAssignment", listOf(build(node.lhs), build(node.rhs)))
+            is AST.DirectAssignment -> Call("AST.DirectAssignment", listOf(build(element.lhs), build(element.rhs)))
             AST.ADD_ASSIGNMENT -> Call("AST.ADD_ASSIGNMENT")
             AST.DIV_ASSIGNMENT -> Call("AST.DIV_ASSIGNMENT")
             AST.MOD_ASSIGNMENT -> Call("AST.MOD_ASSIGNMENT")
@@ -81,64 +81,64 @@ object ETBuilder {
             is AST.CallSuffix -> Call(
                 "AST.CallSuffix",
                 listOf(
-                    node.typeArguments.buildList(),
-                    node.valueArguments.buildList(),
-                    node.annotatedLambda.buildNullable()
+                    element.typeArguments.buildList(),
+                    element.valueArguments.buildList(),
+                    element.annotatedLambda.buildNullable()
                 )
             )
             is AST.CallableReference -> Call(
                 "AST.CallableReference",
-                listOf(node.receiverType.buildNullable(), node.name.asLiteral())
+                listOf(element.receiverType.buildNullable(), element.name.asLiteral())
             )
             is AST.CatchBlock -> Call(
                 "AST.CatchBlock",
-                listOf(node.annotations.buildList(), node.name.asLiteral(), build(node.type), build(node.block))
+                listOf(element.annotations.buildList(), element.name.asLiteral(), build(element.type), build(element.block))
             )
-            is AST.ClassBody -> Call("AST.ClassBody", listOf(node.members.buildList()))
+            is AST.ClassBody -> Call("AST.ClassBody", listOf(element.members.buildList()))
             is AST.EnumClassBody -> Call(
                 "AST.EnumClassBody",
-                listOf(node.entries.buildList(), node.members.buildList())
+                listOf(element.entries.buildList(), element.members.buildList())
             )
             is AST.Class -> Call(
                 "AST.Class", listOf(
-                    node.modifiers.buildList(),
-                    node.name.asLiteral(),
-                    node.typeParameters.buildList(),
-                    node.primaryConstructor.buildNullable(),
-                    node.annotatedDelegationSpecifiers.buildList(),
-                    node.typeConstraints.buildList(),
-                    node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.name.asLiteral(),
+                    element.typeParameters.buildList(),
+                    element.primaryConstructor.buildNullable(),
+                    element.annotatedDelegationSpecifiers.buildList(),
+                    element.typeConstraints.buildList(),
+                    element.body.buildNullable()
                 )
             )
             is AST.FunInterface -> Call(
                 "AST.FunInterface", listOf(
-                    node.modifiers.buildList(), node.name.asLiteral(),
-                    node.typeParameters.buildList(), node.typeConstraints.buildList(), node.body.buildNullable()
+                    element.modifiers.buildList(), element.name.asLiteral(),
+                    element.typeParameters.buildList(), element.typeConstraints.buildList(), element.body.buildNullable()
                 )
             )
             is AST.Interface -> Call(
                 "AST.Interface", listOf(
-                    node.modifiers.buildList(), node.name.asLiteral(),
-                    node.typeParameters.buildList(), node.typeConstraints.buildList(), node.body.buildNullable()
+                    element.modifiers.buildList(), element.name.asLiteral(),
+                    element.typeParameters.buildList(), element.typeConstraints.buildList(), element.body.buildNullable()
                 )
             )
             is AST.ClassParameter -> Call(
                 "AST.ClassParameter",
                 listOf(
-                    node.modifiers.buildList(),
-                    node.name.asLiteral(),
-                    build(node.type),
-                    node.initial.buildNullable(),
-                    node.vov.buildNullable()
+                    element.modifiers.buildList(),
+                    element.name.asLiteral(),
+                    build(element.type),
+                    element.initial.buildNullable(),
+                    element.vov.buildNullable()
                 )
             )
             is AST.CompanionObject -> Call(
                 "AST.CompanionObject",
                 listOf(
-                    node.modifiers.buildList(),
-                    node.name?.let { it.asLiteral() } ?: AST.NULL,
-                    node.annotatedDelegationSpecifiers.buildList(),
-                    node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.name?.let { it.asLiteral() } ?: AST.NULL,
+                    element.annotatedDelegationSpecifiers.buildList(),
+                    element.body.buildNullable()
                 )
             )
             AST.GE -> Call("AST.GE")
@@ -148,20 +148,20 @@ object ETBuilder {
             is AST.Constructor -> Call(
                 "AST.Constructor",
                 listOf(
-                    node.modifiers.buildList(),
-                    node.classParameters.buildList(),
-                    node.constructorDelegationCall.buildNullable(),
-                    node.body.buildNullable(),
-                    if (node.primary) AST.TRUE else AST.FALSE
+                    element.modifiers.buildList(),
+                    element.classParameters.buildList(),
+                    element.constructorDelegationCall.buildNullable(),
+                    element.body.buildNullable(),
+                    if (element.primary) AST.TRUE else AST.FALSE
                 )
             )
-            is AST.SuperCall -> Call("AST.SuperCall", listOf(node.arguments.buildList()))
-            is AST.ThisCall -> Call("AST.ThisCall", listOf(node.arguments.buildList()))
+            is AST.SuperCall -> Call("AST.SuperCall", listOf(element.arguments.buildList()))
+            is AST.ThisCall -> Call("AST.ThisCall", listOf(element.arguments.buildList()))
             is AST.EXCL -> Call("AST.EXCL")
             is AST.EnumEntry -> Call(
                 "AST.EnumEntry", listOf(
-                    node.modifiers.buildList(),
-                    node.name.asLiteral(), node.arguments.buildList(), node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.name.asLiteral(), element.arguments.buildList(), element.body.buildNullable()
                 )
             )
             AST.EQEQ -> Call("AST.EQEQ")
@@ -170,285 +170,285 @@ object ETBuilder {
             AST.EXCL_EQEQ -> Call("AST.EXCL_EQEQ")
             is AST.ExplicitDelegation -> Call(
                 "AST.ExplicitDelegation", listOf(
-                    build(node.type.cast()), build(node.expression)
+                    build(element.type.cast()), build(element.expression)
                 )
             )
             is AST.Additive -> Call(
                 "AST.Additive", listOf(
-                    build(node.lhs), build(node.op), build(node.rhs)
+                    build(element.lhs), build(element.op), build(element.rhs)
                 )
             )
             is AST.AsExpression -> Call(
                 "AST.AsExpression", listOf(
-                    build(node.lhs), build(node.op), build(node.rhs)
+                    build(element.lhs), build(element.op), build(element.rhs)
                 )
             )
             is AST.CollectionLiteral -> Call(
                 "AST.CollectionLiteral", listOf(
-                    node.expressions.buildList()
+                    element.expressions.buildList()
                 )
             )
             is AST.Comparison -> Call(
                 "AST.Comparison", listOf(
-                    build(node.lhs), build(node.op), build(node.rhs)
+                    build(element.lhs), build(element.op), build(element.rhs)
                 )
             )
             is AST.Conjunction -> Call(
                 "AST.Conjunction", listOf(
-                    node.subs.buildList()
+                    element.subs.buildList()
                 )
             )
             is AST.DirectlyAssignableExpression -> Call(
                 "AST.DirectlyAssignableExpression", listOf(
-                    build(node.expression), build(node.suffix.cast())
+                    build(element.expression), build(element.suffix.cast())
                 )
             )
             is AST.Disjunction -> Call(
                 "AST.Disjunction", listOf(
-                    node.subs.buildList()
+                    element.subs.buildList()
                 )
             )
             is AST.ElvisExpression -> Call(
                 "AST.ElvisExpression", listOf(
-                    build(node.lhs), build(node.rhs)
+                    build(element.lhs), build(element.rhs)
                 )
             )
             is AST.Equality -> Call(
                 "AST.Equality", listOf(
-                    build(node.lhs), build(node.op), build(node.rhs)
+                    build(element.lhs), build(element.op), build(element.rhs)
                 )
             )
             is AST.AnonymousFunction -> Call(
                 "AST.AnonymousFunction", listOf(
-                    node.receiverType.buildNullable(),
-                    node.valueParameters.buildList(),
-                    node.returnType.buildNullable(),
-                    node.typeConstraints.buildList(),
-                    node.body.buildNullable()
+                    element.receiverType.buildNullable(),
+                    element.valueParameters.buildList(),
+                    element.returnType.buildNullable(),
+                    element.typeConstraints.buildList(),
+                    element.body.buildNullable()
                 )
             )
             is AST.LambdaLiteral -> Call(
                 "AST.LambdaLiteral", listOf(
-                    node.parameters.buildList(), node.statements.buildList()
+                    element.parameters.buildList(), element.statements.buildList()
                 )
             )
             is AST.GenericCallLikeComparison -> Call(
                 "AST.GenericCallLikeComparison", listOf(
-                    build(node.infixOperation), node.suffixes.buildList()
+                    build(element.infixOperation), element.suffixes.buildList()
                 )
             )
             is AST.IfExpression -> Call(
                 "AST.IfExpression", listOf(
-                    build(node.expression), node.thenExpression.buildNullable(), node.elseExpression.buildNullable()
+                    build(element.expression), element.thenExpression.buildNullable(), element.elseExpression.buildNullable()
                 )
             )
             is AST.InfixFunctionCall -> Call(
                 "AST.InfixFunctionCall", listOf(
-                    build(node.lhs), node.functionName.asLiteral(), build(node.rhs)
+                    build(element.lhs), element.functionName.asLiteral(), build(element.rhs)
                 )
             )
             AST.BREAK -> Call("AST.BREAK")
             is AST.BreakAt -> Call(
                 "AST.BreakAt", listOf(
-                    node.label.asLiteral()
+                    element.label.asLiteral()
                 )
             )
             AST.CONTINUE -> Call("AST.CONTINUE")
             is AST.ContinueAt -> Call(
                 "AST.ContinueAt", listOf(
-                    node.label.asLiteral()
+                    element.label.asLiteral()
                 )
             )
             is AST.Return -> Call(
                 "AST.Return", listOf(
-                    node.expression.buildNullable()
+                    element.expression.buildNullable()
                 )
             )
             is AST.ReturnAt -> Call(
                 "AST.ReturnAt", listOf(
-                    node.label.asLiteral()
+                    element.label.asLiteral()
                 )
             )
             is AST.Throw -> Call(
                 "AST.Throw", listOf(
-                    build(node.expression)
+                    build(element.expression)
                 )
             )
             AST.FALSE -> Call("AST.FALSE")
             AST.TRUE -> Call("AST.TRUE")
             is AST.CharacterLiteral -> Call(
                 "AST.CharacterLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.DoubleLiteral -> Call(
                 "AST.DoubleLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.FloatLiteral -> Call(
                 "AST.FloatLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.IntegerLiteral -> Call(
                 "AST.IntegerLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.LongLiteral -> Call(
                 "AST.LongLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             AST.NULL -> Call("AST.NULL")
             is AST.StringLiteral -> Call(
                 "AST.StringLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.UnsignedLiteral -> Call(
                 "AST.UnsignedLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.UnsignedLongLiteral -> Call(
                 "AST.UnsignedLongLiteral", listOf(
-                    node.s.asLiteral()
+                    element.s.asLiteral()
                 )
             )
             is AST.Multiplicative -> Call(
                 "AST.Multiplicative", listOf(
-                    build(node.lhs), build(node.op), build(node.rhs)
+                    build(element.lhs), build(element.op), build(element.rhs)
                 )
             )
             is AST.NameExpression -> Call(
                 "AST.NameExpression", listOf(
-                    node.name.asLiteral()
+                    element.name.asLiteral()
                 )
             )
             is AST.PostfixUnaryExpression -> Call(
                 "AST.PostfixUnaryExpression", listOf(
-                    build(node.expression), node.postfixUnarySuffixes.buildList()
+                    build(element.expression), element.postfixUnarySuffixes.buildList()
                 )
             )
             is AST.PrefixUnaryExpression -> Call(
                 "AST.PrefixUnaryExpression", listOf(
-                    node.unaryPrefixes.buildList(), build(node.expression)
+                    element.unaryPrefixes.buildList(), build(element.expression)
                 )
             )
             is AST.RangeExpression -> Call(
                 "AST.RangeExpression", listOf(
-                    build(node.lhs), build(node.rhs)
+                    build(element.lhs), build(element.rhs)
                 )
             )
             is AST.Super -> Call("AST.Super", listOf(
-                node.type.buildNullable(), node.name?.let { it.asLiteral() } ?: AST.NULL
+                element.type.buildNullable(), element.name?.let { it.asLiteral() } ?: AST.NULL
             ))
             AST.THIS -> Call("AST.THIS")
             is AST.ThisAt -> Call(
                 "AST.ThisAt", listOf(
-                    node.name.asLiteral()
+                    element.name.asLiteral()
                 )
             )
             is AST.TryExpression -> Call(
                 "AST.TryExpression", listOf(
-                    build(node.block), node.catchBlocks.buildList(), node.finallyBlock.buildNullable()
+                    build(element.block), element.catchBlocks.buildList(), element.finallyBlock.buildNullable()
                 )
             )
             is AST.WhenExpression -> Call(
                 "AST.WhenExpression", listOf(
-                    node.subject.buildNullable(), node.entries.buildList()
+                    element.subject.buildNullable(), element.entries.buildList()
                 )
             )
             is AST.BlockBody -> Call(
                 "AST.BlockBody", listOf(
-                    build(node.block)
+                    build(element.block)
                 )
             )
             is AST.ExpressionBody -> Call(
                 "AST.ExpressionBody", listOf(
-                    build(node.expression)
+                    build(element.expression)
                 )
             )
             is AST.FunctionDeclaration -> Call(
                 "AST.FunctionDeclaration", listOf(
-                    node.modifiers.buildList(),
-                    node.typeParameters.buildList(),
-                    node.receiverType.buildNullable(),
-                    node.name.asLiteral(),
-                    node.parameters.buildList(),
-                    node.returnType.buildNullable(),
-                    node.typeConstraints.buildList(),
-                    node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.typeParameters.buildList(),
+                    element.receiverType.buildNullable(),
+                    element.name.asLiteral(),
+                    element.parameters.buildList(),
+                    element.returnType.buildNullable(),
+                    element.typeConstraints.buildList(),
+                    element.body.buildNullable()
                 )
             )
             is AST.FunctionType -> Call(
                 "AST.FunctionType", listOf(
-                    node.receiverType.buildNullable(),
-                    node.parameters.buildList(),
-                    build(node.returnType)
+                    element.receiverType.buildNullable(),
+                    element.parameters.buildList(),
+                    build(element.returnType)
                 )
             )
             is AST.Getter -> Call(
                 "AST.Getter", listOf(
-                    node.modifiers.buildList(),
-                    node.type.buildNullable(),
-                    node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.type.buildNullable(),
+                    element.body.buildNullable()
                 )
             )
             is AST.ImportHeader -> error("ImportHeader should not be present in expression tree")
             is AST.IndexingSuffix -> Call(
                 "AST.IndexingSuffix", listOf(
-                    node.expressions.buildList()
+                    element.expressions.buildList()
                 )
             )
             is AST.InfixOperation -> Call(
                 "AST.InfixOperation", listOf(
-                    build(node.lhs), node.suffixes.buildList()
+                    build(element.lhs), element.suffixes.buildList()
                 )
             )
             AST.IS -> Call("AST.IS")
             AST.NOT_IS -> Call("AST.NOT_IS")
             is AST.InCheckSuffix -> Call(
                 "AST.InCheckSuffix", listOf(
-                    build(node.op.cast()), build(node.expression)
+                    build(element.op.cast()), build(element.expression)
                 )
             )
             AST.IN -> Call("AST.IN")
             AST.NOT_IN -> Call("AST.NOT_IN")
             is AST.IsCheckSuffix -> Call(
                 "AST.IsCheckSuffix", listOf(
-                    build(node.op.cast()), build(node.type)
+                    build(element.op.cast()), build(element.type)
                 )
             )
             is AST.KotlinFile -> error("KotlinFile should not be present in expression tree")
             is AST.Label -> Call(
                 "AST.Label", listOf(
-                    node.name.asLiteral()
+                    element.name.asLiteral()
                 )
             )
             is AST.LambdaParameter -> Call(
                 "AST.LambdaParameter", listOf(
-                    build(node.variableDeclaration), node.type.buildNullable()
+                    build(element.variableDeclaration), element.type.buildNullable()
                 )
             )
             is AST.DoWhileStatement -> Call(
                 "AST.DoWhileStatement", listOf(
-                    node.body.buildNullable(), build(node.expression)
+                    element.body.buildNullable(), build(element.expression)
                 )
             )
             is AST.ForStatement -> Call(
                 "AST.ForStatement", listOf(
-                    node.annotations.buildList(),
-                    build(node.variableDeclaration),
-                    build(node.expression),
-                    node.body.buildNullable()
+                    element.annotations.buildList(),
+                    build(element.variableDeclaration),
+                    build(element.expression),
+                    element.body.buildNullable()
                 )
             )
             is AST.WhileStatement -> Call(
                 "AST.WhileStatement", listOf(
-                    build(node.expression), node.body.buildNullable()
+                    build(element.expression), element.body.buildNullable()
                 )
             )
             AST.COLONCOLON -> Call("AST.COLONCOLON")
@@ -473,7 +473,7 @@ object ETBuilder {
             AST.OVERRIDE -> Call("AST.OVERRIDE")
             is AST.MultiAnnotation -> Call(
                 "AST.MultiAnnotation", listOf(
-                    node.target.buildNullable(), node.unescapedAnnotations.buildList()
+                    element.target.buildNullable(), element.unescapedAnnotations.buildList()
                 )
             )
             AST.CROSSINLINE -> Call("AST.CROSSINLINE")
@@ -494,36 +494,36 @@ object ETBuilder {
             is AST.NameAndType -> error("NameAndType should not be present in built AST")
             is AST.ClassNavigationSuffix -> Call(
                 "AST.ClassNavigationSuffix", listOf(
-                    build(node.op)
+                    build(element.op)
                 )
             )
             is AST.ExpressionNavigationSuffix -> Call(
                 "AST.ExpressionNavigationSuffix", listOf(
-                    build(node.op), build(node.expression)
+                    build(element.op), build(element.expression)
                 )
             )
             is AST.IdentifierNavigationSuffix -> Call(
                 "AST.IdentifierNavigationSuffix", listOf(
-                    build(node.op), node.name.asLiteral()
+                    build(element.op), element.name.asLiteral()
                 )
             )
             is AST.NullableType -> Call(
                 "AST.NullableType", listOf(
-                    build(node.type.cast())
+                    build(element.type.cast())
                 )
             )
             AST.DYNAMIC -> Call("AST.DYNAMIC")
             is AST.ObjectDeclaration -> Call(
                 "AST.ObjectDeclaration", listOf(
-                    node.modifiers.buildList(),
-                    node.name.asLiteral(),
-                    node.annotatedDelegationSpecifiers.buildList(),
-                    node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.name.asLiteral(),
+                    element.annotatedDelegationSpecifiers.buildList(),
+                    element.body.buildNullable()
                 )
             )
             is AST.ObjectLiteral -> Call(
                 "AST.ObjectLiteral", listOf(
-                    node.annotatedDelegationSpecifiers.buildList(), node.body.buildNullable()
+                    element.annotatedDelegationSpecifiers.buildList(), element.body.buildNullable()
                 )
             )
             is AST.PackageHeader -> error("PackageHeader should not be present in expression tree")
@@ -532,41 +532,41 @@ object ETBuilder {
             AST.INCR -> Call("AST.INCR")
             is AST.PropertyDeclaration -> Call(
                 "AST.PropertyDeclaration", listOf(
-                    node.modifiers.buildList(),
-                    build(node.vov),
-                    node.typeParameters.buildList(),
-                    node.receiverType.buildNullable(),
-                    build(node.variableDeclaration),
-                    node.typeConstraints.buildList(),
-                    node.body.buildNullable(),
-                    node.getter.buildNullable(),
-                    node.setter.buildNullable()
+                    element.modifiers.buildList(),
+                    build(element.vov),
+                    element.typeParameters.buildList(),
+                    element.receiverType.buildNullable(),
+                    build(element.variableDeclaration),
+                    element.typeConstraints.buildList(),
+                    element.body.buildNullable(),
+                    element.getter.buildNullable(),
+                    element.setter.buildNullable()
                 )
             )
             is AST.PropertyDelegate -> Call(
                 "AST.PropertyDelegate", listOf(
-                    build(node.expression)
+                    build(element.expression)
                 )
             )
             AST.REIFIED -> Call("AST.REIFIED")
             is AST.Setter -> Call(
                 "AST.Setter", listOf(
-                    node.modifiers.buildList(),
-                    node.parameter.buildNullable(),
-                    node.type.buildNullable(),
-                    node.body.buildNullable()
+                    element.modifiers.buildList(),
+                    element.parameter.buildNullable(),
+                    element.type.buildNullable(),
+                    element.body.buildNullable()
                 )
             )
             is AST.FunctionTypeWithModifiers -> Call(
                 "AST.FunctionTypeWithModifiers", listOf(
-                    node.modifiers.buildList(),
-                    build(node.type)
+                    element.modifiers.buildList(),
+                    build(element.type)
                 )
             )
             is AST.ReceiverType -> Call(
                 "AST.ReceiverType", listOf(
-                    node.modifiers.buildList(),
-                    build(node.type.cast())
+                    element.modifiers.buildList(),
+                    build(element.type.cast())
                 )
             )
             AST.SUSPEND -> Call("AST.SUSPEND")
@@ -575,63 +575,63 @@ object ETBuilder {
             is AST.TypeAlias -> error("TypeAlias should not be present in expression tree")
             is AST.TypeArgumentsPostfix -> Call(
                 "AST.TypeArgumentsPostfix", listOf(
-                    node.typeArguments.buildList()
+                    element.typeArguments.buildList()
                 )
             )
             is AST.TypeConstraint -> Call(
                 "AST.TypeConstraint", listOf(
-                    node.annotations.buildList(), node.name.asLiteral(), build(node.type)
+                    element.annotations.buildList(), element.name.asLiteral(), build(element.type)
                 )
             )
             is AST.TypeParameter -> Call(
                 "AST.TypeParameter", listOf(
-                    node.modifiers.buildList(), node.name.asLiteral(), node.type.buildNullable()
+                    element.modifiers.buildList(), element.name.asLiteral(), element.type.buildNullable()
                 )
             )
             AST.VAL -> Call("AST.VAL")
             AST.VAR -> Call("AST.VAR")
             is AST.ValueArgument -> Call("AST.ValueArgument", listOf(
-                node.annotations.buildList(),
-                node.name?.let { it.asLiteral() } ?: AST.NULL,
-                build(node.expression),
-                if (node.withSpread) AST.TRUE else AST.FALSE
+                element.annotations.buildList(),
+                element.name?.let { it.asLiteral() } ?: AST.NULL,
+                build(element.expression),
+                if (element.withSpread) AST.TRUE else AST.FALSE
             ))
             is AST.ValueParameter -> Call(
                 "AST.ValueParameter", listOf(
-                    node.modifiers.buildList(),
-                    node.name.asLiteral(),
-                    build(node.type),
-                    node.initial.buildNullable()
+                    element.modifiers.buildList(),
+                    element.name.asLiteral(),
+                    build(element.type),
+                    element.initial.buildNullable()
                 )
             )
             AST.IN -> Call("AST.IN")
             AST.OUT -> Call("AST.OUT")
             is AST.WhenEntry -> Call(
                 "AST.WhenEntry", listOf(
-                    node.conditions?.buildList() ?: AST.NULL, build(node.body.cast())
+                    element.conditions?.buildList() ?: AST.NULL, build(element.body.cast())
                 )
             )
             is AST.WhenSubject -> Call(
                 "AST.WhenSubject", listOf(
-                    node.annotations.buildList(),
-                    node.variableDeclaration.buildNullable(),
-                    build(node.expression)
+                    element.annotations.buildList(),
+                    element.variableDeclaration.buildNullable(),
+                    build(element.expression)
                 )
             )
             AST.FILE -> Call("AST.FILE")
             is AST.MultiVariableDeclaration -> Call(
                 "AST.MultiVariableDeclaration", listOf(
-                    node.decls.buildList()
+                    element.decls.buildList()
                 )
             )
             is AST.SingleVariableDeclaration -> Call(
                 "AST.SingleVariableDeclaration", listOf(
-                    node.annotations.buildList(),
-                    node.name.asLiteral(),
-                    node.type.buildNullable()
+                    element.annotations.buildList(),
+                    element.name.asLiteral(),
+                    element.type.buildNullable()
                 )
             )
-            else -> error("$node is not supported yet")
+            else -> error("$element is not supported yet")
         }
 
     private fun Call(name: String, arguments: List<AST.Expression>? = null): AST.Expression {

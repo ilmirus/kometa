@@ -1,14 +1,14 @@
 package kometa.kotlin
 
-import kometa.kotlin.ast.Node
+import kometa.kotlin.ast.Element
 
 interface ExtrasMap {
-    fun extrasBefore(v: Node): List<Node.Extra>
-    fun extrasWithin(v: Node): List<Node.Extra>
-    fun extrasAfter(v: Node): List<Node.Extra>
+    fun extrasBefore(v: Element): List<Element.Extra>
+    fun extrasWithin(v: Element): List<Element.Extra>
+    fun extrasAfter(v: Element): List<Element.Extra>
 
-    fun docComment(v: Node): Node.Extra.Comment? {
-        for (extra in extrasBefore(v)) if (extra is Node.Extra.Comment && extra.text.startsWith("/**")) return extra
+    fun docComment(v: Element): Element.Extra.Comment? {
+        for (extra in extrasBefore(v)) if (extra is Element.Extra.Comment && extra.text.startsWith("/**")) return extra
         return null
     }
 }
@@ -20,7 +20,7 @@ open class Writer(
 ) : Visitor() {
 
     protected var indent = ""
-    protected var elemsSinceLastLine = emptyList<Node>()
+    protected var elemsSinceLastLine = emptyList<Element>()
 
     protected fun endLine() = also {
         val elems = elemsSinceLastLine
@@ -47,33 +47,33 @@ open class Writer(
         fn().also { indent = indent.dropLast(4) }
     }
 
-    fun write(v: Node) { visit(v, v) }
+    fun write(v: Element) { visit(v, v) }
 
-    override fun visit(v: Node?, parent: Node) {
+    override fun visit(v: Element?, parent: Element) {
         v?.writeExtrasBefore()
         v?.apply {
             when (this) {
-                is Node.File -> {
+                is Element.File -> {
                     if (anns.isNotEmpty()) childAnns().line()
                     childrenLines(pkg, extraEndLines = 1)
                     childrenLines(imports, extraEndLines = 1)
                     childrenLines(decls, extraMidLines = 1)
                 }
-                is Node.Package ->
+                is Element.Package ->
                     childMods().append("package ").appendNames(names, ".")
-                is Node.Import -> {
+                is Element.Import -> {
                     append("import ").appendNames(names, ".")
                     if (wildcard) append(".*") else if (alias != null) append(" as ").appendName(alias)
                 }
-                is Node.Decl.Class -> childMods().also {
+                is Element.Decl.Class -> childMods().also {
                     append(when (kind) {
-                        Node.Decl.Class.Kind.CLASS -> "class "
-                        Node.Decl.Class.Kind.ENUM_CLASS -> "enum class "
-                        Node.Decl.Class.Kind.INTERFACE -> "interface "
-                        Node.Decl.Class.Kind.OBJECT -> "object "
-                        Node.Decl.Class.Kind.COMPANION_OBJECT -> "companion object "
+                        Element.Decl.Class.Kind.CLASS -> "class "
+                        Element.Decl.Class.Kind.ENUM_CLASS -> "enum class "
+                        Element.Decl.Class.Kind.INTERFACE -> "interface "
+                        Element.Decl.Class.Kind.OBJECT -> "object "
+                        Element.Decl.Class.Kind.COMPANION_OBJECT -> "companion object "
                     })
-                    if (kind != Node.Decl.Class.Kind.COMPANION_OBJECT || name != "Companion") appendName(name)
+                    if (kind != Element.Decl.Class.Kind.COMPANION_OBJECT || name != "Companion") appendName(name)
                     bracketedChildren(typeParams)
                     children(primaryConstructor)
                     if (parents.isNotEmpty()) {
@@ -84,7 +84,7 @@ open class Writer(
                     childTypeConstraints(typeConstraints)
                     if (members.isNotEmpty()) lineEnd(" {").indented {
                         // First, do all the enum entries if there are any
-                        val enumEntries = members.map { it as? Node.Decl.EnumEntry }.takeWhile { it != null }
+                        val enumEntries = members.map { it as? Element.Decl.EnumEntry }.takeWhile { it != null }
                         enumEntries.forEachIndexed { index, enumEntry ->
                             lineBegin().also { children(enumEntry) }
                             when (index) {
@@ -100,25 +100,25 @@ open class Writer(
                     // As a special case, if an object is nameless and bodyless, we should give it an empty body
                     // to avoid ambiguities with the next item
                     // See: https://youtrack.jetbrains.com/issue/KT-25581
-                    if ((kind == Node.Decl.Class.Kind.COMPANION_OBJECT ||
-                                kind == Node.Decl.Class.Kind.OBJECT) && name == "Companion" && members.isEmpty())
+                    if ((kind == Element.Decl.Class.Kind.COMPANION_OBJECT ||
+                                kind == Element.Decl.Class.Kind.OBJECT) && name == "Companion" && members.isEmpty())
                         append("{}")
                 }
-                is Node.Decl.Structured.Parent.Class.Parent.CallConstructor -> {
+                is Element.Decl.Structured.Parent.Class.Parent.CallConstructor -> {
                     children(type)
                     parenChildren(args)
                 }
-                is Node.Decl.Structured.Parent.Class.Parent.Type -> {
+                is Element.Decl.Structured.Parent.Class.Parent.Type -> {
                     children(type)
                     if (by != null) append(" by ").also { children(by) }
                 }
-                is Node.Decl.Structured.Class.PrimaryConstructor -> {
+                is Element.Decl.Structured.Class.PrimaryConstructor -> {
                     if (mods.isNotEmpty()) append(" ").also { childMods(newlines = false).append("constructor") }
                     parenChildren(params)
                 }
-                is Node.Decl.Init ->
+                is Element.Decl.Init ->
                     append("init ").also { children(block) }
-                is Node.Decl.Function -> {
+                is Element.Decl.Function -> {
                     childMods().append("fun")
                     if (name != null || typeParams.isNotEmpty() || receiverType != null) append(' ')
                     bracketedChildren(typeParams, " ")
@@ -130,18 +130,18 @@ open class Writer(
                     childTypeConstraints(typeConstraints)
                     if (body != null) append(' ').also { children(body) }
                 }
-                is Node.Decl.Func.Function.Param -> {
+                is Element.Decl.Func.Function.Param -> {
                     if (mods.isNotEmpty()) childMods(newlines = false).append(' ')
                     if (isVal == true) append("val ") else if (isVal == false) append("var ")
                     appendName(name)
                     if (type != null) append(": ").also { children(type) }
                     if (default != null) append(" = ").also { children(default) }
                 }
-                is Node.Decl.Func.Body.Function.Body.Block ->
+                is Element.Decl.Func.Body.Function.Body.Block ->
                     children(block)
-                is Node.Decl.Func.Body.Function.Body.Expr ->
+                is Element.Decl.Func.Body.Function.Body.Expr ->
                     append("= ").also { children(expr) }
-                is Node.Decl.Property -> {
+                is Element.Decl.Property -> {
                     childMods().append(if (readOnly) "val " else "var ")
                     bracketedChildren(typeParams, " ")
                     if (receiverType != null) children(receiverType).append('.')
@@ -153,15 +153,15 @@ open class Writer(
                     }
                     if (getter != null) lineEnd().indented { children(getter) }
                 }
-                is Node.Decl.Property.Var -> {
+                is Element.Decl.Property.Var -> {
                     appendName(name)
                     if (type != null) append(": ").also { children(type) }
                 }
-                is Node.Decl.Property.Accessors -> {
+                is Element.Decl.Property.Accessors -> {
                     childrenLines(first)
                     if (second != null) childrenLines(second)
                 }
-                is Node.Decl.Property.Accessor.Get -> {
+                is Element.Decl.Property.Accessor.Get -> {
                     childMods().append("get")
                     if (body != null) {
                         append("()")
@@ -169,7 +169,7 @@ open class Writer(
                         append(' ').also { children(body) }
                     }
                 }
-                is Node.Decl.Property.Accessor.Set -> {
+                is Element.Decl.Property.Accessor.Set -> {
                     childMods().append("set")
                     if (body != null) {
                         append('(')
@@ -180,130 +180,130 @@ open class Writer(
                         children(body)
                     }
                 }
-                is Node.Decl.TypeAlias -> {
+                is Element.Decl.TypeAlias -> {
                     childMods().append("typealias ").appendName(name)
                     bracketedChildren(typeParams).append(" = ")
                     children(type)
                 }
-                is Node.Decl.Constructor -> {
+                is Element.Decl.Constructor -> {
                     childMods().append("constructor")
                     parenChildren(params)
                     if (delegationCall != null) append(": ").also { children(delegationCall) }
                     if (block != null) append(' ').also { children(block) }
                 }
-                is Node.Decl.Constructor.DelegationCall ->
+                is Element.Decl.Constructor.DelegationCall ->
                     append(target.name.toLowerCase()).also { parenChildren(args) }
-                is Node.Decl.EnumEntry -> {
+                is Element.Decl.EnumEntry -> {
                     childMods().appendName(name)
                     if (args.isNotEmpty()) parenChildren(args)
                     if (members.isNotEmpty()) lineEnd(" {").indented {
                         childrenLines(members, extraMidLines = 1)
                     }.lineBegin("}")
                 }
-                is Node.TypeParam -> {
+                is Element.TypeParam -> {
                     childMods(newlines = false).appendName(name)
                     if (type != null) append(": ").also { children(type) }
                 }
-                is Node.TypeConstraint ->
+                is Element.TypeConstraint ->
                     childAnns(sameLine = true).appendName(name).append(": ").also { children(type) }
-                is Node.TypeRef.Paren ->
+                is Element.TypeRef.Paren ->
                     append('(').also {
                         childModsBeforeType(type).also { children(type) }
                     }.append(')')
-                is Node.TypeRef.Func -> {
+                is Element.TypeRef.Func -> {
                     if (receiverType != null) children(receiverType).append('.')
                     parenChildren(params).append(" -> ").also { children(type) }
                 }
-                is Node.TypeRef.Func.Param -> {
+                is Element.TypeRef.Func.Param -> {
                     if (name != null) appendName(name).append(": ")
                     children(type)
                 }
-                is Node.TypeRef.Simple ->
+                is Element.TypeRef.Simple ->
                     children(pieces, ".")
-                is Node.TypeRef.Simple.Piece ->
+                is Element.TypeRef.Simple.Piece ->
                     appendName(name).also { bracketedChildren(typeParams) }
-                is Node.TypeRef.Nullable ->
+                is Element.TypeRef.Nullable ->
                     children(type).append('?')
-                is Node.TypeRef.Dynamic ->
+                is Element.TypeRef.Dynamic ->
                     append("dynamic")
-                is Node.Type ->
+                is Element.Type ->
                     childModsBeforeType(ref).also { children(ref) }
-                is Node.ValueArg -> {
+                is Element.ValueArg -> {
                     if (name != null) appendName(name).append(" = ")
                     if (asterisk) append('*')
                     children(expr)
                 }
-                is Node.Expr.If -> {
+                is Element.Expr.If -> {
                     append("if (").also { children(condition) }.append(") ")
                     children(thenBody)
                     if (elseBody != null) append(" else ").also { children(elseBody) }
                 }
-                is Node.Expr.Try -> {
+                is Element.Expr.Try -> {
                     append("try ")
                     children(block)
                     if (catches.isNotEmpty()) children(catches, " ", prefix = " ")
                     if (finallyBlock != null) append(" finally ").also { children(finallyBlock) }
                 }
-                is Node.Expr.Try.Catch -> {
+                is Element.Expr.Try.Catch -> {
                     append("catch (")
                     childAnns(sameLine = true)
                     appendName(varName).append(": ").also { children(varType) }.append(") ")
                     children(block)
                 }
-                is Node.Expr.For -> {
+                is Element.Expr.For -> {
                     append("for (")
                     childAnns(sameLine = true)
                     childVars(vars).append(" in ").also { children(inExpr) }.append(") ")
                     children(body)
                 }
-                is Node.Expr.While -> {
+                is Element.Expr.While -> {
                     if (!doWhile) append("while (").also { children(condition) }.append(") ").also { children(body) }
                     else append("do ").also { children(body) }.append(" while (").also { children(condition) }.append(')')
                 }
-                is Node.Expr.BinaryOp -> {
+                is Element.Expr.BinaryOp -> {
                     // Some operations don't have separators
-                    val noSep = oper is Node.Expr.BinaryOp.Oper.Token && oper.token.let {
-                        it == Node.Expr.BinaryOp.Token.RANGE || it == Node.Expr.BinaryOp.Token.DOT ||
-                                it == Node.Expr.BinaryOp.Token.DOT_SAFE
+                    val noSep = oper is Element.Expr.BinaryOp.Oper.Token && oper.token.let {
+                        it == Element.Expr.BinaryOp.Token.RANGE || it == Element.Expr.BinaryOp.Token.DOT ||
+                                it == Element.Expr.BinaryOp.Token.DOT_SAFE
                     }
                     children(listOf(lhs, oper, rhs), if (noSep) "" else " ")
                 }
-                is Node.Expr.BinaryOp.Oper.Infix ->
+                is Element.Expr.BinaryOp.Oper.Infix ->
                     append(str)
-                is Node.Expr.BinaryOp.Oper.Token ->
+                is Element.Expr.BinaryOp.Oper.Token ->
                     append(token.str)
-                is Node.Expr.UnaryOp ->
+                is Element.Expr.UnaryOp ->
                     if (isPrefix) children(oper, expr) else children(expr, oper)
-                is Node.Expr.UnaryOp.Oper ->
+                is Element.Expr.UnaryOp.Oper ->
                     append(token.str)
-                is Node.Expr.TypeOp ->
+                is Element.Expr.TypeOp ->
                     children(listOf(lhs, oper, rhs), " ")
-                is Node.Expr.TypeOp.Oper ->
+                is Element.Expr.TypeOp.Oper ->
                     append(token.str)
-                is Node.Expr.DoubleColonRef.Callable -> {
+                is Element.Expr.DoubleColonRef.Callable -> {
                     if (recv != null) children(recv)
                     append("::").appendName(name)
                 }
-                is Node.Expr.DoubleColonRef.Class -> {
+                is Element.Expr.DoubleColonRef.Class -> {
                     if (recv != null) children(recv)
                     append("::class")
                 }
-                is Node.Expr.DoubleColonRef.Recv.Expr ->
+                is Element.Expr.DoubleColonRef.Recv.Expr ->
                     children(expr)
-                is Node.Expr.DoubleColonRef.Recv.Type ->
+                is Element.Expr.DoubleColonRef.Recv.Type ->
                     children(type).append("?".repeat(questionMarks))
-                is Node.Expr.Paren ->
+                is Element.Expr.Paren ->
                     append('(').also { children(expr) }.append(')')
-                is Node.Expr.StringTmpl ->
+                is Element.Expr.StringTmpl ->
                     if (raw) append("\"\"\"").also { children(elems) }.append("\"\"\"")
                     else append('"').also { children(elems) }.append('"')
-                is Node.Expr.StringTmpl.Elem.Regular ->
+                is Element.Expr.StringTmpl.Elem.Regular ->
                     append(str)
-                is Node.Expr.StringTmpl.Elem.ShortTmpl ->
+                is Element.Expr.StringTmpl.Elem.ShortTmpl ->
                     append('$').appendName(str)
-                is Node.Expr.StringTmpl.Elem.UnicodeEsc ->
+                is Element.Expr.StringTmpl.Elem.UnicodeEsc ->
                     append("\\u").append(digits)
-                is Node.Expr.StringTmpl.Elem.RegularEsc ->
+                is Element.Expr.StringTmpl.Elem.RegularEsc ->
                     append('\\').append(when (char) {
                         '\b' -> 'b'
                         '\n' -> 'n'
@@ -311,121 +311,121 @@ open class Writer(
                         '\r' -> 'r'
                         else -> char
                     })
-                is Node.Expr.StringTmpl.Elem.LongTmpl ->
+                is Element.Expr.StringTmpl.Elem.LongTmpl ->
                     append("\${").also { children(expr) }.append('}')
-                is Node.Expr.Const ->
+                is Element.Expr.Const ->
                     append(value)
-                is Node.Expr.Brace -> {
+                is Element.Expr.Brace -> {
                     append('{')
                     if (params.isNotEmpty()) append(' ').also { children(params, ", ", "", " ->") }
                     children(block).append('}')
                 }
-                is Node.Expr.Brace.Param -> {
+                is Element.Expr.Brace.Param -> {
                     childVars(vars)
                     if (destructType != null) append(": ").also { children(destructType) }
                 }
-                is Node.Expr.This -> {
+                is Element.Expr.This -> {
                     append("this")
                     if (label != null) append('@').appendName(label)
                 }
-                is Node.Expr.Super -> {
+                is Element.Expr.Super -> {
                     append("super")
                     if (typeArg != null) append('<').also { children(typeArg) }.append('>')
                     if (label != null) append('@').appendName(label)
                 }
-                is Node.Expr.When -> {
+                is Element.Expr.When -> {
                     append("when")
                     if (subject != null) append('(').also { children(subject) }.append(')')
                     lineEnd(" {").indented { childrenLines(entries) }.lineBegin("}")
                 }
-                is Node.Expr.When.Entry -> {
+                is Element.Expr.When.Entry -> {
                     if (conds.isEmpty()) append("else")
                     else children(conds, ", ")
                     append(" -> ").also { children(body) }
                 }
-                is Node.Expr.When.Cond.Expr ->
+                is Element.Expr.When.Cond.Expr ->
                     children(expr)
-                is Node.Expr.When.Cond.In -> {
+                is Element.Expr.When.Cond.In -> {
                     if (not) append('!')
                     append("in ").also { children(expr) }
                 }
-                is Node.Expr.When.Cond.Is -> {
+                is Element.Expr.When.Cond.Is -> {
                     if (not) append('!')
                     append("is ").also { children(type) }
                 }
-                is Node.Expr.Object -> {
+                is Element.Expr.Object -> {
                     append("object")
                     if (parents.isNotEmpty()) append(" : ").also { children(parents, ", ") }
                     if (members.isEmpty()) append(" {}") else lineEnd(" {").indented {
                         childrenLines(members, extraMidLines = 1)
                     }.lineBegin("}")
                 }
-                is Node.Expr.Throw ->
+                is Element.Expr.Throw ->
                     append("throw ").also { children(expr) }
-                is Node.Expr.Return -> {
+                is Element.Expr.Return -> {
                     append("return")
                     if (label != null) append('@').appendName(label)
                     if (expr != null) append(' ').also { children(expr) }
                 }
-                is Node.Expr.Continue -> {
+                is Element.Expr.Continue -> {
                     append("continue")
                     if (label != null) append('@').appendName(label)
                 }
-                is Node.Expr.Break -> {
+                is Element.Expr.Break -> {
                     append("break")
                     if (label != null) append('@').appendName(label)
                 }
-                is Node.Expr.CollLit ->
+                is Element.Expr.CollLit ->
                     children(exprs, ", ", "[", "]")
-                is Node.Expr.Name ->
+                is Element.Expr.Name ->
                     appendName(name)
-                is Node.Expr.Labelled ->
+                is Element.Expr.Labelled ->
                     appendName(label).append("@ ").also { children(expr) }
-                is Node.Expr.Annotated ->
+                is Element.Expr.Annotated ->
                     childAnnsBeforeExpr(expr).also { children(expr) }
-                is Node.Expr.Call -> {
+                is Element.Expr.Call -> {
                     children(expr)
                     bracketedChildren(typeArgs)
                     if (args.isNotEmpty() || lambda == null) parenChildren(args)
                     if (lambda != null) append(' ').also { children(lambda) }
                 }
-                is Node.Expr.Call.TrailLambda -> {
+                is Element.Expr.Call.TrailLambda -> {
                     if (anns.isNotEmpty()) childAnns(sameLine = true).append(' ')
                     if (label != null) appendName(label).append("@ ")
                     children(func)
                 }
-                is Node.Expr.ArrayAccess -> {
+                is Element.Expr.ArrayAccess -> {
                     children(expr)
                     children(indices, ", ", "[", "]")
                 }
-                is Node.Expr.AnonymousFunction ->
+                is Element.Expr.AnonymousFunction ->
                     children(function)
-                is Node.Expr.Property ->
+                is Element.Expr.Property ->
                     children(decl)
-                is Node.Block -> {
+                is Element.Block -> {
                     // Special case, no braces if the parent is a brace
-                    if (parent is Node.Expr.Brace) {
+                    if (parent is Element.Expr.Brace) {
                         if (stmts.isNotEmpty()) lineEnd().indented { childrenLines(stmts) }.lineBegin()
                     } else if (stmts.isEmpty()) append("{}")
                     else lineEnd("{").indented { childrenLines(stmts) }.lineBegin("}")
                 }
-                is Node.Stmt.Decl -> {
+                is Element.Stmt.Decl -> {
                     children(decl)
                 }
-                is Node.Stmt.Expr ->
+                is Element.Stmt.Expr ->
                     children(expr)
-                is Node.Modifier.AnnotationSet -> {
+                is Element.Modifier.AnnotationSet -> {
                     append('@')
                     if (target != null) append(target.name.toLowerCase()).append(':')
                     if (anns.size == 1) children(anns)
                     else children(anns, " ", "[", "]")
                 }
-                is Node.Modifier.AnnotationSet.Annotation -> {
+                is Element.Modifier.AnnotationSet.Annotation -> {
                     appendNames(names, ".")
                     bracketedChildren(typeArgs)
                     if (args.isNotEmpty()) parenChildren(args)
                 }
-                is Node.Modifier.Lit ->
+                is Element.Modifier.Lit ->
                     append(keyword.name.toLowerCase())
                 else ->
                     error("Unrecognized node type: $this")
@@ -435,36 +435,36 @@ open class Writer(
         v?.also { elemsSinceLastLine += it }
     }
 
-    protected open fun Node.writeExtrasBefore() {
+    protected open fun Element.writeExtrasBefore() {
         if (extrasMap == null) return
         // Write everything before
         writeExtras(extrasMap.extrasBefore(this))
     }
 
-    protected open fun Node.writeExtrasAfter() {
+    protected open fun Element.writeExtrasAfter() {
         if (extrasMap == null) return
         // Write everything after that doesn't start a line or end a line
         writeExtras(extrasMap.extrasAfter(this).takeWhile {
-            it is Node.Extra.Comment && !it.startsLine && !it.endsLine
+            it is Element.Extra.Comment && !it.startsLine && !it.endsLine
         })
     }
 
-    protected open fun Node.writeExtrasLineEnd() {
+    protected open fun Element.writeExtrasLineEnd() {
         if (extrasMap == null) return
         // Write everything after the first non-line starter/ender
         writeExtras(extrasMap.extrasAfter(this).dropWhile {
-            it is Node.Extra.Comment && !it.startsLine && !it.endsLine
+            it is Element.Extra.Comment && !it.startsLine && !it.endsLine
         })
     }
 
-    protected open fun Node.writeExtras(extras: List<Node.Extra>) {
+    protected open fun Element.writeExtras(extras: List<Element.Extra>) {
         extras.forEach {
             when (it) {
-                is Node.Extra.BlankLines -> {
+                is Element.Extra.BlankLines -> {
                     (2..it.count).forEach { line() }
                     lineEnd().lineBegin()
                 }
-                is Node.Extra.Comment -> {
+                is Element.Extra.Comment -> {
                     if (it.startsLine && it.endsLine) lineEnd(it.text).lineBegin() else {
                         if (!it.startsLine) append(' ')
                         append(it.text)
@@ -475,11 +475,11 @@ open class Writer(
         }
     }
 
-    protected fun Node.childTypeConstraints(v: List<Node.TypeConstraint>) = this@Writer.also {
+    protected fun Element.childTypeConstraints(v: List<Element.TypeConstraint>) = this@Writer.also {
         if (v.isNotEmpty()) append(" where ").also { children(v, ", ") }
     }
 
-    protected fun Node.childVars(vars: List<Node.Decl.Property.Var?>) =
+    protected fun Element.childVars(vars: List<Element.Decl.Property.Var?>) =
         if (vars.size == 1) {
             if (vars.single() == null) append('_') else children(vars)
         } else {
@@ -492,61 +492,61 @@ open class Writer(
         }
 
     // Ends with newline (or space if sameLine) if there are any
-    protected fun Node.WithAnnotations.childAnns(sameLine: Boolean = false) = this@Writer.also {
-        if (anns.isNotEmpty()) (this@childAnns as Node).apply {
+    protected fun Element.WithAnnotations.childAnns(sameLine: Boolean = false) = this@Writer.also {
+        if (anns.isNotEmpty()) (this@childAnns as Element).apply {
             if (sameLine) children(anns, " ", "", " ")
             else anns.forEach { ann -> lineBegin().also { children(ann) }.lineEnd() }
         }
     }
 
-    protected fun Node.WithAnnotations.childAnnsBeforeExpr(expr: Node.Expr) = this@Writer.also {
+    protected fun Element.WithAnnotations.childAnnsBeforeExpr(expr: Element.Expr) = this@Writer.also {
         if (anns.isNotEmpty()) {
             // As a special case, if there is a trailing annotation with no args and expr is paren,
             // then we need to add an empty set of parens ourselves
             val lastAnn = anns.lastOrNull()?.anns?.singleOrNull()?.takeIf { it.args.isEmpty() }
-            val shouldAddParens = lastAnn != null && expr is Node.Expr.Paren
-            (this as Node).children(anns, " ")
+            val shouldAddParens = lastAnn != null && expr is Element.Expr.Paren
+            (this as Element).children(anns, " ")
             if (shouldAddParens) append("()")
             append(' ')
         }
     }
 
     // Ends with newline if last is ann or space is last is mod or nothing if empty
-    protected fun Node.WithModifiers.childMods(newlines: Boolean = true) =
-        (this@childMods as Node).childMods(mods, newlines)
+    protected fun Element.WithModifiers.childMods(newlines: Boolean = true) =
+        (this@childMods as Element).childMods(mods, newlines)
 
-    protected fun Node.childMods(mods: List<Node.Modifier>, newlines: Boolean = true) =
+    protected fun Element.childMods(mods: List<Element.Modifier>, newlines: Boolean = true) =
         this@Writer.also {
             if (mods.isNotEmpty()) this@childMods.apply {
                 mods.forEachIndexed { index, mod ->
                     children(mod)
-                    if (newlines && (mod is Node.Modifier.AnnotationSet ||
-                                mods.getOrNull(index + 1) is Node.Modifier.AnnotationSet))
+                    if (newlines && (mod is Element.Modifier.AnnotationSet ||
+                                mods.getOrNull(index + 1) is Element.Modifier.AnnotationSet))
                         lineEnd().lineBegin()
                     else append(' ')
                 }
             }
         }
 
-    protected fun Node.WithModifiers.childModsBeforeType(ref: Node.TypeRef) = this@Writer.also {
+    protected fun Element.WithModifiers.childModsBeforeType(ref: Element.TypeRef) = this@Writer.also {
         if (mods.isNotEmpty()) {
             // As a special case, if there is a trailing annotation with no args and the ref has a paren which is a paren
             // type or a non-receiver fn type, then we need to add an empty set of parens ourselves
-            val lastAnn = (mods.lastOrNull() as? Node.Modifier.AnnotationSet)?.anns?.
+            val lastAnn = (mods.lastOrNull() as? Element.Modifier.AnnotationSet)?.anns?.
             singleOrNull()?.takeIf { it.args.isEmpty() }
             val shouldAddParens = lastAnn != null &&
-                    (ref is Node.TypeRef.Paren || (ref is Node.TypeRef.Func && (
-                            ref.receiverType == null || ref.receiverType.ref is Node.TypeRef.Paren)))
-            (this as Node).children(mods, " ")
+                    (ref is Element.TypeRef.Paren || (ref is Element.TypeRef.Func && (
+                            ref.receiverType == null || ref.receiverType.ref is Element.TypeRef.Paren)))
+            (this as Element).children(mods, " ")
             if (shouldAddParens) append("()")
             append(' ')
         }
     }
 
-    protected inline fun Node.children(vararg v: Node?) = this@Writer.also { v.forEach { visitChildren(it) } }
+    protected inline fun Element.children(vararg v: Element?) = this@Writer.also { v.forEach { visitChildren(it) } }
 
     // Null list values are asterisks
-    protected fun Node.bracketedChildren(v: List<Node?>, appendIfNotEmpty: String = "") = this@Writer.also {
+    protected fun Element.bracketedChildren(v: List<Element?>, appendIfNotEmpty: String = "") = this@Writer.also {
         if (v.isNotEmpty()) {
             append('<')
             v.forEachIndexed { index, node ->
@@ -557,12 +557,12 @@ open class Writer(
         }
     }
 
-    protected fun Node.parenChildren(v: List<Node?>) = children(v, ", ", "(", ")")
+    protected fun Element.parenChildren(v: List<Element?>) = children(v, ", ", "(", ")")
 
-    protected fun Node.childrenLines(v: Node?, extraMidLines: Int = 0, extraEndLines: Int = 0) =
+    protected fun Element.childrenLines(v: Element?, extraMidLines: Int = 0, extraEndLines: Int = 0) =
         this@Writer.also { if (v != null) childrenLines(listOf(v), extraMidLines, extraEndLines) }
 
-    protected fun Node.childrenLines(v: List<Node?>, extraMidLines: Int = 0, extraEndLines: Int = 0) =
+    protected fun Element.childrenLines(v: List<Element?>, extraMidLines: Int = 0, extraEndLines: Int = 0) =
         this@Writer.also {
             v.forEachIndexed { index, node ->
                 lineBegin().also { children(node) }
@@ -574,39 +574,39 @@ open class Writer(
             }
         }
 
-    protected fun stmtRequiresEmptyBraceSetBeforeLineEnd(v: Node?, next: Node?): Boolean {
+    protected fun stmtRequiresEmptyBraceSetBeforeLineEnd(v: Element?, next: Element?): Boolean {
         // As a special case, if this is a local memberless class decl stmt and the next line is a paren
         // or ann+paren, we have to explicitly provide an empty brace set
         // See: https://youtrack.jetbrains.com/issue/KT-25578
         // TODO: is there a better place to do this?
-        if (v !is Node.Stmt.Decl || v.decl !is Node.Decl.Class || v.decl.members.isNotEmpty() ||
-            v.decl.kind != Node.Decl.Class.Kind.CLASS) return false
-        if (next !is Node.Stmt.Expr || (next.expr !is Node.Expr.Paren &&
-                    (next.expr !is Node.Expr.Annotated || next.expr.expr !is Node.Expr.Paren))) return false
+        if (v !is Element.Stmt.Decl || v.decl !is Element.Decl.Class || v.decl.members.isNotEmpty() ||
+            v.decl.kind != Element.Decl.Class.Kind.CLASS) return false
+        if (next !is Element.Stmt.Expr || (next.expr !is Element.Expr.Paren &&
+                    (next.expr !is Element.Expr.Annotated || next.expr.expr !is Element.Expr.Paren))) return false
         return true
     }
 
-    protected fun stmtRequiresSemicolonSetBeforeLineEnd(v: Node?, next: Node?) =
+    protected fun stmtRequiresSemicolonSetBeforeLineEnd(v: Element?, next: Element?) =
         stmtHasModifierLocalVarDeclAmbiguity(v, next) || stmtHasTrailingLambdaAmbiguity(v, next)
 
-    protected fun stmtHasModifierLocalVarDeclAmbiguity(v: Node?, next: Node?): Boolean {
+    protected fun stmtHasModifierLocalVarDeclAmbiguity(v: Element?, next: Element?): Boolean {
         // As a special case, if there is just a name stmt, and it is a modifier, and the next stmt is
         // a decl, we need a semicolon
         // See: https://youtrack.jetbrains.com/issue/KT-25579
         // TODO: is there a better place to do this
-        if (v !is Node.Stmt.Expr || v.expr !is Node.Expr.Name || next !is Node.Stmt.Decl) return false
+        if (v !is Element.Stmt.Expr || v.expr !is Element.Expr.Name || next !is Element.Stmt.Decl) return false
         val name = v.expr.name.toUpperCase()
-        return Node.Modifier.Keyword.values().any { it.name == name }
+        return Element.Modifier.Keyword.values().any { it.name == name }
     }
 
-    protected fun stmtHasTrailingLambdaAmbiguity(v: Node?, next: Node?): Boolean {
+    protected fun stmtHasTrailingLambdaAmbiguity(v: Element?, next: Element?): Boolean {
         // As a special case, if there is a function call stmt w/ no trailing lambda followed by a brace
         // stmt, the call needs a semicolon
-        if (v !is Node.Stmt.Expr || v.expr !is Node.Expr.Call || v.expr.lambda != null) return false
-        return next is Node.Stmt.Expr && next.expr is Node.Expr.Brace
+        if (v !is Element.Stmt.Expr || v.expr !is Element.Expr.Call || v.expr.lambda != null) return false
+        return next is Element.Stmt.Expr && next.expr is Element.Expr.Brace
     }
 
-    protected fun Node.children(v: List<Node?>, sep: String = "", prefix: String = "", postfix: String = "") =
+    protected fun Element.children(v: List<Element?>, sep: String = "", prefix: String = "", postfix: String = "") =
         this@Writer.also {
             append(prefix)
             v.forEachIndexed { index, t ->
@@ -630,9 +630,9 @@ open class Writer(
             "typeof", "val", "var", "when", "while"
         )
 
-        fun write(v: Node, extrasMap: ExtrasMap? = null) =
+        fun write(v: Element, extrasMap: ExtrasMap? = null) =
             write(v, StringBuilder(), extrasMap).toString()
-        fun <T: Appendable> write(v: Node, app: T, extrasMap: ExtrasMap? = null) =
+        fun <T: Appendable> write(v: Element, app: T, extrasMap: ExtrasMap? = null) =
             app.also { Writer(it, extrasMap).write(v) }
     }
 }
