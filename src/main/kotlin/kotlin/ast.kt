@@ -138,7 +138,7 @@ data class ClassDeclaration(
         val lambda: CallExpression.TrailingLambda?
     ) : Parent() {
         override fun accept(v: Visitor) {
-            v.visitClassParentConstructorCall(this)
+            v.visitSuperClassConstructorCall(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -153,13 +153,13 @@ data class ClassDeclaration(
         }
     }
 
-    data class InterfaceType(
+    data class SuperInterface(
         override val locus: Locus,
         val type: SimpleType,
         val delegated: Expression?
     ) : Parent() {
         override fun accept(v: Visitor) {
-            v.visitClassParentInterfaceType(this)
+            v.visitSuperInterfaceType(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -192,7 +192,7 @@ data class ClassDeclaration(
         val block: Block
     ) : Declaration() {
         override fun accept(v: Visitor) {
-            v.visitInitDecl(this)
+            v.visitInitBlock(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -201,7 +201,7 @@ data class ClassDeclaration(
     }
 
     override fun accept(v: Visitor) {
-        v.visitClass(this)
+        v.visitClassDeclaration(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -303,7 +303,7 @@ data class FunctionDeclaration(
     val body: FunctionBody?
 ) : Declaration(), Element.WithModifiers {
     override fun accept(v: Visitor) {
-        v.visitFunc(this)
+        v.visitFunction(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -335,7 +335,7 @@ data class ValueParameter(
     val default: Expression?
 ) : Element(), Element.WithModifiers {
     override fun accept(v: Visitor) {
-        v.visitFunctionParam(this)
+        v.visitValueParameter(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -354,7 +354,7 @@ data class BlockBody(val block: Block) : FunctionBody() {
         get() = block.locus
 
     override fun accept(v: Visitor) {
-        v.visitFunctionBlockBody(this)
+        v.visitBlockBody(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -367,7 +367,7 @@ data class ExpressionBody(val expr: Expression) : FunctionBody() {
         get() = expr.locus
 
     override fun accept(v: Visitor) {
-        v.visitFunctionExprBody(this)
+        v.visitExpressionBody(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -395,7 +395,7 @@ data class PropertyDeclaration(
         val type: Type?
     ) : Element() {
         override fun accept(v: Visitor) {
-            v.visitPropertyVar(this)
+            v.visitDestructuringEntry(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -447,7 +447,7 @@ data class PropertyDeclaration(
     }
 
     override fun accept(v: Visitor) {
-        v.visitProperty(this)
+        v.visitPropertyDeclaration(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -478,7 +478,7 @@ data class TypeAliasDeclaration(
     val type: Type
 ) : Declaration(), Element.WithModifiers {
     override fun accept(v: Visitor) {
-        v.visitTypeAlias(this)
+        v.visitTypeAliasDeclaration(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -499,7 +499,7 @@ data class TypeParameter(
     val type: TypeRef?
 ) : Element(), Element.WithModifiers {
     override fun accept(v: Visitor) {
-        v.visitTypeParam(this)
+        v.visitTypeParameter(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -533,16 +533,16 @@ sealed class TypeRef : Element()
 data class FunctionalType(
     override val locus: Locus,
     val receiverType: Type?,
-    val params: List<Param>,
+    val params: List<Parameter>,
     val type: Type
 ) : TypeRef() {
-    data class Param(
+    data class Parameter(
         override val locus: Locus,
         val name: String?,
         val type: Type
     ) : Element() {
         override fun accept(v: Visitor) {
-            v.visitFuncTypeParam(this)
+            v.visitFunctionalTypeParameter(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -551,7 +551,7 @@ data class FunctionalType(
     }
 
     override fun accept(v: Visitor) {
-        v.visitFuncType(this)
+        v.visitFunctionalType(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -626,7 +626,7 @@ data class TypeWithModifiers(
     val type: TypeRef
 ) : TypeRef(), Element.WithModifiers {
     override fun accept(v: Visitor) {
-        v.visitParenType(this)
+        v.visitTypeWithModifiers(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -661,7 +661,7 @@ data class ValueArgument(
     val expr: Expression
 ) : Element() {
     override fun accept(v: Visitor) {
-        v.visitValueArg(this)
+        v.visitValueArgument(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -678,7 +678,7 @@ data class IfExpression(
     val elseBody: Expression?
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitIfExpr(this)
+        v.visitIfExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -715,7 +715,7 @@ data class TryExpression(
     }
 
     override fun accept(v: Visitor) {
-        v.visitTryExpr(this)
+        v.visitTryExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -736,7 +736,7 @@ data class ForLoop(
     val body: Expression
 ) : Expression(), Element.WithAnnotations {
     override fun accept(v: Visitor) {
-        v.visitForStmt(this)
+        v.visitForLoop(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -757,7 +757,7 @@ data class WhileLoop(
     val body: Expression
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitWhileStmt(this)
+        v.visitWhileLoop(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -772,7 +772,7 @@ data class DoWhileLoop(
     val condition: Expression
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitDoWhileStmt(this)
+        v.visitDoWhileLoop(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -788,7 +788,7 @@ data class BinaryExpression(
     val rhs: Expression
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitBinaryOp(this)
+        v.visitBinaryExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -805,7 +805,7 @@ data class InfixFunctionName(
     val str: String
 ) : BinaryOperatorOrInfixCall() {
     override fun accept(v: Visitor) {
-        v.visitInfixBinaryOpOper(this)
+        v.visitInfixFunctionName(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -828,7 +828,7 @@ data class BinaryOperator(
     }
 
     override fun accept(v: Visitor) {
-        v.visitTokenBinaryOpOper(this)
+        v.visitBinaryOperator(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -844,7 +844,7 @@ data class UnaryExpression(
 ) : Expression() {
 
     override fun accept(v: Visitor) {
-        v.visitUnaryOp(this)
+        v.visitUnaryExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -862,7 +862,7 @@ data class UnaryOperator(
     }
 
     override fun accept(v: Visitor) {
-        v.visitUnaryOpOper(this)
+        v.visitUnaryOperator(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -877,7 +877,7 @@ data class TypeExpression(
     val rhs: Type
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitTypeOp(this)
+        v.visitTypeExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -896,7 +896,7 @@ data class TypeOperator(
     }
 
     override fun accept(v: Visitor) {
-        v.visitTypeOpOper(this)
+        v.visitTypeOperator(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -914,7 +914,7 @@ data class CallableReferenceExpression(
     val name: String
 ) : ReferenceExpression() {
     override fun accept(v: Visitor) {
-        v.visitDoubleColonCallable(this)
+        v.visitCallableReferenceExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -927,7 +927,7 @@ data class ClassReferenceExpression(
     override val recv: ReferenceReceiver?
 ) : ReferenceExpression() {
     override fun accept(v: Visitor) {
-        v.visitDoubleColonClass(this)
+        v.visitClassReferenceExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -941,7 +941,7 @@ sealed class ReferenceReceiver : Element() {
             get() = expr.locus
 
         override fun accept(v: Visitor) {
-            v.visitDoubleColonExprRecv(this)
+            v.visitReferenceExpressionReceiver(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -957,7 +957,7 @@ sealed class ReferenceReceiver : Element() {
             get() = type.locus
 
         override fun accept(v: Visitor) {
-            v.visitDoubleColonTypeRecv(this)
+            v.visitReferenceTypeExpression(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -975,7 +975,7 @@ data class ConstantExpression(
     enum class Form { STRING, BOOLEAN, CHAR, INT, FLOAT, NULL }
 
     override fun accept(v: Visitor) {
-        v.visitConst(this)
+        v.visitConstantExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -985,17 +985,17 @@ data class ConstantExpression(
 
 data class LambdaLiteral(
     override val locus: Locus,
-    val params: List<Param>,
+    val params: List<Parameter>,
     val block: Block?
 ) : Expression() {
-    data class Param(
+    data class Parameter(
         override val locus: Locus,
         // Multiple means destructure, null means underscore
         val vars: List<PropertyDeclaration.DestructuringEntry?>,
         val destructType: Type?
     ) : Expression() {
         override fun accept(v: Visitor) {
-            v.visitLambdaParam(this)
+            v.visitLambdaParameter(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -1007,7 +1007,7 @@ data class LambdaLiteral(
     }
 
     override fun accept(v: Visitor) {
-        v.visitLambda(this)
+        v.visitLambdaLiteral(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1023,7 +1023,7 @@ data class ThisReference(
     val label: String?
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitThis(this)
+        v.visitThisReference(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1037,7 +1037,7 @@ data class SuperReference(
     val label: String?
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitSuper(this)
+        v.visitSuperReference(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1068,12 +1068,13 @@ data class WhenExpression(
     }
 
     sealed class Condition : Element()
+
     data class ExpressionCondition(val expr: Expression) : Condition() {
         override val locus: Locus
             get() = expr.locus
 
         override fun accept(v: Visitor) {
-            v.visitWhenExprCond(this)
+            v.visitWhenExpressionCondition(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -1087,7 +1088,7 @@ data class WhenExpression(
         val not: Boolean
     ) : Condition() {
         override fun accept(v: Visitor) {
-            v.visitWhenInCond(this)
+            v.visitWhenInCondition(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -1101,7 +1102,7 @@ data class WhenExpression(
         val not: Boolean
     ) : Condition() {
         override fun accept(v: Visitor) {
-            v.visitWhenIsCond(this)
+            v.visitWhenIsCondition(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -1110,7 +1111,7 @@ data class WhenExpression(
     }
 
     override fun accept(v: Visitor) {
-        v.visitWhen(this)
+        v.visitWhenExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1121,13 +1122,13 @@ data class WhenExpression(
     }
 }
 
-data class ObjectDeclaration(
+data class AnonymoutObjectExpression(
     override val locus: Locus,
     val parents: List<ClassDeclaration.Parent>,
     val members: List<Declaration>
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitObjectExpr(this)
+        v.visitAnonymousObjectExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1145,7 +1146,7 @@ data class ThrowStatement(
     val expr: Expression
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitThrowExpr(this)
+        v.visitThrowStatement(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1159,7 +1160,7 @@ data class ReturnStatement(
     val expr: Expression?
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitReturnExpr(this)
+        v.visitReturnStatement(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1172,7 +1173,7 @@ data class ContinueStatement(
     val label: String?
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitContinueExpr(this)
+        v.visitContinueStatement(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1185,7 +1186,7 @@ data class BreakStatement(
     val label: String?
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitBreakExpr(this)
+        v.visitBreakStatement(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1198,7 +1199,7 @@ data class CollectionLiteral(
     val exprs: List<Expression>
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitCollectionLiteralExpr(this)
+        v.visitCollectionLiteral(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1213,7 +1214,7 @@ data class Identifier(
     val name: String
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitNameExpr(this)
+        v.visitIdentifier(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1227,7 +1228,7 @@ data class LabelledExpression(
     val expr: Expression
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitLabelledExpr(this)
+        v.visitLabelledExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1241,7 +1242,7 @@ data class AnnotatedExpression(
     val expr: Expression
 ) : Expression(), Element.WithAnnotations {
     override fun accept(v: Visitor) {
-        v.visitAnnotatedExpr(this)
+        v.visitAnnotatedExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1278,7 +1279,7 @@ data class CallExpression(
     }
 
     override fun accept(v: Visitor) {
-        v.visitCallExpr(this)
+        v.visitCallExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1298,7 +1299,7 @@ data class ArrayAccessExpression(
     val indices: List<Expression>
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitArrayAccess(this)
+        v.visitArrayAccessExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1313,7 +1314,7 @@ data class AnonymousFunctionExpression(
     val function: FunctionDeclaration
 ) : Expression() {
     override fun accept(v: Visitor) {
-        v.visitAnonymousFunction(this)
+        v.visitAnonymousFunctionExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -1353,6 +1354,7 @@ data class Block(
 }
 
 sealed class ModifierOrAnnotation : Element()
+
 data class Annotation(
     override val locus: Locus,
     val name: FqName,
@@ -1391,7 +1393,7 @@ data class Modifier(
     }
 
     override fun accept(v: Visitor) {
-        v.visitIdentifierLikeModifier(this)
+        v.visitModifier(this)
     }
 
     override fun acceptChildren(v: Visitor) {
