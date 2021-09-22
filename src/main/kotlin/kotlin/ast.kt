@@ -21,9 +21,11 @@ sealed class Element {
     }
 
     interface WithModifiers : WithAnnotations {
-        val mods: List<ModifierOrAnnotation>
+        val modOrAnns: List<ModifierOrAnnotation>
         override val anns: List<Annotation>
-            get() = mods.mapNotNull { it as? Annotation }
+            get() = modOrAnns.filterIsInstance<Annotation>()
+        val mods: List<Modifier>
+            get() = modOrAnns.filterIsInstance<Modifier>()
     }
 
     abstract fun accept(v: Visitor)
@@ -113,14 +115,14 @@ sealed class Declaration : Element()
 
 data class ClassDeclaration(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
+    override val modOrAnns: List<ModifierOrAnnotation>,
     val kind: Kind,
     val name: String,
     val typeParameters: List<TypeParameter>,
     val primaryConstructor: PrimaryConstructor?,
-    val parentAnns: List<Annotation>,
     val parents: List<Parent>,
     val typeConstraints: List<TypeConstraint>,
+    val enumEntries: List<EnumEntry>,
     // TODO: Can include primary constructor
     val members: List<Declaration>
 ) : Declaration(), Element.WithModifiers {
@@ -132,6 +134,7 @@ data class ClassDeclaration(
 
     data class SuperClassConstructorCall(
         override val locus: Locus,
+        val anns: List<Annotation>,
         val type: SimpleType,
         val typeArgs: List<Type>,
         val arguments: List<ValueArgument>,
@@ -142,6 +145,9 @@ data class ClassDeclaration(
         }
 
         override fun acceptChildren(v: Visitor) {
+            for (ann in anns) {
+                ann.accept(v)
+            }
             type.accept(v)
             for (typeArg in typeArgs) {
                 typeArg.accept(v)
@@ -155,6 +161,7 @@ data class ClassDeclaration(
 
     data class SuperInterface(
         override val locus: Locus,
+        val anns: List<Annotation>,
         val type: SimpleType,
         val delegated: Expression?
     ) : Parent() {
@@ -163,6 +170,9 @@ data class ClassDeclaration(
         }
 
         override fun acceptChildren(v: Visitor) {
+            for (ann in anns) {
+                ann.accept(v)
+            }
             type.accept(v)
             delegated?.accept(v)
         }
@@ -170,7 +180,7 @@ data class ClassDeclaration(
 
     data class PrimaryConstructor(
         override val locus: Locus,
-        override val mods: List<ModifierOrAnnotation>,
+        override val modOrAnns: List<ModifierOrAnnotation>,
         val params: List<ValueParameter>
     ) : Element(), WithModifiers {
         override fun accept(v: Visitor) {
@@ -178,7 +188,7 @@ data class ClassDeclaration(
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (mod in mods) {
+            for (mod in modOrAnns) {
                 mod.accept(v)
             }
             for (param in params) {
@@ -205,16 +215,13 @@ data class ClassDeclaration(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
         for (typeParam in typeParameters) {
             typeParam.accept(v)
         }
         primaryConstructor?.accept(v)
-        for (parentAnn in parentAnns) {
-            parentAnn.accept(v)
-        }
         for (typeConstraint in typeConstraints) {
             typeConstraint.accept(v)
         }
@@ -225,11 +232,11 @@ data class ClassDeclaration(
 
     data class Constructor(
         override val locus: Locus,
-        override val mods: List<ModifierOrAnnotation>,
+        override val modOrAnns: List<ModifierOrAnnotation>,
         val params: List<ValueParameter>,
         val delegationCall: DelegationCall?,
         val block: Block?
-    ) : Declaration(), Element.WithModifiers {
+    ) : Declaration(), WithModifiers {
         data class DelegationCall(
             override val locus: Locus,
             val target: DelegationTarget,
@@ -253,7 +260,7 @@ data class ClassDeclaration(
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (mod in mods) {
+            for (mod in modOrAnns) {
                 mod.accept(v)
             }
             for (param in params) {
@@ -266,17 +273,17 @@ data class ClassDeclaration(
 
     data class EnumEntry(
         override val locus: Locus,
-        override val mods: List<ModifierOrAnnotation>,
+        override val modOrAnns: List<ModifierOrAnnotation>,
         val name: String,
         val arguments: List<ValueArgument>,
         val members: List<Declaration>
-    ) : Declaration(), Element.WithModifiers {
+    ) : Declaration(), WithModifiers {
         override fun accept(v: Visitor) {
             v.visitEnumEntry(this)
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (mod in mods) {
+            for (mod in modOrAnns) {
                 mod.accept(v)
             }
             for (arg in arguments) {
@@ -292,7 +299,7 @@ data class ClassDeclaration(
 
 data class FunctionDeclaration(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
+    override val modOrAnns: List<ModifierOrAnnotation>,
     val typeParameters: List<TypeParameter>,
     val receiverType: Type?,
     // Name not present on anonymous functions
@@ -307,7 +314,7 @@ data class FunctionDeclaration(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
         for (typeParam in typeParameters) {
@@ -327,11 +334,10 @@ data class FunctionDeclaration(
 
 data class ValueParameter(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
-    val isVal: Boolean?,
+    override val modOrAnns: List<ModifierOrAnnotation>,
+    val isVal: Boolean,
     val name: String,
-    // Type can be null for anon functions
-    val type: Type?,
+    val type: Type,
     val default: Expression?
 ) : Element(), Element.WithModifiers {
     override fun accept(v: Visitor) {
@@ -339,10 +345,10 @@ data class ValueParameter(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
-        type?.accept(v)
+        type.accept(v)
         default?.accept(v)
     }
 }
@@ -377,8 +383,8 @@ data class ExpressionBody(val expr: Expression) : FunctionBody() {
 
 data class PropertyDeclaration(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
-    val readOnly: Boolean,
+    override val modOrAnns: List<ModifierOrAnnotation>,
+    val isVal: Boolean,
     val typeParameters: List<TypeParameter>,
     val receiverType: Type?,
     // Always at least one, more than one is destructuring, null is underscore in destructure
@@ -405,7 +411,7 @@ data class PropertyDeclaration(
 
     data class Getter(
         override val locus: Locus,
-        override val mods: List<ModifierOrAnnotation>,
+        override val modOrAnns: List<ModifierOrAnnotation>,
         val type: Type?,
         val body: FunctionBody?
     ) : Element(), WithModifiers {
@@ -414,7 +420,7 @@ data class PropertyDeclaration(
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (mod in mods) {
+            for (mod in modOrAnns) {
                 mod.accept(v)
             }
             type?.accept(v)
@@ -424,9 +430,9 @@ data class PropertyDeclaration(
 
     data class Setter(
         override val locus: Locus,
-        override val mods: List<ModifierOrAnnotation>,
+        override val modOrAnns: List<ModifierOrAnnotation>,
         val paramMods: List<ModifierOrAnnotation>,
-        val paramName: String?,
+        val paramName: String,
         val paramType: Type?,
         val body: FunctionBody?
     ) : Element(), WithModifiers {
@@ -435,7 +441,7 @@ data class PropertyDeclaration(
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (mod in mods) {
+            for (mod in modOrAnns) {
                 mod.accept(v)
             }
             for (paramMod in paramMods) {
@@ -451,7 +457,7 @@ data class PropertyDeclaration(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
         for (typeParam in typeParameters) {
@@ -472,7 +478,7 @@ data class PropertyDeclaration(
 
 data class TypeAliasDeclaration(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
+    override val modOrAnns: List<ModifierOrAnnotation>,
     val name: String,
     val typeParameters: List<TypeParameter>,
     val type: Type
@@ -482,7 +488,7 @@ data class TypeAliasDeclaration(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
         for (typeParam in typeParameters) {
@@ -494,7 +500,7 @@ data class TypeAliasDeclaration(
 
 data class TypeParameter(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
+    override val modOrAnns: List<ModifierOrAnnotation>,
     val name: String,
     val type: TypeRef?
 ) : Element(), Element.WithModifiers {
@@ -503,7 +509,7 @@ data class TypeParameter(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
         type?.accept(v)
@@ -534,7 +540,7 @@ data class FunctionalType(
     override val locus: Locus,
     val receiverType: Type?,
     val params: List<Parameter>,
-    val type: Type
+    val returnType: Type
 ) : TypeRef() {
     data class Parameter(
         override val locus: Locus,
@@ -559,7 +565,7 @@ data class FunctionalType(
         for (param in params) {
             param.accept(v)
         }
-        type.accept(v)
+        returnType.accept(v)
     }
 }
 
@@ -620,26 +626,9 @@ data class DynamicType(
     }
 }
 
-data class TypeWithModifiers(
-    override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
-    val type: TypeRef
-) : TypeRef(), Element.WithModifiers {
-    override fun accept(v: Visitor) {
-        v.visitTypeWithModifiers(this)
-    }
-
-    override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
-            mod.accept(v)
-        }
-        type.accept(v)
-    }
-}
-
 data class Type(
     override val locus: Locus,
-    override val mods: List<ModifierOrAnnotation>,
+    override val modOrAnns: List<ModifierOrAnnotation>,
     val ref: TypeRef
 ) : Element(), Element.WithModifiers {
     override fun accept(v: Visitor) {
@@ -647,7 +636,7 @@ data class Type(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (mod in mods) {
+        for (mod in modOrAnns) {
             mod.accept(v)
         }
         ref.accept(v)
@@ -657,7 +646,7 @@ data class Type(
 data class ValueArgument(
     override val locus: Locus,
     val name: String?,
-    val asterisk: Boolean,
+    val hasSpread: Boolean,
     val expr: Expression
 ) : Element() {
     override fun accept(v: Visitor) {
@@ -802,7 +791,7 @@ sealed class BinaryOperatorOrInfixCall : Element()
 
 data class InfixFunctionName(
     override val locus: Locus,
-    val str: String
+    val name: String
 ) : BinaryOperatorOrInfixCall() {
     override fun accept(v: Visitor) {
         v.visitInfixFunctionName(this)
@@ -817,14 +806,14 @@ data class BinaryOperator(
     override val locus: Locus,
     val token: Token
 ) : BinaryOperatorOrInfixCall() {
-    enum class Token(val str: String) {
-        MUL("*"), DIV("/"), MOD("%"), ADD("+"), SUB("-"),
-        IN("in"), NOT_IN("!in"),
-        GT(">"), GTE(">="), LT("<"), LTE("<="),
-        EQ("=="), NEQ("!="),
-        ASSN("="), MUL_ASSN("*="), DIV_ASSN("/="), MOD_ASSN("%="), ADD_ASSN("+="), SUB_ASSN("-="),
-        OR("||"), AND("&&"), ELVIS("?:"), RANGE(".."),
-        DOT("."), DOT_SAFE("?.")
+    enum class Token {
+        MUL, DIV, MOD, ADD, SUB,
+        IN, NOT_IN,
+        GT, GTE, LT, LTE,
+        EQ, NEQ,
+        ASSIGN, MUL_ASSIGN, DIV_ASSIGN, MOD_ASSIGN, ADD_ASSIGN, SUB_ASSIGN,
+        OR, AND, ELVIS, RANGE,
+        DOT, DOT_SAFE
     }
 
     override fun accept(v: Visitor) {
@@ -857,8 +846,8 @@ data class UnaryOperator(
     override val locus: Locus,
     val token: Token
 ) : Element() {
-    enum class Token(val str: String) {
-        NEG("-"), POS("+"), INC("++"), DEC("--"), NOT("!"), NULL_DEREF("!!")
+    enum class Token {
+        NEG, POS, INC, DEC, NOT, NULL_DEREF
     }
 
     override fun accept(v: Visitor) {
@@ -891,8 +880,8 @@ data class TypeOperator(
     override val locus: Locus,
     val token: Token
 ) : Element() {
-    enum class Token(val str: String) {
-        AS("as"), AS_SAFE("as?"), COL(":"), IS("is"), NOT_IS("!is")
+    enum class Token {
+        AS, AS_SAFE, COL, IS, NOT_IS
     }
 
     override fun accept(v: Visitor) {
@@ -951,7 +940,7 @@ sealed class ReferenceReceiver : Element() {
 
     data class Type(
         val type: SimpleType,
-        val questionMark: Boolean
+        val isNullable: Boolean
     ) : ReferenceReceiver() {
         override val locus: Locus
             get() = type.locus
@@ -985,8 +974,9 @@ data class ConstantExpression(
 
 data class LambdaLiteral(
     override val locus: Locus,
-    val params: List<Parameter>,
-    val block: Block?
+    // null means there is no arrow
+    val params: List<Parameter>?,
+    val stmts: List<Expression>
 ) : Expression() {
     data class Parameter(
         override val locus: Locus,
@@ -1014,7 +1004,9 @@ data class LambdaLiteral(
         for (param in params) {
             param.accept(v)
         }
-        block?.accept(v)
+        for (stmt in stmts) {
+            stmt.accept(v)
+        }
     }
 }
 
@@ -1052,8 +1044,9 @@ data class WhenExpression(
 ) : Expression() {
     data class Entry(
         override val locus: Locus,
-        val conds: List<Condition>,
-        val body: Expression
+        // null means else
+        val conds: List<Condition>?,
+        val body: List<Expression>
     ) : Element() {
         override fun accept(v: Visitor) {
             v.visitWhenEntry(this)
@@ -1063,7 +1056,9 @@ data class WhenExpression(
             for (cond in conds) {
                 cond.accept(v)
             }
-            body.accept(v)
+            for (expr in body) {
+                expr.accept(v)
+            }
         }
     }
 
@@ -1122,7 +1117,7 @@ data class WhenExpression(
     }
 }
 
-data class AnonymoutObjectExpression(
+data class AnonymousObjectExpression(
     override val locus: Locus,
     val parents: List<ClassDeclaration.Parent>,
     val members: List<Declaration>
@@ -1264,7 +1259,7 @@ data class CallExpression(
         override val locus: Locus,
         override val anns: List<Annotation>,
         val label: String?,
-        val func: LambdaLiteral
+        val lambda: LambdaLiteral
     ) : Element(), WithAnnotations {
         override fun accept(v: Visitor) {
             v.visitTrailingLambda(this)
@@ -1274,7 +1269,7 @@ data class CallExpression(
             for (ann in anns) {
                 ann.accept(v)
             }
-            func.accept(v)
+            lambda.accept(v)
         }
     }
 
