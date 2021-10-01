@@ -1,6 +1,6 @@
 package kometa.expressionTree
 
 import gl.*
-import kometa.kotlin.AST
+import kometa.kotlin.ast.Element
 
-fun glExpressionTree(block: GL_Context.() -> Unit): AST.AstNode = error("Implemented as intrinsic")
+fun glExpressionTree(block: GL_Context.() -> Unit): Element = error("Implemented as intrinsic")

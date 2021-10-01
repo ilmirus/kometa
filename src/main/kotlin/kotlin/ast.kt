@@ -1,16 +1,11 @@
 package kometa.kotlin.ast
 
+import core.Locus
 import kometa.kotlin.Visitor
 
 data class FqName(val names: List<String>) {
     override fun toString(): String = names.joinToString(".")
 }
-
-data class Locus(
-    val fileName: String,
-    val startOffset: Int,
-    val endOffset: Int
-)
 
 sealed class Element {
     abstract val locus: Locus
@@ -1001,7 +996,7 @@ data class LambdaLiteral(
     }
 
     override fun acceptChildren(v: Visitor) {
-        for (param in params) {
+        for (param in params ?: emptyList()) {
             param.accept(v)
         }
         for (stmt in stmts) {
@@ -1053,7 +1048,7 @@ data class WhenExpression(
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (cond in conds) {
+            for (cond in conds ?: emptyList()) {
                 cond.accept(v)
             }
             for (expr in body) {

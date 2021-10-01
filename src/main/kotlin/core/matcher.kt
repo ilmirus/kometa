@@ -1,5 +1,6 @@
 package kometa
 
+import core.Locus
 import kometa.util.*
 import java.io.File
 import kotlin.Exception
@@ -562,6 +563,9 @@ abstract class Matcher<TInput, TResult> {
         __index: Int,
         _args: Iterable<MatchItem<TInput, TResult>>?
     )
+
+    protected val MatchItem<TInput, TResult>?.locus: Locus
+        get() = if (this != null) Locus(startIndex, nextIndex) else Locus(-1, -1)
 
     protected val MatchItem<TInput, TResult>?.r: TResult
         get() = nr!!

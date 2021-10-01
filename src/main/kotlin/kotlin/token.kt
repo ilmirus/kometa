@@ -1,6 +1,6 @@
 package kometa.kotlin
 
-import kometa.kotlin.ast.Locus
+import core.Locus
 
 sealed class Token {
     abstract val locus: Locus

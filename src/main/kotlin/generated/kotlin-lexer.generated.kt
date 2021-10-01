@@ -1634,7 +1634,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r139 = _memo.results.peek()
                     if (_r139 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r139.startIndex, _r139.nextIndex, _memo.input, _Thunk({ Token.ShebangLine(s.s) }, _r139), true))
+                        _memo.results.push(_KotlinLexer_Item(_r139.startIndex, _r139.nextIndex, _memo.input, _Thunk({ Token.ShebangLine(it.locus, s.s) }, _r139), true))
                     }
 
                     // OR shortcut 138
@@ -1691,7 +1691,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r148 = _memo.results.peek()
                     if (_r148 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r148.startIndex, _r148.nextIndex, _memo.input, _Thunk({ Token.FloatLiteral(it.s) }, _r148), true))
+                        _memo.results.push(_KotlinLexer_Item(_r148.startIndex, _r148.nextIndex, _memo.input, _Thunk({ Token.FloatLiteral(it.locus, it.s) }, _r148), true))
                     }
 
                     _label = 138
@@ -1752,7 +1752,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r153 = _memo.results.peek()
                     if (_r153 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r153.startIndex, _r153.nextIndex, _memo.input, _Thunk({ Token.DoubleLiteral(it.s) }, _r153), true))
+                        _memo.results.push(_KotlinLexer_Item(_r153.startIndex, _r153.nextIndex, _memo.input, _Thunk({ Token.DoubleLiteral(it.locus, it.s) }, _r153), true))
                     }
 
                     _label = 137
@@ -1813,7 +1813,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r158 = _memo.results.peek()
                     if (_r158 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r158.startIndex, _r158.nextIndex, _memo.input, _Thunk({ Token.LongLiteral(it.s) }, _r158), true))
+                        _memo.results.push(_KotlinLexer_Item(_r158.startIndex, _r158.nextIndex, _memo.input, _Thunk({ Token.LongLiteral(it.locus, it.s) }, _r158), true))
                     }
 
                     _label = 136
@@ -1874,7 +1874,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r163 = _memo.results.peek()
                     if (_r163 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r163.startIndex, _r163.nextIndex, _memo.input, _Thunk({ Token.UnsignedLiteral(it.s) }, _r163), true))
+                        _memo.results.push(_KotlinLexer_Item(_r163.startIndex, _r163.nextIndex, _memo.input, _Thunk({ Token.UnsignedLiteral(it.locus, it.s) }, _r163), true))
                     }
 
                     _label = 135
@@ -1935,7 +1935,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r168 = _memo.results.peek()
                     if (_r168 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r168.startIndex, _r168.nextIndex, _memo.input, _Thunk({ Token.UnsignedLongLiteral(it.s) }, _r168), true))
+                        _memo.results.push(_KotlinLexer_Item(_r168.startIndex, _r168.nextIndex, _memo.input, _Thunk({ Token.UnsignedLongLiteral(it.locus, it.s) }, _r168), true))
                     }
 
                     _label = 134
@@ -1996,7 +1996,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r173 = _memo.results.peek()
                     if (_r173 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r173.startIndex, _r173.nextIndex, _memo.input, _Thunk({ Token.IntegerLiteral(it.s) }, _r173), true))
+                        _memo.results.push(_KotlinLexer_Item(_r173.startIndex, _r173.nextIndex, _memo.input, _Thunk({ Token.IntegerLiteral(it.locus, it.s) }, _r173), true))
                     }
 
                     _label = 133
@@ -2021,7 +2021,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r178 = _memo.results.peek()
                     if (_r178 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r178.startIndex, _r178.nextIndex, _memo.input, _Thunk({ Token.CharacterLiteral(it.s) }, _r178), true))
+                        _memo.results.push(_KotlinLexer_Item(_r178.startIndex, _r178.nextIndex, _memo.input, _Thunk({ Token.CharacterLiteral(it.locus, it.s) }, _r178), true))
                     }
 
                     _label = 132
@@ -2046,7 +2046,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r180 = _memo.results.peek()
                     if (_r180 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r180.startIndex, _r180.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.s) }, _r180), true))
+                        _memo.results.push(_KotlinLexer_Item(_r180.startIndex, _r180.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.locus, it.s) }, _r180), true))
                     }
 
                     _label = 131
@@ -2071,7 +2071,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r182 = _memo.results.peek()
                     if (_r182 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r182.startIndex, _r182.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.s) }, _r182), true))
+                        _memo.results.push(_KotlinLexer_Item(_r182.startIndex, _r182.nextIndex, _memo.input, _Thunk({ Token.StringLiteral(it.locus, it.s) }, _r182), true))
                     }
 
                     _label = 130
@@ -2096,7 +2096,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r184 = _memo.results.peek()
                     if (_r184 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r184.startIndex, _r184.nextIndex, _memo.input, _Thunk({ Token.NL }, _r184), true))
+                        _memo.results.push(_KotlinLexer_Item(_r184.startIndex, _r184.nextIndex, _memo.input, _Thunk({ Token.NewLine(it.locus) }, _r184), true))
                     }
 
                     _label = 129
@@ -2119,7 +2119,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r186 = _memo.results.peek()
                     if (_r186 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r186.startIndex, _r186.nextIndex, _memo.input, _Thunk({ Token.RESERVED }, _r186), true))
+                        _memo.results.push(_KotlinLexer_Item(_r186.startIndex, _r186.nextIndex, _memo.input, _Thunk({ Token.Reserved(it.locus) }, _r186), true))
                     }
 
                     _label = 128
@@ -2142,7 +2142,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r188 = _memo.results.peek()
                     if (_r188 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r188.startIndex, _r188.nextIndex, _memo.input, _Thunk({ Token.RANGE }, _r188), true))
+                        _memo.results.push(_KotlinLexer_Item(_r188.startIndex, _r188.nextIndex, _memo.input, _Thunk({ Token.Range(it.locus) }, _r188), true))
                     }
 
                     _label = 127
@@ -2165,7 +2165,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r190 = _memo.results.peek()
                     if (_r190 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r190.startIndex, _r190.nextIndex, _memo.input, _Thunk({ Token.DOT }, _r190), true))
+                        _memo.results.push(_KotlinLexer_Item(_r190.startIndex, _r190.nextIndex, _memo.input, _Thunk({ Token.Dot(it.locus) }, _r190), true))
                     }
 
                     _label = 126
@@ -2188,7 +2188,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r192 = _memo.results.peek()
                     if (_r192 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r192.startIndex, _r192.nextIndex, _memo.input, _Thunk({ Token.COMMA }, _r192), true))
+                        _memo.results.push(_KotlinLexer_Item(_r192.startIndex, _r192.nextIndex, _memo.input, _Thunk({ Token.Comma(it.locus) }, _r192), true))
                     }
 
                     _label = 125
@@ -2211,7 +2211,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r194 = _memo.results.peek()
                     if (_r194 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r194.startIndex, _r194.nextIndex, _memo.input, _Thunk({ Token.LPAREN }, _r194), true))
+                        _memo.results.push(_KotlinLexer_Item(_r194.startIndex, _r194.nextIndex, _memo.input, _Thunk({ Token.LeftParen(it.locus) }, _r194), true))
                     }
 
                     _label = 124
@@ -2234,7 +2234,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r196 = _memo.results.peek()
                     if (_r196 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r196.startIndex, _r196.nextIndex, _memo.input, _Thunk({ Token.RPAREN }, _r196), true))
+                        _memo.results.push(_KotlinLexer_Item(_r196.startIndex, _r196.nextIndex, _memo.input, _Thunk({ Token.RightParen(it.locus) }, _r196), true))
                     }
 
                     _label = 123
@@ -2257,7 +2257,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r198 = _memo.results.peek()
                     if (_r198 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r198.startIndex, _r198.nextIndex, _memo.input, _Thunk({ Token.LSQUARE }, _r198), true))
+                        _memo.results.push(_KotlinLexer_Item(_r198.startIndex, _r198.nextIndex, _memo.input, _Thunk({ Token.LeftSquare(it.locus) }, _r198), true))
                     }
 
                     _label = 122
@@ -2280,7 +2280,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r200 = _memo.results.peek()
                     if (_r200 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r200.startIndex, _r200.nextIndex, _memo.input, _Thunk({ Token.RSQUARE }, _r200), true))
+                        _memo.results.push(_KotlinLexer_Item(_r200.startIndex, _r200.nextIndex, _memo.input, _Thunk({ Token.RightSquare(it.locus) }, _r200), true))
                     }
 
                     _label = 121
@@ -2303,7 +2303,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r202 = _memo.results.peek()
                     if (_r202 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r202.startIndex, _r202.nextIndex, _memo.input, _Thunk({ Token.LCURL }, _r202), true))
+                        _memo.results.push(_KotlinLexer_Item(_r202.startIndex, _r202.nextIndex, _memo.input, _Thunk({ Token.LeftBrace(it.locus) }, _r202), true))
                     }
 
                     _label = 120
@@ -2326,7 +2326,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r204 = _memo.results.peek()
                     if (_r204 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r204.startIndex, _r204.nextIndex, _memo.input, _Thunk({ Token.RCURL }, _r204), true))
+                        _memo.results.push(_KotlinLexer_Item(_r204.startIndex, _r204.nextIndex, _memo.input, _Thunk({ Token.RightBrace(it.locus) }, _r204), true))
                     }
 
                     _label = 119
@@ -2349,7 +2349,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r206 = _memo.results.peek()
                     if (_r206 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r206.startIndex, _r206.nextIndex, _memo.input, _Thunk({ Token.INCR }, _r206), true))
+                        _memo.results.push(_KotlinLexer_Item(_r206.startIndex, _r206.nextIndex, _memo.input, _Thunk({ Token.Increment(it.locus) }, _r206), true))
                     }
 
                     _label = 118
@@ -2372,7 +2372,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r208 = _memo.results.peek()
                     if (_r208 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r208.startIndex, _r208.nextIndex, _memo.input, _Thunk({ Token.ADD_ASSIGNMENT }, _r208), true))
+                        _memo.results.push(_KotlinLexer_Item(_r208.startIndex, _r208.nextIndex, _memo.input, _Thunk({ Token.AddAssign(it.locus) }, _r208), true))
                     }
 
                     _label = 117
@@ -2395,7 +2395,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r210 = _memo.results.peek()
                     if (_r210 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r210.startIndex, _r210.nextIndex, _memo.input, _Thunk({ Token.ADD }, _r210), true))
+                        _memo.results.push(_KotlinLexer_Item(_r210.startIndex, _r210.nextIndex, _memo.input, _Thunk({ Token.Add(it.locus) }, _r210), true))
                     }
 
                     _label = 116
@@ -2418,7 +2418,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r212 = _memo.results.peek()
                     if (_r212 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r212.startIndex, _r212.nextIndex, _memo.input, _Thunk({ Token.DECR }, _r212), true))
+                        _memo.results.push(_KotlinLexer_Item(_r212.startIndex, _r212.nextIndex, _memo.input, _Thunk({ Token.Decrement(it.locus) }, _r212), true))
                     }
 
                     _label = 115
@@ -2441,7 +2441,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r214 = _memo.results.peek()
                     if (_r214 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r214.startIndex, _r214.nextIndex, _memo.input, _Thunk({ Token.ARROW }, _r214), true))
+                        _memo.results.push(_KotlinLexer_Item(_r214.startIndex, _r214.nextIndex, _memo.input, _Thunk({ Token.Arrow(it.locus) }, _r214), true))
                     }
 
                     _label = 114
@@ -2464,7 +2464,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r216 = _memo.results.peek()
                     if (_r216 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r216.startIndex, _r216.nextIndex, _memo.input, _Thunk({ Token.SUB_ASSIGNMENT }, _r216), true))
+                        _memo.results.push(_KotlinLexer_Item(_r216.startIndex, _r216.nextIndex, _memo.input, _Thunk({ Token.SubAssign(it.locus) }, _r216), true))
                     }
 
                     _label = 113
@@ -2487,7 +2487,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r218 = _memo.results.peek()
                     if (_r218 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r218.startIndex, _r218.nextIndex, _memo.input, _Thunk({ Token.SUB }, _r218), true))
+                        _memo.results.push(_KotlinLexer_Item(_r218.startIndex, _r218.nextIndex, _memo.input, _Thunk({ Token.Sub(it.locus) }, _r218), true))
                     }
 
                     _label = 112
@@ -2510,7 +2510,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r220 = _memo.results.peek()
                     if (_r220 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r220.startIndex, _r220.nextIndex, _memo.input, _Thunk({ Token.MULT_ASSIGNMENT }, _r220), true))
+                        _memo.results.push(_KotlinLexer_Item(_r220.startIndex, _r220.nextIndex, _memo.input, _Thunk({ Token.MulAssign(it.locus) }, _r220), true))
                     }
 
                     _label = 111
@@ -2533,7 +2533,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r222 = _memo.results.peek()
                     if (_r222 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r222.startIndex, _r222.nextIndex, _memo.input, _Thunk({ Token.MULT }, _r222), true))
+                        _memo.results.push(_KotlinLexer_Item(_r222.startIndex, _r222.nextIndex, _memo.input, _Thunk({ Token.Mul(it.locus) }, _r222), true))
                     }
 
                     _label = 110
@@ -2556,7 +2556,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r224 = _memo.results.peek()
                     if (_r224 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r224.startIndex, _r224.nextIndex, _memo.input, _Thunk({ Token.DIV_ASSIGNMENT }, _r224), true))
+                        _memo.results.push(_KotlinLexer_Item(_r224.startIndex, _r224.nextIndex, _memo.input, _Thunk({ Token.DivAssign(it.locus) }, _r224), true))
                     }
 
                     _label = 109
@@ -2579,7 +2579,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r226 = _memo.results.peek()
                     if (_r226 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r226.startIndex, _r226.nextIndex, _memo.input, _Thunk({ Token.DIV }, _r226), true))
+                        _memo.results.push(_KotlinLexer_Item(_r226.startIndex, _r226.nextIndex, _memo.input, _Thunk({ Token.Div(it.locus) }, _r226), true))
                     }
 
                     _label = 108
@@ -2602,7 +2602,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r228 = _memo.results.peek()
                     if (_r228 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r228.startIndex, _r228.nextIndex, _memo.input, _Thunk({ Token.MOD_ASSIGNMENT }, _r228), true))
+                        _memo.results.push(_KotlinLexer_Item(_r228.startIndex, _r228.nextIndex, _memo.input, _Thunk({ Token.ModAssign(it.locus) }, _r228), true))
                     }
 
                     _label = 107
@@ -2625,7 +2625,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r230 = _memo.results.peek()
                     if (_r230 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r230.startIndex, _r230.nextIndex, _memo.input, _Thunk({ Token.MOD }, _r230), true))
+                        _memo.results.push(_KotlinLexer_Item(_r230.startIndex, _r230.nextIndex, _memo.input, _Thunk({ Token.Mod(it.locus) }, _r230), true))
                     }
 
                     _label = 106
@@ -2648,7 +2648,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r232 = _memo.results.peek()
                     if (_r232 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r232.startIndex, _r232.nextIndex, _memo.input, _Thunk({ Token.CONJ }, _r232), true))
+                        _memo.results.push(_KotlinLexer_Item(_r232.startIndex, _r232.nextIndex, _memo.input, _Thunk({ Token.And(it.locus) }, _r232), true))
                     }
 
                     _label = 105
@@ -2671,7 +2671,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r234 = _memo.results.peek()
                     if (_r234 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r234.startIndex, _r234.nextIndex, _memo.input, _Thunk({ Token.DISJ }, _r234), true))
+                        _memo.results.push(_KotlinLexer_Item(_r234.startIndex, _r234.nextIndex, _memo.input, _Thunk({ Token.Or(it.locus) }, _r234), true))
                     }
 
                     _label = 104
@@ -2694,7 +2694,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r236 = _memo.results.peek()
                     if (_r236 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r236.startIndex, _r236.nextIndex, _memo.input, _Thunk({ Token.EXCL_EXCL }, _r236), true))
+                        _memo.results.push(_KotlinLexer_Item(_r236.startIndex, _r236.nextIndex, _memo.input, _Thunk({ Token.DefNotNull(it.locus) }, _r236), true))
                     }
 
                     _label = 103
@@ -2717,7 +2717,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r238 = _memo.results.peek()
                     if (_r238 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r238.startIndex, _r238.nextIndex, _memo.input, _Thunk({ Token.EXCL_EQEQ }, _r238), true))
+                        _memo.results.push(_KotlinLexer_Item(_r238.startIndex, _r238.nextIndex, _memo.input, _Thunk({ Token.NotRefEqual(it.locus) }, _r238), true))
                     }
 
                     _label = 102
@@ -2740,7 +2740,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r240 = _memo.results.peek()
                     if (_r240 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r240.startIndex, _r240.nextIndex, _memo.input, _Thunk({ Token.EXCL_EQ }, _r240), true))
+                        _memo.results.push(_KotlinLexer_Item(_r240.startIndex, _r240.nextIndex, _memo.input, _Thunk({ Token.NotEqual(it.locus) }, _r240), true))
                     }
 
                     _label = 101
@@ -2763,7 +2763,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r242 = _memo.results.peek()
                     if (_r242 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r242.startIndex, _r242.nextIndex, _memo.input, _Thunk({ Token.EXCL }, _r242), true))
+                        _memo.results.push(_KotlinLexer_Item(_r242.startIndex, _r242.nextIndex, _memo.input, _Thunk({ Token.Not(it.locus) }, _r242), true))
                     }
 
                     _label = 100
@@ -2786,7 +2786,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r244 = _memo.results.peek()
                     if (_r244 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r244.startIndex, _r244.nextIndex, _memo.input, _Thunk({ Token.SEMICOLON }, _r244), true))
+                        _memo.results.push(_KotlinLexer_Item(_r244.startIndex, _r244.nextIndex, _memo.input, _Thunk({ Token.Semicolon(it.locus) }, _r244), true))
                     }
 
                     _label = 99
@@ -2809,7 +2809,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r246 = _memo.results.peek()
                     if (_r246 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r246.startIndex, _r246.nextIndex, _memo.input, _Thunk({ Token.COLONCOLON }, _r246), true))
+                        _memo.results.push(_KotlinLexer_Item(_r246.startIndex, _r246.nextIndex, _memo.input, _Thunk({ Token.CallRef(it.locus) }, _r246), true))
                     }
 
                     _label = 98
@@ -2832,7 +2832,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r248 = _memo.results.peek()
                     if (_r248 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r248.startIndex, _r248.nextIndex, _memo.input, _Thunk({ Token.COLON }, _r248), true))
+                        _memo.results.push(_KotlinLexer_Item(_r248.startIndex, _r248.nextIndex, _memo.input, _Thunk({ Token.Colon(it.locus) }, _r248), true))
                     }
 
                     _label = 97
@@ -2855,7 +2855,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r250 = _memo.results.peek()
                     if (_r250 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r250.startIndex, _r250.nextIndex, _memo.input, _Thunk({ Token.HASH }, _r250), true))
+                        _memo.results.push(_KotlinLexer_Item(_r250.startIndex, _r250.nextIndex, _memo.input, _Thunk({ Token.Hash(it.locus) }, _r250), true))
                     }
 
                     _label = 96
@@ -2878,7 +2878,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r252 = _memo.results.peek()
                     if (_r252 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r252.startIndex, _r252.nextIndex, _memo.input, _Thunk({ Token.AT }, _r252), true))
+                        _memo.results.push(_KotlinLexer_Item(_r252.startIndex, _r252.nextIndex, _memo.input, _Thunk({ Token.At(it.locus) }, _r252), true))
                     }
 
                     _label = 95
@@ -2901,7 +2901,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r254 = _memo.results.peek()
                     if (_r254 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r254.startIndex, _r254.nextIndex, _memo.input, _Thunk({ Token.Q_COLONCOLON }, _r254), true))
+                        _memo.results.push(_KotlinLexer_Item(_r254.startIndex, _r254.nextIndex, _memo.input, _Thunk({ Token.SafeCallRef(it.locus) }, _r254), true))
                     }
 
                     _label = 94
@@ -2924,7 +2924,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r256 = _memo.results.peek()
                     if (_r256 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r256.startIndex, _r256.nextIndex, _memo.input, _Thunk({ Token.ELVIS }, _r256), true))
+                        _memo.results.push(_KotlinLexer_Item(_r256.startIndex, _r256.nextIndex, _memo.input, _Thunk({ Token.Elvis(it.locus) }, _r256), true))
                     }
 
                     _label = 93
@@ -2947,7 +2947,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r258 = _memo.results.peek()
                     if (_r258 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r258.startIndex, _r258.nextIndex, _memo.input, _Thunk({ Token.QUEST_DOT }, _r258), true))
+                        _memo.results.push(_KotlinLexer_Item(_r258.startIndex, _r258.nextIndex, _memo.input, _Thunk({ Token.SafeCall(it.locus) }, _r258), true))
                     }
 
                     _label = 92
@@ -2970,7 +2970,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r260 = _memo.results.peek()
                     if (_r260 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r260.startIndex, _r260.nextIndex, _memo.input, _Thunk({ Token.QUEST }, _r260), true))
+                        _memo.results.push(_KotlinLexer_Item(_r260.startIndex, _r260.nextIndex, _memo.input, _Thunk({ Token.Query(it.locus) }, _r260), true))
                     }
 
                     _label = 91
@@ -2993,7 +2993,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r262 = _memo.results.peek()
                     if (_r262 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r262.startIndex, _r262.nextIndex, _memo.input, _Thunk({ Token.LE }, _r262), true))
+                        _memo.results.push(_KotlinLexer_Item(_r262.startIndex, _r262.nextIndex, _memo.input, _Thunk({ Token.LessEqual(it.locus) }, _r262), true))
                     }
 
                     _label = 90
@@ -3016,7 +3016,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r264 = _memo.results.peek()
                     if (_r264 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r264.startIndex, _r264.nextIndex, _memo.input, _Thunk({ Token.LANGLE }, _r264), true))
+                        _memo.results.push(_KotlinLexer_Item(_r264.startIndex, _r264.nextIndex, _memo.input, _Thunk({ Token.Less(it.locus) }, _r264), true))
                     }
 
                     _label = 89
@@ -3039,7 +3039,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r266 = _memo.results.peek()
                     if (_r266 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r266.startIndex, _r266.nextIndex, _memo.input, _Thunk({ Token.GE }, _r266), true))
+                        _memo.results.push(_KotlinLexer_Item(_r266.startIndex, _r266.nextIndex, _memo.input, _Thunk({ Token.GreaterEqual(it.locus) }, _r266), true))
                     }
 
                     _label = 88
@@ -3062,7 +3062,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r268 = _memo.results.peek()
                     if (_r268 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r268.startIndex, _r268.nextIndex, _memo.input, _Thunk({ Token.RANGLE }, _r268), true))
+                        _memo.results.push(_KotlinLexer_Item(_r268.startIndex, _r268.nextIndex, _memo.input, _Thunk({ Token.Greater(it.locus) }, _r268), true))
                     }
 
                     _label = 87
@@ -3085,7 +3085,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r270 = _memo.results.peek()
                     if (_r270 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r270.startIndex, _r270.nextIndex, _memo.input, _Thunk({ Token.AS_SAFE }, _r270), true))
+                        _memo.results.push(_KotlinLexer_Item(_r270.startIndex, _r270.nextIndex, _memo.input, _Thunk({ Token.AsSafe(it.locus) }, _r270), true))
                     }
 
                     _label = 86
@@ -3108,7 +3108,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r272 = _memo.results.peek()
                     if (_r272 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r272.startIndex, _r272.nextIndex, _memo.input, _Thunk({ Token.EQEQEQ }, _r272), true))
+                        _memo.results.push(_KotlinLexer_Item(_r272.startIndex, _r272.nextIndex, _memo.input, _Thunk({ Token.RefEqual(it.locus) }, _r272), true))
                     }
 
                     _label = 85
@@ -3131,7 +3131,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r274 = _memo.results.peek()
                     if (_r274 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r274.startIndex, _r274.nextIndex, _memo.input, _Thunk({ Token.EQEQ }, _r274), true))
+                        _memo.results.push(_KotlinLexer_Item(_r274.startIndex, _r274.nextIndex, _memo.input, _Thunk({ Token.Equal(it.locus) }, _r274), true))
                     }
 
                     _label = 84
@@ -3154,7 +3154,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r276 = _memo.results.peek()
                     if (_r276 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r276.startIndex, _r276.nextIndex, _memo.input, _Thunk({ Token.DOUBLE_ARROW }, _r276), true))
+                        _memo.results.push(_KotlinLexer_Item(_r276.startIndex, _r276.nextIndex, _memo.input, _Thunk({ Token.DoubleArrow(it.locus) }, _r276), true))
                     }
 
                     _label = 83
@@ -3177,7 +3177,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r278 = _memo.results.peek()
                     if (_r278 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r278.startIndex, _r278.nextIndex, _memo.input, _Thunk({ Token.ASSIGNMENT }, _r278), true))
+                        _memo.results.push(_KotlinLexer_Item(_r278.startIndex, _r278.nextIndex, _memo.input, _Thunk({ Token.Assign(it.locus) }, _r278), true))
                     }
 
                     _label = 82
@@ -3232,7 +3232,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r280 = _memo.results.peek()
                     if (_r280 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r280.startIndex, _r280.nextIndex, _memo.input, _Thunk({ Token.ReturnAt(name.s) }, _r280), true))
+                        _memo.results.push(_KotlinLexer_Item(_r280.startIndex, _r280.nextIndex, _memo.input, _Thunk({ Token.ReturnAt(it.locus, name.s) }, _r280), true))
                     }
 
                     _label = 81
@@ -3287,7 +3287,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r285 = _memo.results.peek()
                     if (_r285 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r285.startIndex, _r285.nextIndex, _memo.input, _Thunk({ Token.ContinueAt(name.s) }, _r285), true))
+                        _memo.results.push(_KotlinLexer_Item(_r285.startIndex, _r285.nextIndex, _memo.input, _Thunk({ Token.ContinueAt(it.locus, name.s) }, _r285), true))
                     }
 
                     _label = 80
@@ -3342,7 +3342,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r290 = _memo.results.peek()
                     if (_r290 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r290.startIndex, _r290.nextIndex, _memo.input, _Thunk({ Token.BreakAt(name.s) }, _r290), true))
+                        _memo.results.push(_KotlinLexer_Item(_r290.startIndex, _r290.nextIndex, _memo.input, _Thunk({ Token.BreakAt(it.locus, name.s) }, _r290), true))
                     }
 
                     _label = 79
@@ -3397,7 +3397,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r295 = _memo.results.peek()
                     if (_r295 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r295.startIndex, _r295.nextIndex, _memo.input, _Thunk({ Token.ThisAt(name.s) }, _r295), true))
+                        _memo.results.push(_KotlinLexer_Item(_r295.startIndex, _r295.nextIndex, _memo.input, _Thunk({ Token.ThisAt(it.locus, name.s) }, _r295), true))
                     }
 
                     _label = 78
@@ -3456,7 +3456,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r300 = _memo.results.peek()
                     if (_r300 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r300.startIndex, _r300.nextIndex, _memo.input, _Thunk({ Token.FILE }, _r300), true))
+                        _memo.results.push(_KotlinLexer_Item(_r300.startIndex, _r300.nextIndex, _memo.input, _Thunk({ Token.File(it.locus) }, _r300), true))
                     }
 
                     _label = 77
@@ -3515,7 +3515,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r305 = _memo.results.peek()
                     if (_r305 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r305.startIndex, _r305.nextIndex, _memo.input, _Thunk({ Token.PACKAGE }, _r305), true))
+                        _memo.results.push(_KotlinLexer_Item(_r305.startIndex, _r305.nextIndex, _memo.input, _Thunk({ Token.Package(it.locus) }, _r305), true))
                     }
 
                     _label = 76
@@ -3574,7 +3574,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r310 = _memo.results.peek()
                     if (_r310 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r310.startIndex, _r310.nextIndex, _memo.input, _Thunk({ Token.IMPORT }, _r310), true))
+                        _memo.results.push(_KotlinLexer_Item(_r310.startIndex, _r310.nextIndex, _memo.input, _Thunk({ Token.Import(it.locus) }, _r310), true))
                     }
 
                     _label = 75
@@ -3633,7 +3633,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r315 = _memo.results.peek()
                     if (_r315 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r315.startIndex, _r315.nextIndex, _memo.input, _Thunk({ Token.CLASS }, _r315), true))
+                        _memo.results.push(_KotlinLexer_Item(_r315.startIndex, _r315.nextIndex, _memo.input, _Thunk({ Token.Class(it.locus) }, _r315), true))
                     }
 
                     _label = 74
@@ -3692,7 +3692,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r320 = _memo.results.peek()
                     if (_r320 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r320.startIndex, _r320.nextIndex, _memo.input, _Thunk({ Token.INTERFACE }, _r320), true))
+                        _memo.results.push(_KotlinLexer_Item(_r320.startIndex, _r320.nextIndex, _memo.input, _Thunk({ Token.Interface(it.locus) }, _r320), true))
                     }
 
                     _label = 73
@@ -3751,7 +3751,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r325 = _memo.results.peek()
                     if (_r325 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r325.startIndex, _r325.nextIndex, _memo.input, _Thunk({ Token.FUN }, _r325), true))
+                        _memo.results.push(_KotlinLexer_Item(_r325.startIndex, _r325.nextIndex, _memo.input, _Thunk({ Token.Fun(it.locus) }, _r325), true))
                     }
 
                     _label = 72
@@ -3810,7 +3810,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r330 = _memo.results.peek()
                     if (_r330 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r330.startIndex, _r330.nextIndex, _memo.input, _Thunk({ Token.OBJECT }, _r330), true))
+                        _memo.results.push(_KotlinLexer_Item(_r330.startIndex, _r330.nextIndex, _memo.input, _Thunk({ Token.Object(it.locus) }, _r330), true))
                     }
 
                     _label = 71
@@ -3869,7 +3869,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r335 = _memo.results.peek()
                     if (_r335 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r335.startIndex, _r335.nextIndex, _memo.input, _Thunk({ Token.VAL }, _r335), true))
+                        _memo.results.push(_KotlinLexer_Item(_r335.startIndex, _r335.nextIndex, _memo.input, _Thunk({ Token.Val(it.locus) }, _r335), true))
                     }
 
                     _label = 70
@@ -3928,7 +3928,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r340 = _memo.results.peek()
                     if (_r340 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r340.startIndex, _r340.nextIndex, _memo.input, _Thunk({ Token.VAR }, _r340), true))
+                        _memo.results.push(_KotlinLexer_Item(_r340.startIndex, _r340.nextIndex, _memo.input, _Thunk({ Token.Var(it.locus) }, _r340), true))
                     }
 
                     _label = 69
@@ -3987,7 +3987,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r345 = _memo.results.peek()
                     if (_r345 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r345.startIndex, _r345.nextIndex, _memo.input, _Thunk({ Token.TYPE_ALIAS }, _r345), true))
+                        _memo.results.push(_KotlinLexer_Item(_r345.startIndex, _r345.nextIndex, _memo.input, _Thunk({ Token.Typealias(it.locus) }, _r345), true))
                     }
 
                     _label = 68
@@ -4046,7 +4046,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r350 = _memo.results.peek()
                     if (_r350 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r350.startIndex, _r350.nextIndex, _memo.input, _Thunk({ Token.CONSTRUCTOR }, _r350), true))
+                        _memo.results.push(_KotlinLexer_Item(_r350.startIndex, _r350.nextIndex, _memo.input, _Thunk({ Token.Constructor(it.locus) }, _r350), true))
                     }
 
                     _label = 67
@@ -4105,7 +4105,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r355 = _memo.results.peek()
                     if (_r355 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r355.startIndex, _r355.nextIndex, _memo.input, _Thunk({ Token.BY }, _r355), true))
+                        _memo.results.push(_KotlinLexer_Item(_r355.startIndex, _r355.nextIndex, _memo.input, _Thunk({ Token.By(it.locus) }, _r355), true))
                     }
 
                     _label = 66
@@ -4164,7 +4164,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r360 = _memo.results.peek()
                     if (_r360 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r360.startIndex, _r360.nextIndex, _memo.input, _Thunk({ Token.COMPANION }, _r360), true))
+                        _memo.results.push(_KotlinLexer_Item(_r360.startIndex, _r360.nextIndex, _memo.input, _Thunk({ Token.Companion(it.locus) }, _r360), true))
                     }
 
                     _label = 65
@@ -4223,7 +4223,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r365 = _memo.results.peek()
                     if (_r365 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r365.startIndex, _r365.nextIndex, _memo.input, _Thunk({ Token.INIT }, _r365), true))
+                        _memo.results.push(_KotlinLexer_Item(_r365.startIndex, _r365.nextIndex, _memo.input, _Thunk({ Token.Init(it.locus) }, _r365), true))
                     }
 
                     _label = 64
@@ -4282,7 +4282,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r370 = _memo.results.peek()
                     if (_r370 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r370.startIndex, _r370.nextIndex, _memo.input, _Thunk({ Token.THIS }, _r370), true))
+                        _memo.results.push(_KotlinLexer_Item(_r370.startIndex, _r370.nextIndex, _memo.input, _Thunk({ Token.This(it.locus) }, _r370), true))
                     }
 
                     _label = 63
@@ -4341,7 +4341,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r375 = _memo.results.peek()
                     if (_r375 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r375.startIndex, _r375.nextIndex, _memo.input, _Thunk({ Token.SUPER }, _r375), true))
+                        _memo.results.push(_KotlinLexer_Item(_r375.startIndex, _r375.nextIndex, _memo.input, _Thunk({ Token.Super(it.locus) }, _r375), true))
                     }
 
                     _label = 62
@@ -4400,7 +4400,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r380 = _memo.results.peek()
                     if (_r380 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r380.startIndex, _r380.nextIndex, _memo.input, _Thunk({ Token.TYPEOF }, _r380), true))
+                        _memo.results.push(_KotlinLexer_Item(_r380.startIndex, _r380.nextIndex, _memo.input, _Thunk({ Token.Typeof(it.locus) }, _r380), true))
                     }
 
                     _label = 61
@@ -4459,7 +4459,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r385 = _memo.results.peek()
                     if (_r385 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r385.startIndex, _r385.nextIndex, _memo.input, _Thunk({ Token.WHERE }, _r385), true))
+                        _memo.results.push(_KotlinLexer_Item(_r385.startIndex, _r385.nextIndex, _memo.input, _Thunk({ Token.Where(it.locus) }, _r385), true))
                     }
 
                     _label = 60
@@ -4518,7 +4518,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r390 = _memo.results.peek()
                     if (_r390 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r390.startIndex, _r390.nextIndex, _memo.input, _Thunk({ Token.IF }, _r390), true))
+                        _memo.results.push(_KotlinLexer_Item(_r390.startIndex, _r390.nextIndex, _memo.input, _Thunk({ Token.If(it.locus) }, _r390), true))
                     }
 
                     _label = 59
@@ -4577,7 +4577,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r395 = _memo.results.peek()
                     if (_r395 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r395.startIndex, _r395.nextIndex, _memo.input, _Thunk({ Token.ELSE }, _r395), true))
+                        _memo.results.push(_KotlinLexer_Item(_r395.startIndex, _r395.nextIndex, _memo.input, _Thunk({ Token.Else(it.locus) }, _r395), true))
                     }
 
                     _label = 58
@@ -4636,7 +4636,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r400 = _memo.results.peek()
                     if (_r400 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r400.startIndex, _r400.nextIndex, _memo.input, _Thunk({ Token.WHEN }, _r400), true))
+                        _memo.results.push(_KotlinLexer_Item(_r400.startIndex, _r400.nextIndex, _memo.input, _Thunk({ Token.When(it.locus) }, _r400), true))
                     }
 
                     _label = 57
@@ -4695,7 +4695,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r405 = _memo.results.peek()
                     if (_r405 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r405.startIndex, _r405.nextIndex, _memo.input, _Thunk({ Token.TRY }, _r405), true))
+                        _memo.results.push(_KotlinLexer_Item(_r405.startIndex, _r405.nextIndex, _memo.input, _Thunk({ Token.Try(it.locus) }, _r405), true))
                     }
 
                     _label = 56
@@ -4754,7 +4754,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r410 = _memo.results.peek()
                     if (_r410 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r410.startIndex, _r410.nextIndex, _memo.input, _Thunk({ Token.CATCH }, _r410), true))
+                        _memo.results.push(_KotlinLexer_Item(_r410.startIndex, _r410.nextIndex, _memo.input, _Thunk({ Token.Catch(it.locus) }, _r410), true))
                     }
 
                     _label = 55
@@ -4813,7 +4813,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r415 = _memo.results.peek()
                     if (_r415 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r415.startIndex, _r415.nextIndex, _memo.input, _Thunk({ Token.FINALLY }, _r415), true))
+                        _memo.results.push(_KotlinLexer_Item(_r415.startIndex, _r415.nextIndex, _memo.input, _Thunk({ Token.Finally(it.locus) }, _r415), true))
                     }
 
                     _label = 54
@@ -4872,7 +4872,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r420 = _memo.results.peek()
                     if (_r420 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r420.startIndex, _r420.nextIndex, _memo.input, _Thunk({ Token.FOR }, _r420), true))
+                        _memo.results.push(_KotlinLexer_Item(_r420.startIndex, _r420.nextIndex, _memo.input, _Thunk({ Token.For(it.locus) }, _r420), true))
                     }
 
                     _label = 53
@@ -4931,7 +4931,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r425 = _memo.results.peek()
                     if (_r425 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r425.startIndex, _r425.nextIndex, _memo.input, _Thunk({ Token.DO }, _r425), true))
+                        _memo.results.push(_KotlinLexer_Item(_r425.startIndex, _r425.nextIndex, _memo.input, _Thunk({ Token.Do(it.locus) }, _r425), true))
                     }
 
                     _label = 52
@@ -4990,7 +4990,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r430 = _memo.results.peek()
                     if (_r430 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r430.startIndex, _r430.nextIndex, _memo.input, _Thunk({ Token.WHILE }, _r430), true))
+                        _memo.results.push(_KotlinLexer_Item(_r430.startIndex, _r430.nextIndex, _memo.input, _Thunk({ Token.While(it.locus) }, _r430), true))
                     }
 
                     _label = 51
@@ -5049,7 +5049,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r435 = _memo.results.peek()
                     if (_r435 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r435.startIndex, _r435.nextIndex, _memo.input, _Thunk({ Token.THROW }, _r435), true))
+                        _memo.results.push(_KotlinLexer_Item(_r435.startIndex, _r435.nextIndex, _memo.input, _Thunk({ Token.Throw(it.locus) }, _r435), true))
                     }
 
                     _label = 50
@@ -5108,7 +5108,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r440 = _memo.results.peek()
                     if (_r440 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r440.startIndex, _r440.nextIndex, _memo.input, _Thunk({ Token.RETURN }, _r440), true))
+                        _memo.results.push(_KotlinLexer_Item(_r440.startIndex, _r440.nextIndex, _memo.input, _Thunk({ Token.Return(it.locus) }, _r440), true))
                     }
 
                     _label = 49
@@ -5167,7 +5167,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r445 = _memo.results.peek()
                     if (_r445 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r445.startIndex, _r445.nextIndex, _memo.input, _Thunk({ Token.CONTINUE }, _r445), true))
+                        _memo.results.push(_KotlinLexer_Item(_r445.startIndex, _r445.nextIndex, _memo.input, _Thunk({ Token.Continue(it.locus) }, _r445), true))
                     }
 
                     _label = 48
@@ -5226,7 +5226,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r450 = _memo.results.peek()
                     if (_r450 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r450.startIndex, _r450.nextIndex, _memo.input, _Thunk({ Token.BREAK }, _r450), true))
+                        _memo.results.push(_KotlinLexer_Item(_r450.startIndex, _r450.nextIndex, _memo.input, _Thunk({ Token.Break(it.locus) }, _r450), true))
                     }
 
                     _label = 47
@@ -5285,7 +5285,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r455 = _memo.results.peek()
                     if (_r455 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r455.startIndex, _r455.nextIndex, _memo.input, _Thunk({ Token.AS }, _r455), true))
+                        _memo.results.push(_KotlinLexer_Item(_r455.startIndex, _r455.nextIndex, _memo.input, _Thunk({ Token.As(it.locus) }, _r455), true))
                     }
 
                     _label = 46
@@ -5344,7 +5344,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r460 = _memo.results.peek()
                     if (_r460 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r460.startIndex, _r460.nextIndex, _memo.input, _Thunk({ Token.IS }, _r460), true))
+                        _memo.results.push(_KotlinLexer_Item(_r460.startIndex, _r460.nextIndex, _memo.input, _Thunk({ Token.Is(it.locus) }, _r460), true))
                     }
 
                     _label = 45
@@ -5403,7 +5403,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r465 = _memo.results.peek()
                     if (_r465 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r465.startIndex, _r465.nextIndex, _memo.input, _Thunk({ Token.IN }, _r465), true))
+                        _memo.results.push(_KotlinLexer_Item(_r465.startIndex, _r465.nextIndex, _memo.input, _Thunk({ Token.In(it.locus) }, _r465), true))
                     }
 
                     _label = 44
@@ -5462,7 +5462,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r470 = _memo.results.peek()
                     if (_r470 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r470.startIndex, _r470.nextIndex, _memo.input, _Thunk({ Token.NOT_IS }, _r470), true))
+                        _memo.results.push(_KotlinLexer_Item(_r470.startIndex, _r470.nextIndex, _memo.input, _Thunk({ Token.NotIs(it.locus) }, _r470), true))
                     }
 
                     _label = 43
@@ -5521,7 +5521,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r475 = _memo.results.peek()
                     if (_r475 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r475.startIndex, _r475.nextIndex, _memo.input, _Thunk({ Token.NOT_IN }, _r475), true))
+                        _memo.results.push(_KotlinLexer_Item(_r475.startIndex, _r475.nextIndex, _memo.input, _Thunk({ Token.NotIn(it.locus) }, _r475), true))
                     }
 
                     _label = 42
@@ -5580,7 +5580,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r480 = _memo.results.peek()
                     if (_r480 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r480.startIndex, _r480.nextIndex, _memo.input, _Thunk({ Token.OUT }, _r480), true))
+                        _memo.results.push(_KotlinLexer_Item(_r480.startIndex, _r480.nextIndex, _memo.input, _Thunk({ Token.Out(it.locus) }, _r480), true))
                     }
 
                     _label = 41
@@ -5639,7 +5639,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r485 = _memo.results.peek()
                     if (_r485 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r485.startIndex, _r485.nextIndex, _memo.input, _Thunk({ Token.FIELD }, _r485), true))
+                        _memo.results.push(_KotlinLexer_Item(_r485.startIndex, _r485.nextIndex, _memo.input, _Thunk({ Token.Field(it.locus) }, _r485), true))
                     }
 
                     _label = 40
@@ -5698,7 +5698,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r490 = _memo.results.peek()
                     if (_r490 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r490.startIndex, _r490.nextIndex, _memo.input, _Thunk({ Token.PROPERTY }, _r490), true))
+                        _memo.results.push(_KotlinLexer_Item(_r490.startIndex, _r490.nextIndex, _memo.input, _Thunk({ Token.Property(it.locus) }, _r490), true))
                     }
 
                     _label = 39
@@ -5757,7 +5757,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r495 = _memo.results.peek()
                     if (_r495 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r495.startIndex, _r495.nextIndex, _memo.input, _Thunk({ Token.GET }, _r495), true))
+                        _memo.results.push(_KotlinLexer_Item(_r495.startIndex, _r495.nextIndex, _memo.input, _Thunk({ Token.Get(it.locus) }, _r495), true))
                     }
 
                     _label = 38
@@ -5816,7 +5816,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r500 = _memo.results.peek()
                     if (_r500 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r500.startIndex, _r500.nextIndex, _memo.input, _Thunk({ Token.SET }, _r500), true))
+                        _memo.results.push(_KotlinLexer_Item(_r500.startIndex, _r500.nextIndex, _memo.input, _Thunk({ Token.Set(it.locus) }, _r500), true))
                     }
 
                     _label = 37
@@ -5875,7 +5875,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r505 = _memo.results.peek()
                     if (_r505 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r505.startIndex, _r505.nextIndex, _memo.input, _Thunk({ Token.RECEIVER }, _r505), true))
+                        _memo.results.push(_KotlinLexer_Item(_r505.startIndex, _r505.nextIndex, _memo.input, _Thunk({ Token.Receiver(it.locus) }, _r505), true))
                     }
 
                     _label = 36
@@ -5934,7 +5934,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r510 = _memo.results.peek()
                     if (_r510 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r510.startIndex, _r510.nextIndex, _memo.input, _Thunk({ Token.PARAM }, _r510), true))
+                        _memo.results.push(_KotlinLexer_Item(_r510.startIndex, _r510.nextIndex, _memo.input, _Thunk({ Token.Param(it.locus) }, _r510), true))
                     }
 
                     _label = 35
@@ -5993,7 +5993,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r515 = _memo.results.peek()
                     if (_r515 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r515.startIndex, _r515.nextIndex, _memo.input, _Thunk({ Token.SETPARAM }, _r515), true))
+                        _memo.results.push(_KotlinLexer_Item(_r515.startIndex, _r515.nextIndex, _memo.input, _Thunk({ Token.Setparam(it.locus) }, _r515), true))
                     }
 
                     _label = 34
@@ -6052,7 +6052,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r520 = _memo.results.peek()
                     if (_r520 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r520.startIndex, _r520.nextIndex, _memo.input, _Thunk({ Token.DELEGATE }, _r520), true))
+                        _memo.results.push(_KotlinLexer_Item(_r520.startIndex, _r520.nextIndex, _memo.input, _Thunk({ Token.Delegate(it.locus) }, _r520), true))
                     }
 
                     _label = 33
@@ -6111,7 +6111,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r525 = _memo.results.peek()
                     if (_r525 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r525.startIndex, _r525.nextIndex, _memo.input, _Thunk({ Token.DYNAMIC }, _r525), true))
+                        _memo.results.push(_KotlinLexer_Item(_r525.startIndex, _r525.nextIndex, _memo.input, _Thunk({ Token.Dynamic(it.locus) }, _r525), true))
                     }
 
                     _label = 32
@@ -6170,7 +6170,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r530 = _memo.results.peek()
                     if (_r530 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r530.startIndex, _r530.nextIndex, _memo.input, _Thunk({ Token.PUBLIC }, _r530), true))
+                        _memo.results.push(_KotlinLexer_Item(_r530.startIndex, _r530.nextIndex, _memo.input, _Thunk({ Token.Public(it.locus) }, _r530), true))
                     }
 
                     _label = 31
@@ -6229,7 +6229,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r535 = _memo.results.peek()
                     if (_r535 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r535.startIndex, _r535.nextIndex, _memo.input, _Thunk({ Token.PRIVATE }, _r535), true))
+                        _memo.results.push(_KotlinLexer_Item(_r535.startIndex, _r535.nextIndex, _memo.input, _Thunk({ Token.Private(it.locus) }, _r535), true))
                     }
 
                     _label = 30
@@ -6288,7 +6288,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r540 = _memo.results.peek()
                     if (_r540 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r540.startIndex, _r540.nextIndex, _memo.input, _Thunk({ Token.PROTECTED }, _r540), true))
+                        _memo.results.push(_KotlinLexer_Item(_r540.startIndex, _r540.nextIndex, _memo.input, _Thunk({ Token.Protected(it.locus) }, _r540), true))
                     }
 
                     _label = 29
@@ -6347,7 +6347,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r545 = _memo.results.peek()
                     if (_r545 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r545.startIndex, _r545.nextIndex, _memo.input, _Thunk({ Token.INTERNAL }, _r545), true))
+                        _memo.results.push(_KotlinLexer_Item(_r545.startIndex, _r545.nextIndex, _memo.input, _Thunk({ Token.Internal(it.locus) }, _r545), true))
                     }
 
                     _label = 28
@@ -6406,7 +6406,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r550 = _memo.results.peek()
                     if (_r550 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r550.startIndex, _r550.nextIndex, _memo.input, _Thunk({ Token.ENUM }, _r550), true))
+                        _memo.results.push(_KotlinLexer_Item(_r550.startIndex, _r550.nextIndex, _memo.input, _Thunk({ Token.Enum(it.locus) }, _r550), true))
                     }
 
                     _label = 27
@@ -6465,7 +6465,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r555 = _memo.results.peek()
                     if (_r555 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r555.startIndex, _r555.nextIndex, _memo.input, _Thunk({ Token.SEALED }, _r555), true))
+                        _memo.results.push(_KotlinLexer_Item(_r555.startIndex, _r555.nextIndex, _memo.input, _Thunk({ Token.Sealed(it.locus) }, _r555), true))
                     }
 
                     _label = 26
@@ -6524,7 +6524,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r560 = _memo.results.peek()
                     if (_r560 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r560.startIndex, _r560.nextIndex, _memo.input, _Thunk({ Token.ANNOTATION }, _r560), true))
+                        _memo.results.push(_KotlinLexer_Item(_r560.startIndex, _r560.nextIndex, _memo.input, _Thunk({ Token.Annotation(it.locus) }, _r560), true))
                     }
 
                     _label = 25
@@ -6583,7 +6583,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r565 = _memo.results.peek()
                     if (_r565 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r565.startIndex, _r565.nextIndex, _memo.input, _Thunk({ Token.DATA }, _r565), true))
+                        _memo.results.push(_KotlinLexer_Item(_r565.startIndex, _r565.nextIndex, _memo.input, _Thunk({ Token.Data(it.locus) }, _r565), true))
                     }
 
                     _label = 24
@@ -6642,7 +6642,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r570 = _memo.results.peek()
                     if (_r570 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r570.startIndex, _r570.nextIndex, _memo.input, _Thunk({ Token.INNER }, _r570), true))
+                        _memo.results.push(_KotlinLexer_Item(_r570.startIndex, _r570.nextIndex, _memo.input, _Thunk({ Token.Inner(it.locus) }, _r570), true))
                     }
 
                     _label = 23
@@ -6701,7 +6701,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r575 = _memo.results.peek()
                     if (_r575 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r575.startIndex, _r575.nextIndex, _memo.input, _Thunk({ Token.TAILREC }, _r575), true))
+                        _memo.results.push(_KotlinLexer_Item(_r575.startIndex, _r575.nextIndex, _memo.input, _Thunk({ Token.Tailrec(it.locus) }, _r575), true))
                     }
 
                     _label = 22
@@ -6760,7 +6760,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r580 = _memo.results.peek()
                     if (_r580 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r580.startIndex, _r580.nextIndex, _memo.input, _Thunk({ Token.OPERATOR }, _r580), true))
+                        _memo.results.push(_KotlinLexer_Item(_r580.startIndex, _r580.nextIndex, _memo.input, _Thunk({ Token.Operator(it.locus) }, _r580), true))
                     }
 
                     _label = 21
@@ -6819,7 +6819,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r585 = _memo.results.peek()
                     if (_r585 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r585.startIndex, _r585.nextIndex, _memo.input, _Thunk({ Token.INLINE }, _r585), true))
+                        _memo.results.push(_KotlinLexer_Item(_r585.startIndex, _r585.nextIndex, _memo.input, _Thunk({ Token.Inline(it.locus) }, _r585), true))
                     }
 
                     _label = 20
@@ -6878,7 +6878,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r590 = _memo.results.peek()
                     if (_r590 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r590.startIndex, _r590.nextIndex, _memo.input, _Thunk({ Token.INFIX }, _r590), true))
+                        _memo.results.push(_KotlinLexer_Item(_r590.startIndex, _r590.nextIndex, _memo.input, _Thunk({ Token.Infix(it.locus) }, _r590), true))
                     }
 
                     _label = 19
@@ -6937,7 +6937,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r595 = _memo.results.peek()
                     if (_r595 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r595.startIndex, _r595.nextIndex, _memo.input, _Thunk({ Token.EXTERNAL }, _r595), true))
+                        _memo.results.push(_KotlinLexer_Item(_r595.startIndex, _r595.nextIndex, _memo.input, _Thunk({ Token.External(it.locus) }, _r595), true))
                     }
 
                     _label = 18
@@ -6996,7 +6996,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r600 = _memo.results.peek()
                     if (_r600 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r600.startIndex, _r600.nextIndex, _memo.input, _Thunk({ Token.SUSPEND }, _r600), true))
+                        _memo.results.push(_KotlinLexer_Item(_r600.startIndex, _r600.nextIndex, _memo.input, _Thunk({ Token.Suspend(it.locus) }, _r600), true))
                     }
 
                     _label = 17
@@ -7055,7 +7055,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r605 = _memo.results.peek()
                     if (_r605 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r605.startIndex, _r605.nextIndex, _memo.input, _Thunk({ Token.OVERRIDE }, _r605), true))
+                        _memo.results.push(_KotlinLexer_Item(_r605.startIndex, _r605.nextIndex, _memo.input, _Thunk({ Token.Override(it.locus) }, _r605), true))
                     }
 
                     _label = 16
@@ -7114,7 +7114,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r610 = _memo.results.peek()
                     if (_r610 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r610.startIndex, _r610.nextIndex, _memo.input, _Thunk({ Token.ABSTRACT }, _r610), true))
+                        _memo.results.push(_KotlinLexer_Item(_r610.startIndex, _r610.nextIndex, _memo.input, _Thunk({ Token.Abstract(it.locus) }, _r610), true))
                     }
 
                     _label = 15
@@ -7173,7 +7173,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r615 = _memo.results.peek()
                     if (_r615 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r615.startIndex, _r615.nextIndex, _memo.input, _Thunk({ Token.FINAL }, _r615), true))
+                        _memo.results.push(_KotlinLexer_Item(_r615.startIndex, _r615.nextIndex, _memo.input, _Thunk({ Token.Final(it.locus) }, _r615), true))
                     }
 
                     _label = 14
@@ -7232,7 +7232,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r620 = _memo.results.peek()
                     if (_r620 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r620.startIndex, _r620.nextIndex, _memo.input, _Thunk({ Token.OPEN }, _r620), true))
+                        _memo.results.push(_KotlinLexer_Item(_r620.startIndex, _r620.nextIndex, _memo.input, _Thunk({ Token.Open(it.locus) }, _r620), true))
                     }
 
                     _label = 13
@@ -7291,7 +7291,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r625 = _memo.results.peek()
                     if (_r625 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r625.startIndex, _r625.nextIndex, _memo.input, _Thunk({ Token.CONST }, _r625), true))
+                        _memo.results.push(_KotlinLexer_Item(_r625.startIndex, _r625.nextIndex, _memo.input, _Thunk({ Token.Const(it.locus) }, _r625), true))
                     }
 
                     _label = 12
@@ -7350,7 +7350,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r630 = _memo.results.peek()
                     if (_r630 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r630.startIndex, _r630.nextIndex, _memo.input, _Thunk({ Token.LATEINIT }, _r630), true))
+                        _memo.results.push(_KotlinLexer_Item(_r630.startIndex, _r630.nextIndex, _memo.input, _Thunk({ Token.Lateinit(it.locus) }, _r630), true))
                     }
 
                     _label = 11
@@ -7409,7 +7409,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r635 = _memo.results.peek()
                     if (_r635 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r635.startIndex, _r635.nextIndex, _memo.input, _Thunk({ Token.VARARG }, _r635), true))
+                        _memo.results.push(_KotlinLexer_Item(_r635.startIndex, _r635.nextIndex, _memo.input, _Thunk({ Token.Vararg(it.locus) }, _r635), true))
                     }
 
                     _label = 10
@@ -7468,7 +7468,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r640 = _memo.results.peek()
                     if (_r640 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r640.startIndex, _r640.nextIndex, _memo.input, _Thunk({ Token.NOINLINE }, _r640), true))
+                        _memo.results.push(_KotlinLexer_Item(_r640.startIndex, _r640.nextIndex, _memo.input, _Thunk({ Token.Noinline(it.locus) }, _r640), true))
                     }
 
                     _label = 9
@@ -7527,7 +7527,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r645 = _memo.results.peek()
                     if (_r645 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r645.startIndex, _r645.nextIndex, _memo.input, _Thunk({ Token.CROSSINLINE }, _r645), true))
+                        _memo.results.push(_KotlinLexer_Item(_r645.startIndex, _r645.nextIndex, _memo.input, _Thunk({ Token.Crossinline(it.locus) }, _r645), true))
                     }
 
                     _label = 8
@@ -7586,7 +7586,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r650 = _memo.results.peek()
                     if (_r650 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r650.startIndex, _r650.nextIndex, _memo.input, _Thunk({ Token.REIFIED }, _r650), true))
+                        _memo.results.push(_KotlinLexer_Item(_r650.startIndex, _r650.nextIndex, _memo.input, _Thunk({ Token.Reified(it.locus) }, _r650), true))
                     }
 
                     _label = 7
@@ -7645,7 +7645,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r655 = _memo.results.peek()
                     if (_r655 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r655.startIndex, _r655.nextIndex, _memo.input, _Thunk({ Token.TRUE }, _r655), true))
+                        _memo.results.push(_KotlinLexer_Item(_r655.startIndex, _r655.nextIndex, _memo.input, _Thunk({ Token.True(it.locus) }, _r655), true))
                     }
 
                     _label = 6
@@ -7704,7 +7704,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r660 = _memo.results.peek()
                     if (_r660 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r660.startIndex, _r660.nextIndex, _memo.input, _Thunk({ Token.FALSE }, _r660), true))
+                        _memo.results.push(_KotlinLexer_Item(_r660.startIndex, _r660.nextIndex, _memo.input, _Thunk({ Token.False(it.locus) }, _r660), true))
                     }
 
                     _label = 5
@@ -7763,7 +7763,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r665 = _memo.results.peek()
                     if (_r665 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r665.startIndex, _r665.nextIndex, _memo.input, _Thunk({ Token.NULL }, _r665), true))
+                        _memo.results.push(_KotlinLexer_Item(_r665.startIndex, _r665.nextIndex, _memo.input, _Thunk({ Token.Null(it.locus) }, _r665), true))
                     }
 
                     _label = 4
@@ -7822,7 +7822,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r670 = _memo.results.peek()
                     if (_r670 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r670.startIndex, _r670.nextIndex, _memo.input, _Thunk({ Token.VALUE }, _r670), true))
+                        _memo.results.push(_KotlinLexer_Item(_r670.startIndex, _r670.nextIndex, _memo.input, _Thunk({ Token.Value(it.locus) }, _r670), true))
                     }
 
                     _label = 3
@@ -7881,7 +7881,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r675 = _memo.results.peek()
                     if (_r675 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r675.startIndex, _r675.nextIndex, _memo.input, _Thunk({ Token.EXPECT }, _r675), true))
+                        _memo.results.push(_KotlinLexer_Item(_r675.startIndex, _r675.nextIndex, _memo.input, _Thunk({ Token.Expect(it.locus) }, _r675), true))
                     }
 
                     _label = 2
@@ -7940,7 +7940,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r680 = _memo.results.peek()
                     if (_r680 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r680.startIndex, _r680.nextIndex, _memo.input, _Thunk({ Token.ACTUAL }, _r680), true))
+                        _memo.results.push(_KotlinLexer_Item(_r680.startIndex, _r680.nextIndex, _memo.input, _Thunk({ Token.Actual(it.locus) }, _r680), true))
                     }
 
                     _label = 1
@@ -7965,7 +7965,7 @@ open class KotlinLexer : CharMatcher<Token>() {
                     val _r685 = _memo.results.peek()
                     if (_r685 != null) {
                         _memo.results.pop()
-                        _memo.results.push(_KotlinLexer_Item(_r685.startIndex, _r685.nextIndex, _memo.input, _Thunk({ Token.Identifier(it.s) }, _r685), true))
+                        _memo.results.push(_KotlinLexer_Item(_r685.startIndex, _r685.nextIndex, _memo.input, _Thunk({ Token.Identifier(it.locus, it.s) }, _r685), true))
                     }
 
                     _label = 0

@@ -563,7 +563,7 @@ open class Parser : CharMatcher<AST.AstNode>() {
 
                     // FAIL 20
                     _memo.results.push(null)
-                    error("expected ';' or new line in import" + ":\n" + formatErrorString(_memo, _index.element))
+                    error("expected ';' in import" + ":\n" + formatErrorString(_memo, _index.element))
 
                     _label = 18
                 }
@@ -1328,7 +1328,7 @@ open class Parser : CharMatcher<AST.AstNode>() {
 
                     // FAIL 19
                     _memo.results.push(null)
-                    error("expected ';' or new line at the end of rule" + ":\n" + formatErrorString(_memo, _index.element))
+                    error("expected ';' at the end of rule" + ":\n" + formatErrorString(_memo, _index.element))
 
                     _label = 17
                 }
@@ -6995,9 +6995,6 @@ open class Parser : CharMatcher<AST.AstNode>() {
         // OR 1
         var _start_i1 = _index.element
 
-        // OR 2
-        var _start_i2 = _index.element
-
         var _label = -1
         while(true) {
             when(_label) {
@@ -7008,28 +7005,9 @@ open class Parser : CharMatcher<AST.AstNode>() {
                     // OR 1
                     _start_i1 = _index.element
 
-                    // OR 2
-                    _start_i2 = _index.element
-
                     // LITERAL ';'
                     _ParseLiteralChar(_memo, _index, ';')
 
-                    // OR shortcut 2
-                    if (_memo.results.peek() == null) {
-                        _memo.results.pop()
-                        _index.element = _start_i2
-                    } else {
-                        _label = 2
-                        continue
-                    }
-
-                    // LITERAL ','
-                    _ParseLiteralChar(_memo, _index, ',')
-
-                    _label = 2
-                }
-                // OR 2
-                2 -> {
                     // OR shortcut 1
                     if (_memo.results.peek() == null) {
                         _memo.results.pop()
@@ -7039,10 +7017,8 @@ open class Parser : CharMatcher<AST.AstNode>() {
                         continue
                     }
 
-                    // CALLORVAR EOL
-                    var _r5: _Parser_Item? = null
-                    _r5 = _MemoCall(_memo, "EOL", _index.element, ::EOL, null)
-                    if (_r5 != null) _index.element = _r5.nextIndex
+                    // LITERAL ','
+                    _ParseLiteralChar(_memo, _index, ',')
 
                     _label = 1
                 }
@@ -7056,9 +7032,9 @@ open class Parser : CharMatcher<AST.AstNode>() {
                     }
 
                     // CALLORVAR SP
-                    var _r6: _Parser_Item? = null
-                    _r6 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
-                    if (_r6 != null) _index.element = _r6.nextIndex
+                    var _r4: _Parser_Item? = null
+                    _r4 = _MemoCall(_memo, "SP", _index.element, ::SP, null)
+                    if (_r4 != null) _index.element = _r4.nextIndex
 
                     _label = 0
                 }
