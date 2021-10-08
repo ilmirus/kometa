@@ -144,7 +144,6 @@ class KotlinGenVisitor : Visitor() {
             buffer.append(" ")
         }
         call.type.accept(this)
-        buffer.appendDelimetedIfNotEmpty(call.typeArgs, "<", ">")
         buffer.appendDelimetedIfNotEmpty(call.arguments, "(", ")")
         call.lambda?.let {
             buffer.append(" ")
@@ -215,8 +214,10 @@ class KotlinGenVisitor : Visitor() {
 
     override fun visitValueParameter(param: ValueParameter) {
         appendAnnotationAndModifiersDelimetedByWhitespace(param)
-        if (param.isVal) {
-            buffer.append("val ")
+        when (param.isVal) {
+            true -> buffer.append("val ")
+            false -> buffer.append("var ")
+            null -> {}
         }
         buffer.append(param.name)
         buffer.append(": ")
@@ -283,6 +284,7 @@ class KotlinGenVisitor : Visitor() {
     }
 
     override fun visitDestructuringEntry(propVar: PropertyDeclaration.DestructuringEntry) {
+        appendAnnotationAndModifiersDelimetedByWhitespace(propVar)
         buffer.append(propVar.name)
         propVar.type?.let {
             buffer.append(": ")

@@ -1,14 +1,14 @@
 package kometa.kotlin.ast
 
 import core.Locus
+import core.WithLocus
 import kometa.kotlin.Visitor
 
 data class FqName(val names: List<String>) {
     override fun toString(): String = names.joinToString(".")
 }
 
-sealed class Element {
-    abstract val locus: Locus
+sealed class Element: WithLocus {
     var tag: Any? = null
 
     interface WithAnnotations {
@@ -27,6 +27,8 @@ sealed class Element {
 
     abstract fun acceptChildren(v: Visitor)
 }
+
+fun String.toFqName(): FqName = FqName(split("."))
 
 data class File(
     override val locus: Locus,
@@ -122,7 +124,7 @@ data class ClassDeclaration(
     val members: List<Declaration>
 ) : Declaration(), Element.WithModifiers {
     enum class Kind {
-        CLASS, ENUM_CLASS, INTERFACE, OBJECT, COMPANION_OBJECT
+        CLASS, ENUM_CLASS, INTERFACE, OBJECT, COMPANION_OBJECT, FUN_INTERFACE
     }
 
     sealed class Parent : Element()
@@ -131,7 +133,6 @@ data class ClassDeclaration(
         override val locus: Locus,
         val anns: List<Annotation>,
         val type: SimpleType,
-        val typeArgs: List<Type>,
         val arguments: List<ValueArgument>,
         val lambda: CallExpression.TrailingLambda?
     ) : Parent() {
@@ -144,9 +145,6 @@ data class ClassDeclaration(
                 ann.accept(v)
             }
             type.accept(v)
-            for (typeArg in typeArgs) {
-                typeArg.accept(v)
-            }
             for (arg in arguments) {
                 arg.accept(v)
             }
@@ -157,7 +155,7 @@ data class ClassDeclaration(
     data class SuperInterface(
         override val locus: Locus,
         val anns: List<Annotation>,
-        val type: SimpleType,
+        val type: TypeRef,
         val delegated: Expression?
     ) : Parent() {
         override fun accept(v: Visitor) {
@@ -330,7 +328,8 @@ data class FunctionDeclaration(
 data class ValueParameter(
     override val locus: Locus,
     override val modOrAnns: List<ModifierOrAnnotation>,
-    val isVal: Boolean,
+    // null means neither val nor var
+    val isVal: Boolean?,
     val name: String,
     val type: Type,
     val default: Expression?
@@ -392,14 +391,18 @@ data class PropertyDeclaration(
 ) : Declaration(), Element.WithModifiers {
     data class DestructuringEntry(
         override val locus: Locus,
+        override val modOrAnns: List<ModifierOrAnnotation>,
         val name: String,
         val type: Type?
-    ) : Element() {
+    ) : Element(), WithModifiers {
         override fun accept(v: Visitor) {
             v.visitDestructuringEntry(this)
         }
 
         override fun acceptChildren(v: Visitor) {
+            for (mod in modOrAnns) {
+                mod.accept(v)
+            }
             type?.accept(v)
         }
     }

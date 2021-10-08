@@ -1,10 +1,9 @@
 package kometa.kotlin
 
 import core.Locus
+import core.WithLocus
 
-sealed class Token {
-    abstract val locus: Locus
-
+sealed class Token: WithLocus {
     class ShebangLine(override val locus: Locus, val s: String): Token()
     class LongLiteral(override val locus: Locus, val s: String): Token()
     class UnsignedLiteral(override val locus: Locus, val s: String): Token()
