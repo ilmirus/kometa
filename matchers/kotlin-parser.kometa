@@ -151,52 +151,59 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
                       -> { ClassDeclaration(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), ClassDeclaration.Kind.OBJECT, name.s,
                                             emptyList(), null, ds.l.cast(), emptyList(), b.nr.cast()) };
 
-    secondaryConstructor = modifiers?:mods CONSTRUCTOR NL* functionValueParameters:params (NL* COLON NL* constructorDelegationCall:cdc)? NL* block?:b
-                         -> { AST.Constructor(mods.l, params.l, cdc.nr, b.nr, false) };
+    secondaryConstructor = modifiers?:mods CONSTRUCTOR:l NL* functionValueParameters:params (NL* COLON NL* constructorDelegationCall:cdc)? NL* block?:b
+                         -> { Constructor(locusOf(*mods.l.toTypedArray(), l.i), mods.l.cast(), params.l.cast(), cdc.nr.cast(), b.nr.cast()) };
 
-    constructorDelegationCall = THIS NL* valueArguments:args -> { AST.ThisCall(args.l) };
-    constructorDelegationCall = SUPER NL* valueArguments:args -> { AST.SuperCall(args.l) };
+    constructorDelegationCall = THIS:l NL* valueArguments:args
+                              -> { Constructor.DelegationCall(l.locus(), Constructor.DelegationTarget.THIS, args.l.cast()) };
+    constructorDelegationCall = SUPER:l NL* valueArguments:args
+                              -> { Constructor.DelegationCall(l.locus(), Constructor.DelegationTarget.SUPER, args.l.cast()) };
 
     // SECTION: enumClasses
 
-    enumClassBody = LCURL NL* enumEntries?:es (NL* SEMICOLON NL* classMemberDeclarations:ms)? NL* RCURL -> { AST.EnumClassBody(es.l, ms.l) };
-
     enumEntries = enumEntry (NL* COMMA NL* enumEntry)* NL* COMMA? -> { it.l };
 
-    enumEntry = (modifiers:mods NL*)? simpleIdentifier:name (NL* valueArguments:args)? (NL* classBody:b)? -> { AST.EnumEntry(mods.l, name.s, args.l, b.nr) };
+    enumEntry = (modifiers:mods NL*)? simpleIdentifier:name (NL* valueArguments:args)? (NL* classBody:b)?
+              -> { ClassDeclaration.EnumEntry(locusOf(*mods.l.toTypedArray(), name.i), mods.l.cast(), name.s, args.l.cast(), b.l.cast()) };
 
     // SECTION: types
 
     type = receiverType;
-    type = typeModifiers?:mods functionType:t -> { AST.FunctionTypeWithModifiers(mods.l, t.r) };
+    type = typeModifiers?:mods functionType:t -> { Type(locusOf(*mods.l.toTypedArray(), t.i), mods.l.cast(), t.r.cast()) };
 
-    receiverType = typeModifiers?:mods (parenthesizedType | nullableType | typeReference):t -> { AST.ReceiverType(mods.l, t.r) };
+    receiverType = typeModifiers?:mods (parenthesizedType | nullableType | typeReference):t
+                 -> { Type(locusOf(*mods.l.toTypedArray(), t.i), mods.l.cast(), t.r.cast()) };
 
-    typeReference = userType;
-    typeReference = DYNAMIC -> { AST.DYNAMIC };
+    typeReference = userType | dynamicType;
 
-    nullableType = (typeReference | parenthesizedType):t NL* quest+ -> { AST.NullableType(t.r) };
+    dynamicType = DYNAMIC:l -> { DynamicType(l.locus()) };
+
+    nullableType = (typeReference | parenthesizedType):t NL* quest+ -> { NullableType(t.locus()) };
 
     quest = QUEST;
 
-    userType = simpleUserType (NL* DOT NL* simpleUserType)* -> { AST.UserType(it.l) };
+    userType = simpleUserType (NL* DOT NL* simpleUserType)* -> { SimpleType(it.l.cast()) };
 
-    simpleUserType = simpleIdentifier:name (NL* typeArguments:args)? -> { AST.SimpleUserType(name.s, args.l) };
+    simpleUserType = simpleIdentifier:name (NL* typeArguments:args)?
+                   -> { SimpleType.Piece(name.locus(), name.s, args.l.cast()) };
 
-    typeProjection = typeProjectionModifiers?:mods type:t -> { AST.TypeProjectionWithType(mods.l, t.r) };
-    typeProjection = MULT -> { AST.MULT };
+    typeProjection = typeProjectionModifiers?:mods type:t
+                   -> { Type(locusOf(*mods.l.toTypedArray(), t.r), mods.l.cast(), t.r.cast<Type>().ref) };
+    typeProjection = MULT -> { null };
 
     typeProjectionModifiers = typeProjectionModifier+ -> { it.l };
 
     typeProjectionModifier = varianceModifier:vm NL* -> { vm.r };
     typeProjectionModifier = annotation;
 
-    functionType = (receiverType:rt NL* DOT NL*)? functionTypeParameters:params NL* ARROW NL* type:t -> { AST.FunctionType(rt.nr, params.l, t.r) };
+    functionType = (receiverType:rt NL* DOT:l NL*)? LPAREN:ll NL* functionTypeParameters:params NL* RPAREN NL* ARROW NL* type:t
+                 -> { FunctionalType(locusOf(rt.ni, l.ni, ll.i), rt.nr.cast(), params.l.cast(), t.r.cast()) };
 
-    functionTypeParameters = LPAREN NL* (parameter | type)? (NL* COMMA NL* (parameter | type))* (NL* COMMA)? NL* RPAREN
-                           -> { it.l.map { p -> if (p is AST.NameAndType) p.type else p }.filterIsInstance<AST.Type>() };
+    functionTypeParameters = functionTypeParameter? (NL* COMMA NL* functionTypeParameter)* (NL* COMMA)? -> { it.l };
 
-    parameter = simpleIdentifier:name NL* COLON NL* type:t -> { AST.NameAndType(name.s, t.r) };
+    functionTypeParameter = simpleIdentifier:name NL* COLON NL* type:t
+                          -> { FunctionalType.Parameter(name.i.locus(), name.s, t.r.cast()) };
+    functionTypeParameter = type -> { FunctionalType.Parameter(it.i.locus(), null, t.r.cast()) };
 
     parenthesizedType = LPAREN NL* type:t NL* RPAREN -> { t.r };
 
