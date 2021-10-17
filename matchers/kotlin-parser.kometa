@@ -7,12 +7,10 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     // SECTION: general
 
     kotlinFile = shebangLine? NL* fileAnnotation*:fa packageHeader?:ph ImportList:il topLevelDeclarations*:decls EOF
-               -> { File(locusOf(*fa.toTypedArray(), ph, *il.toTypedArray(), *decls.toTypedArray()),
-                         fa.l.cast(), ph.nr.cast(), il.l.cast(), decls.l.cast()) };
+               -> { File(it.locus, fa.l.cast(), ph.nr.cast(), il.l.cast(), decls.l.cast()) };
 
     script = shebangLine? NL* fileAnnotation*:fa packageHeader?:ph ImportList:il (statement semi)*:stmts EOF
-           -> { Script(locusOf(*fa.toTypedArray(), ph, *il.toTypedArray(), *stmts.toTypedArray())),
-                       fa.l.cast(), ph.nr.cast(), il.l.cast(), stmts.l.cast()) };
+           -> { Script(it.locus, fa.l.cast(), ph.nr.cast(), il.l.cast(), stmts.l.cast()) };
 
     shebangLine = ShebangLine NL+ -> { error("ShebangLine is not supported") };
 
@@ -21,18 +19,18 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     fileAnnotation = AT FILE NL* COLON NL* (LSQUARE unescapedAnnotation+:a RSQUARE) NL* -> { a.l };
     fileAnnotation = AT FILE NL* COLON NL* unescapedAnnotation:a NL* -> { a.r };
 
-    packageHeader = PACKAGE:l identifier:id semi? -> { Package(l.i.locus, id.s.toFqName()) };
+    packageHeader = PACKAGE:start identifier:id semi?:end -> { Package(it.locus, id.s.toFqName()) };
 
     ImportList = ImportHeader*:i -> { i.l };
 
-    ImportHeader = IMPORT:l identifier:name DOT MULT semi? -> { Import(l.i.locus, name.s.toFqName(), true, null) };
-    ImportHeader = IMPORT:l identifier:name AS simpleIdentifier:alias semi? -> { Import(l.i.locus, name.s.toFqName(), false, alias.s) };
-    ImportHeader = IMPORT:l identifier:name semi? -> { Import(l.i.locus, name.s.toFqName(), false, null) };
+    ImportHeader = IMPORT identifier:name DOT MULT:end semi?              -> { Import(it.locus, name.s.toFqName(), true, null) };
+    ImportHeader = IMPORT identifier:name AS simpleIdentifier:alias semi? -> { Import(it.locus, name.s.toFqName(), false, alias.s) };
+    ImportHeader = IMPORT identifier:name semi?                           -> { Import(it.locus, name.s.toFqName(), false, null) };
 
     topLevelDeclarations = declaration:d semis? -> { d.r };
 
-    typeAlias = modifiers?:mod TYPE_ALIAS:l NL* simpleIdentifier:name (NL* typeParameters:tp)? NL* ASSIGNMENT NL* type:t
-              -> { TypeAliasDeclaration(locusOf(mod.l, l.i)), mod.l.cast(), name.s, tp.l.cast(), t.r.cast()) };
+    typeAlias = modifiers?:mod TYPE_ALIAS NL* simpleIdentifier:name (NL* typeParameters:tp)? NL* ASSIGNMENT NL* type:t
+              -> { TypeAliasDeclaration(it.locus, mod.l.cast(), name.s, tp.l.cast(), t.r.cast()) };
 
     declaration = userDefinedDeclaration | classDeclaration | objectDeclaration | functionDeclaration | propertyDeclaration | typeAlias;
 
@@ -40,47 +38,47 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
 
     // SECTION: classes
 
-    classDeclaration = modifiers?:mod CLASS:l NL* simpleIdentifier:name (NL* typeParameters:tp)?
+    classDeclaration = modifiers?:mod CLASS NL* simpleIdentifier:name (NL* typeParameters:tp)?
                        (NL* primaryConstructor:pc)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* typeConstraints:tc)?
                        (NL* LCURL NL* enumEntries?:es classBody?:b
-                     -> { ClassDeclaration(locusOf(mod.l, l), mod.l.cast(), if (mod.il.any { it is Token.ENUM }) ClassDeclaration.Kind.ENUM_CLASS else ClassDeclaration.Kind.CLASS,
+                     -> { ClassDeclaration(it.locus, mod.l.cast(), if (mod.il.any { it is Token.ENUM }) ClassDeclaration.Kind.ENUM_CLASS else ClassDeclaration.Kind.CLASS,
                                            name.s, tp.l.cast(), pc.nr.cast(), ds.l.cast(), tc.l.cast(), es.l.cast(), b.l.cast()) };
-    classDeclaration = modifiers?:mod INTERFACE:l NL* simpleIdentifier:name (NL* typeParameters:tp)?
+    classDeclaration = modifiers?:mod INTERFACE NL* simpleIdentifier:name (NL* typeParameters:tp)?
                        (NL* primaryConstructor:pc)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* typeConstraints:tc)? classBody?:b
-                     -> { ClassDeclaration(locusOf(mod.l, l), mod.l.cast(), ClassDeclaration.Kind.INTERFACE,
+                     -> { ClassDeclaration(it.locus, mod.l.cast(), ClassDeclaration.Kind.INTERFACE,
                                            name.s, tp.l.cast(), pc.nr.cast(), ds.l.cast(), tc.l.cast(), emptyList(), b.l.cast()) }; };
-    classDeclaration = modifiers?:mod FUN:l NL* INTERFACE NL* simpleIdentifier:name (NL* typeParameters:tp)?
+    classDeclaration = modifiers?:mod FUN NL* INTERFACE NL* simpleIdentifier:name (NL* typeParameters:tp)?
                        (NL* primaryConstructor:pc)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* typeConstraints:tc)? classBody?:b
-                     -> { ClassDeclaration(locusOf(mod.l, l), mod.l.cast(), ClassDeclaration.Kind.FUN_INTERFACE,
+                     -> { ClassDeclaration(it.locus, mod.l.cast(), ClassDeclaration.Kind.FUN_INTERFACE,
                                            name.s, tp.l.cast(), pc.nr.cast(), ds.l.cast(), tc.l.cast(), emptyList(), b.l.cast()) }; };
 
     classBody = LCURL NL* classMemberDeclarations:members NL* RCURL -> { members.l };
 
-    primaryConstructor = (modifiers?:mods CONSTRUCTOR:l NL*)?
+    primaryConstructor = (modifiers?:mods CONSTRUCTOR NL*)?
                          LPAREN:lp NL* (classParameter (NL* COMMA NL* classParameter)* (NL* COMMA)?)?:cps NL* RPAREN
-                       -> { ClassDeclaration.PrimaryConstructor(locusOf(mods.l, l.i, lp.i), mods.l.cast(), cps.l.cast()) };
+                       -> { ClassDeclaration.PrimaryConstructor(it.locus, mods.l.cast(), cps.l.cast()) };
 
     classParameter = modifiers?:mods (VAR | VAL)?:vov NL* simpleIdentifier:name COLON NL* type:t (NL* ASSIGNMENT NL* expression:expr)?
-                   -> { ValueParameter(locusOf(mods.l, vov.ni, name.i), mods.l.cast(), vov?.let { it.i is Token.Val }, name.s, t.r.cast(), expr.nr.cast()) };
+                   -> { ValueParameter(it.locus, mods.l.cast(), vov?.let { it.i is Token.Val }, name.s, t.r.cast(), expr.nr.cast()) };
 
     annotatedDelegationSpecifiers = annotatedDelegationSpecifier (NL* COMMA NL* annotatedDelegationSpecifier)* -> { it.l };
 
     annotatedDelegationSpecifier = annotation*:a NL* userType:t valueArguments:args annotatedLambda:l
-                                 -> { ClassDeclaration.SuperClassConstructorCall(locusOf(*a.l.toTypedArray(), t.r), a.l.cast(), t.r.cast(), args.l.cast(), l.cast()) };
+                                 -> { ClassDeclaration.SuperClassConstructorCall(it.locus, a.l.cast(), t.r.cast(), args.l.cast(), l.cast()) };
     annotatedDelegationSpecifier = annotation*:a NL* userType:t (NL* BY NL* (expression:expr | !"expected expression after 'by'")?
-                                 -> { ClassDeclaration.SuperInterface(locusOf(*a.l.toTypedArray(), t.r), a.l.cast(), t.r.cast(), null) };
+                                 -> { ClassDeclaration.SuperInterface(it.locus, a.l.cast(), t.r.cast(), null) };
     annotatedDelegationSpecifier = annotation*:a NL* functionType:t (NL* BY NL* (expression:expr | !"expected expression after 'by'"))?
-                                 -> { ClassDeclaration.SuperInterface(locusOf(*a.l.toTypedArray(), t.r), a.l.cast(), t.r.cast(), null) };
+                                 -> { ClassDeclaration.SuperInterface(it.locus, a.l.cast(), t.r.cast(), null) };
 
     typeParameters = LANGLE NL* typeParameter (NL* COMMA NL* typeParameter)* (NL* COMMA)? NL* RANGLE -> { it.l };
 
     typeParameter = typeParameterModifiers?:mods NL* simpleIdentifier:name (NL* COLON NL* type:t)?
-                  -> { TypeParameter(locusOf(*mods.l.toTypedArray(), name.i), mods.l.cast(), name.s, t.nr.cast()) };
+                  -> { TypeParameter(it.locus, mods.l.cast(), name.s, t.nr.cast()) };
 
     typeConstraints = WHERE NL* typeConstraint (NL* COMMA NL* typeConstraint)* -> { it.l };
 
     typeConstraint = annotation*:anns simpleIdentifier:name NL* COLON NL* type:t
-                   -> { TypeConstraint(locusOf(*mods.l.toTypedArray(), name.i), anns.l.cast(), name.s.cast(), t.r.cast()) };
+                   -> { TypeConstraint(it.locus, anns.l.cast(), name.s.cast(), t.r.cast()) };
 
     // SECTION: classMembers
 
@@ -90,19 +88,19 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
 
     anonymousInitializer = INIT:i NL* block:b -> { InitBlock(i.locus(), b.r.cast()) };
 
-    companionObject = modifiers?:mods COMPANION:l NL* OBJECT (NL* simpleIdentifier:name)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* classBody:b)?
-                    -> { ClassDeclaration(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), ClassDeclaration.Kind.COMPANION_OBJECT, name.ns,
+    companionObject = modifiers?:mods COMPANION NL* OBJECT (NL* simpleIdentifier:name)? (NL* COLON NL* annotatedDelegationSpecifiers:ds)? (NL* classBody:b)?
+                    -> { ClassDeclaration(it.locus, mods.l.cast(), ClassDeclaration.Kind.COMPANION_OBJECT, name.ns,
                                           emptyList(), null, ds.nr.cast(), emptyList(), ds.l.cast(), b.l.cast()) };
 
     functionValueParameters = LPAREN NL* (functionValueParameter (NL* COMMA NL* functionValueParameter)* (NL* COMMA)?)? NL* RPAREN -> { it.l };
 
     functionValueParameter = parameterModifiers?:mods simpleIdentifier:name NL* COLON NL* type:t (NL* ASSIGNMENT NL* expression:expr)?
-                           -> { ValueParameter(locusOf(*mods.l.toTypedArray(), name.i), mods.l.cast(), null, name.s, type.r.cast(), expr.nr.cast()) };
+                           -> { ValueParameter(it.locus, mods.l.cast(), null, name.s, type.r.cast(), expr.nr.cast()) };
 
-    functionDeclaration = modifiers?:mods FUN:l (NL* typeParameters:tp)?
+    functionDeclaration = modifiers?:mods FUN (NL* typeParameters:tp)?
                           (NL* receiverType NL* DOT)?:rt NL* simpleIdentifier:name NL* functionValueParameters:params (NL* COLON NL* type:t)? (NL* typeConstraints:tcs)?
                           (NL* functionBody:b)?
-                        -> { FunctionDeclaration(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), tp.l.cast(),
+                        -> { FunctionDeclaration(it.locus, mods.l.cast(), tp.l.cast(),
                                                  rt.nr.cast(), name.s, params.l.cast(), t.nr.cast(), tcs.l.cast(), b.nr.cast()) };
 
     functionBody = blockBody | expressionBody;
@@ -111,84 +109,80 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     expressionBody = ASSIGNMENT NL* expression:expr -> { ExpressionBody(expr.r.cast()) };
 
     variableDeclaration = annotation*:anns NL* simpleIdentifier:name (NL* COLON NL* type:t)?
-                        -> { PropertyDeclaration.DestructuringEntry(locusOf(*anns.l.toTypedArray(), name.i), anns.l.cast(), name.s, t.nr.cast()) };
+                        -> { PropertyDeclaration.DestructuringEntry(it.locus, anns.l.cast(), name.s, t.nr.cast()) };
 
     multiVariableDeclaration = LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN -> { it.l };
 
-    propertyDeclaration = modifiers?:mods (VAR | VAL:isVal):l (NL* typeParameters:tps)?
+    propertyDeclaration = modifiers?:mods (VAR | VAL:isVal) (NL* typeParameters:tps)?
                           (NL* receiverType NL* DOT)?:rt NL* varDecls:vars (NL* typeConstraints:tcs)?
                           (NL* (ASSIGNMENT | BY:isDelegated) NL* expression:expr)?
                           (semi? (getter?:gttr (NL* semi? setter:sttr)? | setter?:sttr (NL* semi? getter:gttr)?))
-                        -> { PropertyDeclaration(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), isVal != null, tps.l.cast(),
+                        -> { PropertyDeclaration(it.locus, mods.l.cast(), isVal != null, tps.l.cast(),
                                                  rt.nr.cast(), vars.l.cast(), tcs.l.cast(), isDelegated != null,
                                                  expr.nr.cast(), gttr.nr.cast(), sttr.nr.cast()) };
 
-    localVariableDeclaration = modifiers?:mods (VAR | VAL:isVal):l (NL* typeParameters:tps)?
+    localVariableDeclaration = modifiers?:mods (VAR | VAL:isVal) (NL* typeParameters:tps)?
                                (NL* receiverType NL* DOT)?:rt NL* varDecls:vds (NL* typeConstraints:tcs)?
                                (NL* (ASSIGNMENT | BY:isDelegated) NL* expression:expr)?
-                             -> { PropertyDeclaration(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), isVal != null, tps.l.cast(),
-                                                 rt.nr.cast(), vars.l.cast(), tcs.l.cast(), isDelegated != null,
-                                                 expr.nr.cast(), null, null) };
+                             -> { PropertyDeclaration(it.locus, mods.l.cast(), isVal != null, tps.l.cast(),
+                                                      rt.nr.cast(), vars.l.cast(), tcs.l.cast(), isDelegated != null,
+                                                      expr.nr.cast(), null, null) };
 
     varDecls = multiVariableDeclaration | variableDeclaration;
 
     getter = modifiers?:mods GET:l (NL* LPAREN NL* RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)?
-           -> { PropertyDeclaration.Getter(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), t.nr.cast(), b.nr.cast()) };
+           -> { PropertyDeclaration.Getter(it.locus, mods.l.cast(), t.nr.cast(), b.nr.cast()) };
 
     setter = modifiers?:mods SET:l (NL* LPAREN NL* functionValueParameterWithOptionalType:param (NL* COMMA)? NL*
                                     RPAREN (NL* COLON NL* type:t)? NL* functionBody:b)?
-           -> { PropertyDeclaration.Setter(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), param.nr.cast(), t.nr.cast(), b.nr.cast()) };
+           -> { PropertyDeclaration.Setter(it.locus, mods.l.cast(), param.nr.cast(), t.nr.cast(), b.nr.cast()) };
 
     parametersWithOptionalType = LPAREN NL* (functionValueParameterWithOptionalType (NL* COMMA NL* functionValueParameterWithOptionalType)* (NL* COMMA)?)? NL* RPAREN -> { it.l };
 
     functionValueParameterWithOptionalType = parameterModifiers?:mods simpleIdentifier:name NL* (COLON NL* type:t)? (NL* ASSIGNMENT NL* expression:expr)?
-                                           -> { ValueParameter(locusOf(*mods.l.toTypedArray(), name.i), mods.l.cast(), null, name.s, type.nr.cast(), expr.nr.cast()) };
+                                           -> { ValueParameter(it.locus, mods.l.cast(), null, name.s, type.nr.cast(), expr.nr.cast()) };
 
-    objectDeclaration = modifiers?:mods OBJECT:l
+    objectDeclaration = modifiers?:mods OBJECT
                         NL* simpleIdentifier:name
                         (NL* COLON NL* annotatedDelegationSpecifiers:ds)?
                         (NL* classBody:b)?
-                      -> { ClassDeclaration(locusOf(*mods.l.toTypedArray(), l), mods.l.cast(), ClassDeclaration.Kind.OBJECT, name.s,
+                      -> { ClassDeclaration(it.locus, mods.l.cast(), ClassDeclaration.Kind.OBJECT, name.s,
                                             emptyList(), null, ds.l.cast(), emptyList(), b.nr.cast()) };
 
-    secondaryConstructor = modifiers?:mods CONSTRUCTOR:l NL* functionValueParameters:params (NL* COLON NL* constructorDelegationCall:cdc)? NL* block?:b
-                         -> { Constructor(locusOf(*mods.l.toTypedArray(), l.i), mods.l.cast(), params.l.cast(), cdc.nr.cast(), b.nr.cast()) };
+    secondaryConstructor = modifiers?:mods CONSTRUCTOR NL* functionValueParameters:params (NL* COLON NL* constructorDelegationCall:cdc)? NL* block?:b
+                         -> { Constructor(it.locus, mods.l.cast(), params.l.cast(), cdc.nr.cast(), b.nr.cast()) };
 
-    constructorDelegationCall = THIS:l NL* valueArguments:args
-                              -> { Constructor.DelegationCall(l.locus(), Constructor.DelegationTarget.THIS, args.l.cast()) };
-    constructorDelegationCall = SUPER:l NL* valueArguments:args
-                              -> { Constructor.DelegationCall(l.locus(), Constructor.DelegationTarget.SUPER, args.l.cast()) };
+    constructorDelegationCall = THIS NL* valueArguments:args  -> { Constructor.DelegationCall(it.locus, Constructor.DelegationTarget.THIS, args.l.cast()) };
+    constructorDelegationCall = SUPER NL* valueArguments:args -> { Constructor.DelegationCall(it.locus, Constructor.DelegationTarget.SUPER, args.l.cast()) };
 
     // SECTION: enumClasses
 
     enumEntries = enumEntry (NL* COMMA NL* enumEntry)* NL* COMMA? -> { it.l };
 
     enumEntry = (modifiers:mods NL*)? simpleIdentifier:name (NL* valueArguments:args)? (NL* classBody:b)?
-              -> { ClassDeclaration.EnumEntry(locusOf(*mods.l.toTypedArray(), name.i), mods.l.cast(), name.s, args.l.cast(), b.l.cast()) };
+              -> { ClassDeclaration.EnumEntry(it.locus, mods.l.cast(), name.s, args.l.cast(), b.l.cast()) };
 
     // SECTION: types
 
     type = receiverType;
-    type = typeModifiers?:mods functionType:t -> { Type(locusOf(*mods.l.toTypedArray(), t.i), mods.l.cast(), t.r.cast()) };
+    type = typeModifiers?:mods functionType:t -> { Type(it.locus, mods.l.cast(), t.r.cast()) };
 
     receiverType = typeModifiers?:mods (parenthesizedType | nullableType | typeReference):t
-                 -> { Type(locusOf(*mods.l.toTypedArray(), t.i), mods.l.cast(), t.r.cast()) };
+                 -> { Type(it.locus, mods.l.cast(), t.r.cast()) };
 
     typeReference = userType | dynamicType;
 
     dynamicType = DYNAMIC:l -> { DynamicType(l.locus()) };
 
-    nullableType = (typeReference | parenthesizedType):t NL* quest+ -> { NullableType(t.locus()) };
+    nullableType = (typeReference | parenthesizedType):t NL* quest+ -> { NullableType(it.locus) };
 
     quest = QUEST;
 
-    userType = simpleUserType (NL* DOT NL* simpleUserType)* -> { SimpleType(it.l.cast()) };
+    userType = simpleUserType (NL* DOT NL* simpleUserType)* -> { SimpleType(it.locus, it.l.cast()) };
 
-    simpleUserType = simpleIdentifier:name (NL* typeArguments:args)?
-                   -> { SimpleType.Piece(name.locus(), name.s, args.l.cast()) };
+    simpleUserType = simpleIdentifier:name (NL* typeArguments:args)? -> { SimpleType.Piece(it.locus(), name.s, args.l.cast()) };
 
-    typeProjection = typeProjectionModifiers?:mods type:t
-                   -> { Type(locusOf(*mods.l.toTypedArray(), t.r), mods.l.cast(), t.r.cast<Type>().ref) };
+    typeProjection = typeProjectionModifiers?:mods type:t -> { Type(it.locus, mods.l.cast(), t.r.cast<Type>().ref) };
     typeProjection = MULT -> { null };
 
     typeProjectionModifiers = typeProjectionModifier+ -> { it.l };

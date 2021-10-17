@@ -1,5 +1,8 @@
 package kometa.kotlin
 
+import core.Locus
+import core.UNDEFINED_OFFSET
+import kometa.MatchItem
 import kometa.MatchState
 import kometa.Matcher
 
@@ -24,4 +27,7 @@ abstract class TokenMatcher<TResult>: Matcher<Token, TResult>() {
         return "$str\n$indent"
     }
 
+    override val MatchItem<Token, TResult>?.locus: Locus
+        get() = this?.inputs?.let { Locus(it.first().locus.startOffset, it.last().locus.endOffset) }
+            ?: Locus(UNDEFINED_OFFSET, UNDEFINED_OFFSET)
 }

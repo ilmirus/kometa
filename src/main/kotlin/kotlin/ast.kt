@@ -568,6 +568,7 @@ data class FunctionalType(
 }
 
 data class SimpleType(
+    override val locus: Locus,
     val pieces: List<Piece>
 ) : TypeRef() {
     data class Piece(
@@ -587,9 +588,6 @@ data class SimpleType(
         }
     }
 
-    override val locus: Locus
-        get() = pieces.first().locus
-
     override fun accept(v: Visitor) {
         v.visitSimpleType(this)
     }
@@ -602,11 +600,9 @@ data class SimpleType(
 }
 
 data class NullableType(
+    override val locus: Locus,
     val type: TypeRef
 ) : TypeRef() {
-    override val locus: Locus
-        get() = type.locus
-
     override fun accept(v: Visitor) {
         v.visitNullableType(this)
     }
