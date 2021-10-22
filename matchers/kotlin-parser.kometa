@@ -183,7 +183,7 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     simpleUserType = simpleIdentifier:name (NL* typeArguments:args)? -> { SimpleType.Piece(it.locus(), name.s, args.l.cast()) };
 
     typeProjection = typeProjectionModifiers?:mods type:t -> { Type(it.locus, mods.l.cast(), t.r.cast<Type>().ref) };
-    typeProjection = MULT -> { null };
+    typeProjection = MULT -> { Wildcard(it.locus) };
 
     typeProjectionModifiers = typeProjectionModifier+ -> { it.l };
 
@@ -191,13 +191,12 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     typeProjectionModifier = annotation;
 
     functionType = (receiverType:rt NL* DOT:l NL*)? LPAREN:ll NL* functionTypeParameters:params NL* RPAREN NL* ARROW NL* type:t
-                 -> { FunctionalType(locusOf(rt.ni, l.ni, ll.i), rt.nr.cast(), params.l.cast(), t.r.cast()) };
+                 -> { FunctionalType(it.locus, rt.nr.cast(), params.l.cast(), t.r.cast()) };
 
     functionTypeParameters = functionTypeParameter? (NL* COMMA NL* functionTypeParameter)* (NL* COMMA)? -> { it.l };
 
-    functionTypeParameter = simpleIdentifier:name NL* COLON NL* type:t
-                          -> { FunctionalType.Parameter(name.i.locus(), name.s, t.r.cast()) };
-    functionTypeParameter = type -> { FunctionalType.Parameter(it.i.locus(), null, t.r.cast()) };
+    functionTypeParameter = simpleIdentifier:name NL* COLON NL* type:t -> { FunctionalType.Parameter(it.locus, name.s, t.r.cast()) };
+    functionTypeParameter = type -> { FunctionalType.Parameter(it.locus, null, t.r.cast()) };
 
     parenthesizedType = LPAREN NL* type:t NL* RPAREN -> { t.r };
 

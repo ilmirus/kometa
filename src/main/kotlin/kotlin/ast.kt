@@ -574,8 +574,7 @@ data class SimpleType(
     data class Piece(
         override val locus: Locus,
         val name: String,
-        // Null means wildcard
-        val typeParams: List<Type?>
+        val typeParams: List<TypeOrWildcard>
     ) : Element() {
         override fun accept(v: Visitor) {
             v.visitSimpleTypePiece(this)
@@ -583,7 +582,7 @@ data class SimpleType(
 
         override fun acceptChildren(v: Visitor) {
             for (typeParam in typeParams) {
-                typeParam?.accept(v)
+                typeParam.accept(v)
             }
         }
     }
@@ -624,11 +623,13 @@ data class DynamicType(
     }
 }
 
+sealed class TypeOrWildcard: Element()
+
 data class Type(
     override val locus: Locus,
     override val modOrAnns: List<ModifierOrAnnotation>,
     val ref: TypeRef
-) : Element(), Element.WithModifiers {
+) : TypeOrWildcard(), Element.WithModifiers {
     override fun accept(v: Visitor) {
         v.visitType(this)
     }
@@ -639,6 +640,17 @@ data class Type(
         }
         ref.accept(v)
     }
+}
+
+data class Wildcard(override val locus: Locus): TypeOrWildcard() {
+    override fun accept(v: Visitor) {
+        v.visitWildcard(this)
+    }
+
+    override fun acceptChildren(v: Visitor) {
+        // no children
+    }
+
 }
 
 data class ValueArgument(

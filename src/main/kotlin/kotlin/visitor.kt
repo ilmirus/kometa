@@ -47,7 +47,10 @@ abstract class Visitor {
     open fun visitSimpleTypePiece(type: SimpleType.Piece) = visitElement(type)
     open fun visitNullableType(type: NullableType) = visitTypeRef(type)
     open fun visitDynamicType(type: DynamicType) = visitTypeRef(type)
-    open fun visitType(type: Type) = visitElement(type)
+
+    open fun visitTypeOrWildcard(type: TypeOrWildcard) = visitElement(type)
+    open fun visitType(type: Type) = visitTypeOrWildcard(type)
+    open fun visitWildcard(wildcard: Wildcard) = visitTypeOrWildcard(wildcard)
 
     open fun visitValueArgument(arg: ValueArgument) = visitElement(arg)
 
