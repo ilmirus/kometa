@@ -25,8 +25,14 @@ abstract class Visitor {
     open fun visitBlockBody(body: BlockBody) = visitFunctionBody(body)
     open fun visitExpressionBody(body: ExpressionBody) = visitFunctionBody(body)
 
+    open fun visitVariableDeclaration(decl: VariableDeclaration) = visitElement(decl)
+    open fun visitSingleVariableDeclaration(decl: SingleVariableDeclaration) = visitVariableDeclaration(decl)
+    open fun visitMultiVariableDeclaration(decl: MultiVariableDeclaration) = visitVariableDeclaration(decl)
+
     open fun visitPropertyDeclaration(property: PropertyDeclaration) = visitDeclaration(property)
-    open fun visitDestructuringEntry(propVar: PropertyDeclaration.DestructuringEntry) = visitElement(propVar)
+    open fun visitDestructuringEntry(propVar: VariableDeclaration.DestructuringEntry) = visitElement(propVar)
+    open fun visitDestructuringVariable(propVar: VariableDeclaration.DestructuringVariable) = visitDestructuringEntry(propVar)
+    open fun visitDestructuringUnderscore(propVar: VariableDeclaration.DestructuringUnderscore) = visitDestructuringEntry(propVar)
     open fun visitPropertyGetter(getter: PropertyDeclaration.Getter) = visitElement(getter)
     open fun visitPropertySetter(setter: PropertyDeclaration.Setter) = visitElement(setter)
 
@@ -65,7 +71,8 @@ abstract class Visitor {
     open fun visitBinaryOperatorOrInfixCall(oper: BinaryOperatorOrInfixCall) = visitElement(oper)
     open fun visitInfixFunctionName(oper: InfixFunctionName) = visitBinaryOperatorOrInfixCall(oper)
     open fun visitBinaryOperator(oper: BinaryOperator) = visitBinaryOperatorOrInfixCall(oper)
-    open fun visitUnaryExpression(expr: UnaryExpression) = visitExpression(expr)
+    open fun visitPrefixUnaryExpression(expr: PrefixUnaryExpression) = visitExpression(expr)
+    open fun visitPostfixUnaryExpression(expr: PostfixUnaryExpression) = visitExpression(expr)
     open fun visitUnaryOperator(oper: UnaryOperator) = visitElement(oper)
     open fun visitTypeExpression(expr: TypeExpression) = visitExpression(expr)
     open fun visitTypeOperator(oper: TypeOperator) = visitElement(oper)

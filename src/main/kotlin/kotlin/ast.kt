@@ -375,28 +375,27 @@ data class ExpressionBody(val expr: Expression) : FunctionBody() {
     }
 }
 
-data class PropertyDeclaration(
-    override val locus: Locus,
-    override val modOrAnns: List<ModifierOrAnnotation>,
-    val isVal: Boolean,
-    val typeParameters: List<TypeParameter>,
-    val receiverType: Type?,
-    // Always at least one, more than one is destructuring, null is underscore in destructure
-    val vars: List<DestructuringEntry?>,
-    val typeConstraints: List<TypeConstraint>,
-    val delegated: Boolean,
-    val expr: Expression?,
-    val getter: Getter?,
-    val setter: Setter?
-) : Declaration(), Element.WithModifiers {
-    data class DestructuringEntry(
+abstract class VariableDeclaration: Element() {
+    abstract class DestructuringEntry: Element()
+
+    data class DestructuringUnderscore(override val locus: Locus) : DestructuringEntry() {
+        override fun accept(v: Visitor) {
+            v.visitDestructuringUnderscore(this)
+        }
+
+        override fun acceptChildren(v: Visitor) {
+            // no children
+        }
+    }
+
+    data class DestructuringVariable(
         override val locus: Locus,
         override val modOrAnns: List<ModifierOrAnnotation>,
         val name: String,
         val type: Type?
-    ) : Element(), WithModifiers {
+    ) : DestructuringEntry(), WithModifiers {
         override fun accept(v: Visitor) {
-            v.visitDestructuringEntry(this)
+            v.visitDestructuringVariable(this)
         }
 
         override fun acceptChildren(v: Visitor) {
@@ -406,6 +405,49 @@ data class PropertyDeclaration(
             type?.accept(v)
         }
     }
+}
+
+data class SingleVariableDeclaration(
+    override val locus: Locus,
+    val variable: DestructuringEntry
+) : VariableDeclaration() {
+    override fun accept(v: Visitor) {
+        v.visitSingleVariableDeclaration(this)
+    }
+
+    override fun acceptChildren(v: Visitor) {
+        variable.accept(v)
+    }
+}
+
+data class MultiVariableDeclaration(
+    override val locus: Locus,
+    val vars: List<DestructuringEntry>
+): VariableDeclaration() {
+    override fun accept(v: Visitor) {
+        v.visitMultiVariableDeclaration(this)
+    }
+
+    override fun acceptChildren(v: Visitor) {
+        for (vr in vars) {
+            vr.accept(v)
+        }
+    }
+}
+
+data class PropertyDeclaration(
+    override val locus: Locus,
+    override val modOrAnns: List<ModifierOrAnnotation>,
+    val isVal: Boolean,
+    val typeParameters: List<TypeParameter>,
+    val receiverType: Type?,
+    val vars: VariableDeclaration,
+    val typeConstraints: List<TypeConstraint>,
+    val delegated: Boolean,
+    val expr: Expression?,
+    val getter: Getter?,
+    val setter: Setter?
+) : Declaration(), Element.WithModifiers {
 
     data class Getter(
         override val locus: Locus,
@@ -462,9 +504,7 @@ data class PropertyDeclaration(
             typeParam.accept(v)
         }
         receiverType?.accept(v)
-        for (vr in vars) {
-            vr?.accept(v)
-        }
+        vars.accept(v)
         for (typeConstraint in typeConstraints) {
             typeConstraint.accept(v)
         }
@@ -729,10 +769,9 @@ data class TryExpression(
 data class ForLoop(
     override val locus: Locus,
     override val anns: List<Annotation>,
-    // More than one means destructure, null means underscore
-    val vars: List<PropertyDeclaration.DestructuringEntry?>,
+    val vars: VariableDeclaration,
     val inExpr: Expression,
-    val body: Expression
+    val body: Expression?
 ) : Expression(), Element.WithAnnotations {
     override fun accept(v: Visitor) {
         v.visitForLoop(this)
@@ -742,18 +781,16 @@ data class ForLoop(
         for (ann in anns) {
             ann.accept(v)
         }
-        for (vr in vars) {
-            vr?.accept(v)
-        }
+        vars.accept(v)
         inExpr.accept(v)
-        body.accept(v)
+        body?.accept(v)
     }
 }
 
 data class WhileLoop(
     override val locus: Locus,
     val condition: Expression,
-    val body: Expression
+    val body: Expression?
 ) : Expression() {
     override fun accept(v: Visitor) {
         v.visitWhileLoop(this)
@@ -761,7 +798,7 @@ data class WhileLoop(
 
     override fun acceptChildren(v: Visitor) {
         condition.accept(v)
-        body.accept(v)
+        body?.accept(v)
     }
 }
 
@@ -835,15 +872,30 @@ data class BinaryOperator(
     }
 }
 
-data class UnaryExpression(
+data class PrefixUnaryExpression(
     override val locus: Locus,
     val expr: Expression,
-    val oper: UnaryOperator,
-    val isPrefix: Boolean
+    val oper: UnaryOperator
 ) : Expression() {
 
     override fun accept(v: Visitor) {
-        v.visitUnaryExpression(this)
+        v.visitPrefixUnaryExpression(this)
+    }
+
+    override fun acceptChildren(v: Visitor) {
+        expr.accept(v)
+        oper.accept(v)
+    }
+}
+
+data class PostfixUnaryExpression(
+    override val locus: Locus,
+    val expr: Expression,
+    val oper: UnaryOperator
+) : Expression() {
+
+    override fun accept(v: Visitor) {
+        v.visitPostfixUnaryExpression(this)
     }
 
     override fun acceptChildren(v: Visitor) {
@@ -990,8 +1042,7 @@ data class LambdaLiteral(
 ) : Expression() {
     data class Parameter(
         override val locus: Locus,
-        // Multiple means destructure, null means underscore
-        val vars: List<PropertyDeclaration.DestructuringEntry?>,
+        val vars: VariableDeclaration,
         val destructType: Type?
     ) : Expression() {
         override fun accept(v: Visitor) {
@@ -999,9 +1050,7 @@ data class LambdaLiteral(
         }
 
         override fun acceptChildren(v: Visitor) {
-            for (vr in vars) {
-                vr?.accept(v)
-            }
+            vars.accept(v)
             destructType?.accept(v)
         }
     }

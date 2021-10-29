@@ -204,26 +204,25 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
 
     statements = (statement (semis statement)*)? semis? -> { it.l };
 
-    statement = (label | annotation)*:p ( localVariableDeclaration | declaration | assignment | loopStatement | expression):expr
-              -> { AST.Statement(p.l, expr.r) };
-
-    label = simpleIdentifier:name AT NL* -> { AST.Label(name.s) };
+    statement = (simpleIdentifier:name AT NL*)+ statement:expr -> { LabelledExpression(it.locus, name.s, expr.r) };
+    statement = annotation+:a statement:expr -> { AnnotatedExpression(it.locus, a.l, expr.r) };
+    statement = localVariableDeclaration | declaration | assignment | loopStatement | expression;
 
     controlStructureBody = block | statement;
 
-    block = LCURL NL* statements:stmts NL* RCURL -> { AST.Block(it.l) };
+    block = LCURL NL* statements:stmts NL* RCURL -> { Block(it.locus, it.l) };
 
     loopStatement = forStatement | whileStatement | doWhileStatement;
 
     forStatement = FOR NL* LPAREN annotation*:anns varDecls:vds IN expression:expr RPAREN NL* controlStructureBody?:csb
-                 -> { AST.ForStatement(anns.l, vds.r, expr.r, csb.nr) };
+                 -> { ForLoop(it.locus, anns.l, vds.r, expr.r, csb.nr) };
 
-    whileStatement = WHILE NL* LPAREN expression:expr RPAREN NL* (controlStructureBody:csb | SEMICOLON) -> { AST.WhileStatement(expr.r, csb.nr) };
+    whileStatement = WHILE NL* LPAREN expression:expr RPAREN NL* (controlStructureBody:csb | SEMICOLON) -> { WhileLoop(it.locus, expr.r, csb.nr) };
 
-    doWhileStatement = DO NL* controlStructureBody?:csb NL* WHILE NL* LPAREN expression:expr RPAREN -> { AST.DoWhileStatement(csb.nr, expr.r) };
+    doWhileStatement = DO NL* controlStructureBody?:csb NL* WHILE NL* LPAREN expression:expr RPAREN -> { DoWhileLoop(it.locus, csb.nr, expr.r) };
 
-    assignment = directlyAssignableExpression:lhs ASSIGNMENT NL* expression:rhs -> { AST.DirectAssignment(lhs.r, rhs.r) };
-    assignment = assignableExpression:lhs assignmentAndOperator:op NL* expression:rhs -> { AST.AugmentedAssignment(lhs.r, op.r, rhs.r) };
+    assignment = directlyAssignableExpression:lhs ASSIGNMENT NL* expression:rhs -> { BinaryExpression(it.locus, lhs.r, BinaryOperator.Token.ASSIGN, rhs.r) };
+    assignment = assignableExpression:lhs assignmentAndOperator:op NL* expression:rhs -> { BinaryExpression(it.locus, lhs.r, op.r, rhs.r) };
 
     semi = (SEMICOLON | NL) NL* | EOF;
 
@@ -235,37 +234,52 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
 
     userDefinedExpression = _ABSURD;
 
-    disjunction = conjunction (NL* DISJ NL* conjunction)* -> { AST.Disjunction(it.l) };
+    disjunction = conjunction:lhs NL* DISJ NL* disjunction:rhs -> { BinaryExpression(it.locus, lhs.r, BinaryOperator.Token.OR, rhs.r) };
+    disjunction = conjunction;
 
-    conjunction = equality (NL* CONJ NL* equality)* -> { AST.Conjunction(it.l) };
+    conjunction = equality:lhs NL* CONJ NL* conjunction:rhs -> { BinaryExpression(it.locus, lhs.r, BinaryOperator.Token.AND, rhs.r) };
+    conjunction = equality;
 
-    equality = comparison (equalityOperator NL* comparison)* -> { AST.Equality(it.l) };
+    equality = comparison:lhs equalityOperator:op NL* equality:rhs -> { BinaryExpression(it.locus, lhs.r, op.r, rhs.r) };
+    equality = comparison;
 
-    comparison = genericCallLikeComparison (comparisonOperator NL* genericCallLikeComparison)* -> { AST.Comparison(it.l) };
+    comparison = genericCallLikeComparison:lhs comparisonOperator:op NL* genericCallLikeComparison:rhs -> { BinaryExpression(it.locus, lhs.r, op.r, rhs.r) };
+    comparison = genericCallLikeComparison;
 
-    genericCallLikeComparison = infixOperation:op callSuffix*:s -> { AST.GenericCallLikeComparison(op.r, s.l) };
+    genericCallLikeComparison = infixOperation:op callSuffix*:s -> { s.fold(op) { a, b -> CallExpression(it.locus, b[0], b[1], b[2]) } };
 
-    infixOperation = elvisExpression:lhs (inCheck | isCheck)*:rest -> { AST.InfixOperation(lhs.r, rest.l) };
+    callSuffix = typeArguments?:tas valueArguments?:args annotatedLambda:l -> { listOf(tas.l, args.l, l.r) };
+    callSuffix = typeArguments?:tas valueArguments:args -> { listOf(tas.l, args.l, null) };
 
-    inCheck = inOperator:op NL* elvisExpression:expr -> { AST.InCheckSuffix(op.r, expr.r) };
+    infixOperation = elvisExpression:lhs inOperator:op NL* infixOperation:rhs -> { BinaryExpression(it.locus, lhs.r, op.r, rhs.r) };
+    infixOperation = elvisExpression:lhs isOperator:op NL* type:t -> { BinaryExpression(it.locus, lhs.r, BinaryOperator.Token.ASSIGN, rhs.r) };
+    infixOperation = elvisExpression;
 
-    isCheck = isOperator:op NL* type:t -> { AST.IsCheckSuffix(op.r, t.r) };
+    elvisExpression = infixFunctionCall:lhs ELVIS elvisExpression:rhs -> { BinaryExpression(it.locus, lhs.r, BinaryOperator.Token.ELVIS, rhs.r) };
+    elvisExpression = infixFunctionCall;
 
-    elvisExpression = infixFunctionCall (NL* ELVIS NL* infixFunctionCall)* -> { AST.ElvisExpression(it.l) };
+    infixFunctionCall = rangeExpression:lhs simpleIdentifier:name NL* rangeExpression:rhs -> { BinaryExpression(it.locus, lhs.r, InfixFunctionName(name.i.locus, name.s), rhs.r) };
+    infixFunctionCall = rangeExpression;
 
-    infixFunctionCall = rangeExpression (simpleIdentifier NL* rangeExpression)* -> { AST.InfixFunctionCall(it.l) };
+    rangeExpression = additiveExpression:lhs RANGE NL* additiveExpression:rhs -> { BinaryExpression(it.locus, lhs.r, BinaryOperator.Token.RANGE, rhs.r) };
+    rangeExpression = additiveExpression;
 
-    rangeExpression = additiveExpression (RANGE NL* additiveExpression)* -> { AST.RangeExpression(it.l) };
+    additiveExpression = multiplicativeExpression:lhs additiveOperator:op NL* multiplicativeExpression:rhs -> { BinaryExpression(it.locus, lhs.r, op.r, rhs.r) };
+    additiveExpression = multiplicativeExpression;
 
-    additiveExpression = multiplicativeExpression (additiveOperator NL* multiplicativeExpression)* -> { AST.Additive(it.l) };
+    multiplicativeExpression = asExpression:lhs multiplicativeOperator:op NL* asExpression:rhs -> { BinaryExpression(it.locus, lhs.r, op.r, rhs.r) };
+    multiplicativeExpression = asExpression;
 
-    multiplicativeExpression = asExpression (multiplicativeOperator NL* asExpression)* -> { AST.Multiplicative(it.l) };
+    asExpression = prefixUnaryExpression:lhs typeExpressionSuffix*:s -> { s.l.fold(lhs) { a, b -> TypeExpression(it.locus, a, b[0], b[1]) } };
 
-    asExpression = prefixUnaryExpression (NL* asOperator NL* type)* -> { AST.AsExpression(it.l) };
+    typeExpressionSuffix = NL* asOperator:op NL* type:t -> { listOf(op.r, t.r) };
 
-    prefixUnaryExpression = unaryPrefix*:p postfixUnaryExpression:expr -> { AST.PrefixUnaryExpression(p.l, expr.r) };
+    prefixUnaryExpression = simpleIdentifier:name AT NL* prefixUnaryExpression:expr -> { LabelledExpression(it.locus, name.s, expr.r };
+    prefixUnaryExpression = annotation+:a AT NL* prefixUnaryExpression:expr -> { AnnotatedExpression(it.locus, a.l, expr.r };
+    prefixUnaryExpression = unaryPrefix:p prefixUnaryExpression:expr -> { PrefixUnaryExpression(it.locus, p.l, expr.r) };
+    prefixUnaryExpression = postfixUnaryExpression;
 
-    unaryPrefix = annotation | label | prefixUnaryOperator NL*;
+    unaryPrefix = prefixUnaryOperator NL*;
 
     postfixUnaryExpression = primaryExpression:expr postfixUnarySuffix*:s -> { AST.PostfixUnaryExpression(expr.r, s.l) };
 
@@ -291,10 +305,7 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     navigationSuffix = memberAccessOperator:op NL* parenthesizedExpression:expr -> { AST.ExpressionNavigationSuffix(op.r, expr.r) };
     navigationSuffix = memberAccessOperator:op NL* CLASS -> { AST.ClassNavigationSuffix(op.r) };
 
-    callSuffix = typeArguments?:tas valueArguments?:args annotatedLambda:l -> { AST.CallSuffix(tas.l, args.l, l.r) };
-    callSuffix = typeArguments?:tas valueArguments:args -> { AST.CallSuffix(tas.l, args.l, null) };
-
-    annotatedLambda = annotation*:anns label?:l NL* lambdaLiteral:ll -> { AST.AnnotatedLambda(anns.l, l.nr, ll.r) };
+    annotatedLambda = annotation*:anns (simpleIdentifier:name AT NL*)? NL* lambdaLiteral:ll -> { AST.AnnotatedLambda(anns.l, l.nr, ll.r) };
 
     typeArguments = LANGLE NL* typeProjection (NL* COMMA NL* typeProjection)* (NL* COMMA)? NL* RANGLE -> { it.l };
 
@@ -345,6 +356,10 @@ kometa KotlinParser<Token, Element>: TokenMatcher<Element> {
     whenEntry = ELSE NL* ARROW NL* controlStructureBody:b semi? -> { AST.WhenEntry(null, b.r) };
 
     whenCondition = expression | isCheck | inCheck;
+
+    inCheck = inOperator:op NL* elvisExpression:expr -> { AST.InCheckSuffix(op.r, expr.r) };
+
+    isCheck = isOperator:op NL* type:t -> { AST.IsCheckSuffix(op.r, t.r) };
 
     tryExpression = TRY NL* block:b (NL* catchBlock)+:cs (NL* finallyBlock:fb)? -> { AST.TryExpression(b.r, cs.l, fb.nr) };
     tryExpression = TRY NL* block:b NL* finallyBlock:fb -> { AST.TryExpression(b.r, emptyList(), fb.r) };
